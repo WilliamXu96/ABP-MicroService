@@ -3,3 +3,8 @@
 ################################################################################
 
 /.vs
+/AuthServer/AuthServer.Host/node_modules
+/AuthServer/AuthServer.Host/.vs/AuthServer.Host
+/AuthServer/AuthServer.Host/bin/Debug/netcoreapp3.1
+/AuthServer/AuthServer.Host/Logs
+/AuthServer/AuthServer.Host/obj
