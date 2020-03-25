@@ -8,3 +8,7 @@
 /AuthServer/AuthServer.Host/bin/Debug/netcoreapp3.1
 /AuthServer/AuthServer.Host/Logs
 /AuthServer/AuthServer.Host/obj
+/IdentityService/IdentityService.Host/bin/Debug/netcoreapp3.1
+/IdentityService/IdentityService.Host/.vs/IdentityService.Host/v16
+/IdentityService/IdentityService.Host/Logs
+/IdentityService/IdentityService.Host/obj
