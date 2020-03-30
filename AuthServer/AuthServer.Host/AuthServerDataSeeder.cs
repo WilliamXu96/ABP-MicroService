@@ -60,11 +60,9 @@ namespace AuthServer.Host
             };
 
             await CreateApiResourceAsync("IdentityService", commonApiUserClaims);
-            await CreateApiResourceAsync("BloggingService", commonApiUserClaims);
             await CreateApiResourceAsync("Service_A", commonApiUserClaims);
             await CreateApiResourceAsync("InternalGateway", commonApiUserClaims);
-            await CreateApiResourceAsync("BackendAdminAppGateway", commonApiUserClaims);
-            await CreateApiResourceAsync("PublicWebSiteGateway", commonApiUserClaims);
+            await CreateApiResourceAsync("WebAppGateway", commonApiUserClaims);
             await CreateApiResourceAsync("TenantService", commonApiUserClaims);
         }
 
@@ -96,8 +94,6 @@ namespace AuthServer.Host
 
         private async Task CreateClientsAsync()
         {
-            const string commonSecret = "E5Xd4yMqjP5kjWFKrYgySBju6JVfCzMyFp7n2QmMrME=";
-
             var commonScopes = new[]
             {
                 "email",
@@ -110,44 +106,9 @@ namespace AuthServer.Host
 
             await CreateClientAsync(
                 "basic-web",
-                new[] { "IdentityService", "BackendAdminAppGateway", "Service_A", "PublicWebSiteGateway", "TenantService" },
+                new[] { "IdentityService", "WebAppGateway", "Service_A", "TenantService" },
                 new[] { "password" },
                 "1q2w3e*".Sha256()
-            );
-
-            await CreateClientAsync(
-                "console-client-demo",
-                new[] { "BloggingService", "IdentityService", "InternalGateway", "Service_A" },
-                new[] { "client_credentials", "password" },
-                "1q2w3e*".Sha256(),
-                permissions: new[] { IdentityPermissions.Users.Default, "ProductManagement.Product" }
-            );
-
-            await CreateClientAsync(
-                "backend-admin-app-client",
-                commonScopes.Union(new[] { "BackendAdminAppGateway", "IdentityService", "Service_A" }),
-                new[] { "hybrid" },
-                "1q2w3e*".Sha256(),
-                permissions: new[] { IdentityPermissions.Users.Default, "ProductManagement.Product" },
-                redirectUri: "http://localhost:51954/signin-oidc",
-                postLogoutRedirectUri: "http://localhost:51954/signout-callback-oidc"
-            );
-
-            await CreateClientAsync(
-                "public-website-client",
-                commonScopes.Union(new[] { "PublicWebSiteGateway", "BloggingService", "Service_A" }),
-                new[] { "hybrid" },
-                "1q2w3e*".Sha256(),
-                redirectUri: "http://localhost:53435/signin-oidc",
-                postLogoutRedirectUri: "http://localhost:53435/signout-callback-oidc"
-            );
-
-            await CreateClientAsync(
-                "blogging-service-client",
-                new[] { "InternalGateway", "IdentityService" },
-                new[] { "client_credentials" },
-                "1q2w3e*".Sha256(),
-                permissions: new[] { IdentityPermissions.UserLookup.Default }
             );
         }
 

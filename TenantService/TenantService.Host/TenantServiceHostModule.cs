@@ -1,15 +1,16 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.DependencyInjection;
-using StackExchange.Redis;
 using Microsoft.OpenApi.Models;
+using StackExchange.Redis;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 using Volo.Abp;
 using Volo.Abp.Auditing;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.Autofac;
+using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.SqlServer;
 using Volo.Abp.Identity;
@@ -19,27 +20,25 @@ using Volo.Abp.Modularity;
 using Volo.Abp.PermissionManagement.EntityFrameworkCore;
 using Volo.Abp.Security.Claims;
 using Volo.Abp.SettingManagement.EntityFrameworkCore;
-using Volo.Abp.AspNetCore.MultiTenancy;
-using Volo.Abp.TenantManagement.EntityFrameworkCore;
-using System;
 using Volo.Abp.TenantManagement;
+using Volo.Abp.TenantManagement.EntityFrameworkCore;
+using Volo.Abp.Threading;
 
-namespace IdentityService.Host
+namespace TenantService.Host
 {
     [DependsOn(
         typeof(AbpAutofacModule),
-        typeof(AbpAspNetCoreMultiTenancyModule),
         typeof(AbpEntityFrameworkCoreSqlServerModule),
         typeof(AbpAuditLoggingEntityFrameworkCoreModule),
         typeof(AbpPermissionManagementEntityFrameworkCoreModule),
         typeof(AbpSettingManagementEntityFrameworkCoreModule),
         typeof(AbpTenantManagementHttpApiModule),
         typeof(AbpTenantManagementEntityFrameworkCoreModule),
-        typeof(AbpIdentityHttpApiModule),
-        typeof(AbpIdentityEntityFrameworkCoreModule),
-        typeof(AbpIdentityApplicationModule)
-    )]
-    public class IdentityServiceHostModule : AbpModule
+        typeof(AbpTenantManagementApplicationModule),
+        typeof(AbpIdentityApplicationContractsModule),
+        typeof(AbpIdentityEntityFrameworkCoreModule)
+        )]
+    public class TenantServiceHostModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
@@ -55,7 +54,7 @@ namespace IdentityService.Host
 
             context.Services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Identity Service API", Version = "v1" });
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Tenant Service API", Version = "v1" });
                 options.DocInclusionPredicate((docName, description) => true);
                 options.CustomSchemaIds(type => type.FullName);
             });
@@ -78,7 +77,7 @@ namespace IdentityService.Host
             Configure<AbpAuditingOptions>(options =>
             {
                 options.IsEnabledForGetRequests = true;
-                options.ApplicationName = "IdentityService";
+                options.ApplicationName = "TenantService";
             });
 
             var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]);
@@ -94,7 +93,6 @@ namespace IdentityService.Host
             app.UseVirtualFiles();
             app.UseRouting();
             app.UseAuthentication();
-            app.UseMultiTenancy();
 
             app.Use(async (ctx, next) =>
             {
@@ -104,19 +102,17 @@ namespace IdentityService.Host
                     { "sub", AbpClaimTypes.UserId },
                     { "role", AbpClaimTypes.Role },
                     { "email", AbpClaimTypes.Email },
-                    { "name", AbpClaimTypes.UserName },
-                    { "tenantid", AbpClaimTypes.TenantId }
                 };
                 var mapClaims = currentPrincipalAccessor.Principal.Claims.Where(p => map.Keys.Contains(p.Type)).ToList();
                 currentPrincipalAccessor.Principal.AddIdentity(new ClaimsIdentity(mapClaims.Select(p => new Claim(map[p.Type], p.Value, p.ValueType, p.Issuer))));
                 await next();
             });
-            
+
             app.UseAbpRequestLocalization(); 
             app.UseSwagger();
             app.UseSwaggerUI(options =>
             {
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Identity Service API");
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Tenant Service API");
             });
             app.UseAuditing();
             app.UseMvcWithDefaultRouteAndArea();

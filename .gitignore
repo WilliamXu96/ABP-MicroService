@@ -12,3 +12,8 @@
 /IdentityService/IdentityService.Host/.vs/IdentityService.Host/v16
 /IdentityService/IdentityService.Host/Logs
 /IdentityService/IdentityService.Host/obj
+/IdentityService/IdentityService.Host/.vs/IdentityService.Host/DesignTimeBuild
+/TenantService/TenantService.Host/.vs/TenantService.Host
+/TenantService/TenantService.Host/bin/Debug/netcoreapp3.1
+/TenantService/TenantService.Host/Logs
+/TenantService/TenantService.Host/obj

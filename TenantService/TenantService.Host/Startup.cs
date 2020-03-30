@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace IdentityService.Host
+namespace TenantService.Host
 {
     public class Startup
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddApplication<IdentityServiceHostModule>();
+            services.AddApplication<TenantServiceHostModule>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
