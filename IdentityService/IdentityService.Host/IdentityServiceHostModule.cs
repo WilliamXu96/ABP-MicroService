@@ -22,7 +22,6 @@ using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.AspNetCore.MultiTenancy;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
 using System;
-using Volo.Abp.TenantManagement;
 
 namespace IdentityService.Host
 {
@@ -33,7 +32,6 @@ namespace IdentityService.Host
         typeof(AbpAuditLoggingEntityFrameworkCoreModule),
         typeof(AbpPermissionManagementEntityFrameworkCoreModule),
         typeof(AbpSettingManagementEntityFrameworkCoreModule),
-        typeof(AbpTenantManagementHttpApiModule),
         typeof(AbpTenantManagementEntityFrameworkCoreModule),
         typeof(AbpIdentityHttpApiModule),
         typeof(AbpIdentityEntityFrameworkCoreModule),
@@ -95,6 +93,7 @@ namespace IdentityService.Host
             app.UseRouting();
             app.UseAuthentication();
             app.UseMultiTenancy();
+            app.UseAuthorization();
 
             app.Use(async (ctx, next) =>
             {
@@ -109,9 +108,10 @@ namespace IdentityService.Host
                 };
                 var mapClaims = currentPrincipalAccessor.Principal.Claims.Where(p => map.Keys.Contains(p.Type)).ToList();
                 currentPrincipalAccessor.Principal.AddIdentity(new ClaimsIdentity(mapClaims.Select(p => new Claim(map[p.Type], p.Value, p.ValueType, p.Issuer))));
+
                 await next();
             });
-            
+
             app.UseAbpRequestLocalization(); 
             app.UseSwagger();
             app.UseSwaggerUI(options =>
