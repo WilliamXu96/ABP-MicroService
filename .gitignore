@@ -17,3 +17,17 @@
 /TenantService/TenantService.Host/bin/Debug/netcoreapp3.1
 /TenantService/TenantService.Host/Logs
 /TenantService/TenantService.Host/obj
+/MicroServices/Business/.vs/Business/v16
+/MicroServices/Business/Business.Application/bin/Debug
+/MicroServices/Business/Business.Application/obj
+/MicroServices/Business/Business.Application.Contracts/bin/Debug
+/MicroServices/Business/Business.Application.Contracts/obj
+/MicroServices/Business/Business.Domain/bin/Debug
+/MicroServices/Business/Business.Domain/obj
+/MicroServices/Business/Business.EntityFrameworkCore/bin/Debug
+/MicroServices/Business/Business.EntityFrameworkCore/obj
+/MicroServices/Business/Business.Host/obj
+/MicroServices/Business/Business.HttpApi/bin/Debug/netcoreapp3.1
+/MicroServices/Business/Business.HttpApi/obj
+/MicroServices/Business/Business.HttpApi.Client/bin/Debug/netcoreapp3.1
+/MicroServices/Business/Business.HttpApi.Client/obj
