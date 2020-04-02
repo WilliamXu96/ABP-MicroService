@@ -31,3 +31,6 @@
 /MicroServices/Business/Business.HttpApi/obj
 /MicroServices/Business/Business.HttpApi.Client/bin/Debug/netcoreapp3.1
 /MicroServices/Business/Business.HttpApi.Client/obj
+/MicroServices/Business/.vs/Business/DesignTimeBuild
+/MicroServices/Business/Business.Host/bin/Debug/netcoreapp3.1
+/MicroServices/Business/Business.Host/Logs

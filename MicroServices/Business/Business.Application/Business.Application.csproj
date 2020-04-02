@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>Business</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,7 +11,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Business.Application.Contracts\Business.Application.Contracts.csproj" />
-    <ProjectReference Include="..\Business.Domain\Business.Domain.csproj" />
   </ItemGroup>
 
 </Project>

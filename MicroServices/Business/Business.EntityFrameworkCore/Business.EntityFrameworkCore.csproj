@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>Business</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,6 +19,11 @@
     <PackageReference Include="Volo.Abp.EntityFrameworkCore.SqlServer" Version="2.3.0" />
     <PackageReference Include="Volo.Abp.PermissionManagement.EntityFrameworkCore" Version="2.3.0" />
     <PackageReference Include="Volo.Abp.SettingManagement.EntityFrameworkCore" Version="2.3.0" />
+    <PackageReference Include="Volo.Abp.TenantManagement.EntityFrameworkCore" Version="2.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Business.Domain\Business.Domain.csproj" />
   </ItemGroup>
 
 </Project>
