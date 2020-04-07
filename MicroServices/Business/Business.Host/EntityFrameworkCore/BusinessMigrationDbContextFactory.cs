@@ -1,10 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace Business.EntityFrameworkCore
 {
@@ -15,7 +12,7 @@ namespace Business.EntityFrameworkCore
             var configuration = BuildConfiguration();
 
             var builder = new DbContextOptionsBuilder<BusinessMigrationDbContext>()
-                .UseSqlServer(configuration.GetConnectionString("ProductManagement"));
+                .UseSqlServer(configuration.GetConnectionString("Business"));
 
             return new BusinessMigrationDbContext(builder.Options);
         }
