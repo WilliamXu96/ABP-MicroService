@@ -11,7 +11,12 @@ namespace Business.Permissions
     {
         public override void Define(IPermissionDefinitionContext context)
         {
-            var business = context.AddGroup(BusinessPermissions.GroupName);
+            var business = context.AddGroup(BusinessPermissions.Business);
+
+            var products = business.AddPermission(BusinessPermissions.DataDictionary.Default);
+            products.AddChild(BusinessPermissions.DataDictionary.Update);
+            products.AddChild(BusinessPermissions.DataDictionary.Delete);
+            products.AddChild(BusinessPermissions.DataDictionary.Create);
         }
 
         private static LocalizableString L(string name)

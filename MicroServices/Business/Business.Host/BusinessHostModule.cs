@@ -17,16 +17,29 @@ using Volo.Abp;
 using Volo.Abp.AspNetCore.MultiTenancy;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Serilog;
+using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.Autofac;
 using Volo.Abp.Caching;
+using Volo.Abp.Data;
+using Volo.Abp.EntityFrameworkCore;
+using Volo.Abp.EntityFrameworkCore.SqlServer;
 using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
+using Volo.Abp.PermissionManagement.EntityFrameworkCore;
+using Volo.Abp.SettingManagement.EntityFrameworkCore;
+using Volo.Abp.TenantManagement.EntityFrameworkCore;
+using Volo.Abp.Threading;
 using Volo.Abp.VirtualFileSystem;
 
 namespace Business
 {
     [DependsOn(
         typeof(AbpAutofacModule),
+        typeof(AbpEntityFrameworkCoreSqlServerModule),
+        typeof(AbpPermissionManagementEntityFrameworkCoreModule),
+        typeof(AbpSettingManagementEntityFrameworkCoreModule),
+        typeof(AbpAuditLoggingEntityFrameworkCoreModule),
+        typeof(AbpTenantManagementEntityFrameworkCoreModule),
         typeof(BusinessHttpApiModule),
         typeof(BusinessApplicationModule),
         typeof(AbpAspNetCoreMultiTenancyModule),
@@ -44,11 +57,20 @@ namespace Business
             ConfigureConventionalControllers();
             ConfigureAuthentication(context, configuration);
             ConfigureLocalization();
+            ConfigureSql();
             ConfigureCache(configuration);
             ConfigureVirtualFileSystem(context);
             ConfigureRedis(context, configuration, hostingEnvironment);
             ConfigureCors(context, configuration);
             ConfigureSwaggerServices(context);
+        }
+
+        private void ConfigureSql()
+        {
+            Configure<AbpDbContextOptions>(options =>
+            {
+                options.UseSqlServer();
+            });
         }
 
         private void ConfigureCache(IConfiguration configuration)
@@ -182,6 +204,16 @@ namespace Business
             app.UseAuditing();
             app.UseAbpSerilogEnrichers();
             app.UseMvcWithDefaultRouteAndArea();
+
+            AsyncHelper.RunSync(async () =>
+            {
+                using (var scope = context.ServiceProvider.CreateScope())
+                {
+                    await scope.ServiceProvider
+                        .GetRequiredService<IDataSeeder>()
+                        .SeedAsync();
+                }
+            });
         }
     }
 }

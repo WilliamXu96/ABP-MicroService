@@ -11,11 +11,7 @@ namespace Business.EntityFrameworkCore
 {
     [DependsOn(
         typeof(BusinessDomainModule),
-        typeof(AbpPermissionManagementEntityFrameworkCoreModule),
-        typeof(AbpSettingManagementEntityFrameworkCoreModule),
-        typeof(AbpEntityFrameworkCoreSqlServerModule),
-        typeof(AbpAuditLoggingEntityFrameworkCoreModule),
-        typeof(AbpTenantManagementEntityFrameworkCoreModule)
+        typeof(AbpEntityFrameworkCoreModule)
     )]
     public class BusinessEntityFrameworkCoreModule : AbpModule
     {
@@ -24,11 +20,6 @@ namespace Business.EntityFrameworkCore
             context.Services.AddAbpDbContext<BusinessDbContext>(options =>
             {
                 options.AddDefaultRepositories(includeAllEntities: true);
-            });
-
-            Configure<AbpDbContextOptions>(options =>
-            {
-                options.UseSqlServer();
             });
         }
     }

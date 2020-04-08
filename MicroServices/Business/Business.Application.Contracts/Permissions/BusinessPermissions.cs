@@ -6,6 +6,15 @@ namespace Business.Permissions
 {
     public static class BusinessPermissions
     {
-        public const string GroupName = "Business";
+        public const string Business = "Business";
+
+        public static class DataDictionary
+        {
+            public const string Default = Business + ".Product";
+            public const string Delete = Default + ".Delete";
+            public const string Update = Default + ".Update";
+            public const string Create = Default + ".Create";
+
+        }
     }
 }
