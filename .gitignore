@@ -34,3 +34,9 @@
 /MicroServices/Business/.vs/Business/DesignTimeBuild
 /MicroServices/Business/Business.Host/bin/Debug/netcoreapp3.1
 /MicroServices/Business/Business.Host/Logs
+/Gateways/WebAppGateway/.vs/WebAppGateway
+/Gateways/WebAppGateway/WebAppGateway.Host/bin/Debug/netcoreapp3.1
+/Gateways/WebAppGateway/WebAppGateway.Host/Logs
+/Gateways/WebAppGateway/WebAppGateway.Host/obj
+/MicroServices/Business/.vs/Business/config
+/MicroServices/Business/Business.HttpApi/bin/Debug
