@@ -23,7 +23,7 @@ namespace Business
             Configure<AbpLocalizationOptions>(options =>
             {
                 options.Resources
-                    .Add<BusinessResource>("en")
+                    .Add<BusinessResource>("zh-Hant")
                     .AddBaseTypes(typeof(AbpValidationResource))
                     .AddVirtualJson("/Localization/Business");
             });

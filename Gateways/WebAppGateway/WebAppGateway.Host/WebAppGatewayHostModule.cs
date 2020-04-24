@@ -11,7 +11,9 @@ using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using StackExchange.Redis;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.MultiTenancy;
 using Volo.Abp.AspNetCore.Serilog;
@@ -20,7 +22,10 @@ using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.SqlServer;
 using Volo.Abp.Identity;
 using Volo.Abp.Modularity;
+using Volo.Abp.PermissionManagement;
 using Volo.Abp.PermissionManagement.EntityFrameworkCore;
+using Volo.Abp.PermissionManagement.HttpApi;
+using Volo.Abp.Security.Claims;
 using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.TenantManagement;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
@@ -34,6 +39,8 @@ namespace WebAppGateway
     typeof(BusinessHttpApiModule),
     typeof(AbpEntityFrameworkCoreSqlServerModule),
     typeof(AbpPermissionManagementEntityFrameworkCoreModule),
+    typeof(AbpPermissionManagementApplicationModule),
+    typeof(AbpPermissionManagementHttpApiModule),
     typeof(AbpSettingManagementEntityFrameworkCoreModule),
     typeof(AbpTenantManagementHttpApiModule),
     typeof(AbpTenantManagementEntityFrameworkCoreModule),
@@ -67,6 +74,23 @@ namespace WebAppGateway
             app.UseAuthentication();
             app.UseMultiTenancy();
             app.UseAuthorization();
+
+            app.Use(async (ctx, next) =>
+            {
+                var currentPrincipalAccessor = ctx.RequestServices.GetRequiredService<ICurrentPrincipalAccessor>();
+                var map = new Dictionary<string, string>()
+                {
+                    { "sub", AbpClaimTypes.UserId },
+                    { "role", AbpClaimTypes.Role },
+                    { "email", AbpClaimTypes.Email },
+                    { "name", AbpClaimTypes.UserName },
+                    { "tenantid", AbpClaimTypes.TenantId }
+                };
+                var mapClaims = currentPrincipalAccessor.Principal.Claims.Where(p => map.Keys.Contains(p.Type)).ToList();
+                currentPrincipalAccessor.Principal.AddIdentity(new ClaimsIdentity(mapClaims.Select(p => new Claim(map[p.Type], p.Value, p.ValueType, p.Issuer))));
+
+                await next();
+            });
 
             app.UseSwagger();
             app.UseSwaggerUI(options =>

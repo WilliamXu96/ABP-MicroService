@@ -1,10 +1,12 @@
 ﻿using Volo.Abp.Application;
 using Volo.Abp.Modularity;
+using Volo.Abp.PermissionManagement;
 
 namespace Business
 {
     [DependsOn(
-        typeof(AbpDddApplicationModule)
+        typeof(AbpDddApplicationModule),
+        typeof(AbpPermissionManagementApplicationContractsModule)
     )]
     public class BusinessApplicationContractsModule : AbpModule
     {

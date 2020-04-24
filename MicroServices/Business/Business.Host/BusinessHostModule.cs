@@ -113,7 +113,7 @@ namespace Business
                 {
                     options.Authority = configuration["AuthServer:Authority"];
                     options.RequireHttpsMetadata = false;
-                    options.ApiName = "IdentityService";
+                    options.ApiName = "BusinessService";
                 });
         }
 

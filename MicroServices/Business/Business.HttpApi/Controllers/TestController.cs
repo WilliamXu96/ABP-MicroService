@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace Business.Controllers
 {
-    [Route("api/test")]
+    [Area("business")]
+    [Route("api/business/test")]
     public class TestController: BusinessController
     {
         private readonly ITestAppService _testAppService;
@@ -19,7 +20,6 @@ namespace Business.Controllers
         }
 
         [HttpGet]
-        [Route("")]
         public async Task<string> GetAsync()
         {
             return await _testAppService.TestApi("1");

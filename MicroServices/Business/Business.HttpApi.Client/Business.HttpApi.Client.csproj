@@ -3,10 +3,11 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>Business</RootNamespace>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.Http.Client" Version="2.3.0" />
+    <PackageReference Include="Volo.Abp.Http.Client" Version="2.5.0" />
   </ItemGroup>
 
   <ItemGroup>
