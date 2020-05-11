@@ -118,7 +118,7 @@ namespace WebAppGateway
                 .AddIdentityServerAuthentication(options =>
                 {
                     options.Authority = configuration["AuthServer:Authority"];
-                    options.RequireHttpsMetadata = true;
+                    options.RequireHttpsMetadata = false;
                     options.ApiName = "WebAppGateway";
                 });
         }
