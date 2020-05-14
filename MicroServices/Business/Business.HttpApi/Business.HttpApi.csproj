@@ -5,6 +5,8 @@
     <RootNamespace>Business</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Version>1.0.8</Version>
+    <PackageId>XCZ.Business.HttpApi</PackageId>
+    <Authors>WilliamXu</Authors>
   </PropertyGroup>
 
   <ItemGroup>

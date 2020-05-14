@@ -5,6 +5,11 @@
     <RootNamespace>Business</RootNamespace>
     <Version>1.0.7</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>WilliamXu</Authors>
+    <Company>WilliamXu</Company>
+    <Product>ABC</Product>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageId>XCZ.Business.Domain</PackageId>
   </PropertyGroup>
 
   <ItemGroup>

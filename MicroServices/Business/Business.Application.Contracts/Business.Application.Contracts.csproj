@@ -5,6 +5,10 @@
     <RootNamespace>Business</RootNamespace>
     <Version>1.0.7</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>WilliamXu</Authors>
+    <Company>WilliamXu</Company>
+    <Product>ABC</Product>
+    <PackageId>XCZ.Business.Application.Contracts</PackageId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
