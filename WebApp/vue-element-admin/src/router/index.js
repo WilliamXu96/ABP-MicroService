@@ -104,6 +104,26 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
+  {
+    path: '/system',
+    component: Layout,
+    redirect: '/system/user',
+    alwaysShow: true,
+    name: 'SystemManagement',
+    meta: {
+      title: 'systemManagement',
+      icon: 'system'
+    },
+    children:[{
+      path: 'user',
+      //component: () => import('@/views/data-dictionary/index'),
+      name: 'Useer',
+      meta: {
+        title: 'user',
+        //roles: ['BasicDataManagement.DataDictionary']
+      }
+    }]
+  },
 
   /** when your routing map is too long, you can split it into small modules **/
   componentsRouter,
