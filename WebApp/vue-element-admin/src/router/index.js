@@ -115,8 +115,8 @@ export const asyncRoutes = [
     },
     children:[{
       path: 'user',
-      //component: () => import('@/views/data-dictionary/index'),
-      name: 'Useer',
+      component: () => import('@/views/user/index'),
+      name: 'User',
       meta: {
         title: 'user',
         //roles: ['BasicDataManagement.DataDictionary']
