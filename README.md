@@ -3,7 +3,6 @@
 
 **启动文档：** [博客园](https://www.cnblogs.com/william-xu/p/12806810.html)
 
-<a href="https://www.cnblogs.com/william-xu/p/12806810.html" target="_blank">example</a>
 
 **博客地址：** [博客园](https://www.cnblogs.com/william-xu/)
 
