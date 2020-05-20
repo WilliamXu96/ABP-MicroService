@@ -25,3 +25,9 @@
 - 字典管理
 - 操作日志
 #### 系统预览
+<table>
+    <tr>
+        <td><img src="https://github.com/WilliamXu96/ABP-MicroService/blob/master/images/20200520145329.png"/></td>
+        <td><img src="https://github.com/WilliamXu96/ABP-MicroService/blob/master/images/20200520150119.png"/></td>
+    </tr>
+</table>
