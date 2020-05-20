@@ -235,14 +235,13 @@ export default {
   },
   methods: {
     getList() {
-      // this.listLoading = true;
-      // this.listQuery.SkipCount = (this.page - 1) * 10;
-      // this.$axios.gets("/api/identity/users", this.listQuery).then(response => {
-      //   this.list = response.items;
-      //   this.totalCount = response.totalCount;
-      //   this.listLoading = false;
-      // });
-      this.listLoading = false;
+      this.listLoading = true;
+      this.listQuery.SkipCount = (this.page - 1) * 10;
+      this.$axios.gets("/api/identity/users", this.listQuery).then(response => {
+        this.list = response.items;
+        this.totalCount = response.totalCount;
+        this.listLoading = false;
+      });
     },
     handleFilter() {
       this.page = 1;
