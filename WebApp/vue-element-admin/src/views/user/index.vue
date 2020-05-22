@@ -51,7 +51,7 @@
           type="danger"
           icon="el-icon-delete"
           size="mini"
-          @click="del"
+          @click="handleDelete()"
         >删除</el-button>
       </div>
     </div>
@@ -275,19 +275,19 @@ export default {
             this.$axios
               .puts("/api/identity/users/" + this.form.id, this.form)
               .then(response => {
-                this.formLoading=false
+                this.formLoading = false;
                 this.$notify({
                   title: "成功",
                   message: "更新成功",
                   type: "success",
                   duration: 2000
                 });
-              })
+              });
           } else {
             this.$axios
               .posts("/api/identity/users", this.form)
               .then(response => {
-                this.formLoading=false
+                this.formLoading = false;
                 this.$notify({
                   title: "成功",
                   message: "新增成功",
@@ -299,20 +299,54 @@ export default {
         }
       });
     },
-    del() {},
     handleCreate() {
       this.formTitle = "新增用户";
       this.isEdit = false;
       this.form = {};
-      this.checkedRole=""
+      this.checkedRole = "";
       this.dialogFormVisible = true;
-      this.getAllRoles()
+      this.getAllRoles();
     },
-    handleDelete(row) {},
+    handleDelete(row) {
+      if (row) {
+        this.$confirm("是否删除" + row.name + "?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(() => {
+            this.$axios
+              .deletes("/api/identity/users/" + row.id)
+              .then(response => {
+                const index = this.list.indexOf(row);
+                this.list.splice(index, 1);
+                this.$notify({
+                  title: "成功",
+                  message: "删除成功",
+                  type: "success",
+                  duration: 2000
+                });
+              });
+          })
+          .catch(() => {
+            this.$message({
+              type: "info",
+              message: "已取消删除"
+            });
+          });
+      } else {
+        this.$alert("暂时不支持用户批量删除", "提示", {
+          confirmButtonText: "确定",
+          callback: action => {
+            //
+          }
+        });
+      }
+    },
     handleUpdate(row) {
       this.formTitle = "修改用户";
       this.isEdit = true;
-      
+
       if (row) {
         this.fetchData(row.id);
         this.dialogFormVisible = true;
