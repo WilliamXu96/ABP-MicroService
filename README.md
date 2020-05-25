@@ -16,9 +16,9 @@
 - 基于abp vNext、vue-element-admin，成熟的开发社区
 ####  系统功能
 - 用户管理
+- 角色管理
 #### TODO：
 - 租户管理
-- 角色管理
 - 菜单管理
 - 部门管理
 - 岗位管理
@@ -30,5 +30,13 @@
     <tr>
         <td><img src="https://github.com/WilliamXu96/ABP-MicroService/blob/master/images/20200520145329.png"/></td>
         <td><img src="https://github.com/WilliamXu96/ABP-MicroService/blob/master/images/20200520150119.png"/></td>
+    </tr>
+    <tr>
+        <td><img src="https://github.com/WilliamXu96/ABP-MicroService/blob/master/images/20200525171207.png"/></td>
+        <td><img src="https://github.com/WilliamXu96/ABP-MicroService/blob/master/images/20200525171250.png"/></td>
+    </tr>
+    <tr>
+        <td><img src="https://github.com/WilliamXu96/ABP-MicroService/blob/master/images/20200525171138.png"/></td>
+
     </tr>
 </table>
