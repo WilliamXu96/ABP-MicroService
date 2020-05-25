@@ -120,9 +120,20 @@ export const asyncRoutes = [
       meta: {
         title: 'user',
         //roles: ['BasicDataManagement.DataDictionary']
+        icon: 'user'
       }
-    }]
-  },
+    },
+    {
+      path: 'role',
+      component: () => import('@/views/role/index'),
+      name: 'Role',
+      meta: {
+        title: 'role',
+        //roles: ['BasicDataManagement.DataDictionary']
+        icon: 'role'
+      }
+    }
+  ]},
 
   /** when your routing map is too long, you can split it into small modules **/
   componentsRouter,

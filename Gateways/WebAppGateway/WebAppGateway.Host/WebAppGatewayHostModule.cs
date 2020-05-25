@@ -20,11 +20,14 @@ using Volo.Abp.AspNetCore.Serilog;
 using Volo.Abp.Autofac;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.SqlServer;
+using Volo.Abp.Http.Client.IdentityModel;
 using Volo.Abp.Identity;
 using Volo.Abp.Modularity;
 using Volo.Abp.PermissionManagement;
 using Volo.Abp.PermissionManagement.EntityFrameworkCore;
 using Volo.Abp.PermissionManagement.HttpApi;
+using Volo.Abp.PermissionManagement.Identity;
+using Volo.Abp.PermissionManagement.IdentityServer;
 using Volo.Abp.Security.Claims;
 using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.TenantManagement;
@@ -36,6 +39,7 @@ namespace WebAppGateway
     typeof(AbpAutofacModule),
     typeof(AbpAspNetCoreMultiTenancyModule),
     typeof(AbpIdentityHttpApiModule),
+    typeof(AbpIdentityHttpApiClientModule),
     typeof(BusinessHttpApiModule),
     typeof(AbpEntityFrameworkCoreSqlServerModule),
     typeof(AbpPermissionManagementEntityFrameworkCoreModule),
@@ -44,6 +48,9 @@ namespace WebAppGateway
     typeof(AbpSettingManagementEntityFrameworkCoreModule),
     typeof(AbpTenantManagementHttpApiModule),
     typeof(AbpTenantManagementEntityFrameworkCoreModule),
+    typeof(AbpPermissionManagementDomainIdentityModule),
+    //typeof(AbpPermissionManagementDomainIdentityServerModule),
+    //typeof(AbpHttpClientIdentityModelModule),
     typeof(AbpAspNetCoreSerilogModule)
     )]
     public class WebAppGatewayHostModule: AbpModule

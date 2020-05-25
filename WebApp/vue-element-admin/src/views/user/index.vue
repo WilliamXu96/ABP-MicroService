@@ -1,9 +1,7 @@
 <template>
   <div class="app-container">
-    <!--用户数据-->
     <!--工具栏-->
     <div class="head-container">
-      <div>
         <!-- 搜索 -->
         <el-input
           v-model="listQuery.Filter"
@@ -28,8 +26,7 @@
           icon="el-icon-refresh-left"
           @click="resetQuery"
         >重置</el-button>
-      </div>
-      <div class="crud-opts">
+      <div class="opts">
         <el-button
           class="filter-item"
           size="mini"
@@ -85,10 +82,10 @@
         <el-form-item label="密码" prop="password">
           <el-input type="password" v-model="form.password" />
         </el-form-item>
-        <el-form-item label="性别">
-          <el-radio-group v-model="form.gender" style="width: 178px">
-            <el-radio label="男">男</el-radio>
-            <el-radio label="女">女</el-radio>
+        <el-form-item label="状态">
+          <el-radio-group v-model="form.enable" style="width: 178px">
+            <el-radio label="0">禁用</el-radio>
+            <el-radio label="1">启用</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="角色" prop="roles">
@@ -187,21 +184,21 @@ export default {
     };
     return {
       rules: {
-        // userName: [
-        //   { required: true, message: "请输入用户名", trigger: "blur" },
-        //   { min: 2, max: 20, message: "长度在 2 到 20 个字符", trigger: "blur" }
-        // ],
-        // name: [
-        //   { required: true, message: "请输入用户姓名", trigger: "blur" },
-        //   { min: 2, max: 20, message: "长度在 2 到 20 个字符", trigger: "blur" }
-        // ],
-        // email: [
-        //   { required: true, message: "请输入邮箱地址", trigger: "blur" },
-        //   { type: "email", message: "请输入正确的邮箱地址", trigger: "blur" }
-        // ],
-        // phoneNumber: [
-        //   { required: true, trigger: "blur", validator: validPhone }
-        // ]
+        userName: [
+          { required: true, message: "请输入用户名", trigger: "blur" },
+          { min: 2, max: 20, message: "长度在 2 到 20 个字符", trigger: "blur" }
+        ],
+        name: [
+          { required: true, message: "请输入用户姓名", trigger: "blur" },
+          { min: 2, max: 20, message: "长度在 2 到 20 个字符", trigger: "blur" }
+        ],
+        email: [
+          { required: true, message: "请输入邮箱地址", trigger: "blur" },
+          { type: "email", message: "请输入正确的邮箱地址", trigger: "blur" }
+        ],
+        phoneNumber: [
+          { required: true, trigger: "blur", validator: validPhone }
+        ]
       },
       form: {},
       list: null,
@@ -282,6 +279,11 @@ export default {
                   type: "success",
                   duration: 2000
                 });
+                this.dialogFormVisible = false;
+                this.getList();
+              })
+              .catch(() => {
+                this.formLoading = false;
               });
           } else {
             this.$axios
@@ -294,6 +296,11 @@ export default {
                   type: "success",
                   duration: 2000
                 });
+                this.dialogFormVisible = false;
+                this.getList();
+              })
+              .catch(() => {
+                this.formLoading = false;
               });
           }
         }
@@ -384,7 +391,7 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.crud-opts {
+.opts {
   padding: 6px 0;
   display: -webkit-flex;
   display: flex;

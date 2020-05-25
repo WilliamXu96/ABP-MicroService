@@ -60,7 +60,8 @@ export default {
     exportZip: 'Export Zip',
     profile: '个人中心',
     systemManagement:'系统管理',
-    user:'用户管理'
+    user:'用户管理',
+    role:'角色管理'
   },
   navbar: {
     dashboard: '首页',
