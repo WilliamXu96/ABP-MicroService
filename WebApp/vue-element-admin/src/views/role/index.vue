@@ -297,6 +297,7 @@ export default {
       });
     },
     savePer() {
+      this.savePerLoading=true
       let params = {};
       let checkedKeys = this.$refs.tree.getCheckedKeys();
       params.permissions = [];
@@ -332,6 +333,7 @@ export default {
             type: "success",
             duration: 2000
           });
+          this.savePerLoading=false
         });
     },
     handleCreate() {
@@ -349,7 +351,7 @@ export default {
         })
           .then(() => {
             this.$axios
-              .deletes("/api/identity/users/" + row.id)
+              .deletes("/api/identity/roles/" + row.id)
               .then(response => {
                 const index = this.list.indexOf(row);
                 this.list.splice(index, 1);

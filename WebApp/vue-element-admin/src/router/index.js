@@ -119,7 +119,7 @@ export const asyncRoutes = [
       name: 'User',
       meta: {
         title: 'user',
-        //roles: ['BasicDataManagement.DataDictionary']
+        roles: ['AbpIdentity.Users'],
         icon: 'user'
       }
     },
@@ -129,7 +129,7 @@ export const asyncRoutes = [
       name: 'Role',
       meta: {
         title: 'role',
-        //roles: ['BasicDataManagement.DataDictionary']
+        roles: ['AbpIdentity.Roles'],
         icon: 'role'
       }
     }
