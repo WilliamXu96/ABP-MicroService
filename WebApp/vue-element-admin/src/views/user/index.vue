@@ -89,7 +89,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="角色" prop="roles">
-          <el-select v-model="checkedRole" style="width: 437px" placeholder="请选择">
+          <el-select v-model="checkedRole" multiple style="width: 437px" placeholder="请选择">
             <el-option
               v-for="item in roleList"
               :key="item.value"
@@ -203,7 +203,7 @@ export default {
       form: {},
       list: null,
       roleList: [],
-      checkedRole: "",
+      checkedRole: [],
       totalCount: 0,
       listLoading: true,
       formLoading: false,
@@ -238,9 +238,10 @@ export default {
         this.form = response;
         this.getAllRoles();
         this.$axios.gets("/api/identity/users/" + id + "/roles").then(data => {
-          if (data.items) {
-            this.checkedRole = data.items[0].name;
-          }
+          this.checkedRole=[]
+          data.items.forEach(item=>{
+            this.checkedRole.push(item.name)
+          })
         });
       });
     },
@@ -264,10 +265,7 @@ export default {
       this.$refs.form.validate(valid => {
         if (valid) {
           this.formLoading = true;
-          if (this.checkedRole) {
-            this.form.roleNames = [];
-            this.form.roleNames.push(this.checkedRole);
-          }
+          this.form.roleNames=this.checkedRole
           if (this.isEdit) {
             this.$axios
               .puts("/api/identity/users/" + this.form.id, this.form)
@@ -310,7 +308,7 @@ export default {
       this.formTitle = "新增用户";
       this.isEdit = false;
       this.form = {};
-      this.checkedRole = "";
+      this.checkedRole = [];
       this.dialogFormVisible = true;
       this.getAllRoles();
     },
