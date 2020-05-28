@@ -22,6 +22,7 @@ using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.SqlServer;
 using Volo.Abp.Http.Client.IdentityModel;
 using Volo.Abp.Identity;
+using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
 using Volo.Abp.PermissionManagement;
 using Volo.Abp.PermissionManagement.EntityFrameworkCore;
@@ -67,6 +68,7 @@ namespace WebAppGateway
             ConfigureRedis(context, configuration, hostingEnvironment);
             ConfigureCors(context, configuration);
             ConfigureSwaggerServices(context);
+            ConfigureLocalization();
             context.Services.AddOcelot(context.Services.GetConfiguration());
         }
 
@@ -138,6 +140,20 @@ namespace WebAppGateway
                     options.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAppGateway Service API", Version = "v1" });
                     options.DocInclusionPredicate((docName, description) => true);
                 });
+        }
+
+        private void ConfigureLocalization()
+        {
+            Configure<AbpLocalizationOptions>(options =>
+            {
+                options.Languages.Add(new LanguageInfo("cs", "cs", "Čeština"));
+                options.Languages.Add(new LanguageInfo("en", "en", "English"));
+                options.Languages.Add(new LanguageInfo("pt-BR", "pt-BR", "Português"));
+                options.Languages.Add(new LanguageInfo("ru", "ru", "Русский"));
+                options.Languages.Add(new LanguageInfo("tr", "tr", "Türkçe"));
+                options.Languages.Add(new LanguageInfo("zh-Hans", "zh-Hans", "简体中文"));
+                options.Languages.Add(new LanguageInfo("zh-Hant", "zh-Hant", "繁體中文"));
+            });
         }
 
         private void ConfigureSql()

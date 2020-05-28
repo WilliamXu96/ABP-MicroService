@@ -7,7 +7,6 @@ using Volo.Abp.Modularity;
 namespace Business
 {
     [DependsOn(
-        typeof(BusinessDomainModule),
         typeof(BusinessApplicationContractsModule),
         typeof(AbpAutoMapperModule)
     )]

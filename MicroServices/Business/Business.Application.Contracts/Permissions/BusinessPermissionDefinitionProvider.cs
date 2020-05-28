@@ -1,4 +1,5 @@
 ﻿using Business.Localization;
+using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,6 +11,7 @@ namespace Business.Permissions
 {
     public class BusinessPermissionDefinitionProvider: PermissionDefinitionProvider
     {
+
         public override void Define(IPermissionDefinitionContext context)
         {
             var business = context.AddGroup(BusinessPermissions.Business, L("Business"), MultiTenancySides.Tenant);
