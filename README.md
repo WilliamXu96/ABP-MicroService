@@ -6,7 +6,7 @@
 
 **博客地址：** [博客园](https://www.cnblogs.com/william-xu/)
 
-**快速启动**
+**快速启动：**
 
 运行run目录下脚本
 
