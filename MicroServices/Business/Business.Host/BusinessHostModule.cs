@@ -1,4 +1,5 @@
-﻿using Business.MultiTenancy;
+﻿using Business.EntityFrameworkCore;
+using Business.MultiTenancy;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.DataProtection;
@@ -13,7 +14,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.MultiTenancy;
 using Volo.Abp.AspNetCore.Mvc;
@@ -44,6 +44,7 @@ namespace Business
         typeof(AbpTenantManagementEntityFrameworkCoreModule),
         typeof(BusinessHttpApiModule),
         typeof(BusinessApplicationModule),
+        typeof(BusinessEntityFrameworkCoreModule),
         typeof(AbpAspNetCoreMultiTenancyModule),
         typeof(AbpAspNetCoreSerilogModule)
     )]
@@ -59,7 +60,7 @@ namespace Business
             ConfigureConventionalControllers();
             ConfigureAuthentication(context, configuration);
             ConfigureLocalization();
-            ConfigureSql();
+            //ConfigureSql();
             ConfigureCache(configuration);
             ConfigureVirtualFileSystem(context);
             ConfigureRedis(context, configuration, hostingEnvironment);

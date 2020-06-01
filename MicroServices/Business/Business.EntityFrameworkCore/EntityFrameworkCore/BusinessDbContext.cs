@@ -10,6 +10,8 @@ namespace Business.EntityFrameworkCore
     {
         public DbSet<DataDictionary> DataDictionaries { get; set; }
 
+        public DbSet<DataDictionaryDetail> DataDictionaryDetails { get; set; }
+
         public BusinessDbContext(DbContextOptions<BusinessDbContext> options)
             : base(options)
         {
@@ -19,6 +21,7 @@ namespace Business.EntityFrameworkCore
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.ConfigureBusiness();
         }
     }
 }

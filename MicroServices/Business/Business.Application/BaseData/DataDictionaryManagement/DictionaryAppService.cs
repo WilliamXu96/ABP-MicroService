@@ -2,14 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Volo.Abp;
 using Volo.Abp.Application.Dtos;
+using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
 
 namespace Business.BaseData.DataDictionaryManagement
 {
-    public class DictionaryAppService : BusinessAppService, IDictionaryAppService
+    public class DictionaryAppService : ApplicationService, IDictionaryAppService
     {
         private readonly IRepository<DataDictionary, Guid> _repository;
 
@@ -20,8 +21,20 @@ namespace Business.BaseData.DataDictionaryManagement
 
         public async Task<DictionaryDto> Create(CreateOrUpdateDictionaryDto input)
         {
-            var exist = await _repository.GetAsync(_ => _.Name == input.Name);
-            throw new NotImplementedException();
+            var exist = _repository.FirstOrDefault(_ => _.Name == input.Name);
+
+            if (exist != null)
+            {
+                throw new BusinessException("名称：" + input.Name + "字典已存在");
+            }
+
+            var dic = new DataDictionary(
+                GuidGenerator.Create(),
+                input.Name,
+                input.Description);
+
+            var result = await _repository.InsertAsync(dic);
+            return ObjectMapper.Map<DataDictionary, DictionaryDto>(result);
         }
 
         public Task Delete(List<Guid> ids)
