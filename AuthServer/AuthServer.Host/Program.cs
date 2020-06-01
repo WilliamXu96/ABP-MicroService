@@ -32,6 +32,7 @@ namespace AuthServer.Host
                         AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv6,
                         IndexFormat = "xdlms-log-{0:yyyy.MM}"
                     })
+                .WriteTo.Console()
                 .CreateLogger();
 
             try

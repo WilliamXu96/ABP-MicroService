@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Business.BaseData;
+using Business.BaseData.DataDictionaryManagement.Dto;
 
 namespace Business
 {
@@ -6,7 +8,9 @@ namespace Business
     {
         public BusinessApplicationAutoMapperProfile()
         {
+            CreateMap<DataDictionary, DictionaryDto>();
 
+            CreateMap<DataDictionaryDetail, DictionaryDetailDto>();
         }
     }
 }

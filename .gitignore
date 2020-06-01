@@ -40,3 +40,5 @@
 /Gateways/WebAppGateway/WebAppGateway.Host/obj
 /MicroServices/Business/.vs/Business/config
 /MicroServices/Business/Business.HttpApi/bin/Debug
+/AuthServer/AuthServer.Host/publish
+/MicroServices/Business/Business.Host/publish
