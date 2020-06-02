@@ -2,21 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using Volo.Abp.Application.Dtos;
 
 namespace Business.BaseData.DataDictionaryManagement.Dto
 {
-    public class CreateOrUpdateDictionaryDetailDto
+    public class GetDictionaryDetailInputDto: PagedAndSortedResultRequestDto
     {
         [Required]
         public Guid Pid { get; set; }
-
-        [Required]
-        public string Label { get; set; }
-
-        [Required]
-        public string Value { get; set; }
-
-        [Required]
-        public short Sort { get; set; }
     }
 }

@@ -36,6 +36,7 @@ namespace Business.EntityFrameworkCore
 
                 b.Property(x => x.Label).IsRequired().HasMaxLength(BusinessConsts.MaxNameLength);
                 b.Property(x => x.Value).IsRequired().HasMaxLength(BusinessConsts.MaxNotesLength);
+                b.Property(x => x.IsDeleted).HasDefaultValue(false);
 
                 b.HasIndex(q => q.Pid);
             });

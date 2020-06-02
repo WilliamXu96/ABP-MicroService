@@ -1,7 +1,9 @@
 ﻿using Business.BaseData.DataDictionaryManagement.Dto;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
@@ -21,7 +23,7 @@ namespace Business.BaseData.DataDictionaryManagement
 
         public async Task<DictionaryDto> Create(CreateOrUpdateDictionaryDto input)
         {
-            var exist = _repository.FirstOrDefault(_ => _.Name == input.Name);
+            var exist = await _repository.FirstOrDefaultAsync(_ => _.Name == input.Name);
 
             if (exist != null)
             {
@@ -37,24 +39,44 @@ namespace Business.BaseData.DataDictionaryManagement
             return ObjectMapper.Map<DataDictionary, DictionaryDto>(result);
         }
 
-        public Task Delete(List<Guid> ids)
+        public async Task Delete(List<Guid> ids)
         {
-            throw new NotImplementedException();
+            foreach (var id in ids)
+            {
+                await _repository.DeleteAsync(id);
+            }
         }
 
-        public Task<DictionaryDto> Get(Guid id)
+        public async Task<DictionaryDto> Get(Guid id)
         {
-            throw new NotImplementedException();
+            var result = await _repository.GetAsync(id);
+            return ObjectMapper.Map<DataDictionary, DictionaryDto>(result);
         }
 
-        public Task<PagedResultDto<DictionaryDto>> GetAll(GetDictionaryInputDto input)
+        public async Task<PagedResultDto<DictionaryDto>> GetAll(GetDictionaryInputDto input)
         {
-            throw new NotImplementedException();
+            var query = _repository
+                .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), _ => _.Name.Contains(input.Filter) ||
+                                                                        _.Description.Contains(input.Filter));
+
+            var items = await query.OrderBy(input.Sorting ?? "Name")
+                                 .Skip(input.SkipCount)
+                                 .Take(input.MaxResultCount)
+                                 .ToListAsync();
+            var totalCount = await query.CountAsync();
+
+            var dots = ObjectMapper.Map<List<DataDictionary>, List<DictionaryDto>>(items);
+            return new PagedResultDto<DictionaryDto>(totalCount, dots);
         }
 
-        public Task<DictionaryDto> Update(Guid id, CreateOrUpdateDictionaryDto input)
+        public async Task<DictionaryDto> Update(Guid id, CreateOrUpdateDictionaryDto input)
         {
-            throw new NotImplementedException();
+            var dic = await _repository.GetAsync(id);
+
+            dic.Name = input.Name;
+            dic.Description = input.Description;
+
+            return ObjectMapper.Map<DataDictionary, DictionaryDto>(dic);
         }
     }
 }

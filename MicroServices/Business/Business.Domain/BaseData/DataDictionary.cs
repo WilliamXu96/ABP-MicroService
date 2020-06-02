@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Security.Cryptography;
 using Volo.Abp;
-using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
 
 namespace Business.BaseData
@@ -21,10 +19,10 @@ namespace Business.BaseData
 
         public bool IsDeleted { get; set; }
 
-        protected DataDictionary()
-        {
+        //protected DataDictionary()
+        //{
 
-        }
+        //}
 
         public DataDictionary(Guid id, [NotNull] string name,string description)
         {

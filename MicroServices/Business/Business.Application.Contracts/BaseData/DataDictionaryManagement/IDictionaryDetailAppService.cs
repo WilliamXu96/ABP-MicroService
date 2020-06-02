@@ -10,7 +10,7 @@ namespace Business.BaseData.DataDictionaryManagement
 {
     public interface IDictionaryDetailAppService : IApplicationService
     {
-        Task<PagedResultDto<DictionaryDetailDto>> GetAll(Guid pid);
+        Task<PagedResultDto<DictionaryDetailDto>> GetAll(GetDictionaryDetailInputDto input);
 
         Task<DictionaryDetailDto> Get(Guid id);
 

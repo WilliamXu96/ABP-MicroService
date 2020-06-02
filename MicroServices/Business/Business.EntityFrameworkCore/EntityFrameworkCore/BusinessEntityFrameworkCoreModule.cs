@@ -1,12 +1,20 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Modularity;
+using Volo.Abp.PermissionManagement.EntityFrameworkCore;
+using Volo.Abp.SettingManagement.EntityFrameworkCore;
+using Volo.Abp.TenantManagement.EntityFrameworkCore;
 
 namespace Business.EntityFrameworkCore
 {
     [DependsOn(
         typeof(BusinessDomainModule),
-        typeof(AbpEntityFrameworkCoreModule)
+        typeof(AbpEntityFrameworkCoreModule),
+        typeof(AbpPermissionManagementEntityFrameworkCoreModule),
+        typeof(AbpSettingManagementEntityFrameworkCoreModule),
+        typeof(AbpAuditLoggingEntityFrameworkCoreModule),
+        typeof(AbpTenantManagementEntityFrameworkCoreModule)
     )]
     public class BusinessEntityFrameworkCoreModule : AbpModule
     {

@@ -38,10 +38,7 @@ namespace Business
     [DependsOn(
         typeof(AbpAutofacModule),
         typeof(AbpEntityFrameworkCoreSqlServerModule),
-        typeof(AbpPermissionManagementEntityFrameworkCoreModule),
-        typeof(AbpSettingManagementEntityFrameworkCoreModule),
-        typeof(AbpAuditLoggingEntityFrameworkCoreModule),
-        typeof(AbpTenantManagementEntityFrameworkCoreModule),
+
         typeof(BusinessHttpApiModule),
         typeof(BusinessApplicationModule),
         typeof(BusinessEntityFrameworkCoreModule),

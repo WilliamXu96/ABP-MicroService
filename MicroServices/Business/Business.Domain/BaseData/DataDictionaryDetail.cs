@@ -15,5 +15,14 @@ namespace Business.BaseData
         public short Sort { get; set; }
 
         public bool IsDeleted { get; set; }
+
+        public DataDictionaryDetail(Guid id, Guid pid, string label, string value, short sort)
+        {
+            Id = id;
+            Pid = pid;
+            Label = label;
+            Value = value;
+            Sort = sort;
+        }
     }
 }

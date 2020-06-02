@@ -4,14 +4,16 @@ using Business.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Business.Migrations
 {
     [DbContext(typeof(BusinessMigrationDbContext))]
-    partial class BusinessMigrationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200602065859_base_dict_details_isdelete")]
+    partial class base_dict_details_isdelete
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
