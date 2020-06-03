@@ -38,7 +38,6 @@ namespace Business
     [DependsOn(
         typeof(AbpAutofacModule),
         typeof(AbpEntityFrameworkCoreSqlServerModule),
-
         typeof(BusinessHttpApiModule),
         typeof(BusinessApplicationModule),
         typeof(BusinessEntityFrameworkCoreModule),
@@ -54,7 +53,7 @@ namespace Business
             var configuration = context.Services.GetConfiguration();
             var hostingEnvironment = context.Services.GetHostingEnvironment();
 
-            ConfigureConventionalControllers();
+            //ConfigureConventionalControllers();
             ConfigureAuthentication(context, configuration);
             ConfigureLocalization();
             //ConfigureSql();

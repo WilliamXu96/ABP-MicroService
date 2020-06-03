@@ -19,13 +19,13 @@
         icon="el-icon-search"
         @click="handleFilter"
       >搜索</el-button>
-      <el-button
+      <!-- <el-button
         class="filter-item"
         size="mini"
         type="warning"
         icon="el-icon-refresh-left"
         @click="resetQuery"
-      >重置</el-button>
+      >重置</el-button> -->
       <div class="opts">
         <el-button
           class="filter-item"
@@ -189,7 +189,7 @@
 
 <script>
 import { isvalidPhone } from "@/utils/validate";
-import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
+import Pagination from "@/components/Pagination"; 
 import permission from "@/directive/permission/index.js";
 
 export default {

@@ -50,8 +50,6 @@ namespace WebAppGateway
     typeof(AbpTenantManagementHttpApiModule),
     typeof(AbpTenantManagementEntityFrameworkCoreModule),
     typeof(AbpPermissionManagementDomainIdentityModule),
-    //typeof(AbpPermissionManagementDomainIdentityServerModule),
-    //typeof(AbpHttpClientIdentityModelModule),
     typeof(AbpAspNetCoreSerilogModule)
     )]
     public class WebAppGatewayHostModule: AbpModule

@@ -61,7 +61,8 @@ export default {
     profile: '个人中心',
     systemManagement:'系统管理',
     user:'用户管理',
-    role:'角色管理'
+    role:'角色管理',
+    dict:'数据字典'
   },
   navbar: {
     dashboard: '首页',

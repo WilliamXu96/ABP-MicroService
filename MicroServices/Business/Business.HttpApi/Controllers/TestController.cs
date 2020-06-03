@@ -1,9 +1,5 @@
-﻿using Business.Models.Test;
-using Business.Test;
-using Microsoft.AspNetCore.Authorization;
+﻿using Business.Test;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Business.Controllers
