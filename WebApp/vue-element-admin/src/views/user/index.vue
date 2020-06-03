@@ -40,6 +40,7 @@
           size="mini"
           type="success"
           icon="el-icon-edit"
+          v-permission="['AbpIdentity.Users.Update']"
           @click="handleUpdate()"
         >修改</el-button>
         <el-button
@@ -48,6 +49,7 @@
           type="danger"
           icon="el-icon-delete"
           size="mini"
+          v-permission="['AbpIdentity.Users.Delete']"
           @click="handleDelete()"
         >删除</el-button>
       </div>

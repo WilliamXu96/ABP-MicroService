@@ -35,6 +35,7 @@ namespace WebAppGateway
                         AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv6,
                         IndexFormat = "msdemo-log-{0:yyyy.MM}"
                     })
+                .WriteTo.Console()
                 .CreateLogger();
 
             try

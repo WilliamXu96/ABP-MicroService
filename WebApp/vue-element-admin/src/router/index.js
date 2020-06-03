@@ -132,6 +132,16 @@ export const asyncRoutes = [
         roles: ['AbpIdentity.Roles'],
         icon: 'role'
       }
+    },
+    {
+      path: 'dict',
+      component: () => import('@/views/dict/index'),
+      name: 'Dictionary',
+      meta:{
+        title: 'dict',
+        //roles: [],
+        icon: 'data'
+      }
     }
   ]},
 
