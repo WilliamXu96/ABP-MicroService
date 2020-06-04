@@ -14,7 +14,14 @@ namespace Business.Permissions
             public const string Delete = Default + ".Delete";
             public const string Update = Default + ".Update";
             public const string Create = Default + ".Create";
+        }
 
+        public static class DataDictionaryDetail
+        {
+            public const string Default = Business + ".DataDictionaryDetail";
+            public const string Delete = Default + ".Delete";
+            public const string Update = Default + ".Update";
+            public const string Create = Default + ".Create";
         }
     }
 }

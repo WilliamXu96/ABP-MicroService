@@ -139,7 +139,7 @@ export const asyncRoutes = [
       name: 'Dictionary',
       meta:{
         title: 'dict',
-        //roles: [],
+        roles: ['Business.DataDictionary'],
         icon: 'data'
       }
     }

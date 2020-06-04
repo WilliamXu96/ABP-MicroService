@@ -7,7 +7,6 @@ namespace Business.BaseData.DataDictionaryManagement.Dto
 {
     public class CreateOrUpdateDictionaryDetailDto
     {
-        [Required]
         public Guid Pid { get; set; }
 
         [Required]

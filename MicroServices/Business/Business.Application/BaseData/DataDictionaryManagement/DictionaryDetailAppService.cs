@@ -1,4 +1,6 @@
 ﻿using Business.BaseData.DataDictionaryManagement.Dto;
+using Business.Permissions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,6 +13,7 @@ using Volo.Abp.Domain.Repositories;
 
 namespace Business.BaseData.DataDictionaryManagement
 {
+    [Authorize(BusinessPermissions.DataDictionaryDetail.Default)]
     public class DictionaryDetailAppService : ApplicationService, IDictionaryDetailAppService
     {
         private readonly IRepository<DataDictionary, Guid> _masterRepository;
@@ -24,6 +27,7 @@ namespace Business.BaseData.DataDictionaryManagement
             _masterRepository = masterRepository;
         }
 
+        [Authorize(BusinessPermissions.DataDictionaryDetail.Create)]
         public async Task<DictionaryDetailDto> Create(CreateOrUpdateDictionaryDetailDto input)
         {
             var master = await _masterRepository.FirstOrDefaultAsync(_ => _.Id == input.Pid);
@@ -53,6 +57,7 @@ namespace Business.BaseData.DataDictionaryManagement
             return ObjectMapper.Map<DataDictionaryDetail, DictionaryDetailDto>(result);
         }
 
+        [Authorize(BusinessPermissions.DataDictionaryDetail.Delete)]
         public async Task Delete(List<Guid> ids)
         {
             foreach (var id in ids)
@@ -80,6 +85,7 @@ namespace Business.BaseData.DataDictionaryManagement
             return new PagedResultDto<DictionaryDetailDto>(totalCount, dots);
         }
 
+        [Authorize(BusinessPermissions.DataDictionaryDetail.Update)]
         public async Task<DictionaryDetailDto> Update(Guid id, CreateOrUpdateDictionaryDetailDto input)
         {
             var detail = await _detailRepository.GetAsync(id);

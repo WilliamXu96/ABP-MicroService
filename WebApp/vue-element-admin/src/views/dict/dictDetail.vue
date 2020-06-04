@@ -13,14 +13,8 @@
         <el-form-item label="字典值" prop="value">
           <el-input v-model="form.value" style="width: 370px;" />
         </el-form-item>
-        <el-form-item label="排序" prop="dictSort">
-          <el-input-number
-            v-model.number="form.dictSort"
-            :min="0"
-            :max="999"
-            controls-position="right"
-            style="width: 370px;"
-          />
+        <el-form-item label="排序" prop="sort">
+          <el-input-number v-model.number="form.sort" :min="0" :max="999" style="width: 370px;" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -34,26 +28,28 @@
       :data="list"
       size="small"
       style="width: 100%;"
-      @row-click="handleRowClick"
     >
       <el-table-column prop="label" label="字典标签" />
       <el-table-column prop="value" label="字典值" />
-      <el-table-column prop="dictSort" label="排序" />
+      <el-table-column label="排序" prop="sort" align="center">
+        <template slot-scope="scope">
+          <span>{{scope.row.sort}}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" width="125">
         <template slot-scope="{row}">
           <el-button
             type="primary"
             size="mini"
             @click="handleUpdate(row)"
-            v-permission="['AbpIdentity.Roles.Update']"
+            v-permission="['Business.DataDictionaryDetail.Update']"
             icon="el-icon-edit"
           />
           <el-button
             type="danger"
             size="mini"
             @click="handleDelete(row)"
-            :disabled="row.name==='admin'"
-            v-permission="['AbpIdentity.Roles.Delete']"
+            v-permission="['Business.DataDictionaryDetail.Delete']"
             icon="el-icon-delete"
           />
         </template>
@@ -80,7 +76,7 @@ export default {
       rules: {
         label: [{ required: true, message: "请输入字典标签", trigger: "blur" }],
         value: [{ required: true, message: "请输入字典值", trigger: "blur" }],
-        dictSort: [
+        sort: [
           {
             required: true,
             message: "请输入序号",
@@ -119,8 +115,100 @@ export default {
           this.listLoading = false;
         });
     },
-    save() {},
-    handleRowClick(row, column, event) {}
+    fetchData(id) {
+      this.$axios.gets("/api/business/dictDetails/" + id).then(response => {
+        this.form = response;
+      });
+    },
+    save() {
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          this.formLoading = true;
+          this.form.pid = this.listQuery.Pid;
+          if (this.isEdit) {
+            this.$axios
+              .puts("/api/business/dictDetails/" + this.form.id, this.form)
+              .then(response => {
+                this.formLoading = false;
+                this.$notify({
+                  title: "成功",
+                  message: "更新成功",
+                  type: "success",
+                  duration: 2000
+                });
+                this.dialogFormVisible = false;
+                this.getList();
+              })
+              .catch(() => {
+                this.formLoading = false;
+              });
+          } else {
+            this.$axios
+              .posts("/api/business/dictDetails", this.form)
+              .then(response => {
+                this.formLoading = false;
+                this.$notify({
+                  title: "成功",
+                  message: "新增成功",
+                  type: "success",
+                  duration: 2000
+                });
+                this.dialogFormVisible = false;
+                this.getList();
+              })
+              .catch(() => {
+                this.formLoading = false;
+              });
+          }
+        }
+      });
+    },
+    handleUpdate(row) {
+      this.formTitle = "修改字典详情";
+      this.isEdit = true;
+
+      this.fetchData(row.id);
+      this.dialogFormVisible = true;
+    },
+    handleDelete(row) {
+      var params = [];
+      let alert = "";
+      if (row) {
+        params.push(row.id);
+        alert = row.label;
+      } else {
+        this.multipleSelection.forEach(element => {
+          let id = element.id;
+          params.push(id);
+        });
+        alert = "选中项";
+      }
+      this.$confirm("是否删除" + alert + "?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$axios
+            .posts("/api/business/dictDetails/Delete", params)
+            .then(response => {
+              const index = this.list.indexOf(row);
+              this.$notify({
+                title: "成功",
+                message: "删除成功",
+                type: "success",
+                duration: 2000
+              });
+              this.getList();
+            });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    }
   }
 };
 </script>

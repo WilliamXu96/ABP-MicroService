@@ -47,14 +47,14 @@
                 type="primary"
                 icon="el-icon-plus"
                 @click="handleCreate"
-                v-permission="['AbpIdentity.Roles.Create']"
+                v-permission="['Business.DataDictionary.Create']"
               >新增</el-button>
               <el-button
                 class="filter-item"
                 size="mini"
                 type="success"
                 icon="el-icon-edit"
-                v-permission="['AbpIdentity.Roles.Update']"
+                v-permission="['Business.DataDictionary.Update']"
                 @click="handleUpdate()"
               >修改</el-button>
               <el-button
@@ -63,7 +63,7 @@
                 type="danger"
                 icon="el-icon-delete"
                 size="mini"
-                v-permission="['AbpIdentity.Roles.Delete']"
+                v-permission="['Business.DataDictionary.Delete']"
                 @click="handleDelete()"
               >删除</el-button>
             </div>
@@ -86,15 +86,14 @@
                   type="primary"
                   size="mini"
                   @click="handleUpdate(row)"
-                  v-permission="['AbpIdentity.Roles.Update']"
+                  v-permission="['Business.DataDictionary.Update']"
                   icon="el-icon-edit"
                 />
                 <el-button
                   type="danger"
                   size="mini"
                   @click="handleDelete(row)"
-                  :disabled="row.name==='admin'"
-                  v-permission="['AbpIdentity.Roles.Delete']"
+                  v-permission="['Business.DataDictionary.Delete']"
                   icon="el-icon-delete"
                 />
               </template>
@@ -119,8 +118,9 @@
               style="float: right;padding: 4px 10px"
               type="primary"
               icon="el-icon-plus"
-              @click="handleCreate"
-              v-permission="['AbpIdentity.Roles.Create']"
+              :disabled="multipleSelection.length != 1"
+              @click="handleCreateDetail"
+              v-permission="['Business.DataDictionaryDetail.Create']"
             >新增</el-button>
           </div>
           <dictDetail ref="dictDetail" />
@@ -301,6 +301,12 @@ export default {
       this.$refs.multipleTable.toggleRowSelection(row);
       this.$refs.dictDetail.listQuery.Pid = row.id
       this.$refs.dictDetail.getList()
+    },
+    handleCreateDetail(){
+      this.$refs.dictDetail.dialogFormVisible=true
+      this.$refs.dictDetail.isEdit=false
+      this.$refs.dictDetail.form={}
+      this.$refs.dictDetail.formTitle="新增字典详情"
     }
   }
 };
