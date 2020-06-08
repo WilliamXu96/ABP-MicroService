@@ -22,6 +22,9 @@ using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.AspNetCore.MultiTenancy;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
 using System;
+using Volo.Abp.TenantManagement;
+using Volo.Abp.Threading;
+using Volo.Abp.Data;
 
 namespace IdentityService.Host
 {
@@ -33,6 +36,8 @@ namespace IdentityService.Host
         typeof(AbpPermissionManagementEntityFrameworkCoreModule),
         typeof(AbpSettingManagementEntityFrameworkCoreModule),
         typeof(AbpTenantManagementEntityFrameworkCoreModule),
+        typeof(AbpTenantManagementHttpApiModule),
+        typeof(AbpTenantManagementApplicationModule),
         typeof(AbpIdentityHttpApiModule),
         typeof(AbpIdentityEntityFrameworkCoreModule),
         typeof(AbpIdentityApplicationModule)
@@ -120,6 +125,16 @@ namespace IdentityService.Host
             });
             app.UseAuditing();
             app.UseConfiguredEndpoints();
+
+            AsyncHelper.RunSync(async () =>
+            {
+                using (var scope = context.ServiceProvider.CreateScope())
+                {
+                    await scope.ServiceProvider
+                        .GetRequiredService<IDataSeeder>()
+                        .SeedAsync();
+                }
+            });
         }
     }
 }
