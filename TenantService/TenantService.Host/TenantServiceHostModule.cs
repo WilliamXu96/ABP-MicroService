@@ -115,7 +115,7 @@ namespace TenantService.Host
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "Tenant Service API");
             });
             app.UseAuditing();
-            app.UseMvcWithDefaultRouteAndArea();
+            app.UseConfiguredEndpoints();
         }
     }
 }

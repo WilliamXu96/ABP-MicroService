@@ -220,7 +220,7 @@ namespace Business
 
             app.UseAuditing();
             app.UseAbpSerilogEnrichers();
-            app.UseMvcWithDefaultRouteAndArea();
+            app.UseConfiguredEndpoints();
 
             AsyncHelper.RunSync(async () =>
             {

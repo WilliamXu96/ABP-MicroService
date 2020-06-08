@@ -119,7 +119,7 @@ namespace IdentityService.Host
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "Identity Service API");
             });
             app.UseAuditing();
-            app.UseMvcWithDefaultRouteAndArea();
+            app.UseConfiguredEndpoints();
         }
     }
 }
