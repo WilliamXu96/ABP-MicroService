@@ -19,11 +19,6 @@ namespace Business.BaseData
 
         public bool IsDeleted { get; set; }
 
-        //protected DataDictionary()
-        //{
-
-        //}
-
         public DataDictionary(Guid id, [NotNull] string name,string description)
         {
             Id = id;

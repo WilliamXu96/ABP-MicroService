@@ -6,6 +6,8 @@ namespace Business
 {
     public static class BusinessConsts
     {
+        public const int MaxNumeralLength = 16;
+
         public const int MaxCodeLength = 32;
 
         public const int MaxNameLength = 50;

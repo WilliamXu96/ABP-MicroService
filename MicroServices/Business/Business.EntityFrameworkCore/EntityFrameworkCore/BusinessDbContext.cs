@@ -12,6 +12,8 @@ namespace Business.EntityFrameworkCore
 
         public DbSet<DataDictionaryDetail> DataDictionaryDetails { get; set; }
 
+        public DbSet<Organization> organizations { get; set; }
+
         public BusinessDbContext(DbContextOptions<BusinessDbContext> options)
             : base(options)
         {
