@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 
@@ -31,5 +32,19 @@ namespace Business.BaseData
         public string Remark { get; set; }
 
         public bool IsDeleted { get; set; }
+
+        public Organization(Guid id,short categoryId,Guid? pid,[NotNull]string code,[NotNull]string name,string fullName,int areaId,string address,string tel,string remark)
+        {
+            Id = id;
+            CategoryId = categoryId;
+            Pid = pid;
+            Code = code;
+            Name = name;
+            FullName = fullName;
+            AreaId = areaId;
+            Address = address;
+            Tel = tel;
+            Remark = remark;
+        }
     }
 }
