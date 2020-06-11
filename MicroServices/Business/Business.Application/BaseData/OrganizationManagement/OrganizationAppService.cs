@@ -65,7 +65,7 @@ namespace Business.BaseData.OrganizationManagement
                 .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), _ => _.Code.Contains(input.Filter) ||
                                                                         _.Name.Contains(input.Filter))
                 .WhereIf(input.Pid.HasValue, _ => _.Pid == input.Pid)
-                .Where(_ => _.CategoryId == input.CategoryId);
+                .WhereIf(input.CategoryId.HasValue, _ => _.CategoryId == input.CategoryId);
 
             var items = await query.OrderBy(input.Sorting ?? "Name")
                      .Skip(input.SkipCount)

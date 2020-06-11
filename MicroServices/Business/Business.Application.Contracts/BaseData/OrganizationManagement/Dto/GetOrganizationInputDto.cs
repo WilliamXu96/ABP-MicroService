@@ -10,8 +10,7 @@ namespace Business.BaseData.OrganizationManagement.Dto
     {
         public string Filter { get; set; }
 
-        [Required]
-        public short CategoryId { get; set; }
+        public short? CategoryId { get; set; }
 
         public Guid? Pid { get; set; }
     }

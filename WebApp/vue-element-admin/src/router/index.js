@@ -134,6 +134,16 @@ export const asyncRoutes = [
       }
     },
     {
+      path: 'org',
+      component: () => import('@/views/org/index'),
+      name: 'Organization',
+      meta: {
+        title: 'org',
+        //roles: ['AbpIdentity.Roles'],
+        icon: 'org'
+      }
+    },
+    {
       path: 'dict',
       component: () => import('@/views/dict/index'),
       name: 'Dictionary',

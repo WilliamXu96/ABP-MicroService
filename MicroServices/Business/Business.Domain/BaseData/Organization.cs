@@ -20,6 +20,8 @@ namespace Business.BaseData
 
         public string FullName { get; set; }
 
+        public int Sort { get; set; }
+
         /// <summary>
         /// 行政地区ID
         /// </summary>
@@ -30,6 +32,8 @@ namespace Business.BaseData
         public string Tel { get; set; }
 
         public string Remark { get; set; }
+
+        public bool Enable { get; set; }
 
         public bool IsDeleted { get; set; }
 

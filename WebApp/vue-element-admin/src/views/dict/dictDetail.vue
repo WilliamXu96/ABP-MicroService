@@ -18,7 +18,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="text" @click="dialogFormVisible = false">取消</el-button>
+        <el-button type="text" @click="cancel">取消</el-button>
         <el-button :loading="formLoading" type="primary" @click="save">确认</el-button>
       </div>
     </el-dialog>
@@ -208,6 +208,10 @@ export default {
             message: "已取消删除"
           });
         });
+    },
+    cancel() {
+      this.dialogFormVisible = false;
+      this.$refs.form.clearValidate();
     }
   }
 };

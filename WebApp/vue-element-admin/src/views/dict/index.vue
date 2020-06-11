@@ -15,7 +15,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="text" @click="dialogFormVisible = false">取消</el-button>
+        <el-button type="text" @click="cancel">取消</el-button>
         <el-button :loading="formLoading" type="primary" @click="save">确认</el-button>
       </div>
     </el-dialog>
@@ -243,6 +243,13 @@ export default {
         params.push(row.id);
         alert=row.name
       } else {
+        if (this.multipleSelection.length != 1) {
+          this.$message({
+            message: "未选择",
+            type: "warning"
+          });
+          return;
+        }
         this.multipleSelection.forEach(element => {
           let id = element.id;
           params.push(id);
@@ -255,7 +262,7 @@ export default {
         type: "warning"
       })
         .then(() => {
-          this.$axios.posts("/api/business/dict/Delete", params).then(response => {
+          this.$axios.posts("/api/business/dict/delete", params).then(response => {
             const index = this.list.indexOf(row);
             this.$notify({
               title: "成功",
@@ -307,6 +314,10 @@ export default {
       this.$refs.dictDetail.isEdit=false
       this.$refs.dictDetail.form={}
       this.$refs.dictDetail.formTitle="新增字典详情"
+    },
+    cancel(){
+      this.dialogFormVisible=false
+      this.$refs.form.clearValidate()
     }
   }
 };

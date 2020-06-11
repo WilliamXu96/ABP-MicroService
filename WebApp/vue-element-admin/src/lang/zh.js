@@ -62,7 +62,8 @@ export default {
     systemManagement:'系统管理',
     user:'用户管理',
     role:'角色管理',
-    dict:'数据字典'
+    dict:'数据字典',
+    org:'组织机构'
   },
   navbar: {
     dashboard: '首页',

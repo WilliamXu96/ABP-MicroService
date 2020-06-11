@@ -102,7 +102,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="text" @click="dialogFormVisible = false">取消</el-button>
+        <el-button type="text" @click="cancel">取消</el-button>
         <el-button v-loading="formLoading" type="primary" @click="save">确认</el-button>
       </div>
     </el-dialog>
@@ -166,7 +166,7 @@
 
 <script>
 import { isvalidPhone } from "@/utils/validate";
-import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
+import Pagination from "@/components/Pagination";
 import permission from "@/directive/permission/index.js";
 
 export default {
@@ -385,6 +385,10 @@ export default {
     handleRowClick(row, column, event) {
       this.$refs.multipleTable.clearSelection();
       this.$refs.multipleTable.toggleRowSelection(row);
+    },
+    cancel() {
+      this.dialogFormVisible = false;
+      this.$refs.form.clearValidate();
     }
   }
 };
