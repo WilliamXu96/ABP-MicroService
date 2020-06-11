@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 using Volo.Abp.Application.Dtos;
 
@@ -9,6 +10,7 @@ namespace Business.BaseData.OrganizationManagement.Dto
     {
         public string Filter { get; set; }
 
+        [Required]
         public short CategoryId { get; set; }
 
         public Guid? Pid { get; set; }

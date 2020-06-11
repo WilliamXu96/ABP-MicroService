@@ -21,37 +21,37 @@ namespace Business.BaseData
         }
 
         [HttpPost]
-        public async Task<DictionaryDetailDto> Create(CreateOrUpdateDictionaryDetailDto input)
+        public Task<DictionaryDetailDto> Create(CreateOrUpdateDictionaryDetailDto input)
         {
-            return await _dictionaryDetailAppService.Create(input);
+            return _dictionaryDetailAppService.Create(input);
         }
 
         [HttpPost]
-        [Route("Delete")]
-        public async Task Delete(List<Guid> ids)
+        [Route("delete")]
+        public Task Delete(List<Guid> ids)
         {
-            await _dictionaryDetailAppService.Delete(ids);
+           return _dictionaryDetailAppService.Delete(ids);
         }
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<DictionaryDetailDto> Get(Guid id)
+        public Task<DictionaryDetailDto> Get(Guid id)
         {
-            return await _dictionaryDetailAppService.Get(id);
+            return _dictionaryDetailAppService.Get(id);
         }
 
         [HttpGet]
         [Route("all")]
-        public async Task<PagedResultDto<DictionaryDetailDto>> GetAll(GetDictionaryDetailInputDto input)
+        public Task<PagedResultDto<DictionaryDetailDto>> GetAll(GetDictionaryDetailInputDto input)
         {
-            return await _dictionaryDetailAppService.GetAll(input);
+            return _dictionaryDetailAppService.GetAll(input);
         }
 
         [HttpPut]
         [Route("{id}")]
-        public async Task<DictionaryDetailDto> Update(Guid id, CreateOrUpdateDictionaryDetailDto input)
+        public Task<DictionaryDetailDto> Update(Guid id, CreateOrUpdateDictionaryDetailDto input)
         {
-            return await _dictionaryDetailAppService.Update(id, input);
+            return _dictionaryDetailAppService.Update(id, input);
         }
     }
 }

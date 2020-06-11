@@ -21,37 +21,37 @@ namespace Business.BaseData
         }
 
         [HttpPost]
-        public async Task<DictionaryDto> Create(CreateOrUpdateDictionaryDto input)
+        public Task<DictionaryDto> Create(CreateOrUpdateDictionaryDto input)
         {
-            return await _dictionaryAppService.Create(input);
+            return _dictionaryAppService.Create(input);
         }
 
         [HttpPost]
         [Route("Delete")]
-        public async Task Delete(List<Guid> ids)
+        public Task Delete(List<Guid> ids)
         {
-            await _dictionaryAppService.Delete(ids);
+            return _dictionaryAppService.Delete(ids);
         }
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<DictionaryDto> Get(Guid id)
+        public Task<DictionaryDto> Get(Guid id)
         {
-            return await _dictionaryAppService.Get(id);
+            return _dictionaryAppService.Get(id);
         }
 
         [HttpGet]
         [Route("all")]
-        public async Task<PagedResultDto<DictionaryDto>> GetAll(GetDictionaryInputDto input)
+        public Task<PagedResultDto<DictionaryDto>> GetAll(GetDictionaryInputDto input)
         {
-            return await _dictionaryAppService.GetAll(input);
+            return _dictionaryAppService.GetAll(input);
         }
 
         [HttpPut]
         [Route("{id}")]
-        public async Task<DictionaryDto> Update(Guid id, CreateOrUpdateDictionaryDto input)
+        public Task<DictionaryDto> Update(Guid id, CreateOrUpdateDictionaryDto input)
         {
-            return await _dictionaryAppService.Update(id, input);
+            return _dictionaryAppService.Update(id, input);
         }
     }
 }
