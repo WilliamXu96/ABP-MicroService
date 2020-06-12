@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
+using Volo.Abp.Application.Services;
 
 namespace Business.BaseData.OrganizationManagement
 {
-    public interface IOrganizationAppService
+    public interface IOrganizationAppService : IApplicationService
     {
         Task<PagedResultDto<OrganizationDto>> GetAll(GetOrganizationInputDto input);
 

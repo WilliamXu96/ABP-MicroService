@@ -35,7 +35,10 @@ namespace Business.BaseData.OrganizationManagement
                                                             input.CategoryId,
                                                             input.Pid,
                                                             input.Name,
-                                                            ""     //TODO:自动生成fullName
+                                                            "",     //TODO:自动生成fullName
+                                                            input.Sort,
+                                                            input.Enabled,
+                                                            false   //TODO:自动判断是否存在子集
                                                             ));
             return ObjectMapper.Map<Organization, OrganizationDto>(result);
         }

@@ -83,11 +83,13 @@
             size="small"
             label-width="80px"
           >
-            <el-form-item label="机构类型" prop="CategoryId">
-              <el-input v-model="form.CategoryId" style="width: 380px;" />
-            </el-form-item>
-            <el-form-item label="机构编号" prop="code">
-              <el-input v-model="form.code" style="width: 380px;" />
+            <el-form-item label="机构类型" prop="category">
+              <el-select v-model="form.categoryId" placeholder="请选择" style="width: 380px;">
+                <el-option label="公司" :value="1"></el-option>
+                <el-option label="组织" :value="2"></el-option>
+                <el-option label="部门" :value="3"></el-option>
+                <el-option label="供应商" :value="4"></el-option>
+              </el-select>
             </el-form-item>
             <el-form-item label="机构名称" prop="name">
               <el-input v-model="form.name" style="width: 380px;" />
@@ -98,37 +100,25 @@
                 :min="0"
                 :max="999"
                 controls-position="right"
-                style="width: 370px;"
+                style="width: 380px;"
               />
             </el-form-item>
-            <el-form-item label="行政地区" prop="areaId">
-              <el-input v-model="form.areaId" style="width: 380px;" />
-            </el-form-item>
-            <el-form-item label="地址" prop="address">
-              <el-input v-model="form.address" style="width: 380px;" />
-            </el-form-item>
-            <el-form-item label="电话" prop="tel">
-              <el-input v-model="form.tel" style="width: 380px;" />
-            </el-form-item>
-            <el-form-item label="备注" prop="remark">
-              <el-input v-model="form.remark" style="width: 380px;" />
-            </el-form-item>
-            <el-form-item label="顶级组织">
+            <el-form-item label="顶级机构">
               <el-radio-group v-model="form.isTop" style="width: 140px">
-                <el-radio label="0">是</el-radio>
-                <el-radio label="1">否</el-radio>
+                <el-radio label="1">是</el-radio>
+                <el-radio label="0">否</el-radio>
               </el-radio-group>
             </el-form-item>
             <el-form-item label="状态" prop="enabled">
-              <el-radio-group v-model="form.enable" style="width: 178px">
-                <el-radio label="0">禁用</el-radio>
-                <el-radio label="1">启用</el-radio>
+              <el-radio-group v-model="form.enabled" style="width: 178px">
+                <el-radio :label="true">启用</el-radio>
+                <el-radio :label="false">禁用</el-radio>
               </el-radio-group>
             </el-form-item>
             <el-form-item
-              v-if="form.isTop === '1'"
+              v-if="form.isTop === '0'"
               style="margin-bottom: 0;"
-              label="上级部门"
+              label="上级机构"
               prop="pid"
             >
               <!-- <treeselect
@@ -136,7 +126,7 @@
                 :load-options="loadOrgs"
                 :options="orgs"
                 style="width: 370px;"
-                placeholder="选择上级类目"
+                placeholder="选择上级机构"
               />-->
             </el-form-item>
           </el-form>
@@ -151,7 +141,6 @@
           :data="list"
           size="small"
           style="width: 100%;"
-          @sort-change="sortChange"
           @selection-change="handleSelectionChange"
           @row-click="handleRowClick"
         >
@@ -167,12 +156,7 @@
               <span>{{scope.row.categoryId}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="机构编号" prop="code" sortable="custom" align="center" width="100px">
-            <template slot-scope="scope">
-              <span>{{scope.row.code}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="机构名称" prop="name" sortable="custom" align="center" width="100px">
+          <el-table-column label="机构名称" prop="name" align="center" width="100px">
             <template slot-scope="{row}">
               <span class="link-type" @click="handleUpdate(row)">{{row.name}}</span>
             </template>
@@ -185,21 +169,6 @@
           <el-table-column label="排序" prop="sort" align="center" width="100px">
             <template slot-scope="scope">
               <span>{{scope.row.sort}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="行政地区" prop="areaId" align="center" width="150px">
-            <template slot-scope="scope">
-              <span>{{scope.row.areaId}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="联系电话" prop="tel" align="center" width="150px">
-            <template slot-scope="scope">
-              <span>{{scope.row.tel}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="地址" prop="address" align="center" width="150px">
-            <template slot-scope="scope">
-              <span>{{scope.row.address}}</span>
             </template>
           </el-table-column>
           <el-table-column label="状态" prop="enable" align="center" width="150px">
@@ -243,6 +212,15 @@ import { isvalidPhone } from "@/utils/validate";
 import Pagination from "@/components/Pagination";
 import permission from "@/directive/permission/index.js";
 
+const defaultForm = {
+  categoryId:3,
+  id: null,
+  name: null,
+  isTop: "1",
+  pid: null,
+  sort: 999,
+  enabled: true
+};
 export default {
   name: "Organization",
   components: { Pagination },
@@ -255,7 +233,7 @@ export default {
         sort: [{ required: true, message: "请输入序号", trigger: "blur" }]
       },
       defaultProps: { children: "children", label: "name", isLeaf: "leaf" },
-      form: {},
+      form: Object.assign({}, defaultForm),
       orgName: "",
       list: null,
       orgDatas: null,
@@ -272,7 +250,8 @@ export default {
       dialogFormVisible: false,
       multipleSelection: [],
       formTitle: "",
-      isEdit: false
+      isEdit: false,
+      categoryId:2
     };
   },
   created() {
@@ -280,7 +259,7 @@ export default {
   },
   methods: {
     getOrgs(node, resolve) {
-      const params = {}
+      const params = {};
       if (typeof node !== "object") {
         if (node) {
           params["name"] = node;
@@ -361,7 +340,7 @@ export default {
     handleCreate() {
       this.formTitle = "新增机构";
       this.isEdit = false;
-      this.form = {};
+      this.form = defaultForm
       this.dialogFormVisible = true;
     },
     handleDelete(row) {
@@ -436,8 +415,6 @@ export default {
     handleRowClick(row, column, event) {
       this.$refs.multipleTable.clearSelection();
       this.$refs.multipleTable.toggleRowSelection(row);
-      this.$refs.dictDetail.listQuery.Pid = row.id;
-      this.$refs.dictDetail.getList();
     },
     cancel() {
       this.dialogFormVisible = false;

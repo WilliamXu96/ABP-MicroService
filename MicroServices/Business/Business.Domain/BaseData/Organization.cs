@@ -20,19 +20,22 @@ namespace Business.BaseData
 
         public int Sort { get; set; }
 
-        public bool Enable { get; set; }
+        public bool Enabled { get; set; }
 
         public bool HasChildren { get; set; }
 
         public bool IsDeleted { get; set; }
 
-        public Organization(Guid id, short categoryId, Guid? pid, [NotNull]string name, string fullName)
+        public Organization(Guid id, short categoryId, Guid? pid, [NotNull]string name, string fullName,int sort,bool enabled,bool hasChildren)
         {
             Id = id;
             CategoryId = categoryId;
             Pid = pid;
             Name = name;
             FullName = fullName;
+            Sort = sort;
+            Enabled = enabled;
+            HasChildren = hasChildren;
         }
     }
 }

@@ -17,6 +17,6 @@ namespace Business.BaseData.OrganizationManagement.Dto
 
         public int Sort { get; set; }
 
-        public bool Enable { get; set; }
+        public bool Enabled { get; set; }
     }
 }
