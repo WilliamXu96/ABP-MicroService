@@ -34,7 +34,6 @@ namespace Business.BaseData.OrganizationManagement
                                                             GuidGenerator.Create(),
                                                             input.CategoryId,
                                                             input.Pid,
-                                                            input.Code,
                                                             input.Name,
                                                             ""     //TODO:自动生成fullName
                                                             ));
@@ -59,8 +58,7 @@ namespace Business.BaseData.OrganizationManagement
         public async Task<PagedResultDto<OrganizationDto>> GetAll(GetOrganizationInputDto input)
         {
             var query = _repository
-                .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), _ => _.Code.Contains(input.Filter) ||
-                                                                        _.Name.Contains(input.Filter))
+                .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), _ => _.Name.Contains(input.Filter))
                 .WhereIf(input.Pid.HasValue, _ => _.Pid == input.Pid)
                 .WhereIf(input.CategoryId.HasValue, _ => _.CategoryId == input.CategoryId);
 
@@ -79,7 +77,6 @@ namespace Business.BaseData.OrganizationManagement
             var org = await _repository.FirstOrDefaultAsync(_ => _.Id == id);
 
             org.Pid = input.Pid;
-            org.Code = input.Code;
             org.Name = input.Name;
 
             return ObjectMapper.Map<Organization, OrganizationDto>(org);

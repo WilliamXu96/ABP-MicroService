@@ -11,10 +11,12 @@ namespace Business.BaseData.OrganizationManagement.Dto
 
         public Guid? Pid { get; set; }
 
-        public string Code { get; set; }
-
         public string Name { get; set; }
 
         public string FullName { get; set; }
+
+        public int Sort { get; set; }
+
+        public bool Enable { get; set; }
     }
 }

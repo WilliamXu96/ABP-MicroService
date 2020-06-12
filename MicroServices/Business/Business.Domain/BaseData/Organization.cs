@@ -14,8 +14,6 @@ namespace Business.BaseData
 
         public Guid? Pid { get; set; }
 
-        public string Code { get; set; }
-
         public string Name { get; set; }
 
         public string FullName { get; set; }
@@ -24,14 +22,15 @@ namespace Business.BaseData
 
         public bool Enable { get; set; }
 
+        public bool HasChildren { get; set; }
+
         public bool IsDeleted { get; set; }
 
-        public Organization(Guid id,short categoryId,Guid? pid,[NotNull]string code,[NotNull]string name,string fullName)
+        public Organization(Guid id, short categoryId, Guid? pid, [NotNull]string name, string fullName)
         {
             Id = id;
             CategoryId = categoryId;
             Pid = pid;
-            Code = code;
             Name = name;
             FullName = fullName;
         }
