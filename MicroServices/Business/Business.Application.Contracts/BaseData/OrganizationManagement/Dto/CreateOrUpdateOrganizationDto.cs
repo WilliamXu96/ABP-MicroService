@@ -16,14 +16,5 @@ namespace Business.BaseData.OrganizationManagement.Dto
 
         [Required]
         public string Name { get; set; }
-
-        public int AreaId { get; set; }
-
-        [Required]
-        public string Address { get; set; }
-
-        public string Tel { get; set; }
-
-        public string Remark { get; set; }
     }
 }

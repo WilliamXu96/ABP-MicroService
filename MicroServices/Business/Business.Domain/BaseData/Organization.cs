@@ -22,22 +22,11 @@ namespace Business.BaseData
 
         public int Sort { get; set; }
 
-        /// <summary>
-        /// 行政地区ID
-        /// </summary>
-        public int AreaId { get; set; }
-
-        public string Address { get; set; }
-
-        public string Tel { get; set; }
-
-        public string Remark { get; set; }
-
         public bool Enable { get; set; }
 
         public bool IsDeleted { get; set; }
 
-        public Organization(Guid id,short categoryId,Guid? pid,[NotNull]string code,[NotNull]string name,string fullName,int areaId,string address,string tel,string remark)
+        public Organization(Guid id,short categoryId,Guid? pid,[NotNull]string code,[NotNull]string name,string fullName)
         {
             Id = id;
             CategoryId = categoryId;
@@ -45,10 +34,6 @@ namespace Business.BaseData
             Code = code;
             Name = name;
             FullName = fullName;
-            AreaId = areaId;
-            Address = address;
-            Tel = tel;
-            Remark = remark;
         }
     }
 }

@@ -36,11 +36,8 @@ namespace Business.BaseData.OrganizationManagement
                                                             input.Pid,
                                                             input.Code,
                                                             input.Name,
-                                                            "",     //TODO:自动生成fullName
-                                                            input.AreaId,
-                                                            input.Address,
-                                                            input.Tel,
-                                                            input.Remark));
+                                                            ""     //TODO:自动生成fullName
+                                                            ));
             return ObjectMapper.Map<Organization, OrganizationDto>(result);
         }
 
@@ -84,10 +81,6 @@ namespace Business.BaseData.OrganizationManagement
             org.Pid = input.Pid;
             org.Code = input.Code;
             org.Name = input.Name;
-            org.AreaId = input.AreaId;
-            org.Address = input.Address;
-            org.Tel = input.Tel;
-            org.Remark = input.Remark;
 
             return ObjectMapper.Map<Organization, OrganizationDto>(org);
         }
