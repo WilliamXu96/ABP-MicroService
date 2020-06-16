@@ -33,8 +33,8 @@
 #### 系统预览
 <table>
     <tr>
-        <td><a href="https://images.cnblogs.com/cnblogs_com/william-xu/1787982/o_20061602062020200520145329.png"><img src="https://images.cnblogs.com/cnblogs_com/william-xu/1787982/o_20061602062020200520145329.png"/></a></td>
-        <td><a href="https://images.cnblogs.com/cnblogs_com/william-xu/1787982/o_20061602084120200520150119.png"><img src="https://images.cnblogs.com/cnblogs_com/william-xu/1787982/o_20061602084120200520150119.png"/></a></td>
+        <td><img src="https://i.loli.net/2020/06/16/AXbKfgtaqhZrClm.png"/></td>
+        <td><img src="https://i.loli.net/2020/06/16/1BhfAeVCJPU5azH.png"/></td>
     </tr>
     <tr>
         <td><a href="https://images.cnblogs.com/cnblogs_com/william-xu/1787982/o_20061602100520200525171207.png"><img src="https://images.cnblogs.com/cnblogs_com/william-xu/1787982/o_20061602100520200525171207.png"/></a></td>
