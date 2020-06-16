@@ -33,18 +33,18 @@
 #### 系统预览
 <table>
     <tr>
-        <td><a href="https://images.cnblogs.com/cnblogs_com/william-xu/1787982/o_20061602062020200520145329.png" target="_blank"><img src="https://images.cnblogs.com/cnblogs_com/william-xu/1787982/o_20061602062020200520145329.png"/></a></td>
-        <td><img src="https://images.cnblogs.com/cnblogs_com/william-xu/1787982/o_20061602084120200520150119.png"/></td>
+        <td><a href="https://images.cnblogs.com/cnblogs_com/william-xu/1787982/o_20061602062020200520145329.png"><img src="https://images.cnblogs.com/cnblogs_com/william-xu/1787982/o_20061602062020200520145329.png"/></a></td>
+        <td><a href="https://images.cnblogs.com/cnblogs_com/william-xu/1787982/o_20061602084120200520150119.png"><img src="https://images.cnblogs.com/cnblogs_com/william-xu/1787982/o_20061602084120200520150119.png"/></a></td>
     </tr>
     <tr>
-        <td><img src="https://images.cnblogs.com/cnblogs_com/william-xu/1787982/o_20061602100520200525171207.png"/></td>
-        <td><img src="https://images.cnblogs.com/cnblogs_com/william-xu/1787982/o_20061602101220200525171250.png"/></td>
+        <td><a href="https://images.cnblogs.com/cnblogs_com/william-xu/1787982/o_20061602100520200525171207.png"><img src="https://images.cnblogs.com/cnblogs_com/william-xu/1787982/o_20061602100520200525171207.png"/></a></td>
+        <td><a href="https://images.cnblogs.com/cnblogs_com/william-xu/1787982/o_20061602101220200525171250.png"><img src="https://images.cnblogs.com/cnblogs_com/william-xu/1787982/o_20061602101220200525171250.png"/></a></td>
     </tr>
     <tr>
-        <td><img src="https://images.cnblogs.com/cnblogs_com/william-xu/1787982/o_20061602095620200525171138.png"/></td>
-        <td><img src="https://images.cnblogs.com/cnblogs_com/william-xu/1787982/o_20061602102020200605102030.png"/></td>
+        <td><a href="https://images.cnblogs.com/cnblogs_com/william-xu/1787982/o_20061602095620200525171138.png"><img src="https://images.cnblogs.com/cnblogs_com/william-xu/1787982/o_20061602095620200525171138.png"/></a></td>
+        <td><a href="https://images.cnblogs.com/cnblogs_com/william-xu/1787982/o_20061602102020200605102030.png"><img src="https://images.cnblogs.com/cnblogs_com/william-xu/1787982/o_20061602102020200605102030.png"/></a></td>
     </tr>
     <tr>
-        <td><img src="https://images.cnblogs.com/cnblogs_com/william-xu/1787982/o_20061602104120200605102150.png"/></td>
+        <td><a href="https://images.cnblogs.com/cnblogs_com/william-xu/1787982/o_20061602104120200605102150.png"><img src="https://images.cnblogs.com/cnblogs_com/william-xu/1787982/o_20061602104120200605102150.png"/></a></td>
     </tr>
 </table>
