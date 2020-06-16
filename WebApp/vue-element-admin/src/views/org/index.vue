@@ -71,8 +71,8 @@
         </div>
         <el-dialog
           :visible.sync="dialogFormVisible"
-          :close-on-click-modal="false"
           :title="formTitle"
+          @close="cancel()"
           width="580px"
         >
           <el-form
@@ -104,9 +104,9 @@
               />
             </el-form-item>
             <el-form-item label="顶级机构">
-              <el-radio-group v-model="form.isTop" style="width: 140px">
-                <el-radio label="1">是</el-radio>
-                <el-radio label="0">否</el-radio>
+              <el-radio-group v-model="isTop" style="width: 140px">
+                <el-radio :label="true">是</el-radio>
+                <el-radio :label="false">否</el-radio>
               </el-radio-group>
             </el-form-item>
             <el-form-item label="状态" prop="enabled">
@@ -116,7 +116,7 @@
               </el-radio-group>
             </el-form-item>
             <el-form-item
-              v-if="form.isTop === '0'"
+              v-if="isTop === 'false'"
               style="margin-bottom: 0;"
               label="上级机构"
               prop="pid"
@@ -196,13 +196,13 @@
             </template>
           </el-table-column>
         </el-table>
-        <pagination
+        <!-- <pagination
           v-show="totalCount>0"
           :total="totalCount"
           :page.sync="page"
           :limit.sync="listQuery.MaxResultCount"
           @pagination="getList"
-        />
+        />-->
       </el-col>
     </el-row>
   </div>
@@ -213,10 +213,9 @@ import Pagination from "@/components/Pagination";
 import permission from "@/directive/permission/index.js";
 
 const defaultForm = {
-  categoryId:3,
+  categoryId: 3,
   id: null,
   name: null,
-  isTop: "1",
   pid: null,
   sort: 999,
   enabled: true
@@ -251,7 +250,7 @@ export default {
       multipleSelection: [],
       formTitle: "",
       isEdit: false,
-      categoryId:2
+      isTop: true
     };
   },
   created() {
@@ -270,9 +269,8 @@ export default {
       this.$axios
         .gets("/api/business/orgs/all", this.listQuery)
         .then(response => {
-          this.list = response.items;
-          this.totalCount = response.totalCount;
-          this.listLoading = false;
+          //this.orgDatas = response.items;
+          this.loadTree(response)
         });
     },
     getList() {
@@ -287,8 +285,14 @@ export default {
         });
     },
     fetchData(id) {
+      let self = this;
       this.$axios.gets("/api/business/orgs/" + id).then(response => {
         this.form = response;
+        if (response.pid) {
+          this.isTop = false;
+        } else {
+          this.isTop = true;
+        }
       });
     },
     handleFilter() {
@@ -340,7 +344,7 @@ export default {
     handleCreate() {
       this.formTitle = "新增机构";
       this.isEdit = false;
-      this.form = defaultForm
+      this.form = defaultForm;
       this.dialogFormVisible = true;
     },
     handleDelete(row) {
@@ -394,8 +398,8 @@ export default {
       this.isEdit = true;
 
       if (row) {
-        this.fetchData(row.id);
         this.dialogFormVisible = true;
+        this.fetchData(row.id);
       } else {
         if (this.multipleSelection.length != 1) {
           this.$message({
@@ -420,7 +424,38 @@ export default {
       this.dialogFormVisible = false;
       this.$refs.form.clearValidate();
     },
-    handleNodeClick() {}
+    handleNodeClick() {},
+    loadTree(data) {
+      data.items.forEach(element => {
+        if (!element.pid) {
+          let root = {};
+          root.id = element.id;
+          root.name = element.name;
+          root.children = [];
+          this.options.push(root);
+        }
+      });
+      this.setChildren(this.options, data.items);
+    },
+    setChildren(roots, items) {
+      roots.forEach(element => {
+        items.forEach(item => {
+          if (item.pid == element.id) {
+            let children = {};
+            children.id = item.id;
+            children.name = item.name;
+            children.children = [];
+            element.children.push(children);
+          }
+        });
+        if (element.children) {
+          this.setChildren(element.children, items);
+        }
+      });
+      this.$nextTick(function() {
+        this.selectedId = this.postForm.pid;
+      });
+    }
   }
 };
 </script>
