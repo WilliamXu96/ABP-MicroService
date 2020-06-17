@@ -54,6 +54,7 @@ namespace Business.EntityFrameworkCore
                 b.Property(x => x.FullName).IsRequired().HasMaxLength(BusinessConsts.MaxFullNameLength);
                 b.Property(x => x.Enabled).HasDefaultValue(false);
                 b.Property(x => x.HasChildren).HasDefaultValue(false);
+                b.Property(x => x.Leaf).HasDefaultValue(false);
 
                 b.HasIndex(q => q.Pid);
             });

@@ -24,9 +24,11 @@ namespace Business.BaseData
 
         public bool HasChildren { get; set; }
 
+        public bool Leaf { get; set; }
+
         public bool IsDeleted { get; set; }
 
-        public Organization(Guid id, short categoryId, Guid? pid, [NotNull]string name, string fullName,int sort,bool enabled,bool hasChildren)
+        public Organization(Guid id, short categoryId, Guid? pid, [NotNull]string name, string fullName, int sort, bool enabled, bool hasChildren = false, bool leaf = false)
         {
             Id = id;
             CategoryId = categoryId;

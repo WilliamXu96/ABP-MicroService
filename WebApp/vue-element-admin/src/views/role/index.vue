@@ -109,12 +109,12 @@
             </el-table-column>
             <el-table-column label="默认" prop="isDefault" align="center" width="100px">
               <template slot-scope="scope">
-                <span>{{scope.row.isDefault}}</span>
+                <span>{{scope.row.isDefault | displayStatus}}</span>
               </template>
             </el-table-column>
             <el-table-column label="公共" prop="isPublic" align="center" width="100px">
               <template slot-scope="scope">
-                <span>{{scope.row.isPublic}}</span>
+                <span>{{scope.row.isPublic | displayStatus}}</span>
               </template>
             </el-table-column>
             <el-table-column label="描述" prop="description" align="center" width="150px">
@@ -196,6 +196,15 @@ export default {
   name: "Role",
   components: { Pagination },
   directives: { permission },
+  filters:{
+    displayStatus(status) {
+      const statusMap = {
+        true: "是",
+        false: "否"
+      };
+      return statusMap[status];
+    }
+  },
   data() {
     return {
       rules: {
@@ -411,6 +420,9 @@ export default {
       this.multipleSelection = val;
     },
     handleRowClick(row, column, event) {
+      if(this.multipleSelection.length==1&&this.multipleSelection[0].id==row.id){
+        return
+      }
       this.treeLoading = true;
       this.$refs.multipleTable.clearSelection();
       this.$refs.multipleTable.toggleRowSelection(row);

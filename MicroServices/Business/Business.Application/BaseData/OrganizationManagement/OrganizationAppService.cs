@@ -24,10 +24,17 @@ namespace Business.BaseData.OrganizationManagement
         public async Task<OrganizationDto> Create(CreateOrUpdateOrganizationDto input)
         {
             var exist = await _repository.FirstOrDefaultAsync(_ => _.Name == input.Name);
+            var parent = await _repository.FirstOrDefaultAsync(_ => _.Id == input.Pid);
 
             if (exist != null)
             {
                 throw new BusinessException("名称：" + input.Name + "字典已存在");
+            }
+            if (parent != null && (!parent.HasChildren || parent.Leaf))
+            {
+                parent.HasChildren = true;
+                parent.Leaf = false;
+                await _repository.UpdateAsync(parent);
             }
 
             var result = await _repository.InsertAsync(new Organization(
@@ -38,7 +45,8 @@ namespace Business.BaseData.OrganizationManagement
                                                             "",     //TODO:自动生成fullName
                                                             input.Sort,
                                                             input.Enabled,
-                                                            false   //TODO:自动判断是否存在子集
+                                                            false,
+                                                            true
                                                             ));
             return ObjectMapper.Map<Organization, OrganizationDto>(result);
         }

@@ -21,6 +21,7 @@
           :expand-on-click-node="false"
           lazy
           @node-click="handleNodeClick"
+          style="margin-top:15px"
         />
       </el-col>
       <el-col :xs="15" :sm="18" :md="19" :lg="20" :xl="20">
@@ -70,6 +71,7 @@
           </div>
         </div>
         <el-dialog
+          :close-on-click-modal="false" 
           :visible.sync="dialogFormVisible"
           :title="formTitle"
           @close="cancel()"
@@ -116,7 +118,7 @@
               </el-radio-group>
             </el-form-item>
             <el-form-item
-              v-if="isTop === 'false'"
+              v-if="isTop === false"
               style="margin-bottom: 0;"
               label="上级机构"
               prop="pid"
@@ -132,7 +134,7 @@
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button type="text" @click="cancel">取消</el-button>
-            <el-button v-loading="formLoading" type="primary" @click="save">确认</el-button>
+            <el-button :loading="formLoading" type="primary" @click="save">确认</el-button>
           </div>
         </el-dialog>
         <el-table
@@ -235,7 +237,7 @@ export default {
       form: Object.assign({}, defaultForm),
       orgName: "",
       list: null,
-      orgDatas: null,
+      orgDatas: [],
       totalCount: 0,
       listLoading: true,
       formLoading: false,
@@ -259,6 +261,7 @@ export default {
   methods: {
     getOrgs(node, resolve) {
       const params = {};
+      debugger
       if (typeof node !== "object") {
         if (node) {
           params["name"] = node;
@@ -267,10 +270,11 @@ export default {
         params["pid"] = node.data.id;
       }
       this.$axios
-        .gets("/api/business/orgs/all", this.listQuery)
+        .gets("/api/business/orgs/all", params)
         .then(response => {
           //this.orgDatas = response.items;
           this.loadTree(response)
+          resolve(orgDatas)
         });
     },
     getList() {
@@ -344,7 +348,7 @@ export default {
     handleCreate() {
       this.formTitle = "新增机构";
       this.isEdit = false;
-      this.form = defaultForm;
+      this.form = Object.assign({}, defaultForm);
       this.dialogFormVisible = true;
     },
     handleDelete(row) {
@@ -427,15 +431,16 @@ export default {
     handleNodeClick() {},
     loadTree(data) {
       data.items.forEach(element => {
-        if (!element.pid) {
-          let root = {};
-          root.id = element.id;
-          root.name = element.name;
-          root.children = [];
-          this.options.push(root);
-        }
+          let node = {};
+          node.id = element.id;
+          node.name = element.name;
+          if(!element.hasChildren){
+            node.leaf=true
+          }
+          //root.children = null;
+          this.orgDatas.push(node);
       });
-      this.setChildren(this.options, data.items);
+      //this.setChildren(this.options, data.items);
     },
     setChildren(roots, items) {
       roots.forEach(element => {
