@@ -71,7 +71,7 @@
           </div>
         </div>
         <el-dialog
-          :close-on-click-modal="false" 
+          :close-on-click-modal="false"
           :visible.sync="dialogFormVisible"
           :title="formTitle"
           @close="cancel()"
@@ -117,12 +117,7 @@
                 <el-radio :label="false">禁用</el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item
-              v-if="isTop === false"
-              style="margin-bottom: 0;"
-              label="上级机构"
-              prop="pid"
-            >
+            <el-form-item v-if="isTop === false" style="margin-bottom: 0;" label="上级机构" prop="pid">
               <!-- <treeselect
                 v-model="form.pid"
                 :load-options="loadOrgs"
@@ -175,7 +170,12 @@
           </el-table-column>
           <el-table-column label="状态" prop="enable" align="center" width="150px">
             <template slot-scope="scope">
-              <span>{{scope.row.enable}}</span>
+              <el-switch
+                v-model="scope.row.enabled"
+                active-color="#409EFF"
+                inactive-color="#F56C6C"
+                @change="changeEnabled(scope.row, scope.row.enabled,)"
+              />
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center" width="125">
@@ -198,13 +198,13 @@
             </template>
           </el-table-column>
         </el-table>
-        <!-- <pagination
+        <pagination
           v-show="totalCount>0"
           :total="totalCount"
           :page.sync="page"
           :limit.sync="listQuery.MaxResultCount"
           @pagination="getList"
-        />-->
+        />
       </el-col>
     </el-row>
   </div>
@@ -268,22 +268,19 @@ export default {
       } else if (node.level !== 0) {
         params["pid"] = node.data.id;
       }
-      this.$axios
-        .gets("/api/business/orgs/all", params)
-        .then(response => {
-          if(resolve){
-            resolve(response.items)
-          }
-          else{
-            this.orgDatas=response.items
-          }
-        });
+      this.$axios.gets("/api/business/orgs/all", params).then(response => {
+        if (resolve) {
+          resolve(response.items);
+        } else {
+          this.orgDatas = response.items;
+        }
+      });
     },
     getList() {
       this.listLoading = true;
       this.listQuery.SkipCount = (this.page - 1) * 10;
       this.$axios
-        .gets("/api/business/orgs/all", this.listQuery)
+        .gets("/api/business/orgs/list", this.listQuery)
         .then(response => {
           this.list = response.items;
           this.totalCount = response.totalCount;
@@ -430,7 +427,28 @@ export default {
       this.dialogFormVisible = false;
       this.$refs.form.clearValidate();
     },
-    handleNodeClick() {}
+    handleNodeClick() {},
+    changeEnabled(data, val){
+      if(val){
+        data.active='启用'
+      }else{
+        data.active='停用'
+      }
+      this.$confirm('是否' + data.active + '？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        crudDept.edit(data).then(res => {
+          this.crud.notify(this.dict.label.dept_status[val] + '成功', CRUD.NOTIFICATION_TYPE.SUCCESS)
+        }).catch(err => {
+          data.enabled = !data.enabled
+          console.log(err.response.data.message)
+        })
+      }).catch(() => {
+        data.enabled = !data.enabled
+      })
+    }
   }
 };
 </script>

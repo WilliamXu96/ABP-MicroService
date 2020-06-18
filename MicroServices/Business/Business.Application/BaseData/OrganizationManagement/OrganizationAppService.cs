@@ -1,4 +1,5 @@
-﻿using Business.BaseData.OrganizationManagement.Dto;
+﻿using AutoMapper.Execution;
+using Business.BaseData.OrganizationManagement.Dto;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -74,13 +75,27 @@ namespace Business.BaseData.OrganizationManagement
                 .WhereIf(input.CategoryId.HasValue, _ => _.CategoryId == input.CategoryId);
 
             var items = await query.OrderBy(input.Sorting ?? "Name")
-                     //.Skip(input.SkipCount)
-                     //.Take(input.MaxResultCount)
                      .ToListAsync();
-            //var totalCount = await query.CountAsync();
 
             var dtos = ObjectMapper.Map<List<Organization>, List<OrganizationDto>>(items);
             return new ListResultDto<OrganizationDto>(dtos);
+        }
+
+        public async Task<PagedResultDto<OrganizationDto>> GetAllList(GetOrganizationInputDto input)
+        {
+            var query = _repository
+                .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), _ => _.Name.Contains(input.Filter))
+                .WhereIf(input.Pid.HasValue, _ => _.Pid == input.Pid)
+                .WhereIf(input.CategoryId.HasValue, _ => _.CategoryId == input.CategoryId);
+
+            var items = await query.OrderBy(input.Sorting ?? "Name")
+                     .Skip(input.SkipCount)
+                     .Take(input.MaxResultCount)
+                     .ToListAsync();
+            var totalCount = await query.CountAsync();
+
+            var dtos = ObjectMapper.Map<List<Organization>, List<OrganizationDto>>(items);
+            return new PagedResultDto<OrganizationDto>(totalCount, dtos);
         }
 
         public async Task<OrganizationDto> Update(Guid id, CreateOrUpdateOrganizationDto input)
@@ -89,6 +104,8 @@ namespace Business.BaseData.OrganizationManagement
 
             org.Pid = input.Pid;
             org.Name = input.Name;
+            org.Sort = input.Sort;
+            org.Enabled = input.Enabled;
 
             return ObjectMapper.Map<Organization, OrganizationDto>(org);
         }
