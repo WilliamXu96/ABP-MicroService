@@ -38,6 +38,7 @@ namespace Business.BaseData
             Sort = sort;
             Enabled = enabled;
             HasChildren = hasChildren;
+            Leaf = leaf;
         }
     }
 }

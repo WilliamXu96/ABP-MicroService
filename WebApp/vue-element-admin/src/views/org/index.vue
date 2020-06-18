@@ -261,7 +261,6 @@ export default {
   methods: {
     getOrgs(node, resolve) {
       const params = {};
-      debugger
       if (typeof node !== "object") {
         if (node) {
           params["name"] = node;
@@ -272,9 +271,12 @@ export default {
       this.$axios
         .gets("/api/business/orgs/all", params)
         .then(response => {
-          //this.orgDatas = response.items;
-          this.loadTree(response)
-          resolve(orgDatas)
+          if(resolve){
+            resolve(response.items)
+          }
+          else{
+            this.orgDatas=response.items
+          }
         });
     },
     getList() {
@@ -428,39 +430,7 @@ export default {
       this.dialogFormVisible = false;
       this.$refs.form.clearValidate();
     },
-    handleNodeClick() {},
-    loadTree(data) {
-      data.items.forEach(element => {
-          let node = {};
-          node.id = element.id;
-          node.name = element.name;
-          if(!element.hasChildren){
-            node.leaf=true
-          }
-          //root.children = null;
-          this.orgDatas.push(node);
-      });
-      //this.setChildren(this.options, data.items);
-    },
-    setChildren(roots, items) {
-      roots.forEach(element => {
-        items.forEach(item => {
-          if (item.pid == element.id) {
-            let children = {};
-            children.id = item.id;
-            children.name = item.name;
-            children.children = [];
-            element.children.push(children);
-          }
-        });
-        if (element.children) {
-          this.setChildren(element.children, items);
-        }
-      });
-      this.$nextTick(function() {
-        this.selectedId = this.postForm.pid;
-      });
-    }
+    handleNodeClick() {}
   }
 };
 </script>
