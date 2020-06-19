@@ -54,6 +54,13 @@ namespace Business.BaseData
             return _organizationAppService.GetAllList(input);
         }
 
+        [HttpGet]
+        [Route("parents")]
+        public Task<ListResultDto<OrganizationDto>> GetAllWithParents(GetOrganizationInputDto input)
+        {
+            return _organizationAppService.GetAllWithParents(input);
+        }
+
         [HttpPut]
         [Route("{id}")]
         public Task<OrganizationDto> Update(Guid id, CreateOrUpdateOrganizationDto input)

@@ -81,6 +81,16 @@ namespace Business.BaseData.OrganizationManagement
             return new ListResultDto<OrganizationDto>(dtos);
         }
 
+        public async Task<ListResultDto<OrganizationDto>> GetAllWithParents(GetOrganizationInputDto input)
+        {
+            var result = await _repository.Where(_ => _.Pid == null).OrderBy(input.Sorting ?? "Name").ToListAsync();
+            var self = await _repository.FirstOrDefaultAsync(_ => _.Id == input.Id);
+            result.Add(self);
+
+            var dtos = ObjectMapper.Map<List<Organization>, List<OrganizationDto>>(result);
+            return new ListResultDto<OrganizationDto>(dtos);
+        }
+
         public async Task<PagedResultDto<OrganizationDto>> GetAllList(GetOrganizationInputDto input)
         {
             var query = _repository
@@ -102,7 +112,19 @@ namespace Business.BaseData.OrganizationManagement
         {
             var org = await _repository.FirstOrDefaultAsync(_ => _.Id == id);
 
-            org.Pid = input.Pid;
+            if (org.Pid != input.Pid)
+            {
+                org.Pid = input.Pid;
+                var parent = await _repository.FirstOrDefaultAsync(_ => _.Id == input.Pid);
+                if (parent != null && (!parent.HasChildren || parent.Leaf))
+                {
+                    parent.HasChildren = true;
+                    parent.Leaf = false;
+                    await _repository.UpdateAsync(parent);
+                }
+            }
+
+
             org.Name = input.Name;
             org.Sort = input.Sort;
             org.Enabled = input.Enabled;

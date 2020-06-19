@@ -118,13 +118,13 @@
               </el-radio-group>
             </el-form-item>
             <el-form-item v-if="isTop === false" style="margin-bottom: 0;" label="上级机构" prop="pid">
-              <!-- <treeselect
+              <treeselect
                 v-model="form.pid"
                 :load-options="loadOrgs"
                 :options="orgs"
                 style="width: 370px;"
                 placeholder="选择上级机构"
-              />-->
+              />
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -213,6 +213,10 @@
 import { isvalidPhone } from "@/utils/validate";
 import Pagination from "@/components/Pagination";
 import permission from "@/directive/permission/index.js";
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+import { LOAD_CHILDREN_OPTIONS } from "@riophae/vue-treeselect";
+import { toThousandFilter } from "../../filters";
 
 const defaultForm = {
   categoryId: 3,
@@ -224,7 +228,7 @@ const defaultForm = {
 };
 export default {
   name: "Organization",
-  components: { Pagination },
+  components: { Pagination, Treeselect },
   directives: { permission },
   data() {
     return {
@@ -238,6 +242,7 @@ export default {
       orgName: "",
       list: null,
       orgDatas: [],
+      orgs: [],
       totalCount: 0,
       listLoading: true,
       formLoading: false,
@@ -268,6 +273,7 @@ export default {
       } else if (node.level !== 0) {
         params["pid"] = node.data.id;
       }
+      //TODO:仅获取启用机构
       this.$axios.gets("/api/business/orgs/all", params).then(response => {
         if (resolve) {
           resolve(response.items);
@@ -275,6 +281,30 @@ export default {
           this.orgDatas = response.items;
         }
       });
+    },
+    getFormOrgs() {
+      this.$axios.gets("/api/business/orgs/all").then(response => {
+        this.orgs = response.items.map(function(obj) {
+          obj.label = obj.name;
+          if (obj.hasChildren) {
+            obj.children = null;
+          }
+          return obj;
+        });
+      });
+    },
+    getSupOrgs(id) {
+      this.$axios
+        .gets("/api/business/orgs/parents", {id:id})
+        .then(response => {
+          this.orgs = response.items.map(function(obj) {
+          obj.label = obj.name;
+          if (obj.hasChildren) {
+            obj.children = null;
+          }
+          return obj;
+        });
+        });
     },
     getList() {
       this.listLoading = true;
@@ -289,6 +319,7 @@ export default {
     },
     fetchData(id) {
       let self = this;
+      this.getSupOrgs(id);
       this.$axios.gets("/api/business/orgs/" + id).then(response => {
         this.form = response;
         if (response.pid) {
@@ -297,6 +328,24 @@ export default {
           this.isTop = true;
         }
       });
+    },
+    loadOrgs({ action, parentNode, callback }) {
+      if (action === LOAD_CHILDREN_OPTIONS) {
+        this.$axios
+          .gets("/api/business/orgs/all", { pid: parentNode.id })
+          .then(response => {
+            parentNode.children = response.items.map(function(obj) {
+              obj.label = obj.name;
+              if (obj.hasChildren) {
+                obj.children = null;
+              }
+              return obj;
+            });
+            setTimeout(() => {
+              callback();
+            }, 100);
+          });
+      }
     },
     handleFilter() {
       this.page = 1;
@@ -347,8 +396,8 @@ export default {
     handleCreate() {
       this.formTitle = "新增机构";
       this.isEdit = false;
-      this.form = Object.assign({}, defaultForm);
       this.dialogFormVisible = true;
+      this.getFormOrgs();
     },
     handleDelete(row) {
       var params = [];
@@ -426,28 +475,35 @@ export default {
     cancel() {
       this.dialogFormVisible = false;
       this.$refs.form.clearValidate();
+      this.form = Object.assign({}, defaultForm);
+      this.orgs = [];
     },
     handleNodeClick() {},
-    changeEnabled(data, val){
-      if(val){
-        data.active='启用'
-      }else{
-        data.active='停用'
-      }
-      this.$confirm('是否' + data.active + '？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        crudDept.edit(data).then(res => {
-          this.crud.notify(this.dict.label.dept_status[val] + '成功', CRUD.NOTIFICATION_TYPE.SUCCESS)
-        }).catch(err => {
-          data.enabled = !data.enabled
-          console.log(err.response.data.message)
-        })
-      }).catch(() => {
-        data.enabled = !data.enabled
+    changeEnabled(data, val) {
+      data.active = val ? "启用" : "停用";
+      this.$confirm("是否" + data.active + data.name + "？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
       })
+        .then(() => {
+          this.$axios
+            .puts("/api/business/orgs/" + data.id, data)
+            .then(response => {
+              this.$notify({
+                title: "成功",
+                message: "更新成功",
+                type: "success",
+                duration: 2000
+              });
+            })
+            .catch(() => {
+              data.enabled = !data.enabled;
+            });
+        })
+        .catch(() => {
+          data.enabled = !data.enabled;
+        });
     }
   }
 };
