@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
-    <el-row :gutter="20">
-      <!--侧边部门树形列表-->
-      <el-col :xs="9" :sm="6" :md="5" :lg="4" :xl="4">
-        <div class="head-container">
+    <!-- <el-row :gutter="20"> -->
+    <!--侧边部门树形列表-->
+    <!-- <el-col :xs="9" :sm="6" :md="5" :lg="4" :xl="4"> -->
+    <!-- <div class="head-container">
           <el-input
             v-model="orgName"
             clearable
@@ -22,191 +22,182 @@
           lazy
           @node-click="handleNodeClick"
           style="margin-top:15px"
-        />
-      </el-col>
-      <el-col :xs="15" :sm="18" :md="19" :lg="20" :xl="20">
-        <div class="head-container">
-          <el-input
-            v-model="listQuery.Filter"
-            clearable
-            size="small"
-            placeholder="搜索..."
-            style="width: 200px;"
-            class="filter-item"
-            @keyup.enter.native="handleFilter"
+    />-->
+    <!-- </el-col> -->
+    <!-- <el-col :xs="15" :sm="18" :md="19" :lg="20" :xl="20"> -->
+    <div class="head-container">
+      <el-input
+        v-model="listQuery.Filter"
+        clearable
+        size="small"
+        placeholder="搜索..."
+        style="width: 200px;"
+        class="filter-item"
+        @keyup.enter.native="handleFilter"
+      />
+      <el-button
+        class="filter-item"
+        size="mini"
+        type="success"
+        icon="el-icon-search"
+        @click="handleFilter"
+      >搜索</el-button>
+      <div style="padding: 6px 0;">
+        <el-button
+          class="filter-item"
+          size="mini"
+          type="primary"
+          icon="el-icon-plus"
+          @click="handleCreate"
+          v-permission="['AbpIdentity.Roles.Create']"
+        >新增</el-button>
+        <el-button
+          class="filter-item"
+          size="mini"
+          type="success"
+          icon="el-icon-edit"
+          v-permission="['AbpIdentity.Roles.Update']"
+          @click="handleUpdate()"
+        >修改</el-button>
+        <el-button
+          slot="reference"
+          class="filter-item"
+          type="danger"
+          icon="el-icon-delete"
+          size="mini"
+          v-permission="['AbpIdentity.Roles.Delete']"
+          @click="handleDelete()"
+        >删除</el-button>
+      </div>
+    </div>
+    <el-dialog
+      :close-on-click-modal="false"
+      :visible.sync="dialogFormVisible"
+      :title="formTitle"
+      @close="cancel()"
+      width="580px"
+    >
+      <el-form
+        ref="form"
+        :inline="true"
+        :model="form"
+        :rules="rules"
+        size="small"
+        label-width="80px"
+      >
+        <el-form-item label="机构类型" prop="category">
+          <el-select v-model="form.categoryId" placeholder="请选择" style="width: 380px;">
+            <el-option label="公司" :value="1"></el-option>
+            <el-option label="组织" :value="2"></el-option>
+            <el-option label="部门" :value="3"></el-option>
+            <el-option label="供应商" :value="4"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="机构名称" prop="name">
+          <el-input v-model="form.name" style="width: 380px;" />
+        </el-form-item>
+        <el-form-item label="机构排序" prop="sort">
+          <el-input-number
+            v-model.number="form.sort"
+            :min="0"
+            :max="999"
+            controls-position="right"
+            style="width: 380px;"
+          />
+        </el-form-item>
+        <el-form-item label="顶级机构">
+          <el-radio-group v-model="isTop" style="width: 140px">
+            <el-radio :label="true">是</el-radio>
+            <el-radio :label="false">否</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="状态" prop="enabled">
+          <el-radio-group v-model="form.enabled" style="width: 178px">
+            <el-radio :label="true">启用</el-radio>
+            <el-radio :label="false">禁用</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item v-if="isTop === false" style="margin-bottom: 0;" label="上级机构" prop="pid">
+          <treeselect
+            v-model="form.pid"
+            :load-options="loadOrgs"
+            :options="orgs"
+            style="width: 370px;"
+            placeholder="选择上级机构"
+          />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="text" @click="cancel">取消</el-button>
+        <el-button :loading="formLoading" type="primary" @click="save">确认</el-button>
+      </div>
+    </el-dialog>
+    <el-table
+      ref="multipleTable"
+      v-loading="listLoading"
+      lazy
+      :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+      row-key="id"
+      :data="list"
+      size="small"
+      style="width: 100%;"
+      :load="loadOrgDatas"
+      @selection-change="handleSelectionChange"
+      @row-click="handleRowClick"
+    >
+      <!-- <el-table-column type="selection" width="44px"></el-table-column> -->
+      <el-table-column label="机构名称" prop="name">
+        <template slot-scope="{row}">
+          <span class="link-type" @click="handleUpdate(row)">{{row.name}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="全称" prop="fullName">
+        <template slot-scope="scope">
+          <span>{{scope.row.fullName}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="排序" prop="sort" align="center">
+        <template slot-scope="scope">
+          <span>{{scope.row.sort}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="机构类型" prop="categoryId" align="center">
+        <template slot-scope="scope">
+          <span>{{scope.row.categoryId | displayCategory}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="状态" prop="enable" align="center" width="150px">
+        <template slot-scope="scope">
+          <el-switch
+            v-model="scope.row.enabled"
+            active-color="#409EFF"
+            inactive-color="#F56C6C"
+            @change="changeEnabled(scope.row, scope.row.enabled,)"
+          />
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" width="125">
+        <template slot-scope="{row}">
+          <el-button
+            type="primary"
+            size="mini"
+            @click="handleUpdate(row)"
+            v-permission="['AbpIdentity.Roles.Update']"
+            icon="el-icon-edit"
           />
           <el-button
-            class="filter-item"
+            type="danger"
             size="mini"
-            type="success"
-            icon="el-icon-search"
-            @click="handleFilter"
-          >搜索</el-button>
-          <div style="padding: 6px 0;">
-            <el-button
-              class="filter-item"
-              size="mini"
-              type="primary"
-              icon="el-icon-plus"
-              @click="handleCreate"
-              v-permission="['AbpIdentity.Roles.Create']"
-            >新增</el-button>
-            <el-button
-              class="filter-item"
-              size="mini"
-              type="success"
-              icon="el-icon-edit"
-              v-permission="['AbpIdentity.Roles.Update']"
-              @click="handleUpdate()"
-            >修改</el-button>
-            <el-button
-              slot="reference"
-              class="filter-item"
-              type="danger"
-              icon="el-icon-delete"
-              size="mini"
-              v-permission="['AbpIdentity.Roles.Delete']"
-              @click="handleDelete()"
-            >删除</el-button>
-          </div>
-        </div>
-        <el-dialog
-          :close-on-click-modal="false"
-          :visible.sync="dialogFormVisible"
-          :title="formTitle"
-          @close="cancel()"
-          width="580px"
-        >
-          <el-form
-            ref="form"
-            :inline="true"
-            :model="form"
-            :rules="rules"
-            size="small"
-            label-width="80px"
-          >
-            <el-form-item label="机构类型" prop="category">
-              <el-select v-model="form.categoryId" placeholder="请选择" style="width: 380px;">
-                <el-option label="公司" :value="1"></el-option>
-                <el-option label="组织" :value="2"></el-option>
-                <el-option label="部门" :value="3"></el-option>
-                <el-option label="供应商" :value="4"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="机构名称" prop="name">
-              <el-input v-model="form.name" style="width: 380px;" />
-            </el-form-item>
-            <el-form-item label="机构排序" prop="sort">
-              <el-input-number
-                v-model.number="form.sort"
-                :min="0"
-                :max="999"
-                controls-position="right"
-                style="width: 380px;"
-              />
-            </el-form-item>
-            <el-form-item label="顶级机构">
-              <el-radio-group v-model="isTop" style="width: 140px">
-                <el-radio :label="true">是</el-radio>
-                <el-radio :label="false">否</el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="状态" prop="enabled">
-              <el-radio-group v-model="form.enabled" style="width: 178px">
-                <el-radio :label="true">启用</el-radio>
-                <el-radio :label="false">禁用</el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item v-if="isTop === false" style="margin-bottom: 0;" label="上级机构" prop="pid">
-              <treeselect
-                v-model="form.pid"
-                :load-options="loadOrgs"
-                :options="orgs"
-                style="width: 370px;"
-                placeholder="选择上级机构"
-              />
-            </el-form-item>
-          </el-form>
-          <div slot="footer" class="dialog-footer">
-            <el-button type="text" @click="cancel">取消</el-button>
-            <el-button :loading="formLoading" type="primary" @click="save">确认</el-button>
-          </div>
-        </el-dialog>
-        <el-table
-          ref="multipleTable"
-          v-loading="listLoading"
-          :data="list"
-          size="small"
-          style="width: 100%;"
-          @selection-change="handleSelectionChange"
-          @row-click="handleRowClick"
-        >
-          <el-table-column type="selection" width="44px"></el-table-column>
-          <el-table-column
-            label="机构类型"
-            prop="categoryId"
-            sortable="custom"
-            align="center"
-            width="100px"
-          >
-            <template slot-scope="scope">
-              <span>{{scope.row.categoryId}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="机构名称" prop="name" align="center" width="100px">
-            <template slot-scope="{row}">
-              <span class="link-type" @click="handleUpdate(row)">{{row.name}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="全称" prop="fullName" align="center" width="100px">
-            <template slot-scope="scope">
-              <span>{{scope.row.fullName}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="排序" prop="sort" align="center" width="100px">
-            <template slot-scope="scope">
-              <span>{{scope.row.sort}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="状态" prop="enable" align="center" width="150px">
-            <template slot-scope="scope">
-              <el-switch
-                v-model="scope.row.enabled"
-                active-color="#409EFF"
-                inactive-color="#F56C6C"
-                @change="changeEnabled(scope.row, scope.row.enabled,)"
-              />
-            </template>
-          </el-table-column>
-          <el-table-column label="操作" align="center" width="125">
-            <template slot-scope="{row}">
-              <el-button
-                type="primary"
-                size="mini"
-                @click="handleUpdate(row)"
-                v-permission="['AbpIdentity.Roles.Update']"
-                icon="el-icon-edit"
-              />
-              <el-button
-                type="danger"
-                size="mini"
-                @click="handleDelete(row)"
-                :disabled="row.name==='admin'"
-                v-permission="['AbpIdentity.Roles.Delete']"
-                icon="el-icon-delete"
-              />
-            </template>
-          </el-table-column>
-        </el-table>
-        <pagination
-          v-show="totalCount>0"
-          :total="totalCount"
-          :page.sync="page"
-          :limit.sync="listQuery.MaxResultCount"
-          @pagination="getList"
-        />
-      </el-col>
-    </el-row>
+            @click="handleDelete(row)"
+            :disabled="row.name==='admin'"
+            v-permission="['AbpIdentity.Roles.Delete']"
+            icon="el-icon-delete"
+          />
+        </template>
+      </el-table-column>
+    </el-table>
+    <!-- </el-col> -->
+    <!-- </el-row> -->
   </div>
 </template>
 <script>
@@ -230,6 +221,18 @@ export default {
   name: "Organization",
   components: { Pagination, Treeselect },
   directives: { permission },
+  filters: {
+    displayCategory(categoryId) {
+      const categoryMap = {
+        1: "公司",
+        2: "组织",
+        3: "部门",
+        4: "供应商"
+      };
+      return categoryMap[categoryId];
+    }
+  },
+
   data() {
     return {
       rules: {
@@ -240,7 +243,7 @@ export default {
       defaultProps: { children: "children", label: "name", isLeaf: "leaf" },
       form: Object.assign({}, defaultForm),
       orgName: "",
-      list: null,
+      list: [],
       orgDatas: [],
       orgs: [],
       totalCount: 0,
@@ -264,32 +267,31 @@ export default {
     this.getList();
   },
   methods: {
-    getOrgs(node, resolve) {
-      const params = {};
-      if (typeof node !== "object") {
-        if (node) {
-          params["name"] = node;
-        }
-      } else if (node.level !== 0) {
-        params["pid"] = node.data.id;
-      }
-      //TODO:仅获取启用机构
-      setTimeout(()=>{
-        this.$axios.gets("/api/business/orgs/all", params).then(response => {
-        if (resolve) {
-          resolve(response.items);
-        } else {
-          this.orgDatas = response.items;
-        }
-      });
-      },100)
-      
-    },
+    // getOrgs(node, resolve) {
+    //   const params = {};
+    //   if (typeof node !== "object") {
+    //     if (node) {
+    //       params["name"] = node;
+    //     }
+    //   } else if (node.level !== 0) {
+    //     params["pid"] = node.data.id;
+    //   }
+    //   //TODO:仅获取启用机构
+    //   setTimeout(() => {
+    //     this.$axios.gets("/api/business/orgs/all", params).then(response => {
+    //       if (resolve) {
+    //         resolve(response.items);
+    //       } else {
+    //         this.orgDatas = response.items;
+    //       }
+    //     });
+    //   }, 100);
+    // },
     getFormOrgs() {
       this.$axios.gets("/api/business/orgs/all").then(response => {
         this.orgs = response.items.map(function(obj) {
           obj.label = obj.name;
-          if (!obj.leaf) {
+          if (obj.hasChildren) {
             obj.children = null;
           }
           return obj;
@@ -298,29 +300,36 @@ export default {
     },
     getSupOrgs(id) {
       this.$axios
-        .gets("/api/business/orgs/parents", {id:id})
+        .gets("/api/business/orgs/parents", { id: id })
         .then(response => {
           this.orgs = response.items.map(function(obj) {
-          obj.label = obj.name;
-          if (!obj.leaf) {
-            obj.children = null;
-          }
-          return obj;
-        });
+            obj.label = obj.name;
+            if (obj.hasChildren) {
+              obj.children = null;
+            }
+            return obj;
+          });
         });
     },
-    getList(pid) {
-      debugger
-      this.listQuery.pid=pid?pid:null
+    getList() {
       this.listLoading = true;
       this.listQuery.SkipCount = (this.page - 1) * 10;
       this.$axios
-        .gets("/api/business/orgs/list", this.listQuery)
+        .gets("/api/business/orgs/all", this.listQuery)
         .then(response => {
           this.list = response.items;
           this.totalCount = response.totalCount;
           this.listLoading = false;
         });
+    },
+    loadOrgDatas(tree, treeNode, resolve) {
+      setTimeout(() => {
+        this.$axios
+          .gets("/api/business/orgs/all", { pid: tree.id })
+          .then(response => {
+            resolve(response.items);
+          });
+      }, 100);
     },
     fetchData(id) {
       let self = this;
@@ -341,7 +350,7 @@ export default {
           .then(response => {
             parentNode.children = response.items.map(function(obj) {
               obj.label = obj.name;
-              if (!obj.leaf) {
+              if (obj.hasChildren) {
                 obj.children = null;
               }
               return obj;
@@ -483,9 +492,9 @@ export default {
       this.form = Object.assign({}, defaultForm);
       this.orgs = [];
     },
-    handleNodeClick(data) {
-      this.getList(data.id)
-    },
+    // handleNodeClick(data) {
+    //   this.getList(data.id);
+    // },
     changeEnabled(data, val) {
       data.active = val ? "启用" : "停用";
       this.$confirm("是否" + data.active + data.name + "？", "提示", {
