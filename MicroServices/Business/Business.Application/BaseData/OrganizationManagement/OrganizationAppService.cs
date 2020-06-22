@@ -1,5 +1,4 @@
-﻿using AutoMapper.Execution;
-using Business.BaseData.OrganizationManagement.Dto;
+﻿using Business.BaseData.OrganizationManagement.Dto;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -29,13 +28,7 @@ namespace Business.BaseData.OrganizationManagement
 
             if (exist != null)
             {
-                throw new BusinessException("名称：" + input.Name + "字典已存在");
-            }
-            if (parent != null && (!parent.HasChildren || parent.Leaf))
-            {
-                parent.HasChildren = true;
-                parent.Leaf = false;
-                await _repository.UpdateAsync(parent);
+                throw new BusinessException("名称：" + input.Name + "机构已存在");
             }
 
             var result = await _repository.InsertAsync(new Organization(
@@ -43,21 +36,16 @@ namespace Business.BaseData.OrganizationManagement
                                                             input.CategoryId,
                                                             input.Pid,
                                                             input.Name,
-                                                            "",     //TODO:自动生成fullName
+                                                            parent == null ? input.Name : parent.FullName + "/" + input.Name,
                                                             input.Sort,
-                                                            input.Enabled,
-                                                            false,
-                                                            true
+                                                            input.Enabled
                                                             ));
             return ObjectMapper.Map<Organization, OrganizationDto>(result);
         }
 
-        public async Task Delete(List<Guid> ids)
+        public async Task Delete(Guid id)
         {
-            foreach (var id in ids)
-            {
-                await _repository.DeleteAsync(id);
-            }
+            await _repository.DeleteAsync(id);
         }
 
         public async Task<OrganizationDto> Get(Guid id)
@@ -74,10 +62,16 @@ namespace Business.BaseData.OrganizationManagement
                 .Where(_ => _.Pid == input.Pid)
                 .WhereIf(input.CategoryId.HasValue, _ => _.CategoryId == input.CategoryId);
 
-            var items = await query.OrderBy(input.Sorting ?? "Name")
+            var items = await query.OrderBy(input.Sorting ?? "Sort")
                      .ToListAsync();
 
             var dtos = ObjectMapper.Map<List<Organization>, List<OrganizationDto>>(items);
+            foreach (var dto in dtos)
+            {
+                var any = await _repository.AnyAsync(_ => _.Pid == dto.Id);
+                dto.HasChildren = any ? true : false;
+                dto.Leaf = any ? false : true;
+            }
             return new ListResultDto<OrganizationDto>(dtos);
         }
 
@@ -112,19 +106,8 @@ namespace Business.BaseData.OrganizationManagement
         {
             var org = await _repository.FirstOrDefaultAsync(_ => _.Id == id);
 
-            if (org.Pid != input.Pid)
-            {
-                org.Pid = input.Pid;
-                var parent = await _repository.FirstOrDefaultAsync(_ => _.Id == input.Pid);
-                if (parent != null && (!parent.HasChildren || parent.Leaf))
-                {
-                    parent.HasChildren = true;
-                    parent.Leaf = false;
-                    await _repository.UpdateAsync(parent);
-                }
-            }
-
-
+            org.Pid = input.Pid;
+            //TODO：后台任务执行子集fullName修改
             org.Name = input.Name;
             org.Sort = input.Sort;
             org.Enabled = input.Enabled;

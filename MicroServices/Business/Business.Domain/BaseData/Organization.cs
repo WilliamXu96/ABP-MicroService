@@ -22,13 +22,9 @@ namespace Business.BaseData
 
         public bool Enabled { get; set; }
 
-        public bool HasChildren { get; set; }
-
-        public bool Leaf { get; set; }
-
         public bool IsDeleted { get; set; }
 
-        public Organization(Guid id, short categoryId, Guid? pid, [NotNull]string name, string fullName, int sort, bool enabled, bool hasChildren = false, bool leaf = false)
+        public Organization(Guid id, short categoryId, Guid? pid, [NotNull]string name, string fullName, int sort, bool enabled)
         {
             Id = id;
             CategoryId = categoryId;
@@ -37,8 +33,8 @@ namespace Business.BaseData
             FullName = fullName;
             Sort = sort;
             Enabled = enabled;
-            HasChildren = hasChildren;
-            Leaf = leaf;
+            //HasChildren = hasChildren;
+            //Leaf = leaf;
         }
     }
 }

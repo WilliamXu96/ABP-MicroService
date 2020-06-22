@@ -26,11 +26,11 @@ namespace Business.BaseData
             return _organizationAppService.Create(input);
         }
 
-        [HttpPost]
-        [Route("delete")]
-        public Task Delete(List<Guid> ids)
+        [HttpDelete]
+        [Route("{id}")]
+        public Task Delete(Guid id)
         {
-            return _organizationAppService.Delete(ids);
+            return _organizationAppService.Delete(id);
         }
 
         [HttpGet]
