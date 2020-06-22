@@ -274,19 +274,22 @@ export default {
         params["pid"] = node.data.id;
       }
       //TODO:仅获取启用机构
-      this.$axios.gets("/api/business/orgs/all", params).then(response => {
+      setTimeout(()=>{
+        this.$axios.gets("/api/business/orgs/all", params).then(response => {
         if (resolve) {
           resolve(response.items);
         } else {
           this.orgDatas = response.items;
         }
       });
+      },100)
+      
     },
     getFormOrgs() {
       this.$axios.gets("/api/business/orgs/all").then(response => {
         this.orgs = response.items.map(function(obj) {
           obj.label = obj.name;
-          if (obj.hasChildren) {
+          if (!obj.leaf) {
             obj.children = null;
           }
           return obj;
@@ -299,14 +302,16 @@ export default {
         .then(response => {
           this.orgs = response.items.map(function(obj) {
           obj.label = obj.name;
-          if (obj.hasChildren) {
+          if (!obj.leaf) {
             obj.children = null;
           }
           return obj;
         });
         });
     },
-    getList() {
+    getList(pid) {
+      debugger
+      this.listQuery.pid=pid?pid:null
       this.listLoading = true;
       this.listQuery.SkipCount = (this.page - 1) * 10;
       this.$axios
@@ -336,7 +341,7 @@ export default {
           .then(response => {
             parentNode.children = response.items.map(function(obj) {
               obj.label = obj.name;
-              if (obj.hasChildren) {
+              if (!obj.leaf) {
                 obj.children = null;
               }
               return obj;
@@ -478,7 +483,9 @@ export default {
       this.form = Object.assign({}, defaultForm);
       this.orgs = [];
     },
-    handleNodeClick() {},
+    handleNodeClick(data) {
+      this.getList(data.id)
+    },
     changeEnabled(data, val) {
       data.active = val ? "启用" : "停用";
       this.$confirm("是否" + data.active + data.name + "？", "提示", {
