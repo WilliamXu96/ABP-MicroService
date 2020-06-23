@@ -14,6 +14,12 @@ namespace Business.EntityFrameworkCore
 
         public DbSet<Organization> organizations { get; set; }
 
+        public DbSet<Employee> employees { get; set; }
+
+        public DbSet<Job> jobs { get; set; }
+
+        public DbSet<EmployeeJob> employeeJobs { get; set; }
+
         public BusinessDbContext(DbContextOptions<BusinessDbContext> options)
             : base(options)
         {

@@ -56,6 +56,38 @@ namespace Business.EntityFrameworkCore
 
                 b.HasIndex(q => q.Pid);
             });
+
+            builder.Entity<Employee>(b =>
+            {
+                b.ToTable("base_employees");
+                b.ConfigureConcurrencyStamp();
+                b.ConfigureExtraProperties();
+                b.ConfigureAudited();
+                b.ConfigureSoftDelete();
+
+                b.Property(x => x.Name).IsRequired().HasMaxLength(BusinessConsts.MaxNameLength);
+                b.Property(x => x.Phone).IsRequired().HasMaxLength(BusinessConsts.MaxNameLength);
+                b.Property(x => x.Email).IsRequired().HasMaxLength(BusinessConsts.MaxNotesLength);
+
+                b.HasIndex(q => q.UserId);
+            });
+
+            builder.Entity<Job>(b =>
+            {
+                b.ToTable("base_jobs");
+                b.ConfigureConcurrencyStamp();
+                b.ConfigureExtraProperties();
+                b.ConfigureAudited();
+                b.ConfigureSoftDelete();
+
+                b.Property(x => x.Name).IsRequired().HasMaxLength(BusinessConsts.MaxNameLength);
+            });
+
+            builder.Entity<EmployeeJob>(b =>
+            {
+                b.ToTable("base_employee_jobs");
+                b.HasKey(k => k.EmployeeId);
+            });
         }
     }
 }

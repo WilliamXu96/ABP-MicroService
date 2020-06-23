@@ -12,7 +12,7 @@ namespace Business
 
         public const int MaxNameLength = 50;
 
-        public const int MaxFullNameLength = 256;
+        public const int MaxFullNameLength = 128;
 
         public const int MaxNotesLength = 256;
     }
