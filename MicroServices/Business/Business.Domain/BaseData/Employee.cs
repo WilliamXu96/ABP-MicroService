@@ -19,13 +19,13 @@ namespace Business.BaseData
 
         public bool Enabled { get; set; }
 
-        public Guid OrgId { get; set; }
+        public Guid? OrgId { get; set; }
 
-        public Guid UserId { get; set; }
+        public Guid? UserId { get; set; }
 
         public bool IsDeleted { get; set; }
 
-        public Employee(Guid id, string name, short gender, string phone, string email, bool enabled, Guid orgId, Guid userId)
+        public Employee(Guid id, string name, short gender, string phone, string email, bool enabled, Guid? orgId, Guid? userId)
         {
             Id = id;
             Name = name;
