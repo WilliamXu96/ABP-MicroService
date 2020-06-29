@@ -152,6 +152,26 @@ export const asyncRoutes = [
         roles: ['Business.DataDictionary'],
         icon: 'data'
       }
+    },
+    {
+      path: 'job',
+      component: () => import('@/views/job/index'),
+      name: 'Job',
+      meta:{
+        title: 'job',
+        roles: ['Business.DataDictionary'],
+        icon: 'job'
+      }
+    },
+    {
+      path: 'employee',
+      component: () => import('@/views/employee/index'),
+      name: 'Employee',
+      meta:{
+        title: 'employee',
+        roles: ['Business.DataDictionary'],
+        icon: 'employee'
+      }
     }
   ]},
 
