@@ -42,14 +42,14 @@
             type="primary"
             size="mini"
             @click="handleUpdate(row)"
-            v-permission="['Business.DataDictionaryDetail.Update']"
+            v-permission="['Business.DataDictionary.Update']"
             icon="el-icon-edit"
           />
           <el-button
             type="danger"
             size="mini"
             @click="handleDelete(row)"
-            v-permission="['Business.DataDictionaryDetail.Delete']"
+            v-permission="['Business.DataDictionary.Delete']"
             icon="el-icon-delete"
           />
         </template>

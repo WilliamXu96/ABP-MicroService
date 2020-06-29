@@ -8,6 +8,9 @@
     "Delete": "删除",
     "Create": "新增",
     "Business": "业务系统",
-    "DataDictionary": "数据字典"
+    "DataDictionary": "数据字典",
+    "Organization": "组织机构",
+    "Job": "岗位",
+    "Employee": "职员"
   }
 }

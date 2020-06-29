@@ -139,7 +139,7 @@ export const asyncRoutes = [
       name: 'Organization',
       meta: {
         title: 'org',
-        //roles: ['AbpIdentity.Roles'],
+        roles: ['Business.Organization'],
         icon: 'org'
       }
     },
@@ -159,7 +159,7 @@ export const asyncRoutes = [
       name: 'Job',
       meta:{
         title: 'job',
-        roles: ['Business.DataDictionary'],
+        roles: ['Business.Job'],
         icon: 'job'
       }
     },
@@ -169,7 +169,7 @@ export const asyncRoutes = [
       name: 'Employee',
       meta:{
         title: 'employee',
-        roles: ['Business.DataDictionary'],
+        roles: ['Business.Employee'],
         icon: 'employee'
       }
     }

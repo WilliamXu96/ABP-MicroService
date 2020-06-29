@@ -120,7 +120,7 @@
               icon="el-icon-plus"
               :disabled="multipleSelection.length != 1"
               @click="handleCreateDetail"
-              v-permission="['Business.DataDictionaryDetail.Create']"
+              v-permission="['Business.DataDictionary.Create']"
             >新增</el-button>
           </div>
           <dictDetail ref="dictDetail" />

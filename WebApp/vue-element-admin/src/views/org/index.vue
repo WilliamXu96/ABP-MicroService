@@ -49,7 +49,7 @@
           type="primary"
           icon="el-icon-plus"
           @click="handleCreate"
-          v-permission="['AbpIdentity.Roles.Create']"
+          v-permission="['Business.Organization.Create']"
         >新增</el-button>
         <!-- <el-button
           class="filter-item"
@@ -182,7 +182,7 @@
             type="primary"
             size="mini"
             @click="handleUpdate(row)"
-            v-permission="['AbpIdentity.Roles.Update']"
+            v-permission="['Business.Organization.Update']"
             icon="el-icon-edit"
           />
           <el-button
@@ -190,7 +190,7 @@
             size="mini"
             @click="handleDelete(row)"
             :disabled="row.name==='admin'"
-            v-permission="['AbpIdentity.Roles.Delete']"
+            v-permission="['Business.Organization.Delete']"
             icon="el-icon-delete"
           />
         </template>
