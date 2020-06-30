@@ -15,6 +15,8 @@ namespace Business.BaseData
 
         public int Sort { get; set; }
 
+        public string Description { get; set; }
+
         public bool IsDeleted { get; set; }
 
         public Job(Guid id, string name, bool enabled, int sort)

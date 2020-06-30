@@ -11,5 +11,7 @@ namespace Business.BaseData.JobManagement.Dto
         public bool Enabled { get; set; }
 
         public int Sort { get; set; }
+
+        public string Description { get; set; }
     }
 }

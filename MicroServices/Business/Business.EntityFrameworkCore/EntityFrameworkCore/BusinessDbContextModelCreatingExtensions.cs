@@ -81,6 +81,7 @@ namespace Business.EntityFrameworkCore
                 b.ConfigureSoftDelete();
 
                 b.Property(x => x.Name).IsRequired().HasMaxLength(BusinessConsts.MaxNameLength);
+                b.Property(x => x.Description).HasMaxLength(BusinessConsts.MaxNotesLength);
             });
 
             builder.Entity<EmployeeJob>(b =>
