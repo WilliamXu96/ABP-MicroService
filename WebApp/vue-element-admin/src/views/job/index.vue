@@ -268,35 +268,49 @@ export default {
       this.dialogFormVisible = true;
     },
     handleDelete(row) {
+      var params = [];
+      let alert = "";
       if (row) {
-        this.$confirm("是否删除" + row.name + "?", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        })
-          .then(() => {
-            this.$axios
-              .deletes("/api/business/job/" + row.id)
-              .then(response => {
-                const index = this.list.indexOf(row);
-                this.list.splice(index, 1);
-                this.$notify({
-                  title: "成功",
-                  message: "删除成功",
-                  type: "success",
-                  duration: 2000
-                });
-              });
-          })
-          .catch(() => {
-            this.$message({
-              type: "info",
-              message: "已取消删除"
-            });
-          });
+        params.push(row.id);
+        alert = row.name;
       } else {
-        //TODO：批量删除
+        if (this.multipleSelection.length === 0) {
+          this.$message({
+            message: "未选择",
+            type: "warning"
+          });
+          return;
+        }
+        this.multipleSelection.forEach(element => {
+          let id = element.id;
+          params.push(id);
+        });
+        alert = "选中项";
       }
+      this.$confirm("是否删除" + alert + "?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$axios
+            .posts("/api/business/job/delete", params)
+            .then(response => {
+              this.$notify({
+                title: "成功",
+                message: "删除成功",
+                type: "success",
+                duration: 2000
+              });
+              this.getList();
+            });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
     },
     handleUpdate(row) {
       this.formTitle = "修改岗位";
@@ -338,7 +352,32 @@ export default {
       this.dialogFormVisible = false;
       this.$refs.form.clearValidate();
     },
-    changeEnabled(data, val) {}
+    changeEnabled(data, val) {
+      data.active = val ? "启用" : "停用";
+      this.$confirm("是否" + data.active + data.name + "？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$axios
+            .puts("/api/business/job/" + data.id, data)
+            .then(response => {
+              this.$notify({
+                title: "成功",
+                message: "更新成功",
+                type: "success",
+                duration: 2000
+              });
+            })
+            .catch(() => {
+              data.enabled = !data.enabled;
+            });
+        })
+        .catch(() => {
+          data.enabled = !data.enabled;
+        });
+    }
   }
 };
 </script>

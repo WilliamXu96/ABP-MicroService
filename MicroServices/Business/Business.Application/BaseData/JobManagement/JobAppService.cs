@@ -29,13 +29,16 @@ namespace Business.BaseData.JobManagement
                 throw new BusinessException("名称：" + input.Name + "岗位已存在");
             }
 
-            var result = await _repository.InsertAsync(new Job(GuidGenerator.Create(), input.Name, input.Enabled, input.Sort));
+            var result = await _repository.InsertAsync(new Job(GuidGenerator.Create(), input.Name, input.Enabled, input.Sort, input.Description));
             return ObjectMapper.Map<Job, JobDto>(result);
         }
 
-        public async Task Delete(Guid id)
+        public async Task Delete(List<Guid> ids)
         {
-            await _repository.DeleteAsync(id);
+            foreach (var id in ids)
+            {
+                await _repository.DeleteAsync(id);
+            }
         }
 
         public async Task<JobDto> Get(Guid id)
@@ -63,6 +66,7 @@ namespace Business.BaseData.JobManagement
             job.Name = input.Name;
             job.Enabled = input.Enabled;
             job.Sort = input.Sort;
+            job.Description = input.Description;
 
             return ObjectMapper.Map<Job, JobDto>(job);
         }

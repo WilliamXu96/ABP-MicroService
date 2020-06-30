@@ -18,6 +18,6 @@ namespace Business.BaseData.EmployeeManagement
 
         Task<EmployeeDto> Update(Guid id, CreateOrUpdateEmployeeDto input);
 
-        Task Delete(Guid id);
+        Task Delete(List<Guid> ids);
     }
 }

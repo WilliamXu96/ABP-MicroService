@@ -263,7 +263,6 @@ export default {
       })
         .then(() => {
           this.$axios.posts("/api/business/dict/delete", params).then(response => {
-            const index = this.list.indexOf(row);
             this.$notify({
               title: "成功",
               message: "删除成功",

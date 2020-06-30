@@ -19,12 +19,13 @@ namespace Business.BaseData
 
         public bool IsDeleted { get; set; }
 
-        public Job(Guid id, string name, bool enabled, int sort)
+        public Job(Guid id, string name, bool enabled, int sort,string description)
         {
             Id = id;
             Name = name;
             Enabled = enabled;
             Sort = sort;
+            Description = description;
         }
     }
 }

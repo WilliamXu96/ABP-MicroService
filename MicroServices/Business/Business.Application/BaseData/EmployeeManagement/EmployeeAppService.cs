@@ -34,9 +34,12 @@ namespace Business.BaseData.EmployeeManagement
             return ObjectMapper.Map<Employee, EmployeeDto>(result);
         }
 
-        public async Task Delete(Guid id)
+        public async Task Delete(List<Guid> ids)
         {
-            await _repository.DeleteAsync(id);
+            foreach (var id in ids)
+            {
+                await _repository.DeleteAsync(id);
+            }
         }
 
         public async Task<EmployeeDto> Get(Guid id)

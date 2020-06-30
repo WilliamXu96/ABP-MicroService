@@ -3,6 +3,7 @@ using Business.BaseData.JobManagement.Dto;
 using Business.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 
@@ -25,11 +26,11 @@ namespace Business.BaseData
             return _jobAppService.Create(input);
         }
 
-        [HttpDelete]
-        [Route("{id}")]
-        public Task Delete(Guid id)
+        [HttpPost]
+        [Route("delete")]
+        public Task Delete(List<Guid> ids)
         {
-            return _jobAppService.Delete(id);
+            return _jobAppService.Delete(ids);
         }
 
         [HttpGet]
