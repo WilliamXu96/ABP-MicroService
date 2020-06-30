@@ -243,7 +243,7 @@ export default {
         params.push(row.id);
         alert=row.name
       } else {
-        if (this.multipleSelection.length != 1) {
+        if (this.multipleSelection.length === 0) {
           this.$message({
             message: "未选择",
             type: "warning"
