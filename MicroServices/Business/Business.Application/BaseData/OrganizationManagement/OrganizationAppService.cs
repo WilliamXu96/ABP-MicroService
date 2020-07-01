@@ -79,9 +79,15 @@ namespace Business.BaseData.OrganizationManagement
         {
             var result = await _repository.Where(_ => _.Pid == null).OrderBy(input.Sorting ?? "Name").ToListAsync();
             var self = await _repository.FirstOrDefaultAsync(_ => _.Id == input.Id);
-            result.Add(self);
+            //result.Add(self);
 
             var dtos = ObjectMapper.Map<List<Organization>, List<OrganizationDto>>(result);
+            foreach (var dto in dtos)
+            {
+                var any = await _repository.AnyAsync(_ => _.Pid == dto.Id);
+                dto.HasChildren = any ? true : false;
+                dto.Leaf = any ? false : true;
+            }
             return new ListResultDto<OrganizationDto>(dtos);
         }
 

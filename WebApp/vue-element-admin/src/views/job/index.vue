@@ -173,7 +173,7 @@ export default {
   data() {
     return {
       rules: {
-        name: [{ required: true, message: "请输入用户名", trigger: "blur" }],
+        name: [{ required: true, message: "请输入岗位名", trigger: "blur" }],
         sort: [{ required: true, message: "请输入序号", trigger: "blur" }]
       },
       form: Object.assign({}, defaultForm),

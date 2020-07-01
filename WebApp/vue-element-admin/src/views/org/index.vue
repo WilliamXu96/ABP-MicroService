@@ -207,7 +207,6 @@ import permission from "@/directive/permission/index.js";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import { LOAD_CHILDREN_OPTIONS } from "@riophae/vue-treeselect";
-import { toThousandFilter } from "../../filters";
 
 const defaultForm = {
   categoryId: 3,
@@ -333,15 +332,10 @@ export default {
       }, 100);
     },
     fetchData(id) {
-      let self = this;
       this.getSupOrgs(id);
       this.$axios.gets("/api/business/orgs/" + id).then(response => {
         this.form = response;
-        if (response.pid) {
-          this.isTop = false;
-        } else {
-          this.isTop = true;
-        }
+        this.isTop=response.pid?false:true
       });
     },
     loadOrgs({ action, parentNode, callback }) {

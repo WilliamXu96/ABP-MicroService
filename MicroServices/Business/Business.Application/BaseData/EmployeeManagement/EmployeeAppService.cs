@@ -15,10 +15,14 @@ namespace Business.BaseData.EmployeeManagement
     public class EmployeeAppService : ApplicationService, IEmployeeAppService
     {
         private readonly IRepository<Employee, Guid> _repository;
+        private readonly IRepository<Organization, Guid> _orgRepository;
 
-        public EmployeeAppService(IRepository<Employee, Guid> repository)
+        public EmployeeAppService(
+            IRepository<Employee, Guid> repository,
+            IRepository<Organization, Guid> orgRepository)
         {
             _repository = repository;
+            _orgRepository = orgRepository;
         }
 
         public async Task<EmployeeDto> Create(CreateOrUpdateEmployeeDto input)
@@ -56,7 +60,13 @@ namespace Business.BaseData.EmployeeManagement
             var items = await query.OrderBy(input.Sorting ?? "Name")
                         .ToListAsync();
 
+            var orgs = await _orgRepository.Where(_ => items.Select(i => i.OrgId).Contains(_.Id)).ToListAsync();
+
             var dots = ObjectMapper.Map<List<Employee>, List<EmployeeDto>>(items);
+            foreach (var dto in dots)
+            {
+                dto.OrgIdToName = orgs.FirstOrDefault(_ => _.Id == dto.OrgId)?.Name;
+            }
             return new PagedResultDto<EmployeeDto>(totalCount, dots);
         }
 
