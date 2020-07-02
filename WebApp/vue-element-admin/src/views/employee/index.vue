@@ -92,13 +92,72 @@
           />
         </el-form-item>
         <el-form-item label="关联用户" prop="userId">
-            <el-input v-model="form.userId" style="width: 370px;" />
-          </el-form-item>
+          <el-input v-model="form.userId" readonly placeholder="请选择" style="width: 370px">
+            <el-button slot="append" icon="el-icon-search" @click="handleSelectUser()"></el-button>
+          </el-input>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" type="text" @click="cancel">取消</el-button>
         <el-button size="small" v-loading="formLoading" type="primary" @click="save">确认</el-button>
       </div>
+    </el-dialog>
+
+    <el-dialog
+      title="选择用户"
+      width="600px"
+      top="5vh"
+      :close-on-click-modal="false"
+      :visible.sync="userDialogTableVisible"
+    >
+      <div class="filter-container">
+        <el-input
+          size="small"
+          v-model="listQuery.Filter"
+          placeholder="搜索..."
+          style="width: 200px;"
+          class="filter-item"
+          @keyup.enter.native="userHandleFilter"
+        />
+        <el-button
+          size="mini"
+          class="filter-item"
+          type="primary"
+          icon="el-icon-search"
+          @click="userHandleFilter"
+        >搜索</el-button>
+      </div>
+
+      <el-table
+        v-loading="userListLoading"
+        :data="userList"
+        height="300"
+        @row-click="userHandleRowClick"
+      >
+        <el-table-column label="用户名" prop="userName" align="center" width="150px">
+          <template slot-scope="{row}">
+            <span class="link-type">{{row.userName}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="邮箱" align="center" width="200px">
+          <template slot-scope="scope">
+            <span>{{scope.row.email}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="电话" align="center" width="200px">
+          <template slot-scope="scope">
+            <span>{{scope.row.phoneNumber}}</span>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        small
+        layout="prev, pager, next"
+        :total="totalCount"
+        :page.sync="page"
+        :limit.sync="listQuery.MaxResultCount"
+        @pagination="getUserList"
+      ></el-pagination>
     </el-dialog>
     <el-table
       ref="multipleTable"
@@ -225,7 +284,7 @@ export default {
     };
     return {
       rules: {
-        name: [{ required: true, message: "请输入职员姓名", trigger: "blur" }],
+        name: [{ required: true, message: "请输入职员姓名", trigger: "blur" }]
         // phone: [{ required: true, trigger: "blur", validator: validPhone }],
         // email: [
         //   { required: true, message: "请输入邮箱地址", trigger: "blur" },
@@ -235,8 +294,10 @@ export default {
       form: Object.assign({}, defaultForm),
       list: null,
       orgs: [],
+      userList: null,
       totalCount: 0,
       listLoading: true,
+      userListLoading: true,
       formLoading: false,
       listQuery: {
         Filter: "",
@@ -246,6 +307,7 @@ export default {
       },
       page: 1,
       dialogFormVisible: false,
+      userDialogTableVisible: false,
       multipleSelection: [],
       formTitle: "",
       isEdit: false
@@ -290,17 +352,15 @@ export default {
       }
     },
     getOrgs() {
-      this.$axios
-        .gets("/api/business/orgs/all")
-        .then(response => {
-          this.orgs = response.items.map(function(obj) {
-            obj.label = obj.name;
-            if (obj.hasChildren) {
-              obj.children = null;
-            }
-            return obj;
-          });
+      this.$axios.gets("/api/business/orgs/all").then(response => {
+        this.orgs = response.items.map(function(obj) {
+          obj.label = obj.name;
+          if (obj.hasChildren) {
+            obj.children = null;
+          }
+          return obj;
         });
+      });
     },
     getSupOrgs(id) {
       this.$axios
@@ -315,11 +375,28 @@ export default {
           });
         });
     },
+    getUserList() {
+      this.userListLoading = true;
+      this.listQuery.SkipCount = (this.page - 1) * 10;
+      this.$axios.gets("/api/identity/users", this.listQuery).then(response => {
+        this.userList = response.items;
+        this.userTotalCount = response.totalCount;
+        this.userListLoading = false;
+      });
+    },
+    userHandleFilter() {
+      this.page = 1;
+      this.getUserList();
+    },
     handleFilter() {
       this.page = 1;
       this.getList();
     },
-    resetQuery() {},
+    handleSelectUser() {
+      this.listQuery.Filter=''
+      this.userDialogTableVisible = true;
+      this.getUserList();
+    },
     save() {
       this.$refs.form.validate(valid => {
         if (valid) {
@@ -448,6 +525,11 @@ export default {
     handleRowClick(row, column, event) {
       this.$refs.multipleTable.clearSelection();
       this.$refs.multipleTable.toggleRowSelection(row);
+    },
+    userHandleRowClick(row, column, event) {
+      this.userDialogTableVisible = false;
+      this.form.userId = row.id;
+      this.form.userIdToName = row.name;
     },
     cancel() {
       this.form = Object.assign({}, defaultForm);
