@@ -59,7 +59,7 @@
       :visible.sync="dialogFormVisible"
       :close-on-click-modal="false"
       :title="formTitle"
-      width="570px"
+      width="500px"
     >
       <el-form
         ref="form"
@@ -78,8 +78,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="text" @click="cancel">取消</el-button>
-        <el-button v-loading="formLoading" type="primary" @click="save">确认</el-button>
+        <el-button size="small" type="text" @click="cancel">取消</el-button>
+        <el-button size="small" v-loading="formLoading" type="primary" @click="save">确认</el-button>
       </div>
     </el-dialog>
 

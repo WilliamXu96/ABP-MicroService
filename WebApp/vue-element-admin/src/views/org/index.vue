@@ -75,7 +75,7 @@
       :visible.sync="dialogFormVisible"
       :title="formTitle"
       @close="cancel()"
-      width="580px"
+      width="520px"
     >
       <el-form
         ref="form"
@@ -112,7 +112,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="状态" prop="enabled">
-          <el-radio-group v-model="form.enabled" style="width: 178px">
+          <el-radio-group v-model="form.enabled" style="width: 140px">
             <el-radio :label="true">启用</el-radio>
             <el-radio :label="false">禁用</el-radio>
           </el-radio-group>
@@ -128,8 +128,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="text" @click="cancel">取消</el-button>
-        <el-button :loading="formLoading" type="primary" @click="save">确认</el-button>
+        <el-button size="small" type="text" @click="cancel">取消</el-button>
+        <el-button size="small" :loading="formLoading" type="primary" @click="save">确认</el-button>
       </div>
     </el-dialog>
     <el-table

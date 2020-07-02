@@ -51,7 +51,7 @@
       :close-on-click-modal="false"
       :title="formTitle"
       @close="cancel()"
-      width="570px"
+      width="500px"
     >
       <el-form
         ref="form"
@@ -77,7 +77,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="状态" style="margin:left" prop="enabled">
-          <el-radio-group v-model="form.enabled" style="width: 178px">
+          <el-radio-group v-model="form.enabled" style="width: 140px">
             <el-radio :label="true">启用</el-radio>
             <el-radio :label="false">禁用</el-radio>
           </el-radio-group>
@@ -96,8 +96,8 @@
           </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="text" @click="cancel">取消</el-button>
-        <el-button v-loading="formLoading" type="primary" @click="save">确认</el-button>
+        <el-button size="small" type="text" @click="cancel">取消</el-button>
+        <el-button size="small" v-loading="formLoading" type="primary" @click="save">确认</el-button>
       </div>
     </el-dialog>
     <el-table
