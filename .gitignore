@@ -42,3 +42,7 @@
 /MicroServices/Business/Business.HttpApi/bin/Debug
 /AuthServer/AuthServer.Host/publish
 /MicroServices/Business/Business.Host/publish
+/Gateways/InternalGateway/.vs/InternalGateway
+/Gateways/InternalGateway/InternalGateway.Host/bin/Debug/netcoreapp3.1
+/Gateways/InternalGateway/InternalGateway.Host/Logs
+/Gateways/InternalGateway/InternalGateway.Host/obj
