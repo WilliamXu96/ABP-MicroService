@@ -9,6 +9,7 @@ using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Identity;
 
 namespace Business.BaseData.EmployeeManagement
 {
@@ -16,13 +17,16 @@ namespace Business.BaseData.EmployeeManagement
     {
         private readonly IRepository<Employee, Guid> _repository;
         private readonly IRepository<Organization, Guid> _orgRepository;
+        private readonly IIdentityUserAppService _userAppService;
 
         public EmployeeAppService(
             IRepository<Employee, Guid> repository,
-            IRepository<Organization, Guid> orgRepository)
+            IRepository<Organization, Guid> orgRepository,
+            IIdentityUserAppService userAppService)
         {
             _repository = repository;
             _orgRepository = orgRepository;
+            _userAppService = userAppService;
         }
 
         public async Task<EmployeeDto> Create(CreateOrUpdateEmployeeDto input)
@@ -48,8 +52,13 @@ namespace Business.BaseData.EmployeeManagement
 
         public async Task<EmployeeDto> Get(Guid id)
         {
-            var result = await _repository.GetAsync(id);
-            return ObjectMapper.Map<Employee, EmployeeDto>(result);
+            var employee = await _repository.GetAsync(id);
+            if (employee.UserId.HasValue)
+            {
+                var user = await _userAppService.GetAsync(employee.UserId.Value);
+            }
+
+            return ObjectMapper.Map<Employee, EmployeeDto>(employee);
         }
 
         public async Task<PagedResultDto<EmployeeDto>> GetAll(GetEmployeeInputDto input)

@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Volo.Abp.AutoMapper;
+﻿using Volo.Abp.AutoMapper;
+using Volo.Abp.Http.Client.IdentityModel;
+using Volo.Abp.Identity;
 using Volo.Abp.Modularity;
 
 namespace Business
 {
     [DependsOn(
         typeof(BusinessApplicationContractsModule),
+        typeof(AbpHttpClientIdentityModelModule),
+        typeof(AbpIdentityHttpApiClientModule),
         typeof(AbpAutoMapperModule)
     )]
     public class BusinessApplicationModule : AbpModule

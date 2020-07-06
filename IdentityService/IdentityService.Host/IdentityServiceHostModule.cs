@@ -25,6 +25,7 @@ using System;
 using Volo.Abp.TenantManagement;
 using Volo.Abp.Threading;
 using Volo.Abp.Data;
+using Volo.Abp.AspNetCore.Serilog;
 
 namespace IdentityService.Host
 {
@@ -40,7 +41,8 @@ namespace IdentityService.Host
         typeof(AbpTenantManagementApplicationModule),
         typeof(AbpIdentityHttpApiModule),
         typeof(AbpIdentityEntityFrameworkCoreModule),
-        typeof(AbpIdentityApplicationModule)
+        typeof(AbpIdentityApplicationModule),
+        typeof(AbpAspNetCoreSerilogModule)
     )]
     public class IdentityServiceHostModule : AbpModule
     {
@@ -124,6 +126,7 @@ namespace IdentityService.Host
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "Identity Service API");
             });
             app.UseAuditing();
+            app.UseAbpSerilogEnrichers();
             app.UseConfiguredEndpoints();
 
             AsyncHelper.RunSync(async () =>

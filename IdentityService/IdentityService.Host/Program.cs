@@ -32,6 +32,7 @@ namespace IdentityService.Host
                         AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv6,
                         IndexFormat = "xdl-log-{0:yyyy.MM}"
                     })
+                .WriteTo.Console()
                 .CreateLogger();
 
             try
