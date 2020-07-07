@@ -110,6 +110,14 @@ namespace AuthServer.Host
                 new[] { "password" },
                 "1q2w3e*".Sha256()
             );
+
+            await CreateClientAsync(
+                "business-app",
+                new[] { "InternalGateway", "IdentityService" },
+                new[] { "client_credentials" },
+                "1q2w3e*".Sha256(),
+                permissions: new[] { IdentityPermissions.Users.Default }
+            );
         }
 
         private async Task<Client> CreateClientAsync(
