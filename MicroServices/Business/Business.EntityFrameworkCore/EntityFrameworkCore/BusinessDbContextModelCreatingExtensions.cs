@@ -52,6 +52,7 @@ namespace Business.EntityFrameworkCore
 
                 b.Property(x => x.Name).IsRequired().HasMaxLength(BusinessConsts.MaxNameLength);
                 b.Property(x => x.FullName).IsRequired().HasMaxLength(BusinessConsts.MaxFullNameLength);
+                b.Property(x => x.CascadeId).HasMaxLength(BusinessConsts.MaxNotesLength);
                 b.Property(x => x.Enabled).HasDefaultValue(false);
 
                 b.HasIndex(q => q.Pid);

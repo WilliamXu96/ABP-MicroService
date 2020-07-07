@@ -51,6 +51,7 @@ namespace Business.BaseData.OrganizationManagement
         public async Task<OrganizationDto> Get(Guid id)
         {
             var result = await _repository.GetAsync(id);
+            UpdateCascade(result);
 
             return ObjectMapper.Map<Organization, OrganizationDto>(result);
         }
@@ -119,6 +120,19 @@ namespace Business.BaseData.OrganizationManagement
             org.Enabled = input.Enabled;
 
             return ObjectMapper.Map<Organization, OrganizationDto>(org);
+        }
+
+        private void UpdateCascade(Organization org)
+        {
+            var parent = _repository.Where(_ => _.Pid == org.Pid && _.Id != org.Id)
+                                  .OrderByDescending(_ => _.CascadeId)
+                                  .First();
+
+            if (parent != null)
+            {
+                return;
+            }
+
         }
     }
 }

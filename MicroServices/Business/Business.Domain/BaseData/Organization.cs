@@ -20,6 +20,16 @@ namespace Business.BaseData
 
         public int Sort { get; set; }
 
+        /// <summary>
+        /// 是否子集
+        /// </summary>
+        public bool Leaf { get; set; }
+
+        /// <summary>
+        /// 级联
+        /// </summary>
+        public string CascadeId { get; set; }
+
         public bool Enabled { get; set; }
 
         public bool IsDeleted { get; set; }
@@ -33,8 +43,8 @@ namespace Business.BaseData
             FullName = fullName;
             Sort = sort;
             Enabled = enabled;
-            //HasChildren = hasChildren;
             //Leaf = leaf;
+            //CascadeId = cascadeId；
         }
     }
 }
