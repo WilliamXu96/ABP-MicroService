@@ -32,10 +32,15 @@ namespace Business.BaseData.EmployeeManagement
         public async Task<EmployeeDto> Create(CreateOrUpdateEmployeeDto input)
         {
             var exist = await _repository.FirstOrDefaultAsync(_ => _.Name == input.Name);
-
             if (exist != null)
             {
-                throw new BusinessException("名称：" + input.Name + "职员已存在");
+                throw new BusinessException("名称：" + input.Name + "职员已存在！");
+            }
+
+            var user = await _repository.FirstOrDefaultAsync(_ => _.UserId == input.UserId);
+            if (user != null)
+            {
+                throw new BusinessException("用户已关联，请重新选择！");
             }
 
             var result = await _repository.InsertAsync(new Employee(GuidGenerator.Create(), input.Name, input.Gender, input.Phone, input.Email, input.Enabled, input.OrgId, input.UserId));
@@ -53,12 +58,15 @@ namespace Business.BaseData.EmployeeManagement
         public async Task<EmployeeDto> Get(Guid id)
         {
             var employee = await _repository.GetAsync(id);
-            if (employee.UserId.HasValue)
-            {
-                var user = await _userAppService.GetAsync(employee.UserId.Value);
-            }
+            var dto = ObjectMapper.Map<Employee, EmployeeDto>(employee);
 
-            return ObjectMapper.Map<Employee, EmployeeDto>(employee);
+            //if (employee.UserId.HasValue)
+            //{
+            //    var user = await _userAppService.GetAsync(employee.UserId.Value);
+            //    dto.UserIdToName = user?.UserName;
+            //}
+
+            return dto;
         }
 
         public async Task<PagedResultDto<EmployeeDto>> GetAll(GetEmployeeInputDto input)
@@ -82,6 +90,11 @@ namespace Business.BaseData.EmployeeManagement
         public async Task<EmployeeDto> Update(Guid id, CreateOrUpdateEmployeeDto input)
         {
             var employee = await _repository.GetAsync(id);
+            if (employee.UserId != input.UserId)
+            {
+                var user = await _repository.FirstOrDefaultAsync(_ => _.UserId == input.UserId);
+                if (user != null) { throw new BusinessException("用户已关联，请重新选择！"); }
+            }
 
             employee.Name = input.Name;
             employee.Enabled = input.Enabled;

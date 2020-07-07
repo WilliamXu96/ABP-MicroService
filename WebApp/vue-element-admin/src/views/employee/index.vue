@@ -92,7 +92,7 @@
           />
         </el-form-item>
         <el-form-item label="关联用户" prop="userId">
-          <el-input v-model="form.userId" readonly placeholder="请选择" style="width: 370px">
+          <el-input v-model="form.userIdToName" readonly placeholder="请选择" style="width: 370px">
             <el-button slot="append" icon="el-icon-search" @click="handleSelectUser()"></el-button>
           </el-input>
         </el-form-item>
@@ -195,11 +195,11 @@
           <span>{{scope.row.orgIdToName}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="关联用户" prop="userId" align="center">
+      <!-- <el-table-column label="关联用户" prop="userId" align="center">
         <template slot-scope="scope">
           <span>{{scope.row.userId}}</span>
         </template>
-      </el-table-column>
+      </el-table-column>-->
       <el-table-column label="状态" prop="enable" align="center">
         <template slot-scope="scope">
           <el-switch
@@ -257,7 +257,9 @@ const defaultForm = {
   email: null,
   enabled: true,
   orgId: null,
-  userId: null
+  userId: null,
+  userIdToName: null,
+  orgIdToName: null
 };
 export default {
   name: "Employee",
@@ -329,8 +331,12 @@ export default {
         });
     },
     fetchData(id) {
+      this.getOrgs();
       this.$axios.gets("/api/business/employee/" + id).then(response => {
         this.form = response;
+        if(response.userId){
+          this.getUser(response.userId)
+        }
       });
     },
     loadOrgs({ action, parentNode, callback }) {
@@ -384,6 +390,11 @@ export default {
         this.userListLoading = false;
       });
     },
+    getUser(id) {
+      this.$axios.gets("/api/identity/users/"+id).then(response => {
+        this.form.userIdToName=response.userName
+      });
+    },
     userHandleFilter() {
       this.page = 1;
       this.getUserList();
@@ -393,7 +404,7 @@ export default {
       this.getList();
     },
     handleSelectUser() {
-      this.listQuery.Filter=''
+      this.listQuery.Filter = "";
       this.userDialogTableVisible = true;
       this.getUserList();
     },
