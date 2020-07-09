@@ -24,23 +24,20 @@ namespace Business.BaseData.OrganizationManagement
         public async Task<OrganizationDto> Create(CreateOrUpdateOrganizationDto input)
         {
             var exist = await _repository.FirstOrDefaultAsync(_ => _.Name == input.Name);
-            var parent = await _repository.FirstOrDefaultAsync(_ => _.Id == input.Pid);
+            if (exist != null) throw new BusinessException("名称：" + input.Name + "机构已存在");
 
-            if (exist != null)
-            {
-                throw new BusinessException("名称：" + input.Name + "机构已存在");
-            }
+            var organization = new Organization(GuidGenerator.Create(),
+                                                input.CategoryId,
+                                                input.Pid,
+                                                input.Name,
+                                                "",
+                                                input.Sort,
+                                                input.Enabled
+                                                );
+            ChangeOrganizationModel(organization);
+            await _repository.InsertAsync(organization);
 
-            var result = await _repository.InsertAsync(new Organization(
-                                                            GuidGenerator.Create(),
-                                                            input.CategoryId,
-                                                            input.Pid,
-                                                            input.Name,
-                                                            parent == null ? input.Name : parent.FullName + "/" + input.Name,
-                                                            input.Sort,
-                                                            input.Enabled
-                                                            ));
-            return ObjectMapper.Map<Organization, OrganizationDto>(result);
+            return ObjectMapper.Map<Organization, OrganizationDto>(organization);
         }
 
         public async Task Delete(Guid id)
@@ -51,36 +48,35 @@ namespace Business.BaseData.OrganizationManagement
         public async Task<OrganizationDto> Get(Guid id)
         {
             var result = await _repository.GetAsync(id);
-            UpdateCascade(result);
 
             return ObjectMapper.Map<Organization, OrganizationDto>(result);
         }
 
-        public async Task<ListResultDto<OrganizationDto>> GetAll(GetOrganizationInputDto input)
+        public async Task<PagedResultDto<OrganizationDto>> GetAll(GetOrganizationInputDto input)
         {
             var query = _repository
                 .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), _ => _.Name.Contains(input.Filter))
-                .Where(_ => _.Pid == input.Pid)
                 .WhereIf(input.CategoryId.HasValue, _ => _.CategoryId == input.CategoryId);
+            if (input.Id.HasValue)
+            {
+                var org = await _repository.GetAsync(input.Id.Value);
+                query = query.Where(_ => _.CascadeId.Contains(org.CascadeId));
+            }
 
             var items = await query.OrderBy(input.Sorting ?? "Sort")
+                     .Skip(input.SkipCount)
+                     .Take(input.MaxResultCount)
                      .ToListAsync();
+            var totalCount = await query.CountAsync();
 
             var dtos = ObjectMapper.Map<List<Organization>, List<OrganizationDto>>(items);
-            foreach (var dto in dtos)
-            {
-                var any = await _repository.AnyAsync(_ => _.Pid == dto.Id);
-                dto.HasChildren = any ? true : false;
-                dto.Leaf = any ? false : true;
-            }
-            return new ListResultDto<OrganizationDto>(dtos);
+            return new PagedResultDto<OrganizationDto>(totalCount, dtos);
         }
 
         public async Task<ListResultDto<OrganizationDto>> GetAllWithParents(GetOrganizationInputDto input)
         {
             var result = await _repository.Where(_ => _.Pid == null).OrderBy(input.Sorting ?? "Name").ToListAsync();
             var self = await _repository.FirstOrDefaultAsync(_ => _.Id == input.Id);
-            //result.Add(self);
 
             var dtos = ObjectMapper.Map<List<Organization>, List<OrganizationDto>>(result);
             foreach (var dto in dtos)
@@ -111,26 +107,48 @@ namespace Business.BaseData.OrganizationManagement
 
         public async Task<OrganizationDto> Update(Guid id, CreateOrUpdateOrganizationDto input)
         {
-            var org = await _repository.FirstOrDefaultAsync(_ => _.Id == id);
+            if (input.Pid == id)
+            {
+                throw new BusinessException("机构上级不能为当前机构！");
+            }
+            var organization = await _repository.FirstOrDefaultAsync(_ => _.Id == id);
 
-            org.Pid = input.Pid;
-            //TODO：后台任务执行子集fullName修改
-            org.Name = input.Name;
-            org.Sort = input.Sort;
-            org.Enabled = input.Enabled;
+            if (organization.Pid != input.Pid)
+            {
+                var orgs = await _repository.Where(_ => _.CascadeId.Contains(organization.CascadeId) && _.Id != organization.Id)
+                                      .OrderBy(_ => _.CascadeId).ToListAsync();
+                organization.Pid = input.Pid;
+                ChangeOrganizationModel(organization);
+                foreach (var org in orgs)
+                {
+                    ChangeOrganizationModel(org);
+                }
+            }
 
-            return ObjectMapper.Map<Organization, OrganizationDto>(org);
+            organization.Name = input.Name;
+            organization.Sort = input.Sort;
+            organization.Enabled = input.Enabled;
+
+            return ObjectMapper.Map<Organization, OrganizationDto>(organization);
         }
 
-        private void UpdateCascade(Organization org)
+        private void ChangeOrganizationModel(Organization org)
         {
-            var parent = _repository.Where(_ => _.Pid == org.Pid && _.Id != org.Id)
+            var lastLevel = _repository.Where(_ => _.Pid == org.Pid && _.Id != org.Id)
                                   .OrderByDescending(_ => _.CascadeId)
-                                  .First();
+                                  .FirstOrDefault();
+            var cascadeId = lastLevel == null ? 1 : int.Parse(lastLevel.CascadeId.TrimEnd('.').Split('.').Last()) + 1;
 
-            if (parent != null)
+            if (org.Pid.HasValue)
             {
-                return;
+                var parent = _repository.FirstOrDefault(_ => _.Id == org.Pid);
+                org.CascadeId = parent.CascadeId + cascadeId + ".";
+                org.FullName = parent.FullName + "/" + org.Name;
+            }
+            else
+            {
+                org.CascadeId = ".0." + cascadeId + ".";
+                org.FullName = org.Name;
             }
 
         }

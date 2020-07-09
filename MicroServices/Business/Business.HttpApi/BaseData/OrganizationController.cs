@@ -42,7 +42,7 @@ namespace Business.BaseData
 
         [HttpGet]
         [Route("all")]
-        public Task<ListResultDto<OrganizationDto>> GetAll(GetOrganizationInputDto input)
+        public Task<PagedResultDto<OrganizationDto>> GetAll(GetOrganizationInputDto input)
         {
             return _organizationAppService.GetAll(input);
         }

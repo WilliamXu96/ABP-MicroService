@@ -10,7 +10,7 @@ namespace Business.BaseData.OrganizationManagement
 {
     public interface IOrganizationAppService : IApplicationService
     {
-        Task<ListResultDto<OrganizationDto>> GetAll(GetOrganizationInputDto input);
+        Task<PagedResultDto<OrganizationDto>> GetAll(GetOrganizationInputDto input);
 
         Task<ListResultDto<OrganizationDto>> GetAllWithParents(GetOrganizationInputDto input);
 
