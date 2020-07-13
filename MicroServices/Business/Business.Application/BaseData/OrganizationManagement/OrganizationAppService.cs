@@ -78,14 +78,32 @@ namespace Business.BaseData.OrganizationManagement
             return new PagedResultDto<OrganizationDto>(totalCount, dtos);
         }
 
-        public async Task<ListResultDto<OrganizationDto>> LoadAll(Guid? orgId)
+        public async Task<ListResultDto<OrganizationDto>> LoadAll(Guid? id)
         {
-            var query = orgId.HasValue ? _repository.Where(_ => _.Pid == orgId) :
+            var query = id.HasValue ? _repository.Where(_ => _.Pid == id) :
                                          _repository.Where(_ => _.Pid == null);
 
             var items = await query.ToListAsync();
 
             var dtos = ObjectMapper.Map<List<Organization>, List<OrganizationDto>>(items);
+            return new ListResultDto<OrganizationDto>(dtos);
+        }
+
+        public async Task<ListResultDto<OrganizationDto>> LoadAllNodes(Guid id)
+        {
+            var organization = await _repository.GetAsync(id);
+            var orgs = await _repository.Where(_ => _.Pid == null).ToListAsync();
+            if (organization.Pid.HasValue)
+            {
+                for (int i = 1; i < organization.CascadeId.Split(".").Length; i++)
+                {
+                    var parent = await _repository.GetAsync(_ => _.Id == organization.Pid);
+                    orgs.Add(parent);
+                    if (orgs.Any(_ => _.Id == parent.Pid)) break;
+                }
+            }
+            orgs.Add(organization);
+            var dtos = ObjectMapper.Map<List<Organization>, List<OrganizationDto>>(orgs);
             return new ListResultDto<OrganizationDto>(dtos);
         }
 
@@ -156,7 +174,7 @@ namespace Business.BaseData.OrganizationManagement
 
         private void ChangeOrganizationModel(Organization org, Organization parent, bool checkLevel = true)
         {
-            var cascadeId = int.Parse(org.CascadeId.TrimEnd('.').Split('.').Last());
+            var cascadeId = org.CascadeId == null ? 1 : int.Parse(org.CascadeId.TrimEnd('.').Split('.').Last());
             if (checkLevel)
             {
                 if (parent != null && parent.Leaf) parent.Leaf = false;
