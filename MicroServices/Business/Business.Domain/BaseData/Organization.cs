@@ -34,7 +34,7 @@ namespace Business.BaseData
 
         public bool IsDeleted { get; set; }
 
-        public Organization(Guid id, short categoryId, Guid? pid, [NotNull]string name, string fullName, int sort, bool enabled)
+        public Organization(Guid id, short categoryId, Guid? pid, [NotNull]string name, string fullName, int sort, bool leaf, bool enabled)
         {
             Id = id;
             CategoryId = categoryId;
@@ -43,7 +43,7 @@ namespace Business.BaseData
             FullName = fullName;
             Sort = sort;
             Enabled = enabled;
-            //Leaf = leaf;
+            Leaf = leaf;
             //CascadeId = cascadeId；
         }
     }

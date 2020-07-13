@@ -12,6 +12,8 @@ namespace Business.BaseData.OrganizationManagement
     {
         Task<PagedResultDto<OrganizationDto>> GetAll(GetOrganizationInputDto input);
 
+        Task<ListResultDto<OrganizationDto>> LoadAll(Guid? orgId);
+
         Task<ListResultDto<OrganizationDto>> GetAllWithParents(GetOrganizationInputDto input);
 
         Task<PagedResultDto<OrganizationDto>> GetAllList(GetOrganizationInputDto input);

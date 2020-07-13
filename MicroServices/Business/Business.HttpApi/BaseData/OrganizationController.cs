@@ -48,6 +48,13 @@ namespace Business.BaseData
         }
 
         [HttpGet]
+        [Route("loadOrgs")]
+        public Task<ListResultDto<OrganizationDto>> LoadAll(Guid? orgId)
+        {
+            return _organizationAppService.LoadAll(orgId);
+        }
+
+        [HttpGet]
         [Route("list")]
         public Task<PagedResultDto<OrganizationDto>> GetAllList(GetOrganizationInputDto input)
         {

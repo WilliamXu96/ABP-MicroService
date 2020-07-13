@@ -1,5 +1,8 @@
-﻿using Business.BaseData.OrganizationManagement.Dto;
+﻿using AutoMapper.Execution;
+using Business.BaseData.OrganizationManagement.Dto;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,9 +35,11 @@ namespace Business.BaseData.OrganizationManagement
                                                 input.Name,
                                                 "",
                                                 input.Sort,
+                                                true,
                                                 input.Enabled
                                                 );
-            ChangeOrganizationModel(organization);
+            var parent = await _repository.FirstOrDefaultAsync(_ => _.Id == input.Pid);
+            ChangeOrganizationModel(organization, parent);
             await _repository.InsertAsync(organization);
 
             return ObjectMapper.Map<Organization, OrganizationDto>(organization);
@@ -73,6 +78,17 @@ namespace Business.BaseData.OrganizationManagement
             return new PagedResultDto<OrganizationDto>(totalCount, dtos);
         }
 
+        public async Task<ListResultDto<OrganizationDto>> LoadAll(Guid? orgId)
+        {
+            var query = orgId.HasValue ? _repository.Where(_ => _.Pid == orgId) :
+                                         _repository.Where(_ => _.Pid == null);
+
+            var items = await query.ToListAsync();
+
+            var dtos = ObjectMapper.Map<List<Organization>, List<OrganizationDto>>(items);
+            return new ListResultDto<OrganizationDto>(dtos);
+        }
+
         public async Task<ListResultDto<OrganizationDto>> GetAllWithParents(GetOrganizationInputDto input)
         {
             var result = await _repository.Where(_ => _.Pid == null).OrderBy(input.Sorting ?? "Name").ToListAsync();
@@ -107,21 +123,27 @@ namespace Business.BaseData.OrganizationManagement
 
         public async Task<OrganizationDto> Update(Guid id, CreateOrUpdateOrganizationDto input)
         {
-            if (input.Pid == id)
-            {
-                throw new BusinessException("机构上级不能为当前机构！");
-            }
+            if (input.Pid == id) throw new BusinessException("机构上级不能为当前机构！");
             var organization = await _repository.FirstOrDefaultAsync(_ => _.Id == id);
 
             if (organization.Pid != input.Pid)
             {
+                var parent = await _repository.FirstOrDefaultAsync(_ => _.Id == input.Pid);
                 var orgs = await _repository.Where(_ => _.CascadeId.Contains(organization.CascadeId) && _.Id != organization.Id)
                                       .OrderBy(_ => _.CascadeId).ToListAsync();
                 organization.Pid = input.Pid;
-                ChangeOrganizationModel(organization);
+                ChangeOrganizationModel(organization, parent);
                 foreach (var org in orgs)
                 {
-                    ChangeOrganizationModel(org);
+                    if (org.Pid == organization.Id)
+                    {
+                        ChangeOrganizationModel(org, organization, false);
+                    }
+                    else
+                    {
+                        var orgParent = orgs.FirstOrDefault(_ => _.Id == org.Pid);
+                        ChangeOrganizationModel(org, orgParent, false);
+                    }
                 }
             }
 
@@ -132,16 +154,21 @@ namespace Business.BaseData.OrganizationManagement
             return ObjectMapper.Map<Organization, OrganizationDto>(organization);
         }
 
-        private void ChangeOrganizationModel(Organization org)
+        private void ChangeOrganizationModel(Organization org, Organization parent, bool checkLevel = true)
         {
-            var lastLevel = _repository.Where(_ => _.Pid == org.Pid && _.Id != org.Id)
-                                  .OrderByDescending(_ => _.CascadeId)
-                                  .FirstOrDefault();
-            var cascadeId = lastLevel == null ? 1 : int.Parse(lastLevel.CascadeId.TrimEnd('.').Split('.').Last()) + 1;
+            var cascadeId = int.Parse(org.CascadeId.TrimEnd('.').Split('.').Last());
+            if (checkLevel)
+            {
+                if (parent != null && parent.Leaf) parent.Leaf = false;
+                var lastLevel = _repository.Where(_ => _.Pid == org.Pid && _.Id != org.Id)
+                      .OrderByDescending(_ => _.CascadeId)
+                      .FirstOrDefault();
+                cascadeId = lastLevel == null ? 1 : int.Parse(lastLevel.CascadeId.TrimEnd('.').Split('.').Last()) + 1;
+            }
 
             if (org.Pid.HasValue)
             {
-                var parent = _repository.FirstOrDefault(_ => _.Id == org.Pid);
+                if (parent == null) throw new BusinessException("上级机构查询错误！");
                 org.CascadeId = parent.CascadeId + cascadeId + ".";
                 org.FullName = parent.FullName + "/" + org.Name;
             }
