@@ -22,5 +22,7 @@ namespace Business.BaseData.OrganizationManagement.Dto
         public bool HasChildren { get; set; }
 
         public bool Leaf { get; set; }
+
+        public List<OrganizationDto> Children { get; set; }
     }
 }

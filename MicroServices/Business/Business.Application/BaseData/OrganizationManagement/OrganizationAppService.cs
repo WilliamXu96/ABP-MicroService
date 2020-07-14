@@ -78,12 +78,19 @@ namespace Business.BaseData.OrganizationManagement
             return new PagedResultDto<OrganizationDto>(totalCount, dtos);
         }
 
-        public async Task<ListResultDto<OrganizationDto>> LoadAll(Guid? id)
+        public async Task<ListResultDto<OrganizationDto>> LoadAll(Guid? id, string filter)
         {
-            var query = id.HasValue ? _repository.Where(_ => _.Pid == id) :
+            var items = new List<Organization>();
+            if (!string.IsNullOrWhiteSpace(filter))
+            {
+                items = await _repository.Where(_ => _.Name.Contains(filter)).ToListAsync();
+            }
+            else
+            {
+                var query = id.HasValue ? _repository.Where(_ => _.Pid == id) :
                                          _repository.Where(_ => _.Pid == null);
-
-            var items = await query.ToListAsync();
+                items = await query.ToListAsync();
+            }
 
             var dtos = ObjectMapper.Map<List<Organization>, List<OrganizationDto>>(items);
             return new ListResultDto<OrganizationDto>(dtos);

@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
-    <!-- <el-row :gutter="20"> -->
+    <el-row :gutter="20">
     <!--侧边部门树形列表-->
-    <!-- <el-col :xs="9" :sm="6" :md="5" :lg="4" :xl="4"> -->
-    <!-- <div class="head-container">
+    <el-col :xs="9" :sm="6" :md="5" :lg="4" :xl="4">
+    <div class="head-container">
           <el-input
             v-model="orgName"
             clearable
@@ -22,9 +22,9 @@
           lazy
           @node-click="handleNodeClick"
           style="margin-top:15px"
-    />-->
-    <!-- </el-col> -->
-    <!-- <el-col :xs="15" :sm="18" :md="19" :lg="20" :xl="20"> -->
+    />
+    </el-col>
+    <el-col :xs="15" :sm="18" :md="19" :lg="20" :xl="20">
     <div class="head-container">
       <el-input
         v-model="listQuery.Filter"
@@ -51,15 +51,15 @@
           @click="handleCreate"
           v-permission="['Business.Organization.Create']"
         >新增</el-button>
-        <!-- <el-button
+        <el-button
           class="filter-item"
           size="mini"
           type="success"
           icon="el-icon-edit"
           v-permission="['AbpIdentity.Roles.Update']"
           @click="handleUpdate()"
-        >修改</el-button> -->
-        <!-- <el-button
+        >修改</el-button>
+        <el-button
           slot="reference"
           class="filter-item"
           type="danger"
@@ -67,7 +67,7 @@
           size="mini"
           v-permission="['AbpIdentity.Roles.Delete']"
           @click="handleDelete()"
-        >删除</el-button> -->
+        >删除</el-button>
       </div>
     </div>
     <el-dialog
@@ -135,17 +135,14 @@
     <el-table
       ref="multipleTable"
       v-loading="listLoading"
-      lazy
-      :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
       row-key="id"
       :data="list"
       size="small"
       style="width: 90%;"
-      :load="loadOrgDatas"
       @selection-change="handleSelectionChange"
       @row-click="handleRowClick"
     >
-      <!-- <el-table-column type="selection" width="44px"></el-table-column> -->
+      <el-table-column type="selection" width="44px"></el-table-column>
       <el-table-column label="机构名称" prop="name">
         <template slot-scope="{row}">
           <span class="link-type" @click="handleUpdate(row)">{{row.name}}</span>
@@ -196,8 +193,8 @@
         </template>
       </el-table-column>
     </el-table>
-    <!-- </el-col> -->
-    <!-- </el-row> -->
+    </el-col>
+    </el-row>
   </div>
 </template>
 <script>
@@ -266,31 +263,31 @@ export default {
     this.getList();
   },
   methods: {
-    // getOrgs(node, resolve) {
-    //   const params = {};
-    //   if (typeof node !== "object") {
-    //     if (node) {
-    //       params["name"] = node;
-    //     }
-    //   } else if (node.level !== 0) {
-    //     params["pid"] = node.data.id;
-    //   }
-    //   //TODO:仅获取启用机构
-    //   setTimeout(() => {
-    //     this.$axios.gets("/api/business/orgs/all", params).then(response => {
-    //       if (resolve) {
-    //         resolve(response.items);
-    //       } else {
-    //         this.orgDatas = response.items;
-    //       }
-    //     });
-    //   }, 100);
-    // },
+    getOrgs(node, resolve) {
+      const params = {};
+      if (typeof node !== "object") {
+        if (node) {
+          params["filter"] = node;
+        }
+      } else if (node.level !== 0) {
+        params["id"] = node.data.id;
+      }
+      //TODO:仅获取启用机构
+      setTimeout(() => {
+        this.$axios.gets("/api/business/orgs/loadOrgs", params).then(response => {
+          if (resolve) {
+            resolve(response.items);
+          } else {
+            this.orgDatas = response.items;
+          }
+        });
+      }, 100);
+    },
     getFormOrgs() {
-      this.$axios.gets("/api/business/orgs/all").then(response => {
+      this.$axios.gets("/api/business/orgs/loadOrgs").then(response => {
         this.orgs = response.items.map(function(obj) {
           obj.label = obj.name;
-          if (obj.hasChildren) {
+          if (!obj.leaf) {
             obj.children = null;
           }
           return obj;
@@ -299,7 +296,7 @@ export default {
     },
     getSupOrgs(id) {
       this.$axios
-        .gets("/api/business/orgs/parents", { id: id })
+        .gets("/api/business/orgs/loadNodes", {id: id} )
         .then(response => {
           this.orgs = response.items.map(function(obj) {
             obj.label = obj.name;
@@ -322,15 +319,15 @@ export default {
           this.listLoading = false;
         });
     },
-    loadOrgDatas(tree, treeNode, resolve) {
-      setTimeout(() => {
-        this.$axios
-          .gets("/api/business/orgs/all", { pid: tree.id })
-          .then(response => {
-            resolve(response.items);
-          });
-      }, 100);
-    },
+    // loadOrgDatas(tree, treeNode, resolve) {
+    //   setTimeout(() => {
+    //     this.$axios
+    //       .gets("/api/business/orgs/all", { pid: tree.id })
+    //       .then(response => {
+    //         resolve(response.items);
+    //       });
+    //   }, 100);
+    // },
     fetchData(id) {
       this.getSupOrgs(id);
       this.$axios.gets("/api/business/orgs/" + id).then(response => {
@@ -341,11 +338,11 @@ export default {
     loadOrgs({ action, parentNode, callback }) {
       if (action === LOAD_CHILDREN_OPTIONS) {
         this.$axios
-          .gets("/api/business/orgs/all", { pid: parentNode.id })
+          .gets("/api/business/orgs/loadOrgs", { id: parentNode.id })
           .then(response => {
             parentNode.children = response.items.map(function(obj) {
               obj.label = obj.name;
-              if (obj.hasChildren) {
+              if (!obj.leaf) {
                 obj.children = null;
               }
               return obj;
@@ -461,9 +458,10 @@ export default {
       this.form = Object.assign({}, defaultForm);
       this.orgs = [];
     },
-    // handleNodeClick(data) {
-    //   this.getList(data.id);
-    // },
+    handleNodeClick(data) {
+      this.listQuery.id=data.id
+      this.getList();
+    },
     changeEnabled(data, val) {
       data.active = val ? "启用" : "停用";
       this.$confirm("是否" + data.active + data.name + "？", "提示", {

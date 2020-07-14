@@ -12,7 +12,7 @@ namespace Business.BaseData.OrganizationManagement
     {
         Task<PagedResultDto<OrganizationDto>> GetAll(GetOrganizationInputDto input);
 
-        Task<ListResultDto<OrganizationDto>> LoadAll(Guid? id);
+        Task<ListResultDto<OrganizationDto>> LoadAll(Guid? id, string filter);
 
         Task<ListResultDto<OrganizationDto>> LoadAllNodes(Guid id);
 

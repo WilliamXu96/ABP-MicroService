@@ -3,6 +3,7 @@ using Business.BaseData.OrganizationManagement.Dto;
 using Business.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 
@@ -48,14 +49,14 @@ namespace Business.BaseData
 
         [HttpGet]
         [Route("loadOrgs")]
-        public Task<ListResultDto<OrganizationDto>> LoadAll(Guid? orgId)
+        public Task<ListResultDto<OrganizationDto>> LoadAll(Guid? id, string filter)
         {
-            return _organizationAppService.LoadAll(orgId);
+            return _organizationAppService.LoadAll(id, filter);
         }
 
         [HttpGet]
         [Route("loadNodes")]
-        public Task<ListResultDto<OrganizationDto>> LoadAllNodes(Guid id)
+        public Task<ListResultDto<OrganizationDto>> LoadAllNodes([Required]Guid id)
         {
             return _organizationAppService.LoadAllNodes(id);
         }
