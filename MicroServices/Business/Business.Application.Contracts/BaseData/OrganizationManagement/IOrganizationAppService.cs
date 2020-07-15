@@ -14,7 +14,7 @@ namespace Business.BaseData.OrganizationManagement
 
         Task<ListResultDto<OrganizationDto>> LoadAll(Guid? id, string filter);
 
-        Task<ListResultDto<OrganizationDto>> LoadAllNodes(Guid id);
+        Task<ListResultDto<OrganizationDto>> LoadAllNodes();
 
         Task<ListResultDto<OrganizationDto>> GetAllWithParents(GetOrganizationInputDto input);
 

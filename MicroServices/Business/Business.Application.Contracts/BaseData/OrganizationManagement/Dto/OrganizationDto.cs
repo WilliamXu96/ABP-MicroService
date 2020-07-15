@@ -23,6 +23,8 @@ namespace Business.BaseData.OrganizationManagement.Dto
 
         public bool Leaf { get; set; }
 
-        public List<OrganizationDto> Children { get; set; }
+        #region   >扩展字段<
+        public string Label { get; set; }
+        #endregion
     }
 }

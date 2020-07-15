@@ -96,21 +96,24 @@ namespace Business.BaseData.OrganizationManagement
             return new ListResultDto<OrganizationDto>(dtos);
         }
 
-        public async Task<ListResultDto<OrganizationDto>> LoadAllNodes(Guid id)
+        public async Task<ListResultDto<OrganizationDto>> LoadAllNodes()
         {
-            var organization = await _repository.GetAsync(id);
-            var orgs = await _repository.Where(_ => _.Pid == null).ToListAsync();
-            if (organization.Pid.HasValue)
-            {
-                for (int i = 1; i < organization.CascadeId.Split(".").Length; i++)
-                {
-                    var parent = await _repository.GetAsync(_ => _.Id == organization.Pid);
-                    orgs.Add(parent);
-                    if (orgs.Any(_ => _.Id == parent.Pid)) break;
-                }
-            }
-            orgs.Add(organization);
-            var dtos = ObjectMapper.Map<List<Organization>, List<OrganizationDto>>(orgs);
+            //var organization = await _repository.GetAsync(id);
+            //var orgs = await _repository.Where(_ => _.Pid == null).ToListAsync();
+            //if (organization.Pid.HasValue)
+            //{
+            //    for (int i = 1; i < organization.CascadeId.Split(".").Length; i++)
+            //    {
+            //        var parent = await _repository.GetAsync(_ => _.Id == organization.Pid);
+            //        orgs.Add(parent);
+            //        if (orgs.Any(_ => _.Id == parent.Pid)) break;
+            //    }
+            //}
+            //orgs.Add(organization);
+
+            var items = await _repository.GetListAsync();
+
+            var dtos = ObjectMapper.Map<List<Organization>, List<OrganizationDto>>(items);
             return new ListResultDto<OrganizationDto>(dtos);
         }
 

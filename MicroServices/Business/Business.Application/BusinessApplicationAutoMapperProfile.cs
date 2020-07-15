@@ -15,7 +15,8 @@ namespace Business
 
             CreateMap<DataDictionaryDetail, DictionaryDetailDto>();
 
-            CreateMap<Organization, OrganizationDto>();
+            CreateMap<Organization, OrganizationDto>()
+                .ForMember(dto => dto.Label, opt => opt.MapFrom(src => src.Name));
 
             CreateMap<Employee, EmployeeDto>();
 

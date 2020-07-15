@@ -56,9 +56,9 @@ namespace Business.BaseData
 
         [HttpGet]
         [Route("loadNodes")]
-        public Task<ListResultDto<OrganizationDto>> LoadAllNodes([Required]Guid id)
+        public Task<ListResultDto<OrganizationDto>> LoadAllNodes()
         {
-            return _organizationAppService.LoadAllNodes(id);
+            return _organizationAppService.LoadAllNodes();
         }
 
         [HttpGet]
