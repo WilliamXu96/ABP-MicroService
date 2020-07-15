@@ -45,7 +45,7 @@
         <td><img src="https://i.loli.net/2020/06/16/yc1LUur8fKDlWgF.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://i.loli.net/2020/06/22/5Wsl9NgB3CbGh4H.png"/></td>
+        <td><img src="https://i.loli.net/2020/07/15/MulxvK7mePRJpLQ.png"/></td>
         <td><img src="https://i.loli.net/2020/06/22/UZcrAliMTv7JntO.png"/></td>
     </tr>
 </table>
