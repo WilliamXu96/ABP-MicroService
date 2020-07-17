@@ -72,6 +72,12 @@ namespace Business.BaseData.EmployeeManagement
         public async Task<PagedResultDto<EmployeeDto>> GetAll(GetEmployeeInputDto input)
         {
             var query = _repository.WhereIf(!string.IsNullOrWhiteSpace(input.Filter), _ => _.Name.Contains(input.Filter));
+            if (input.OrgId.HasValue)
+            {
+                var org = await _orgRepository.GetAsync(input.OrgId.Value);
+                var orgIds = await _orgRepository.Where(_ => _.CascadeId.Contains(org.CascadeId)).Select(_=>_.Id).ToListAsync();
+                query = query.Where(_ => orgIds.Contains(_.OrgId));
+            }
 
             var totalCount = await query.CountAsync();
             var items = await query.OrderBy(input.Sorting ?? "Name")

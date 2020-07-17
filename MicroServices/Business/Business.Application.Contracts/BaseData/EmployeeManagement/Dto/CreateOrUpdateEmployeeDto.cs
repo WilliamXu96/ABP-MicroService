@@ -19,7 +19,7 @@ namespace Business.BaseData.EmployeeManagement.Dto
 
         public bool Enabled { get; set; }
 
-        public Guid? OrgId { get; set; }
+        public Guid OrgId { get; set; }
 
         public Guid? UserId { get; set; }
     }

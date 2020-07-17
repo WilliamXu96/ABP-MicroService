@@ -7,6 +7,8 @@ namespace Business.BaseData.EmployeeManagement.Dto
 {
     public class GetEmployeeInputDto : PagedAndSortedResultRequestDto
     {
+        public Guid? OrgId { get; set; }
+
         public string Filter { get; set; }
     }
 }
