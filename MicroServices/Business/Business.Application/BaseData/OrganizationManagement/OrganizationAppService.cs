@@ -1,8 +1,5 @@
-﻿using AutoMapper.Execution;
-using Business.BaseData.OrganizationManagement.Dto;
-using JetBrains.Annotations;
+﻿using Business.BaseData.OrganizationManagement.Dto;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -98,55 +95,10 @@ namespace Business.BaseData.OrganizationManagement
 
         public async Task<ListResultDto<OrganizationDto>> LoadAllNodes()
         {
-            //var organization = await _repository.GetAsync(id);
-            //var orgs = await _repository.Where(_ => _.Pid == null).ToListAsync();
-            //if (organization.Pid.HasValue)
-            //{
-            //    for (int i = 1; i < organization.CascadeId.Split(".").Length; i++)
-            //    {
-            //        var parent = await _repository.GetAsync(_ => _.Id == organization.Pid);
-            //        orgs.Add(parent);
-            //        if (orgs.Any(_ => _.Id == parent.Pid)) break;
-            //    }
-            //}
-            //orgs.Add(organization);
-
             var items = await _repository.GetListAsync();
 
             var dtos = ObjectMapper.Map<List<Organization>, List<OrganizationDto>>(items);
             return new ListResultDto<OrganizationDto>(dtos);
-        }
-
-        public async Task<ListResultDto<OrganizationDto>> GetAllWithParents(GetOrganizationInputDto input)
-        {
-            var result = await _repository.Where(_ => _.Pid == null).OrderBy(input.Sorting ?? "Name").ToListAsync();
-            var self = await _repository.FirstOrDefaultAsync(_ => _.Id == input.Id);
-
-            var dtos = ObjectMapper.Map<List<Organization>, List<OrganizationDto>>(result);
-            foreach (var dto in dtos)
-            {
-                var any = await _repository.AnyAsync(_ => _.Pid == dto.Id);
-                dto.HasChildren = any ? true : false;
-                dto.Leaf = any ? false : true;
-            }
-            return new ListResultDto<OrganizationDto>(dtos);
-        }
-
-        public async Task<PagedResultDto<OrganizationDto>> GetAllList(GetOrganizationInputDto input)
-        {
-            var query = _repository
-                .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), _ => _.Name.Contains(input.Filter))
-                .WhereIf(input.Pid.HasValue, _ => _.Pid == input.Pid)
-                .WhereIf(input.CategoryId.HasValue, _ => _.CategoryId == input.CategoryId);
-
-            var items = await query.OrderBy(input.Sorting ?? "Name")
-                     .Skip(input.SkipCount)
-                     .Take(input.MaxResultCount)
-                     .ToListAsync();
-            var totalCount = await query.CountAsync();
-
-            var dtos = ObjectMapper.Map<List<Organization>, List<OrganizationDto>>(items);
-            return new PagedResultDto<OrganizationDto>(totalCount, dtos);
         }
 
         public async Task<OrganizationDto> Update(Guid id, CreateOrUpdateOrganizationDto input)

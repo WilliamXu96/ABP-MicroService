@@ -293,17 +293,7 @@ export default {
           });
       }, 100);
     },
-    getFormOrgs() {
-      this.$axios.gets("/api/business/orgs/loadOrgs").then(response => {
-        this.orgs = response.items.map(function(obj) {
-          if (!obj.leaf) {
-            obj.children = null;
-          }
-          return obj;
-        });
-      });
-    },
-    getSupOrgs(id) {
+    getOrgNodes(id) {
       this.$axios.gets("/api/business/orgs/loadNodes").then(response => {
         this.loadTree(response);
       });
@@ -321,7 +311,7 @@ export default {
         });
     },
     fetchData(id) {
-      this.getSupOrgs(id);
+      this.getOrgNodes(id);
       this.$axios.gets("/api/business/orgs/" + id).then(response => {
         this.form = response;
         this.isTop = response.pid ? false : true;
@@ -333,7 +323,6 @@ export default {
           .gets("/api/business/orgs/loadOrgs", { id: parentNode.id })
           .then(response => {
             parentNode.children = response.items.map(function(obj) {
-              //obj.label = obj.name;
               if (!obj.leaf) {
                 obj.children = null;
               }
@@ -422,7 +411,14 @@ export default {
       this.formTitle = "新增机构";
       this.isEdit = false;
       this.dialogFormVisible = true;
-      this.getFormOrgs();
+      this.$axios.gets("/api/business/orgs/loadOrgs").then(response => {
+        this.orgs = response.items.map(function(obj) {
+          if (!obj.leaf) {
+            obj.children = null;
+          }
+          return obj;
+        });
+      });
     },
     handleDelete(row) {
       this.$confirm("是否删除" + alert.name + "?", "提示", {

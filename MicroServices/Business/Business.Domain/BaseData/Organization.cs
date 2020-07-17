@@ -44,7 +44,6 @@ namespace Business.BaseData
             Sort = sort;
             Enabled = enabled;
             Leaf = leaf;
-            //CascadeId = cascadeId；
         }
     }
 }

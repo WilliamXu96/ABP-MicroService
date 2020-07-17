@@ -342,11 +342,10 @@ export default {
     loadOrgs({ action, parentNode, callback }) {
       if (action === LOAD_CHILDREN_OPTIONS) {
         this.$axios
-          .gets("/api/business/orgs/all", { pid: parentNode.id })
+          .gets("/api/business/orgs/loadOrgs", { id: parentNode.id })
           .then(response => {
             parentNode.children = response.items.map(function(obj) {
-              obj.label = obj.name;
-              if (obj.hasChildren) {
+              if (!obj.leaf) {
                 obj.children = null;
               }
               return obj;
@@ -356,17 +355,6 @@ export default {
             }, 100);
           });
       }
-    },
-    getOrgs() {
-      this.$axios.gets("/api/business/orgs/all").then(response => {
-        this.orgs = response.items.map(function(obj) {
-          obj.label = obj.name;
-          if (obj.hasChildren) {
-            obj.children = null;
-          }
-          return obj;
-        });
-      });
     },
     getSupOrgs(id) {
       this.$axios
@@ -455,7 +443,14 @@ export default {
       this.formTitle = "新增职员";
       this.isEdit = false;
       this.dialogFormVisible = true;
-      this.getOrgs();
+      this.$axios.gets("/api/business/orgs/loadOrgs").then(response => {
+        this.orgs = response.items.map(function(obj) {
+          if (!obj.leaf) {
+            obj.children = null;
+          }
+          return obj;
+        });
+      });
     },
     handleDelete(row) {
       var params = [];
