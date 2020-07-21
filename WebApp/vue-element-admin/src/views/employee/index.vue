@@ -332,6 +332,7 @@ export default {
       userListLoading: true,
       formLoading: false,
       listQuery: {
+        OrgId:null,
         Filter: "",
         Sorting: "",
         SkipCount: 0,
@@ -382,8 +383,13 @@ export default {
           this.listLoading = false;
         });
     },
+    getOrgNodes(id) {
+      this.$axios.gets("/api/business/orgs/loadNodes").then(response => {
+        this.loadTree(response);
+      });
+    },
     fetchData(id) {
-      //this.getOrgs();
+      this.getOrgNodes(id);
       this.$axios.gets("/api/business/employee/" + id).then(response => {
         this.form = response;
         if (response.userId) {
@@ -407,6 +413,33 @@ export default {
             }, 100);
           });
       }
+    },
+    //TODO：引用公共方法
+    loadTree(data) {
+      data.items.forEach(element => {
+        if (!element.pid) {
+          element.hasChildren = element.leaf ? false : true;
+          if (!element.leaf) {
+            element.children = [];
+          }
+          this.orgs.push(element);
+        }
+      });
+      this.setChildren(this.orgs, data.items);
+    },
+    setChildren(roots, items) {
+      roots.forEach(element => {
+        items.forEach(item => {
+          if (item.pid == element.id) {
+            if(!element.children)
+              element.children=[]
+            element.children.push(item);
+          }
+        });
+        if (element.children) {
+          this.setChildren(element.children, items);
+        }
+      });
     },
     getSupOrgs(id) {
       this.$axios
@@ -449,7 +482,7 @@ export default {
       this.getUserList();
     },
     handleNodeClick(data) {
-      //this.listQuery.id = data.id;
+      this.listQuery.OrgId = data.id;
       this.getList();
     },
     save() {
