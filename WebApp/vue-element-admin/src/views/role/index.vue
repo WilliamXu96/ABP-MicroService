@@ -332,7 +332,7 @@ export default {
       });
       this.$axios
         .puts(
-          "/api/abp/permissions?providerName=R&providerKey=" + this.multipleSelection[0].name,
+          "/api/permission-management/permissions?providerName=R&providerKey=" + this.multipleSelection[0].name,
           params
         )
         .then(response => {
@@ -428,7 +428,7 @@ export default {
       this.$refs.multipleTable.toggleRowSelection(row);
       this.params.providerKey = row.name;
       this.$axios
-        .getPermissions("/api/abp/permissions", this.params)
+        .getPermissions("/api/permission-management/permissions", this.params)
         .then(response => {
           this.permissionsData = [];
           this.checkedPermission = [];
@@ -514,7 +514,7 @@ export default {
     },
     loadPermissions() {
       this.$axios
-        .getPermissions("/api/abp/permissions", this.params)
+        .getPermissions("/api/permission-management/permissions", this.params)
         .then(response => {
           this.permissionsData = [];
           this.checkedPermission = [];
