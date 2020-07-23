@@ -26,6 +26,9 @@ using Volo.Abp.TenantManagement;
 using Volo.Abp.Threading;
 using Volo.Abp.Data;
 using Volo.Abp.AspNetCore.Serilog;
+using Volo.Abp.PermissionManagement.HttpApi;
+using Volo.Abp.PermissionManagement;
+using Volo.Abp.PermissionManagement.Identity;
 
 namespace IdentityService.Host
 {
@@ -35,6 +38,9 @@ namespace IdentityService.Host
         typeof(AbpEntityFrameworkCoreSqlServerModule),
         typeof(AbpAuditLoggingEntityFrameworkCoreModule),
         typeof(AbpPermissionManagementEntityFrameworkCoreModule),
+        typeof(AbpPermissionManagementHttpApiModule),
+        typeof(AbpPermissionManagementDomainIdentityModule),
+        typeof(AbpPermissionManagementApplicationModule),
         typeof(AbpSettingManagementEntityFrameworkCoreModule),
         typeof(AbpTenantManagementEntityFrameworkCoreModule),
         typeof(AbpTenantManagementHttpApiModule),
