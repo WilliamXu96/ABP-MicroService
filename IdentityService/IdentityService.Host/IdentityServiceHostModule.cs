@@ -29,6 +29,7 @@ using Volo.Abp.AspNetCore.Serilog;
 using Volo.Abp.PermissionManagement.HttpApi;
 using Volo.Abp.PermissionManagement;
 using Volo.Abp.PermissionManagement.Identity;
+using Business;
 
 namespace IdentityService.Host
 {
@@ -46,6 +47,7 @@ namespace IdentityService.Host
         typeof(AbpTenantManagementHttpApiModule),
         typeof(AbpTenantManagementApplicationModule),
         typeof(AbpIdentityHttpApiModule),
+        typeof(BusinessHttpApiModule),
         typeof(AbpIdentityEntityFrameworkCoreModule),
         typeof(AbpIdentityApplicationModule),
         typeof(AbpAspNetCoreSerilogModule)
@@ -95,6 +97,17 @@ namespace IdentityService.Host
             var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]);
             context.Services.AddDataProtection()
                 .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
+
+            Configure<AbpLocalizationOptions>(options =>
+            {
+                options.Languages.Add(new LanguageInfo("cs", "cs", "Čeština"));
+                options.Languages.Add(new LanguageInfo("en", "en", "English"));
+                options.Languages.Add(new LanguageInfo("pt-BR", "pt-BR", "Português"));
+                options.Languages.Add(new LanguageInfo("ru", "ru", "Русский"));
+                options.Languages.Add(new LanguageInfo("tr", "tr", "Türkçe"));
+                options.Languages.Add(new LanguageInfo("zh-Hans", "zh-Hans", "简体中文"));
+                options.Languages.Add(new LanguageInfo("zh-Hant", "zh-Hant", "繁體中文"));
+            });
         }
 
         public override void OnApplicationInitialization(ApplicationInitializationContext context)
