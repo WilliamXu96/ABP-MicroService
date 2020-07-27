@@ -1,5 +1,6 @@
 ﻿using Business.Localization;
 using Business.MultiTenancy;
+using Volo.Abp.AuditLogging;
 using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
 using Volo.Abp.MultiTenancy;
@@ -11,6 +12,7 @@ namespace Business
 {
     [DependsOn(
         typeof(AbpLocalizationModule),
+        typeof(AbpAuditLoggingDomainModule),
         typeof(AbpSettingManagementDomainModule)
     )]
     public class BusinessDomainModule : AbpModule
