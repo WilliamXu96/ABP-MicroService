@@ -8,6 +8,11 @@ namespace Business.Permissions
     {
         public const string Business = "Business";
 
+        public static class AuditLogging
+        {
+            public const string Default = Business + ".AuditLogging";
+        }
+
         public static class DataDictionary
         {
             public const string Default = Business + ".DataDictionary";

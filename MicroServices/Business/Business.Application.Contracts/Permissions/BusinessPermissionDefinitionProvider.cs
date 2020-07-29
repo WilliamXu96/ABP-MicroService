@@ -16,6 +16,8 @@ namespace Business.Permissions
         {
             var business = context.AddGroup(BusinessPermissions.Business, L("Business"), MultiTenancySides.Tenant);
 
+            var auditLogging = business.AddPermission(BusinessPermissions.AuditLogging.Default, L("AuditLogging"));
+
             var dictionary = business.AddPermission(BusinessPermissions.DataDictionary.Default, L("DataDictionary"));
             dictionary.AddChild(BusinessPermissions.DataDictionary.Update, L("Edit"));
             dictionary.AddChild(BusinessPermissions.DataDictionary.Delete, L("Delete"));

@@ -65,7 +65,8 @@ export default {
     dict:'数据字典',
     org:'组织机构',
     job:'岗位管理',
-    employee:'职员管理'
+    employee:'职员管理',
+    log:'操作日志'
   },
   navbar: {
     dashboard: '首页',

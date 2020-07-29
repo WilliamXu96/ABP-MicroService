@@ -9,7 +9,7 @@ using Volo.Abp.Application.Dtos;
 namespace Business.Systems
 {
     [Area("business")]
-    [Route("api/system/auditLogging")]
+    [Route("api/business/auditLogging")]
     public class AuditLoggingController : BusinessController, IAuditLoggingAppService
     {
         private readonly IAuditLoggingAppService _auditLoggingAppService;

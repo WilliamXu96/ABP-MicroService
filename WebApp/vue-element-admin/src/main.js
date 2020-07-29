@@ -18,6 +18,7 @@ import './icons' // icon
 import './permission' // permission control
 import './utils/error-log' // error log
 import axios from './axios'
+import moment from 'moment'
 
 import * as filters from './filters' // global filters
 
@@ -42,6 +43,18 @@ Vue.use(Element, {
 // register global utility filters
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
+})
+
+Vue.filter('formatDate', function(value) {
+  if (value) {
+    return moment(String(value)).format('YYYY-MM-DD')
+  }
+})
+
+Vue.filter('formatDateTime', function(value) {
+  if (value) {
+    return moment(String(value)).format('YYYY-MM-DD hh:mm:ss')
+  }
 })
 
 Vue.prototype.$axios = axios
