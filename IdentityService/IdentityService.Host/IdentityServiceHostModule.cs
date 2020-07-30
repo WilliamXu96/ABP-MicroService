@@ -30,6 +30,7 @@ using Volo.Abp.PermissionManagement.HttpApi;
 using Volo.Abp.PermissionManagement;
 using Volo.Abp.PermissionManagement.Identity;
 using Business;
+using Microsoft.AspNetCore.Cors;
 
 namespace IdentityService.Host
 {
@@ -54,6 +55,8 @@ namespace IdentityService.Host
     )]
     public class IdentityServiceHostModule : AbpModule
     {
+        private const string DefaultCorsPolicyName = "Default";
+
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
             var configuration = context.Services.GetConfiguration();
@@ -94,6 +97,25 @@ namespace IdentityService.Host
                 options.ApplicationName = "IdentityService";
             });
 
+            context.Services.AddCors(options =>
+            {
+                options.AddPolicy(DefaultCorsPolicyName, builder =>
+                {
+                    builder
+                        .WithOrigins(
+                            configuration["App:CorsOrigins"]
+                                .Split(",", StringSplitOptions.RemoveEmptyEntries)
+                                .Select(o => o.RemovePostFix("/"))
+                                .ToArray()
+                        )
+                        .WithAbpExposedHeaders()
+                        .SetIsOriginAllowedToAllowWildcardSubdomains()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                });
+            });
+
             var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]);
             context.Services.AddDataProtection()
                 .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
@@ -117,6 +139,7 @@ namespace IdentityService.Host
             app.UseCorrelationId();
             app.UseVirtualFiles();
             app.UseRouting();
+            app.UseCors(DefaultCorsPolicyName);
             app.UseAuthentication();
             app.UseMultiTenancy();
             app.UseAuthorization();

@@ -179,8 +179,7 @@ export const asyncRoutes = [
       name: 'Log',
       meta: {
         title: 'log',
-        //TODO：改为Business.AuditLogging
-        roles: ['Business.Employee'],
+        roles: ['Business.AuditLogging'],
         icon: 'log'
       }
     },
