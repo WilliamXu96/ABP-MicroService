@@ -59,6 +59,13 @@ namespace Business.BaseData.JobManagement
             return new PagedResultDto<JobDto>(totalCount, dots);
         }
 
+        public async Task<ListResultDto<JobDto>> GetAllJobs()
+        {
+            var jobs = await _repository.GetListAsync();
+
+            return new ListResultDto<JobDto>(ObjectMapper.Map<List<Job>, List<JobDto>>(jobs));
+        }
+
         public async Task<JobDto> Update(Guid id, CreateOrUpdateJobDto input)
         {
             var job = await _repository.GetAsync(id);

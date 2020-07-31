@@ -88,7 +88,8 @@ namespace Business.EntityFrameworkCore
             builder.Entity<EmployeeJob>(b =>
             {
                 b.ToTable("base_employee_jobs");
-                b.HasKey(k => k.EmployeeId);
+
+                b.HasKey(k => new { k.EmployeeId, k.JobId });
             });
         }
     }

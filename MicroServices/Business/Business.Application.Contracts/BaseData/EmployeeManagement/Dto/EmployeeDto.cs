@@ -24,6 +24,8 @@ namespace Business.BaseData.EmployeeManagement.Dto
 
         public Guid? UserId { get; set; }
 
+        public List<Guid> Jobs { get; set; }
+
         public string OrgIdToName { get; set; }
 
         public string UserIdToName { get; set; }

@@ -5,16 +5,17 @@
           v-model="listQuery.UserName"
           placeholder="用户名"
           style="width: 150px;"
+          size="small"
           class="filter-item"
           @keyup.enter.native="handleFilter"
         />
-        <el-select class="filter-item" style="width: 130px" v-model="listQuery.HttpMethod" placeholder="Http方法">
+        <el-select class="filter-item" size="small" style="width: 130px" v-model="listQuery.HttpMethod" placeholder="Http方法">
             <el-option label="GET" value="GET"></el-option>
             <el-option label="POST" value="POST"></el-option>
             <el-option label="PUT" value="PUT"></el-option>
             <el-option label="DELETE" value="DELETE"></el-option>
         </el-select>
-        <el-button class="filter-item" type="success" icon="el-icon-search" @click="handleFilter">搜索</el-button>
+        <el-button class="filter-item" size="mini" type="success" icon="el-icon-search" @click="handleFilter">搜索</el-button>
     </div>
 
     <el-table ref="table" v-loading="listLoading" :data="list" @sort-change="sortChange" style="width: 100%;">

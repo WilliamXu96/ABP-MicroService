@@ -15,7 +15,7 @@
           />
         </div>
         <el-tree
-          :data="orgDatas"
+          :data="orgData"
           :load="getOrgs"
           :props="defaultProps"
           :expand-on-click-node="false"
@@ -76,7 +76,7 @@
           :close-on-click-modal="false"
           :title="formTitle"
           @close="cancel()"
-          width="500px"
+          width="580px"
         >
           <el-form
             ref="form"
@@ -87,16 +87,47 @@
             label-width="70px"
           >
             <el-form-item label="名称" prop="name">
-              <el-input v-model="form.name" style="width: 370px;" />
+              <el-input v-model="form.name" />
             </el-form-item>
             <el-form-item label="电话" prop="phone">
-              <el-input v-model="form.phone" style="width: 370px;" />
+              <el-input v-model="form.phone" />
             </el-form-item>
             <el-form-item label="邮箱" prop="email">
-              <el-input v-model="form.email" style="width: 370px;" />
+              <el-input v-model="form.email" />
+            </el-form-item>
+            <el-form-item label="所属机构" prop="orgId">
+              <treeselect
+                v-model="form.orgId"
+                :load-options="loadOrgs"
+                :options="orgs"
+                style="width: 184px;"
+                placeholder="选择所属机构"
+              />
+            </el-form-item>
+            <el-form-item label="岗位" prop="name">
+              <el-select
+                class="filter-item"
+                size="small"
+                style="width: 184px"
+                multiple
+                v-model="form.jobs"
+                placeholder="选择岗位"
+              >
+              <el-option v-for="item in jobData" :key="item.id" :label="item.name" :value="item.id" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="关联用户" prop="userId">
+              <el-input
+                v-model="form.userIdToName"
+                readonly
+                placeholder="请选择"
+                style="width: 184px;"
+              >
+                <el-button slot="append" icon="el-icon-search" @click="handleSelectUser()"></el-button>
+              </el-input>
             </el-form-item>
             <el-form-item label="性别" prop="gender">
-              <el-radio-group v-model="form.gender" style="width: 140px">
+              <el-radio-group v-model="form.gender" style="width: 184px">
                 <el-radio :label="1">男</el-radio>
                 <el-radio :label="0">女</el-radio>
               </el-radio-group>
@@ -106,20 +137,6 @@
                 <el-radio :label="true">启用</el-radio>
                 <el-radio :label="false">禁用</el-radio>
               </el-radio-group>
-            </el-form-item>
-            <el-form-item label="所属机构" prop="orgId">
-              <treeselect
-                v-model="form.orgId"
-                :load-options="loadOrgs"
-                :options="orgs"
-                style="width: 370px;"
-                placeholder="选择所属机构"
-              />
-            </el-form-item>
-            <el-form-item label="关联用户" prop="userId">
-              <el-input v-model="form.userIdToName" readonly placeholder="请选择" style="width: 370px">
-                <el-button slot="append" icon="el-icon-search" @click="handleSelectUser()"></el-button>
-              </el-input>
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -285,8 +302,9 @@ const defaultForm = {
   enabled: true,
   orgId: null,
   userId: null,
+  jobs: [],
   userIdToName: null,
-  orgIdToName: null
+  orgIdToName: null,
 };
 export default {
   name: "Employee",
@@ -296,10 +314,10 @@ export default {
     displayGender(gender) {
       const genderMap = {
         0: "女",
-        1: "男"
+        1: "男",
       };
       return genderMap[gender];
-    }
+    },
   },
   data() {
     const validPhone = (rule, value, callback) => {
@@ -313,7 +331,7 @@ export default {
     };
     return {
       rules: {
-        name: [{ required: true, message: "请输入职员姓名", trigger: "blur" }]
+        name: [{ required: true, message: "请输入职员姓名", trigger: "blur" }],
         // phone: [{ required: true, trigger: "blur", validator: validPhone }],
         // email: [
         //   { required: true, message: "请输入邮箱地址", trigger: "blur" },
@@ -325,25 +343,26 @@ export default {
       list: null,
       orgName: "",
       orgs: [],
-      orgDatas: [],
+      orgData: [],
+      jobData:[],
       userList: null,
       totalCount: 0,
       listLoading: true,
       userListLoading: true,
       formLoading: false,
       listQuery: {
-        OrgId:null,
+        OrgId: null,
         Filter: "",
         Sorting: "",
         SkipCount: 0,
-        MaxResultCount: 10
+        MaxResultCount: 10,
       },
       page: 1,
       dialogFormVisible: false,
       userDialogTableVisible: false,
       multipleSelection: [],
       formTitle: "",
-      isEdit: false
+      isEdit: false,
     };
   },
   created() {
@@ -363,11 +382,11 @@ export default {
       setTimeout(() => {
         this.$axios
           .gets("/api/business/orgs/loadOrgs", params)
-          .then(response => {
+          .then((response) => {
             if (resolve) {
               resolve(response.items);
             } else {
-              this.orgDatas = response.items;
+              this.orgData = response.items;
             }
           });
       }, 100);
@@ -377,20 +396,27 @@ export default {
       this.listQuery.SkipCount = (this.page - 1) * 10;
       this.$axios
         .gets("/api/business/employee/all", this.listQuery)
-        .then(response => {
+        .then((response) => {
           this.list = response.items;
           this.totalCount = response.totalCount;
           this.listLoading = false;
         });
     },
     getOrgNodes(id) {
-      this.$axios.gets("/api/business/orgs/loadNodes").then(response => {
+      this.$axios.gets("/api/business/orgs/loadNodes").then((response) => {
         this.loadTree(response);
       });
     },
+    getJobs(){
+      this.$axios.gets('/api/business/job/jobs').then((response)=>{
+        this.jobData=response.items
+      })
+    },
     fetchData(id) {
+      this.orgs = [];
       this.getOrgNodes(id);
-      this.$axios.gets("/api/business/employee/" + id).then(response => {
+      this.getJobs()
+      this.$axios.gets("/api/business/employee/" + id).then((response) => {
         this.form = response;
         if (response.userId) {
           this.getUser(response.userId);
@@ -401,8 +427,8 @@ export default {
       if (action === LOAD_CHILDREN_OPTIONS) {
         this.$axios
           .gets("/api/business/orgs/loadOrgs", { id: parentNode.id })
-          .then(response => {
-            parentNode.children = response.items.map(function(obj) {
+          .then((response) => {
+            parentNode.children = response.items.map(function (obj) {
               if (!obj.leaf) {
                 obj.children = null;
               }
@@ -416,7 +442,7 @@ export default {
     },
     //TODO：引用公共方法
     loadTree(data) {
-      data.items.forEach(element => {
+      data.items.forEach((element) => {
         if (!element.pid) {
           element.hasChildren = element.leaf ? false : true;
           if (!element.leaf) {
@@ -428,11 +454,10 @@ export default {
       this.setChildren(this.orgs, data.items);
     },
     setChildren(roots, items) {
-      roots.forEach(element => {
-        items.forEach(item => {
+      roots.forEach((element) => {
+        items.forEach((item) => {
           if (item.pid == element.id) {
-            if(!element.children)
-              element.children=[]
+            if (!element.children) element.children = [];
             element.children.push(item);
           }
         });
@@ -444,8 +469,8 @@ export default {
     getSupOrgs(id) {
       this.$axios
         .gets("/api/business/orgs/parents", { id: id })
-        .then(response => {
-          this.orgs = response.items.map(function(obj) {
+        .then((response) => {
+          this.orgs = response.items.map(function (obj) {
             obj.label = obj.name;
             if (obj.hasChildren) {
               obj.children = null;
@@ -457,14 +482,16 @@ export default {
     getUserList() {
       this.userListLoading = true;
       this.listQuery.SkipCount = (this.page - 1) * 10;
-      this.$axios.gets("/api/identity/users", this.listQuery).then(response => {
-        this.userList = response.items;
-        this.userTotalCount = response.totalCount;
-        this.userListLoading = false;
-      });
+      this.$axios
+        .gets("/api/identity/users", this.listQuery)
+        .then((response) => {
+          this.userList = response.items;
+          this.userTotalCount = response.totalCount;
+          this.userListLoading = false;
+        });
     },
     getUser(id) {
-      this.$axios.gets("/api/identity/users/" + id).then(response => {
+      this.$axios.gets("/api/identity/users/" + id).then((response) => {
         this.form.userIdToName = response.userName;
       });
     },
@@ -486,27 +513,28 @@ export default {
       this.getList();
     },
     save() {
-      this.$refs.form.validate(valid => {
+      this.$refs.form.validate((valid) => {
         if (valid) {
+          debugger
           if (!this.form.orgId) {
             this.$message({
               message: "所属机构不能为空",
-              type: "warning"
+              type: "warning",
             });
-            return
+            return;
           }
           this.formLoading = true;
           this.form.roleNames = this.checkedRole;
           if (this.isEdit) {
             this.$axios
               .puts("/api/business/employee/" + this.form.id, this.form)
-              .then(response => {
+              .then((response) => {
                 this.formLoading = false;
                 this.$notify({
                   title: "成功",
                   message: "更新成功",
                   type: "success",
-                  duration: 2000
+                  duration: 2000,
                 });
                 this.dialogFormVisible = false;
                 this.getList();
@@ -517,13 +545,13 @@ export default {
           } else {
             this.$axios
               .posts("/api/business/employee", this.form)
-              .then(response => {
+              .then((response) => {
                 this.formLoading = false;
                 this.$notify({
                   title: "成功",
                   message: "新增成功",
                   type: "success",
-                  duration: 2000
+                  duration: 2000,
                 });
                 this.dialogFormVisible = false;
                 this.getList();
@@ -539,8 +567,9 @@ export default {
       this.formTitle = "新增职员";
       this.isEdit = false;
       this.dialogFormVisible = true;
-      this.$axios.gets("/api/business/orgs/loadOrgs").then(response => {
-        this.orgs = response.items.map(function(obj) {
+      this.getJobs()
+      this.$axios.gets("/api/business/orgs/loadOrgs").then((response) => {
+        this.orgs = response.items.map(function (obj) {
           if (!obj.leaf) {
             obj.children = null;
           }
@@ -558,11 +587,11 @@ export default {
         if (this.multipleSelection.length === 0) {
           this.$message({
             message: "未选择",
-            type: "warning"
+            type: "warning",
           });
           return;
         }
-        this.multipleSelection.forEach(element => {
+        this.multipleSelection.forEach((element) => {
           let id = element.id;
           params.push(id);
         });
@@ -571,17 +600,17 @@ export default {
       this.$confirm("是否删除" + alert + "?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       })
         .then(() => {
           this.$axios
             .posts("/api/business/employee/delete", params)
-            .then(response => {
+            .then((response) => {
               this.$notify({
                 title: "成功",
                 message: "删除成功",
                 type: "success",
-                duration: 2000
+                duration: 2000,
               });
               this.getList();
             });
@@ -589,7 +618,7 @@ export default {
         .catch(() => {
           this.$message({
             type: "info",
-            message: "已取消删除"
+            message: "已取消删除",
           });
         });
     },
@@ -603,7 +632,7 @@ export default {
         if (this.multipleSelection.length != 1) {
           this.$message({
             message: "编辑必须选择单行",
-            type: "warning"
+            type: "warning",
           });
           return;
         } else {
@@ -643,17 +672,17 @@ export default {
       this.$confirm("是否" + data.active + data.name + "？", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       })
         .then(() => {
           this.$axios
             .puts("/api/business/employee/" + data.id, data)
-            .then(response => {
+            .then((response) => {
               this.$notify({
                 title: "成功",
                 message: "更新成功",
                 type: "success",
-                duration: 2000
+                duration: 2000,
               });
             })
             .catch(() => {
@@ -663,7 +692,7 @@ export default {
         .catch(() => {
           data.enabled = !data.enabled;
         });
-    }
-  }
+    },
+  },
 };
 </script>

@@ -17,16 +17,19 @@ namespace Business.BaseData.EmployeeManagement
     {
         private readonly IRepository<Employee, Guid> _repository;
         private readonly IRepository<Organization, Guid> _orgRepository;
+        private readonly IRepository<EmployeeJob> _empJobsRepository;
         private readonly IIdentityUserAppService _userAppService;
 
         public EmployeeAppService(
             IRepository<Employee, Guid> repository,
             IRepository<Organization, Guid> orgRepository,
-            IIdentityUserAppService userAppService)
+            IIdentityUserAppService userAppService,
+            IRepository<EmployeeJob> empJobsRepository)
         {
             _repository = repository;
             _orgRepository = orgRepository;
             _userAppService = userAppService;
+            _empJobsRepository = empJobsRepository;
         }
 
         public async Task<EmployeeDto> Create(CreateOrUpdateEmployeeDto input)
@@ -44,6 +47,11 @@ namespace Business.BaseData.EmployeeManagement
             }
 
             var result = await _repository.InsertAsync(new Employee(GuidGenerator.Create(), input.Name, input.Gender, input.Phone, input.Email, input.Enabled, input.OrgId, input.UserId));
+            foreach (var jid in input.Jobs)
+            {
+                await _empJobsRepository.InsertAsync(new EmployeeJob(result.Id, jid));
+            }
+
             return ObjectMapper.Map<Employee, EmployeeDto>(result);
         }
 
@@ -58,7 +66,10 @@ namespace Business.BaseData.EmployeeManagement
         public async Task<EmployeeDto> Get(Guid id)
         {
             var employee = await _repository.GetAsync(id);
+            var empJobs = await _empJobsRepository.Where(_ => _.EmployeeId == id).Select(_ => _.JobId).ToListAsync();
+
             var dto = ObjectMapper.Map<Employee, EmployeeDto>(employee);
+            dto.Jobs = empJobs;
 
             //if (employee.UserId.HasValue)
             //{
@@ -108,6 +119,12 @@ namespace Business.BaseData.EmployeeManagement
             employee.Gender = input.Gender;
             employee.OrgId = input.OrgId;
             employee.UserId = input.UserId;
+
+            await _empJobsRepository.DeleteAsync(_ => _.EmployeeId == employee.Id);
+            foreach (var jid in input.Jobs)
+            {
+                await _empJobsRepository.InsertAsync(new EmployeeJob(employee.Id, jid));
+            }
 
             return ObjectMapper.Map<Employee, EmployeeDto>(employee);
         }

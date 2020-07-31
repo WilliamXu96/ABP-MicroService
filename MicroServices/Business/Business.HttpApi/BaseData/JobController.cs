@@ -47,6 +47,13 @@ namespace Business.BaseData
             return _jobAppService.GetAll(input);
         }
 
+        [HttpGet]
+        [Route("jobs")]
+        public Task<ListResultDto<JobDto>> GetAllJobs()
+        {
+            return _jobAppService.GetAllJobs();
+        }
+
         [HttpPut]
         [Route("{id}")]
         public Task<JobDto> Update(Guid id, CreateOrUpdateJobDto input)
