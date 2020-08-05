@@ -9,6 +9,19 @@
         <lang-select class="set-language" />
       </div>
 
+      <el-form-item prop="tenant">
+        <span class="svg-container">
+          <svg-icon icon-class="cloud" />
+        </span>
+        <el-input
+          ref="tenant"
+          v-model="loginForm.tenant"
+          :placeholder="$t('login.tenant')"
+          name="tenant"
+          type="text"
+        />
+      </el-form-item>
+
       <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user" />
@@ -81,14 +94,15 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '1q2w3E*',
+        tenant:'',
+        username: '',
+        password: '',
         client_id: config.client.client_id,
         client_secret: config.client.client_secret,
         grant_type: config.client.grant_type
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur' }],
+        username: [{ required: true, message: "username is required", trigger: 'blur' }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       passwordType: 'password',

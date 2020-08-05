@@ -14,7 +14,7 @@ namespace Business.BaseData
             return new object[] { EmployeeId, JobId };
         }
 
-        public EmployeeJob(Guid employeeId,Guid jobId)
+        public EmployeeJob(Guid employeeId, Guid jobId)
         {
             EmployeeId = employeeId;
             JobId = jobId;
