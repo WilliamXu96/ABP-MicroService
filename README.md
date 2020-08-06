@@ -33,7 +33,7 @@
 #### 系统预览
 <table>
     <tr>
-        <td><img src="https://i.loli.net/2020/06/16/AXbKfgtaqhZrClm.png"/></td>
+        <td><img src="https://i.loli.net/2020/08/05/qxB2NFjKZhUn36g.png"/></td>
         <td><img src="https://i.loli.net/2020/06/16/1BhfAeVCJPU5azH.png"/></td>
     </tr>
     <tr>
