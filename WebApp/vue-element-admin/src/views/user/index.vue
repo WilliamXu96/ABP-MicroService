@@ -43,7 +43,7 @@
           v-permission="['AbpIdentity.Users.Update']"
           @click="handleUpdate()"
         >修改</el-button>
-        <el-button
+        <!-- <el-button
           slot="reference"
           class="filter-item"
           type="danger"
@@ -51,7 +51,7 @@
           size="mini"
           v-permission="['AbpIdentity.Users.Delete']"
           @click="handleDelete()"
-        >删除</el-button>
+        >删除</el-button> -->
       </div>
     </div>
     <!--表单渲染-->

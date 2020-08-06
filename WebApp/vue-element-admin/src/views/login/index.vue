@@ -94,7 +94,7 @@ export default {
     }
     return {
       loginForm: {
-        tenant:'',
+        tenant:undefined,
         username: '',
         password: '',
         client_id: config.client.client_id,
@@ -128,13 +128,6 @@ export default {
   created() {
     // window.addEventListener('storage', this.afterQRScan)
   },
-  mounted() {
-    if (this.loginForm.username === '') {
-      this.$refs.username.focus()
-    } else if (this.loginForm.password === '') {
-      this.$refs.password.focus()
-    }
-  },
   destroyed() {
     // window.removeEventListener('storage', this.afterQRScan)
   },
@@ -166,7 +159,6 @@ export default {
               this.loading = false
             })
         } else {
-          console.log('error submit!!')
           return false
         }
       })

@@ -104,6 +104,28 @@ export const constantRoutes = [
  */
 export const asyncRoutes = [
   {
+    path:'/saas',
+    component: Layout,
+    redirect: '/saas/tenant',
+    alwaysShow: true,
+    name:'SAAS',
+    meta:{
+      title:'Saas',
+      icon:'cloud',
+      roles: ['AbpTenantManagement.Tenants'],
+    },
+    children:[{
+      path:'tenant',
+      component: () => import('@/views/tenant/index'),
+      name:'Tenant',
+      meta: {
+        title: 'tenant',
+        roles: ['AbpTenantManagement.Tenants'],
+        icon: 'users'
+      }
+    }]
+  },
+  {
     path: '/system',
     component: Layout,
     redirect: '/system/user',

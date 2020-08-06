@@ -59,6 +59,7 @@ export default {
     pdf: 'PDF',
     exportZip: 'Export Zip',
     profile: '个人中心',
+    tenant:'租户管理',
     systemManagement:'系统管理',
     user:'用户管理',
     role:'角色管理',

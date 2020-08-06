@@ -185,8 +185,8 @@ export default {
         target: document.querySelector('.contentWrapper')
       })
       axios.get(url, {
-        'params': params
-      })
+          'params': params
+        })
         .then(response => {
           resolve(response.data)
           loading.close()
@@ -208,8 +208,8 @@ export default {
   gets(url, params) {
     return new Promise((resolve, reject) => {
       axios.get(url, {
-        'params': params
-      })
+          'params': params
+        })
         .then(response => {
           resolve(response.data)
         }, err => {
@@ -228,8 +228,8 @@ export default {
   deletes(url, params) {
     return new Promise((resolve, reject) => {
       axios.delete(url, {
-        'params': params
-      })
+          'params': params
+        })
         .then(response => {
           resolve(response.data)
         }, err => {
@@ -267,7 +267,10 @@ export default {
     var instance = axios.create({
       baseURL: config.base.ip + ':' + config.base.auth_port
     })
-    instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+    //instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+    if (params.tenant && params.tenant.trim() != '') {
+      instance.defaults.headers.post['__tenant'] = params.tenant
+    }
     var data = qs.stringify(params)
     return new Promise((resolve, reject) => {
       instance.post(url, data)
@@ -287,10 +290,14 @@ export default {
               duration: 5 * 1000
             })
           }
-
           reject(err)
         })
         .catch((error) => {
+          Message({
+            message: '登录异常',
+            type: 'error',
+            duration: 5 * 1000
+          })
           reject(error)
         })
     })
@@ -324,8 +331,8 @@ export default {
     instance.defaults.headers.Authorization = 'Bearer ' + getToken()
     return new Promise((resolve, reject) => {
       instance.get(url, {
-        'params': params
-      })
+          'params': params
+        })
         .then(response => {
           resolve(response.data)
         }, err => {
