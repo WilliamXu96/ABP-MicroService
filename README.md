@@ -34,7 +34,7 @@
 <table>
     <tr>
         <td><img src="https://i.loli.net/2020/08/05/qxB2NFjKZhUn36g.png"/></td>
-        <td><img src="https://i.loli.net/2020/06/16/1BhfAeVCJPU5azH.png"/></td>
+        <td><img src="https://i.loli.net/2020/08/07/7pLGg2VdFAvkZ4a.png"/></td>
     </tr>
     <tr>
         <td><img src="https://i.loli.net/2020/06/16/8U7uQEVRb4rdYmw.png"/></td>
