@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,7 +15,6 @@ using Volo.Abp.Identity.EntityFrameworkCore;
 using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
 using Volo.Abp.PermissionManagement.EntityFrameworkCore;
-using Volo.Abp.Security.Claims;
 using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.AspNetCore.MultiTenancy;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
@@ -31,6 +28,7 @@ using Volo.Abp.PermissionManagement;
 using Volo.Abp.PermissionManagement.Identity;
 using Business;
 using Microsoft.AspNetCore.Cors;
+using Volo.Abp.MultiTenancy;
 
 namespace IdentityService.Host
 {
@@ -61,6 +59,11 @@ namespace IdentityService.Host
         {
             var configuration = context.Services.GetConfiguration();
 
+            Configure<AbpMultiTenancyOptions>(options =>
+            {
+                options.IsEnabled = true;
+            });
+
             context.Services.AddAuthentication("Bearer")
                 .AddIdentityServerAuthentication(options =>
                 {
@@ -74,11 +77,6 @@ namespace IdentityService.Host
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "Identity Service API", Version = "v1" });
                 options.DocInclusionPredicate((docName, description) => true);
                 options.CustomSchemaIds(type => type.FullName);
-            });
-
-            Configure<AbpLocalizationOptions>(options =>
-            {
-                options.Languages.Add(new LanguageInfo("en", "en", "English"));
             });
 
             Configure<AbpDbContextOptions>(options =>
@@ -141,25 +139,8 @@ namespace IdentityService.Host
             app.UseRouting();
             app.UseCors(DefaultCorsPolicyName);
             app.UseAuthentication();
+            app.UseAbpClaimsMap();
             app.UseMultiTenancy();
-            app.UseAuthorization();
-
-            app.Use(async (ctx, next) =>
-            {
-                var currentPrincipalAccessor = ctx.RequestServices.GetRequiredService<ICurrentPrincipalAccessor>();
-                var map = new Dictionary<string, string>()
-                {
-                    { "sub", AbpClaimTypes.UserId },
-                    { "role", AbpClaimTypes.Role },
-                    { "email", AbpClaimTypes.Email },
-                    { "name", AbpClaimTypes.UserName },
-                    { "tenantid", AbpClaimTypes.TenantId }
-                };
-                var mapClaims = currentPrincipalAccessor.Principal.Claims.Where(p => map.Keys.Contains(p.Type)).ToList();
-                currentPrincipalAccessor.Principal.AddIdentity(new ClaimsIdentity(mapClaims.Select(p => new Claim(map[p.Type], p.Value, p.ValueType, p.Issuer))));
-
-                await next();
-            });
 
             app.UseAbpRequestLocalization(); 
             app.UseSwagger();
