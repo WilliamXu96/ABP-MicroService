@@ -19,13 +19,6 @@
           icon="el-icon-search"
           @click="handleFilter"
         >搜索</el-button>
-        <el-button
-          class="filter-item"
-          size="mini"
-          type="warning"
-          icon="el-icon-refresh-left"
-          @click="resetQuery"
-        >重置</el-button>
       <div class="opts">
         <el-button
           class="filter-item"
@@ -59,7 +52,8 @@
       :visible.sync="dialogFormVisible"
       :close-on-click-modal="false"
       :title="formTitle"
-      width="570px"
+      @close="cancel()"
+      width="600px"
     >
       <el-form
         ref="form"
@@ -67,7 +61,7 @@
         :model="form"
         :rules="rules"
         size="small"
-        label-width="66px"
+        label-width="70px"
       >
         <el-form-item label="用户名" prop="userName">
           <el-input v-model="form.userName" />
@@ -81,24 +75,24 @@
         <el-form-item label="邮箱" prop="email">
           <el-input v-model="form.email" />
         </el-form-item>
-        <el-form-item label="密码" prop="password">
+        <el-form-item label="密码" prop="password" v-if="!isEdit">
           <el-input type="password" v-model="form.password" />
         </el-form-item>
-        <el-form-item label="状态">
-          <el-radio-group v-model="form.enable" style="width: 178px">
-            <el-radio label="0">禁用</el-radio>
-            <el-radio label="1">启用</el-radio>
-          </el-radio-group>
-        </el-form-item>
         <el-form-item label="角色" prop="roles">
-          <el-select v-model="checkedRole" multiple style="width: 437px" placeholder="请选择">
+          <el-select v-model="checkedRole" multiple style="width: 188px" placeholder="请选择">
             <el-option
               v-for="item in roleList"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              :key="item.name"
+              :label="item.name"
+              :value="item.name"
             ></el-option>
           </el-select>
+        </el-form-item>
+        <el-form-item label="启用锁定">
+          <el-radio-group v-model="form.lockoutEnabled" style="width: 178px">
+            <el-radio :label="false">否</el-radio>
+            <el-radio :label="true">是</el-radio>
+          </el-radio-group>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -169,6 +163,17 @@ import { isvalidPhone } from "@/utils/validate";
 import Pagination from "@/components/Pagination";
 import permission from "@/directive/permission/index.js";
 
+const defaultForm = {
+  id:undefined,
+  userName:'',
+  phoneNumber:'',
+  name:'',
+  email:'',
+  password:'',
+  lockoutEnabled:false,
+  roleNames:[]
+}
+
 export default {
   name: "User",
   components: { Pagination },
@@ -202,7 +207,7 @@ export default {
           { required: true, trigger: "blur", validator: validPhone }
         ]
       },
-      form: {},
+      form: Object.assign({}, defaultForm),
       list: null,
       roleList: [],
       checkedRole: [],
@@ -236,33 +241,33 @@ export default {
       });
     },
     fetchData(id) {
+      this.getAllRoles();
       this.$axios.gets("/api/identity/users/" + id).then(response => {
         this.form = response;
-        this.getAllRoles();
-        this.$axios.gets("/api/identity/users/" + id + "/roles").then(data => {
-          this.checkedRole=[]
+      });
+      this.$axios.gets("/api/identity/users/" + id + "/roles").then(data => {
+        
           data.items.forEach(item=>{
             this.checkedRole.push(item.name)
           })
         });
-      });
     },
     getAllRoles() {
-      this.roleList = [];
+      //this.roleList = [];
       this.$axios.gets("/api/identity/roles/all").then(response => {
-        response.items.forEach(element => {
-          let options = {};
-          options.value = element.name;
-          options.label = element.name;
-          this.roleList.push(options);
-        });
+        // response.items.forEach(element => {
+        //   let options = {};
+        //   options.value = element.name;
+        //   options.label = element.name;
+        //   this.roleList.push(options);
+        // });
+        this.roleList=response.items
       });
     },
     handleFilter() {
       this.page = 1;
       this.getList();
     },
-    resetQuery() {},
     save() {
       this.$refs.form.validate(valid => {
         if (valid) {
@@ -309,8 +314,6 @@ export default {
     handleCreate() {
       this.formTitle = "新增用户";
       this.isEdit = false;
-      this.form = {};
-      this.checkedRole = [];
       this.dialogFormVisible = true;
       this.getAllRoles();
     },
@@ -387,6 +390,8 @@ export default {
       this.$refs.multipleTable.toggleRowSelection(row);
     },
     cancel() {
+      this.form = Object.assign({}, defaultForm),
+      this.checkedRole=[]
       this.dialogFormVisible = false;
       this.$refs.form.clearValidate();
     }

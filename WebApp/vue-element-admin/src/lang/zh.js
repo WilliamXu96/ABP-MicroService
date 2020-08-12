@@ -67,7 +67,7 @@ export default {
     org:'组织机构',
     job:'岗位管理',
     employee:'职员管理',
-    log:'操作日志'
+    log:'系统日志'
   },
   navbar: {
     dashboard: '首页',
