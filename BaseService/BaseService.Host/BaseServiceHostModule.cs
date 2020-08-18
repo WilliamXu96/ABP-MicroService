@@ -29,29 +29,32 @@ using Volo.Abp.PermissionManagement.Identity;
 using Business;
 using Microsoft.AspNetCore.Cors;
 using Volo.Abp.MultiTenancy;
+using BaseService.EntityFrameworkCore;
 
-namespace IdentityService.Host
+namespace BaseService
 {
     [DependsOn(
         typeof(AbpAutofacModule),
+        typeof(BaseServiceApplicationModule),
+        typeof(BaseServiceEntityFrameworkCoreModule),
         typeof(AbpAspNetCoreMultiTenancyModule),
-        typeof(AbpEntityFrameworkCoreSqlServerModule),
-        typeof(AbpAuditLoggingEntityFrameworkCoreModule),
-        typeof(AbpPermissionManagementEntityFrameworkCoreModule),
+        //typeof(AbpEntityFrameworkCoreSqlServerModule),
+        //typeof(AbpAuditLoggingEntityFrameworkCoreModule),
+        //typeof(AbpPermissionManagementEntityFrameworkCoreModule),
         typeof(AbpPermissionManagementHttpApiModule),
-        typeof(AbpPermissionManagementDomainIdentityModule),
-        typeof(AbpPermissionManagementApplicationModule),
-        typeof(AbpSettingManagementEntityFrameworkCoreModule),
-        typeof(AbpTenantManagementEntityFrameworkCoreModule),
+        //typeof(AbpPermissionManagementDomainIdentityModule),
+        //typeof(AbpPermissionManagementApplicationModule),
+        //typeof(AbpSettingManagementEntityFrameworkCoreModule),
+        //typeof(AbpTenantManagementEntityFrameworkCoreModule),
         typeof(AbpTenantManagementHttpApiModule),
-        typeof(AbpTenantManagementApplicationModule),
+        //typeof(AbpTenantManagementApplicationModule),
         typeof(AbpIdentityHttpApiModule),
         typeof(BusinessHttpApiModule),
-        typeof(AbpIdentityEntityFrameworkCoreModule),
-        typeof(AbpIdentityApplicationModule),
+        //typeof(AbpIdentityEntityFrameworkCoreModule),
+        //typeof(AbpIdentityApplicationModule),
         typeof(AbpAspNetCoreSerilogModule)
     )]
-    public class IdentityServiceHostModule : AbpModule
+    public class BaseServiceHostModule : AbpModule
     {
         private const string DefaultCorsPolicyName = "Default";
 

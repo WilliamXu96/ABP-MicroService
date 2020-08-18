@@ -46,3 +46,15 @@
 /Gateways/InternalGateway/InternalGateway.Host/bin/Debug/netcoreapp3.1
 /Gateways/InternalGateway/InternalGateway.Host/Logs
 /Gateways/InternalGateway/InternalGateway.Host/obj
+/BaseService/.vs
+/BaseService/BaseService.Application/bin/Debug/netcoreapp3.1
+/BaseService/BaseService.Application/obj
+/BaseService/BaseService.Application.Contracts/bin/Debug/netcoreapp3.1
+/BaseService/BaseService.Application.Contracts/obj
+/BaseService/BaseService.Domain/bin/Debug/netcoreapp3.1
+/BaseService/BaseService.Domain/obj
+/BaseService/BaseService.EntityFrameworkCore/bin/Debug/netcoreapp3.1
+/BaseService/BaseService.EntityFrameworkCore/obj
+/BaseService/BaseService.Host/bin/Debug/netcoreapp3.1
+/BaseService/BaseService.Host/Logs
+/BaseService/BaseService.Host/obj

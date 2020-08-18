@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>BaseService</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.AutoMapper" Version="3.0.4" />
+    <PackageReference Include="Volo.Abp.Identity.Application" Version="3.0.4" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.Application" Version="3.0.4" />
+    <PackageReference Include="Volo.Abp.TenantManagement.Application" Version="3.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BaseService.Application.Contracts\BaseService.Application.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

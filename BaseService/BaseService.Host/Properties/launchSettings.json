@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "IdentityService.Host": {
+    "BaseService.Host": {
       "commandName": "Project",
       "launchBrowser": true,
       "applicationUrl": "http://localhost:55389",

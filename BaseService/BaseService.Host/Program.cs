@@ -7,7 +7,7 @@ using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.Elasticsearch;
 
-namespace IdentityService.Host
+namespace BaseService
 {
     public class Program
     {

@@ -2,11 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>BaseService</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="3.1.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="3.1.6" />
     <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
     <PackageReference Include="Serilog.Sinks.Async" Version="1.4.0" />
@@ -30,6 +35,11 @@
     <PackageReference Include="Volo.Abp.TenantManagement.EntityFrameworkCore" Version="3.0.4" />
     <PackageReference Include="Volo.Abp.TenantManagement.HttpApi" Version="3.0.4" />
     <PackageReference Include="XCZ.Business.HttpApi" Version="1.1.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BaseService.Application\BaseService.Application.csproj" />
+    <ProjectReference Include="..\BaseService.EntityFrameworkCore\BaseService.EntityFrameworkCore.csproj" />
   </ItemGroup>
 
 </Project>
