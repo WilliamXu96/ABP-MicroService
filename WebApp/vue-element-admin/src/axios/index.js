@@ -269,8 +269,6 @@ export default {
     var instance = axios.create({
       baseURL: config.base.ip + ':' + config.base.auth_port
     })
-    debugger
-    //instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
     if (params.tenant && params.tenant.trim() != '') {
       instance.defaults.headers.post['__tenant'] = params.tenant
     }else{
