@@ -11,6 +11,8 @@
     "DataDictionary": "数据字典",
     "Organization": "组织机构",
     "Job": "岗位",
-    "Employee": "职员"
+    "Employee": "职员",
+	"AbpSettingManagement": "设置管理",
+    "AuditLogging": "系统日志"
   }
 }
