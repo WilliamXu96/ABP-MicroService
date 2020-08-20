@@ -156,7 +156,7 @@
         <el-card class="box-card" shadow="never">
           <div slot="header" class="clearfix" style="height:20px">
             <el-tooltip class="item" effect="dark" content="选择指定角色分配菜单权限" placement="top">
-              <span class="role-span">角色权限</span>
+              <span class="role-span">模块权限</span>
             </el-tooltip>
             <el-button
               v-permission="['AbpIdentity.Roles.ManagePermissions']"
