@@ -10,22 +10,18 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Claims;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.MultiTenancy;
-using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Serilog;
 using Volo.Abp.Autofac;
 using Volo.Abp.Caching;
 using Volo.Abp.Data;
-using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.SqlServer;
 using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
-using Volo.Abp.Security.Claims;
+using Volo.Abp.MultiTenancy;
 using Volo.Abp.Threading;
 using Volo.Abp.VirtualFileSystem;
 
@@ -49,10 +45,9 @@ namespace Business
             var configuration = context.Services.GetConfiguration();
             var hostingEnvironment = context.Services.GetHostingEnvironment();
 
-            //ConfigureConventionalControllers();
+            ConfigureMultiTenancy();
             ConfigureAuthentication(context, configuration);
             ConfigureLocalization();
-            //ConfigureSql();
             ConfigureCache(configuration);
             ConfigureVirtualFileSystem(context);
             ConfigureRedis(context, configuration, hostingEnvironment);
@@ -60,11 +55,11 @@ namespace Business
             ConfigureSwaggerServices(context);
         }
 
-        private void ConfigureSql()
+        private void ConfigureMultiTenancy()
         {
-            Configure<AbpDbContextOptions>(options =>
+            Configure<AbpMultiTenancyOptions>(options =>
             {
-                options.UseSqlServer();
+                options.IsEnabled = true;
             });
         }
 
@@ -89,14 +84,6 @@ namespace Business
                     options.FileSets.ReplaceEmbeddedByPhysical<BusinessApplicationModule>(Path.Combine(hostingEnvironment.ContentRootPath, $"..{Path.DirectorySeparatorChar}Business.Application"));
                 });
             }
-        }
-
-        private void ConfigureConventionalControllers()
-        {
-            Configure<AbpAspNetCoreMvcOptions>(options =>
-            {
-                options.ConventionalControllers.Create(typeof(BusinessApplicationModule).Assembly);
-            });
         }
 
         private void ConfigureAuthentication(ServiceConfigurationContext context, IConfiguration configuration)
@@ -183,37 +170,18 @@ namespace Business
             app.UseRouting();
             app.UseCors(DefaultCorsPolicyName);
             app.UseAuthentication();
+            app.UseAbpClaimsMap();
             if (MultiTenancyConsts.IsEnabled)
             {
                 app.UseMultiTenancy();
             }
-            app.UseAuthorization();
-
-            app.Use(async (ctx, next) =>
-            {
-                var currentPrincipalAccessor = ctx.RequestServices.GetRequiredService<ICurrentPrincipalAccessor>();
-                var map = new Dictionary<string, string>()
-                {
-                    { "sub", AbpClaimTypes.UserId },
-                    { "role", AbpClaimTypes.Role },
-                    { "email", AbpClaimTypes.Email },
-                    { "name", AbpClaimTypes.UserName },
-                    { "tenantid", AbpClaimTypes.TenantId }
-                };
-                var mapClaims = currentPrincipalAccessor.Principal.Claims.Where(p => map.Keys.Contains(p.Type)).ToList();
-                currentPrincipalAccessor.Principal.AddIdentity(new ClaimsIdentity(mapClaims.Select(p => new Claim(map[p.Type], p.Value, p.ValueType, p.Issuer))));
-
-                await next();
-            });
 
             app.UseAbpRequestLocalization();
-
             app.UseSwagger();
             app.UseSwaggerUI(options =>
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "Business Service API");
             });
-
             app.UseAuditing();
             app.UseAbpSerilogEnrichers();
             app.UseConfiguredEndpoints();
