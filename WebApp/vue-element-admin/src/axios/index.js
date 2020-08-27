@@ -329,7 +329,7 @@ export default {
   },
   getPermissions(url, params) {
     var instance = axios.create({
-      baseURL: config.base.ip + ':' + config.base.backend_port
+      baseURL: config.base.ip + ':' + config.base.identity_port
     })
     instance.defaults.headers.Authorization = 'Bearer ' + getToken()
     return new Promise((resolve, reject) => {
