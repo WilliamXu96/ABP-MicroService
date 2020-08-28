@@ -1,4 +1,6 @@
 ﻿using Business.BaseData.OrganizationManagement.Dto;
+using Business.Permissions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,6 +14,7 @@ using Volo.Abp.Domain.Repositories;
 
 namespace Business.BaseData.OrganizationManagement
 {
+    [Authorize(BusinessPermissions.Organization.Default)]
     public class OrganizationAppService : ApplicationService, IOrganizationAppService
     {
         private readonly IRepository<Organization, Guid> _repository;
@@ -21,6 +24,7 @@ namespace Business.BaseData.OrganizationManagement
             _repository = repository;
         }
 
+        [Authorize(BusinessPermissions.Organization.Create)]
         public async Task<OrganizationDto> Create(CreateOrUpdateOrganizationDto input)
         {
             var exist = await _repository.FirstOrDefaultAsync(_ => _.Name == input.Name);
@@ -42,6 +46,7 @@ namespace Business.BaseData.OrganizationManagement
             return ObjectMapper.Map<Organization, OrganizationDto>(organization);
         }
 
+        [Authorize(BusinessPermissions.Organization.Delete)]
         public async Task Delete(Guid id)
         {
             await _repository.DeleteAsync(id);
@@ -101,6 +106,7 @@ namespace Business.BaseData.OrganizationManagement
             return new ListResultDto<OrganizationDto>(dtos);
         }
 
+        [Authorize(BusinessPermissions.Organization.Update)]
         public async Task<OrganizationDto> Update(Guid id, CreateOrUpdateOrganizationDto input)
         {
             if (input.Pid == id) throw new BusinessException("机构上级不能为当前机构！");

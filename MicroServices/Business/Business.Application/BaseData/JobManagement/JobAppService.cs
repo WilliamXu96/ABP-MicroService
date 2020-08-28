@@ -1,4 +1,6 @@
 ﻿using Business.BaseData.JobManagement.Dto;
+using Business.Permissions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,6 +14,7 @@ using Volo.Abp.Domain.Repositories;
 
 namespace Business.BaseData.JobManagement
 {
+    [Authorize(BusinessPermissions.Job.Default)]
     public class JobAppService : ApplicationService, IJobAppService
     {
         private readonly IRepository<Job, Guid> _repository;
@@ -21,6 +24,7 @@ namespace Business.BaseData.JobManagement
             _repository = repository;
         }
 
+        [Authorize(BusinessPermissions.Job.Create)]
         public async Task<JobDto> Create(CreateOrUpdateJobDto input)
         {
             var exist = await _repository.FirstOrDefaultAsync(_ => _.Name == input.Name);
@@ -33,6 +37,7 @@ namespace Business.BaseData.JobManagement
             return ObjectMapper.Map<Job, JobDto>(result);
         }
 
+        [Authorize(BusinessPermissions.Job.Delete)]
         public async Task Delete(List<Guid> ids)
         {
             foreach (var id in ids)
@@ -66,6 +71,7 @@ namespace Business.BaseData.JobManagement
             return new ListResultDto<JobDto>(ObjectMapper.Map<List<Job>, List<JobDto>>(jobs));
         }
 
+        [Authorize(BusinessPermissions.Job.Update)]
         public async Task<JobDto> Update(Guid id, CreateOrUpdateJobDto input)
         {
             var job = await _repository.GetAsync(id);

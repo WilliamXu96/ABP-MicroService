@@ -1,4 +1,6 @@
 ﻿using Business.BaseData.EmployeeManagement.Dto;
+using Business.Permissions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,6 +15,7 @@ using Volo.Abp.Identity;
 
 namespace Business.BaseData.EmployeeManagement
 {
+    [Authorize(BusinessPermissions.Employee.Default)]
     public class EmployeeAppService : ApplicationService, IEmployeeAppService
     {
         private readonly IRepository<Employee, Guid> _repository;
@@ -32,6 +35,7 @@ namespace Business.BaseData.EmployeeManagement
             _empJobsRepository = empJobsRepository;
         }
 
+        [Authorize(BusinessPermissions.Employee.Create)]
         public async Task<EmployeeDto> Create(CreateOrUpdateEmployeeDto input)
         {
             var exist = await _repository.FirstOrDefaultAsync(_ => _.Name == input.Name);
@@ -55,6 +59,7 @@ namespace Business.BaseData.EmployeeManagement
             return ObjectMapper.Map<Employee, EmployeeDto>(result);
         }
 
+        [Authorize(BusinessPermissions.Employee.Delete)]
         public async Task Delete(List<Guid> ids)
         {
             foreach (var id in ids)
@@ -104,6 +109,7 @@ namespace Business.BaseData.EmployeeManagement
             return new PagedResultDto<EmployeeDto>(totalCount, dots);
         }
 
+        [Authorize(BusinessPermissions.Employee.Update)]
         public async Task<EmployeeDto> Update(Guid id, CreateOrUpdateEmployeeDto input)
         {
             var employee = await _repository.GetAsync(id);
