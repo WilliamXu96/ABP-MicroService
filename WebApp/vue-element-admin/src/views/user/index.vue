@@ -88,10 +88,10 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="启用锁定">
+        <el-form-item label="允许锁定">
           <el-radio-group v-model="form.lockoutEnabled" style="width: 178px">
+		    <el-radio :label="true">是</el-radio>
             <el-radio :label="false">否</el-radio>
-            <el-radio :label="true">是</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>

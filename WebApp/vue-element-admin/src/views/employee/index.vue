@@ -515,7 +515,6 @@ export default {
     save() {
       this.$refs.form.validate((valid) => {
         if (valid) {
-          debugger
           if (!this.form.orgId) {
             this.$message({
               message: "所属机构不能为空",

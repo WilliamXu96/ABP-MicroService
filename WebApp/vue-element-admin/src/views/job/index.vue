@@ -32,7 +32,7 @@
           size="mini"
           type="success"
           icon="el-icon-edit"
-          v-permission="['Business.Employee.Update']"
+          v-permission="['Business.Job.Update']"
           @click="handleUpdate()"
         >修改</el-button>
         <el-button
