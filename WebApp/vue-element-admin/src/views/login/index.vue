@@ -19,6 +19,7 @@
           :placeholder="$t('login.tenant')"
           name="tenant"
           type="text"
+          tabindex="1"
         />
       </el-form-item>
 
@@ -32,7 +33,7 @@
           :placeholder="$t('login.username')"
           name="username"
           type="text"
-          tabindex="1"
+          tabindex="2"
           autocomplete="on"
         />
       </el-form-item>
@@ -49,7 +50,7 @@
             :type="passwordType"
             :placeholder="$t('login.password')"
             name="password"
-            tabindex="2"
+            tabindex="3"
             autocomplete="on"
             @keyup.native="checkCapslock"
             @blur="capsTooltip = false"
