@@ -25,14 +25,14 @@
           type="primary"
           icon="el-icon-plus"
           @click="handleCreate"
-          v-permission="['Business.Job.Create']"
+          v-permission="['BaseService.Job.Create']"
         >新增</el-button>
         <el-button
           class="filter-item"
           size="mini"
           type="success"
           icon="el-icon-edit"
-          v-permission="['Business.Job.Update']"
+          v-permission="['BaseService.Job.Update']"
           @click="handleUpdate()"
         >修改</el-button>
         <el-button
@@ -41,7 +41,7 @@
           type="danger"
           icon="el-icon-delete"
           size="mini"
-          v-permission="['Business.Job.Delete']"
+          v-permission="['BaseService.Job.Delete']"
           @click="handleDelete()"
         >删除</el-button>
       </div>
@@ -130,14 +130,14 @@
             type="primary"
             size="mini"
             @click="handleUpdate(row)"
-            v-permission="['Business.Job.Update']"
+            v-permission="['BaseService.Job.Update']"
             icon="el-icon-edit"
           />
           <el-button
             type="danger"
             size="mini"
             @click="handleDelete(row)"
-            v-permission="['Business.Job.Delete']"
+            v-permission="['BaseService.Job.Delete']"
             icon="el-icon-delete"
           />
         </template>
@@ -201,7 +201,7 @@ export default {
       this.listLoading = true;
       this.listQuery.SkipCount = (this.page - 1) * 10;
       this.$axios
-        .gets("/api/business/job/all", this.listQuery)
+        .gets("/api/base/job/all", this.listQuery)
         .then(response => {
           this.list = response.items;
           this.totalCount = response.totalCount;
@@ -209,7 +209,7 @@ export default {
         });
     },
     fetchData(id) {
-      this.$axios.gets("/api/business/job/" + id).then(response => {
+      this.$axios.gets("/api/base/job/" + id).then(response => {
         this.form = response;
       });
     },
@@ -224,7 +224,7 @@ export default {
           this.form.roleNames = this.checkedRole;
           if (this.isEdit) {
             this.$axios
-              .puts("/api/business/job/" + this.form.id, this.form)
+              .puts("/api/base/job/" + this.form.id, this.form)
               .then(response => {
                 this.formLoading = false;
                 this.$notify({
@@ -241,7 +241,7 @@ export default {
               });
           } else {
             this.$axios
-              .posts("/api/business/job", this.form)
+              .posts("/api/base/job", this.form)
               .then(response => {
                 this.formLoading = false;
                 this.$notify({
@@ -292,7 +292,7 @@ export default {
       })
         .then(() => {
           this.$axios
-            .posts("/api/business/job/delete", params)
+            .posts("/api/base/job/delete", params)
             .then(response => {
               this.$notify({
                 title: "成功",
@@ -359,7 +359,7 @@ export default {
       })
         .then(() => {
           this.$axios
-            .puts("/api/business/job/" + data.id, data)
+            .puts("/api/base/job/" + data.id, data)
             .then(response => {
               this.$notify({
                 title: "成功",

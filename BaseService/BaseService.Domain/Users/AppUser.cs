@@ -33,6 +33,8 @@ namespace BaseService.Users
         #endregion
 
 
+        //public Guid OrgId { get; set; }
+
         //public bool Enable { get; set; }
 
         private AppUser()

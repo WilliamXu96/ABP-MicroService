@@ -49,7 +49,7 @@
               type="primary"
               icon="el-icon-plus"
               @click="handleCreate"
-              v-permission="['Business.Organization.Create']"
+              v-permission="['BaseService.Organization.Create']"
             >新增</el-button>
             <el-button
               class="filter-item"
@@ -179,7 +179,7 @@
                 type="primary"
                 size="mini"
                 @click="handleUpdate(row)"
-                v-permission="['Business.Organization.Update']"
+                v-permission="['BaseService.Organization.Update']"
                 icon="el-icon-edit"
               />
               <el-button
@@ -187,7 +187,7 @@
                 size="mini"
                 @click="handleDelete(row)"
                 :disabled="row.name==='admin'"
-                v-permission="['Business.Organization.Delete']"
+                v-permission="['BaseService.Organization.Delete']"
                 icon="el-icon-delete"
               />
             </template>
@@ -283,7 +283,7 @@ export default {
       //TODO:仅获取启用机构
       setTimeout(() => {
         this.$axios
-          .gets("/api/business/orgs/loadOrgs", params)
+          .gets("/api/base/orgs/loadOrgs", params)
           .then(response => {
             if (resolve) {
               resolve(response.items);
@@ -294,7 +294,7 @@ export default {
       }, 100);
     },
     getOrgNodes(id) {
-      this.$axios.gets("/api/business/orgs/loadNodes").then(response => {
+      this.$axios.gets("/api/base/orgs/loadNodes").then(response => {
         this.loadTree(response);
       });
     },
@@ -303,7 +303,7 @@ export default {
       this.listQuery.SkipCount = (this.page - 1) * 10;
       this.list = [];
       this.$axios
-        .gets("/api/business/orgs/all", this.listQuery)
+        .gets("/api/base/orgs/all", this.listQuery)
         .then(response => {
           this.list = response.items;
           this.totalCount = response.totalCount;
@@ -312,7 +312,7 @@ export default {
     },
     fetchData(id) {
       this.getOrgNodes(id);
-      this.$axios.gets("/api/business/orgs/" + id).then(response => {
+      this.$axios.gets("/api/base/orgs/" + id).then(response => {
         this.form = response;
         this.isTop = response.pid ? false : true;
       });
@@ -320,7 +320,7 @@ export default {
     loadOrgs({ action, parentNode, callback }) {
       if (action === LOAD_CHILDREN_OPTIONS) {
         this.$axios
-          .gets("/api/business/orgs/loadOrgs", { id: parentNode.id })
+          .gets("/api/base/orgs/loadOrgs", { id: parentNode.id })
           .then(response => {
             parentNode.children = response.items.map(function(obj) {
               if (!obj.leaf) {
@@ -371,7 +371,7 @@ export default {
           this.formLoading = true;
           if (this.isEdit) {
             this.$axios
-              .puts("/api/business/orgs/" + this.form.id, this.form)
+              .puts("/api/base/orgs/" + this.form.id, this.form)
               .then(response => {
                 this.formLoading = false;
                 this.$notify({
@@ -388,7 +388,7 @@ export default {
               });
           } else {
             this.$axios
-              .posts("/api/business/orgs", this.form)
+              .posts("/api/base/orgs", this.form)
               .then(response => {
                 this.formLoading = false;
                 this.$notify({
@@ -412,7 +412,7 @@ export default {
       this.formTitle = "新增机构";
       this.isEdit = false;
       this.dialogFormVisible = true;
-      this.$axios.gets("/api/business/orgs/loadOrgs").then(response => {
+      this.$axios.gets("/api/base/orgs/loadOrgs").then(response => {
         this.orgs = response.items.map(function(obj) {
           if (!obj.leaf) {
             obj.children = null;
@@ -427,7 +427,7 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(() => {
-        this.$axios.deletes("/api/business/orgs/" + row.id).then(response => {
+        this.$axios.deletes("/api/base/orgs/" + row.id).then(response => {
           this.$notify({
             title: "成功",
             message: "删除成功",
@@ -484,7 +484,7 @@ export default {
       })
         .then(() => {
           this.$axios
-            .puts("/api/business/orgs/" + data.id, data)
+            .puts("/api/base/orgs/" + data.id, data)
             .then(response => {
               this.$notify({
                 title: "成功",

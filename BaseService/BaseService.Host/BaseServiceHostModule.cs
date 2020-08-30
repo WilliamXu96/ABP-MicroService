@@ -6,27 +6,18 @@ using StackExchange.Redis;
 using Microsoft.OpenApi.Models;
 using Volo.Abp;
 using Volo.Abp.Auditing;
-using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.Autofac;
 using Volo.Abp.EntityFrameworkCore;
-using Volo.Abp.EntityFrameworkCore.SqlServer;
 using Volo.Abp.Identity;
-using Volo.Abp.Identity.EntityFrameworkCore;
 using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
-using Volo.Abp.PermissionManagement.EntityFrameworkCore;
-using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.AspNetCore.MultiTenancy;
-using Volo.Abp.TenantManagement.EntityFrameworkCore;
 using System;
 using Volo.Abp.TenantManagement;
 using Volo.Abp.Threading;
 using Volo.Abp.Data;
 using Volo.Abp.AspNetCore.Serilog;
 using Volo.Abp.PermissionManagement.HttpApi;
-using Volo.Abp.PermissionManagement;
-using Volo.Abp.PermissionManagement.Identity;
-using Business;
 using Microsoft.AspNetCore.Cors;
 using Volo.Abp.MultiTenancy;
 using BaseService.EntityFrameworkCore;
@@ -37,6 +28,7 @@ namespace BaseService
         typeof(AbpAutofacModule),
         typeof(BaseServiceApplicationModule),
         typeof(BaseServiceEntityFrameworkCoreModule),
+        typeof(BaseServiceHttpApiModule),
         typeof(AbpAspNetCoreMultiTenancyModule),
         //typeof(AbpEntityFrameworkCoreSqlServerModule),
         //typeof(AbpAuditLoggingEntityFrameworkCoreModule),
@@ -49,7 +41,7 @@ namespace BaseService
         typeof(AbpTenantManagementHttpApiModule),
         //typeof(AbpTenantManagementApplicationModule),
         typeof(AbpIdentityHttpApiModule),
-        typeof(BusinessHttpApiModule),
+        //typeof(BusinessHttpApiModule),
         //typeof(AbpIdentityEntityFrameworkCoreModule),
         //typeof(AbpIdentityApplicationModule),
         typeof(AbpAspNetCoreSerilogModule)
@@ -77,7 +69,7 @@ namespace BaseService
 
             context.Services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Identity Service API", Version = "v1" });
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "BaseService Service API", Version = "v1" });
                 options.DocInclusionPredicate((docName, description) => true);
                 options.CustomSchemaIds(type => type.FullName);
             });
@@ -95,7 +87,7 @@ namespace BaseService
             Configure<AbpAuditingOptions>(options =>
             {
                 options.IsEnabledForGetRequests = true;
-                options.ApplicationName = "IdentityService";
+                options.ApplicationName = "BaseService";
             });
 
             context.Services.AddCors(options =>

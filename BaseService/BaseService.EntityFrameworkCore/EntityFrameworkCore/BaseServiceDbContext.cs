@@ -1,14 +1,28 @@
-﻿using BaseService.Users;
+﻿using BaseService.BaseData;
+using BaseService.Users;
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
+using Volo.Abp.EntityFrameworkCore.Modeling;
+using Volo.Abp.Identity;
+using Volo.Abp.Users.EntityFrameworkCore;
 
 namespace BaseService.EntityFrameworkCore
 {
     [ConnectionStringName("Default")]
     public class BaseServiceDbContext : AbpDbContext<BaseServiceDbContext>
     {
-        public DbSet<AppUser> Users { get; set; }
+        //public DbSet<AppUser> Users { get; set; }
+
+        public DbSet<DataDictionary> DataDictionaries { get; set; }
+
+        public DbSet<DataDictionaryDetail> DataDictionaryDetails { get; set; }
+
+        public DbSet<Organization> Organizations { get; set; }
+
+        public DbSet<Job> Jobs { get; set; }
+
+        public DbSet<UserJobs> EmployeeJobs { get; set; }
 
         public BaseServiceDbContext(DbContextOptions<BaseServiceDbContext> options)
             : base(options)

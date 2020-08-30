@@ -15,5 +15,12 @@ namespace BaseService
     )]
     public class BaseServiceApplicationModule : AbpModule
     {
+        public override void ConfigureServices(ServiceConfigurationContext context)
+        {
+            Configure<AbpAutoMapperOptions>(options =>
+            {
+                options.AddMaps<BaseServiceApplicationAutoMapperProfile>();
+            });
+        }
     }
 }

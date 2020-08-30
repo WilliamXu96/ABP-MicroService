@@ -1,0 +1,18 @@
+{
+  "culture": "zh-Hans",
+  "texts": {
+    "Menu:Home": "首页",
+    "Welcome": "欢迎",
+    "LongWelcomeMessage": "欢迎来到该应用程序. 这是一个基于ABP框架的启动项目. 有关更多信息, 请访问 abp.io.",
+    "Edit": "修改",
+    "Delete": "删除",
+    "Create": "新增",
+    "BaseService": "基础服务",
+    "DataDictionary": "数据字典",
+    "Organization": "组织机构",
+    "Job": "岗位",
+    "Employee": "职员",
+    "AbpSettingManagement": "设置管理",
+    "AuditLogging": "系统日志"
+  }
+}

@@ -42,14 +42,14 @@
             type="primary"
             size="mini"
             @click="handleUpdate(row)"
-            v-permission="['Business.DataDictionary.Update']"
+            v-permission="['BaseService.DataDictionary.Update']"
             icon="el-icon-edit"
           />
           <el-button
             type="danger"
             size="mini"
             @click="handleDelete(row)"
-            v-permission="['Business.DataDictionary.Delete']"
+            v-permission="['BaseService.DataDictionary.Delete']"
             icon="el-icon-delete"
           />
         </template>
@@ -108,7 +108,7 @@ export default {
       this.listLoading = true;
       this.listQuery.SkipCount = (this.page - 1) * 10;
       this.$axios
-        .gets("/api/business/dictDetails/all", this.listQuery)
+        .gets("/api/base/dictDetails/all", this.listQuery)
         .then(response => {
           this.list = response.items;
           this.totalCount = response.totalCount;
@@ -116,7 +116,7 @@ export default {
         });
     },
     fetchData(id) {
-      this.$axios.gets("/api/business/dictDetails/" + id).then(response => {
+      this.$axios.gets("/api/base/dictDetails/" + id).then(response => {
         this.form = response;
       });
     },
@@ -127,7 +127,7 @@ export default {
           this.form.pid = this.listQuery.Pid;
           if (this.isEdit) {
             this.$axios
-              .puts("/api/business/dictDetails/" + this.form.id, this.form)
+              .puts("/api/base/dictDetails/" + this.form.id, this.form)
               .then(response => {
                 this.formLoading = false;
                 this.$notify({
@@ -144,7 +144,7 @@ export default {
               });
           } else {
             this.$axios
-              .posts("/api/business/dictDetails", this.form)
+              .posts("/api/base/dictDetails", this.form)
               .then(response => {
                 this.formLoading = false;
                 this.$notify({
@@ -190,7 +190,7 @@ export default {
       })
         .then(() => {
           this.$axios
-            .posts("/api/business/dictDetails/Delete", params)
+            .posts("/api/base/dictDetails/Delete", params)
             .then(response => {
               const index = this.list.indexOf(row);
               this.$notify({

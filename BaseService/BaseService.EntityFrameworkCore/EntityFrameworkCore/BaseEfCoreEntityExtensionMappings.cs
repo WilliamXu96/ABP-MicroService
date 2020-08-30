@@ -1,4 +1,8 @@
-﻿using Volo.Abp.Threading;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using Volo.Abp.Identity;
+using Volo.Abp.ObjectExtending;
+using Volo.Abp.Threading;
 
 namespace BaseService.EntityFrameworkCore
 {
@@ -16,7 +20,8 @@ namespace BaseService.EntityFrameworkCore
             //        .MapEfCoreProperty<IdentityUser, bool>(
             //            "Enable",
             //            b => { b.HasDefaultValue(false); }
-            //        );
+            //        )
+            //        .MapEfCoreProperty<IdentityUser, Guid>("OrgId");
             //});
         }
     }

@@ -22,7 +22,7 @@ namespace BaseService
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-                .Enrich.WithProperty("Application", "IdentityService")
+                .Enrich.WithProperty("Application", "BaseService")
                 .Enrich.FromLogContext()
                 .WriteTo.File("Logs/logs.txt")
                 .WriteTo.Elasticsearch(
@@ -37,13 +37,13 @@ namespace BaseService
 
             try
             {
-                Log.Information("Starting IdentityService.Host.");
+                Log.Information("Starting BaseService.Host.");
                 CreateHostBuilder(args).Build().Run();
                 return 0;
             }
             catch (Exception ex)
             {
-                Log.Fatal(ex, "IdentityService.Host terminated unexpectedly!");
+                Log.Fatal(ex, "BaseService.Host terminated unexpectedly!");
                 return 1;
             }
             finally

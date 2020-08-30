@@ -47,14 +47,14 @@
                 type="primary"
                 icon="el-icon-plus"
                 @click="handleCreate"
-                v-permission="['Business.DataDictionary.Create']"
+                v-permission="['BaseService.DataDictionary.Create']"
               >新增</el-button>
               <el-button
                 class="filter-item"
                 size="mini"
                 type="success"
                 icon="el-icon-edit"
-                v-permission="['Business.DataDictionary.Update']"
+                v-permission="['BaseService.DataDictionary.Update']"
                 @click="handleUpdate()"
               >修改</el-button>
               <el-button
@@ -63,7 +63,7 @@
                 type="danger"
                 icon="el-icon-delete"
                 size="mini"
-                v-permission="['Business.DataDictionary.Delete']"
+                v-permission="['BaseService.DataDictionary.Delete']"
                 @click="handleDelete()"
               >删除</el-button>
             </div>
@@ -86,14 +86,14 @@
                   type="primary"
                   size="mini"
                   @click="handleUpdate(row)"
-                  v-permission="['Business.DataDictionary.Update']"
+                  v-permission="['BaseService.DataDictionary.Update']"
                   icon="el-icon-edit"
                 />
                 <el-button
                   type="danger"
                   size="mini"
                   @click="handleDelete(row)"
-                  v-permission="['Business.DataDictionary.Delete']"
+                  v-permission="['BaseService.DataDictionary.Delete']"
                   icon="el-icon-delete"
                 />
               </template>
@@ -120,7 +120,7 @@
               icon="el-icon-plus"
               :disabled="multipleSelection.length != 1"
               @click="handleCreateDetail"
-              v-permission="['Business.DataDictionary.Create']"
+              v-permission="['BaseService.DataDictionary.Create']"
             >新增</el-button>
           </div>
           <dictDetail ref="dictDetail" />
@@ -171,7 +171,7 @@ export default {
       this.listLoading = true;
       this.listQuery.SkipCount = (this.page - 1) * 10;
       this.$axios
-        .gets("/api/business/dict/all", this.listQuery)
+        .gets("/api/base/dict/all", this.listQuery)
         .then(response => {
           this.list = response.items;
           this.totalCount = response.totalCount;
@@ -179,7 +179,7 @@ export default {
         });
     },
     fetchData(id) {
-      this.$axios.gets("/api/business/dict/" + id).then(response => {
+      this.$axios.gets("/api/base/dict/" + id).then(response => {
         this.form = response;
       });
     },
@@ -194,7 +194,7 @@ export default {
           this.formLoading = true;
           if (this.isEdit) {
             this.$axios
-              .puts("/api/business/dict/" + this.form.id, this.form)
+              .puts("/api/base/dict/" + this.form.id, this.form)
               .then(response => {
                 this.formLoading = false;
                 this.$notify({
@@ -211,7 +211,7 @@ export default {
               });
           } else {
             this.$axios
-              .posts("/api/business/dict", this.form)
+              .posts("/api/base/dict", this.form)
               .then(response => {
                 this.formLoading = false;
                 this.$notify({
@@ -262,7 +262,7 @@ export default {
         type: "warning"
       })
         .then(() => {
-          this.$axios.posts("/api/business/dict/delete", params).then(response => {
+          this.$axios.posts("/api/base/dict/delete", params).then(response => {
             this.$notify({
               title: "成功",
               message: "删除成功",

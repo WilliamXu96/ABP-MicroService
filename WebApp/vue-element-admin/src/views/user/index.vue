@@ -64,19 +64,19 @@
         label-width="70px"
       >
         <el-form-item label="用户名" prop="userName">
-          <el-input v-model="form.userName" />
+          <el-input v-model="form.userName" style="width: 184px;" />
         </el-form-item>
         <el-form-item label="电话" prop="phoneNumber">
-          <el-input v-model.number="form.phoneNumber" />
+          <el-input v-model.number="form.phoneNumber" style="width: 184px;" />
         </el-form-item>
         <el-form-item label="姓名" prop="name">
-          <el-input v-model="form.name" />
+          <el-input v-model="form.name" style="width: 184px;" />
         </el-form-item>
         <el-form-item label="邮箱" prop="email">
-          <el-input v-model="form.email" />
+          <el-input v-model="form.email" style="width: 184px;" />
         </el-form-item>
         <el-form-item label="密码" prop="password" v-if="!isEdit">
-          <el-input type="password" v-model="form.password" />
+          <el-input type="password" v-model="form.password" style="width: 184px;" />
         </el-form-item>
         <el-form-item label="角色" prop="roles">
           <el-select v-model="checkedRole" multiple style="width: 188px" placeholder="请选择">
@@ -88,6 +88,27 @@
             ></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="所属机构" prop="orgId">
+              <treeselect
+                v-model="form.orgId"
+                :load-options="loadOrgs"
+                :options="orgs"
+                style="width: 184px;"
+                placeholder="选择所属机构"
+              />
+            </el-form-item>
+            <el-form-item label="岗位" prop="name">
+              <el-select
+                class="filter-item"
+                size="small"
+                style="width: 184px"
+                multiple
+                v-model="form.jobs"
+                placeholder="选择岗位"
+              >
+              <el-option v-for="item in jobData" :key="item.id" :label="item.name" :value="item.id" />
+              </el-select>
+            </el-form-item>
         <el-form-item label="允许锁定">
           <el-radio-group v-model="form.lockoutEnabled" style="width: 178px">
 		    <el-radio :label="true">是</el-radio>
@@ -162,21 +183,26 @@
 import { isvalidPhone } from "@/utils/validate";
 import Pagination from "@/components/Pagination";
 import permission from "@/directive/permission/index.js";
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+import { LOAD_CHILDREN_OPTIONS } from "@riophae/vue-treeselect";
 
 const defaultForm = {
   id:undefined,
+  orgId:undefined,
   userName:'',
   phoneNumber:'',
   name:'',
   email:'',
   password:'',
   lockoutEnabled:false,
-  roleNames:[]
+  roleNames:[],
+  jobs:[]
 }
 
 export default {
   name: "User",
-  components: { Pagination },
+  components: { Pagination, Treeselect },
   directives: { permission },
   data() {
     // 自定义验证
@@ -209,6 +235,8 @@ export default {
       },
       form: Object.assign({}, defaultForm),
       list: null,
+      orgs: [],
+      jobData:[],
       roleList: [],
       checkedRole: [],
       totalCount: 0,
@@ -231,10 +259,42 @@ export default {
     this.getList();
   },
   methods: {
+    getOrgs(node, resolve) {
+      const params = {};
+      if (typeof node !== "object") {
+        if (node) {
+          params["filter"] = node;
+        }
+      } else if (node.level !== 0) {
+        params["id"] = node.data.id;
+      }
+      //TODO:仅获取启用机构
+      setTimeout(() => {
+        this.$axios
+          .gets("/api/base/orgs/loadOrgs", params)
+          .then((response) => {
+            if (resolve) {
+              resolve(response.items);
+            } else {
+              this.orgData = response.items;
+            }
+          });
+      }, 100);
+    },
+    getOrgNodes() {
+      this.$axios.gets("/api/base/orgs/loadNodes").then((response) => {
+        this.loadTree(response);
+      });
+    },
+    getJobs(){
+      this.$axios.gets('/api/base/job/jobs').then((response)=>{
+        this.jobData=response.items
+      })
+    },
     getList() {
       this.listLoading = true;
       this.listQuery.SkipCount = (this.page - 1) * 10;
-      this.$axios.gets("/api/identity/users", this.listQuery).then(response => {
+      this.$axios.gets("/api/base/user", this.listQuery).then(response => {
         this.list = response.items;
         this.totalCount = response.totalCount;
         this.listLoading = false;
@@ -242,7 +302,9 @@ export default {
     },
     fetchData(id) {
       this.getAllRoles();
-      this.$axios.gets("/api/identity/users/" + id).then(response => {
+      this.getOrgNodes();
+      this.getJobs()
+      this.$axios.gets("/api/base/user/" + id).then(response => {
         this.form = response;
       });
       this.$axios.gets("/api/identity/users/" + id + "/roles").then(data => {
@@ -251,6 +313,23 @@ export default {
             this.checkedRole.push(item.name)
           })
         });
+    },
+    loadOrgs({ action, parentNode, callback }) {
+      if (action === LOAD_CHILDREN_OPTIONS) {
+        this.$axios
+          .gets("/api/base/orgs/loadOrgs", { id: parentNode.id })
+          .then((response) => {
+            parentNode.children = response.items.map(function (obj) {
+              if (!obj.leaf) {
+                obj.children = null;
+              }
+              return obj;
+            });
+            setTimeout(() => {
+              callback();
+            }, 100);
+          });
+      }
     },
     getAllRoles() {
       //this.roleList = [];
@@ -275,7 +354,7 @@ export default {
           this.form.roleNames=this.checkedRole
           if (this.isEdit) {
             this.$axios
-              .puts("/api/identity/users/" + this.form.id, this.form)
+              .puts("/api/base/user/" + this.form.id, this.form)
               .then(response => {
                 this.formLoading = false;
                 this.$notify({
@@ -292,7 +371,7 @@ export default {
               });
           } else {
             this.$axios
-              .posts("/api/identity/users", this.form)
+              .posts("/api/base/user", this.form)
               .then(response => {
                 this.formLoading = false;
                 this.$notify({
@@ -316,6 +395,9 @@ export default {
       this.isEdit = false;
       this.dialogFormVisible = true;
       this.getAllRoles();
+      this.getJobs()
+      this.getOrgNodes();
+      
     },
     handleDelete(row) {
       if (row) {
@@ -392,9 +474,37 @@ export default {
     cancel() {
       this.form = Object.assign({}, defaultForm),
       this.checkedRole=[]
+      this.orgs=[]
+      this.jobData=[]
       this.dialogFormVisible = false;
       this.$refs.form.clearValidate();
-    }
+    },
+    //TODO：引用公共方法
+    loadTree(data) {
+      data.items.forEach((element) => {
+        if (!element.pid) {
+          element.hasChildren = element.leaf ? false : true;
+          if (!element.leaf) {
+            element.children = [];
+          }
+          this.orgs.push(element);
+        }
+      });
+      this.setChildren(this.orgs, data.items);
+    },
+    setChildren(roots, items) {
+      roots.forEach((element) => {
+        items.forEach((item) => {
+          if (item.pid == element.id) {
+            if (!element.children) element.children = [];
+            element.children.push(item);
+          }
+        });
+        if (element.children) {
+          this.setChildren(element.children, items);
+        }
+      });
+    },
   }
 };
 </script>

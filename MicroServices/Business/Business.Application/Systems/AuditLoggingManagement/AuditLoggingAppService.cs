@@ -1,5 +1,4 @@
 ﻿using Business.Permissions;
-using Business.Systems.AuditLoggingManagement;
 using Business.Systems.AuditLoggingManagement.Dto;
 using Microsoft.AspNetCore.Authorization;
 using System;
@@ -9,7 +8,7 @@ using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.AuditLogging;
 
-namespace XDL.Systems.AuditLoggingManagement
+namespace Business.Systems.AuditLoggingManagement
 {
     [Authorize(BusinessPermissions.AuditLogging.Default)]
     public class AuditLoggingAppService: ApplicationService, IAuditLoggingAppService

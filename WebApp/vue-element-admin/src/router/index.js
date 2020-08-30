@@ -159,7 +159,7 @@ export const asyncRoutes = [
       name: 'Organization',
       meta: {
         title: 'org',
-        roles: ['Business.Organization'],
+        roles: ['BaseService.Organization'],
         icon: 'org'
       }
     },
@@ -169,7 +169,7 @@ export const asyncRoutes = [
       name: 'Dictionary',
       meta:{
         title: 'dict',
-        roles: ['Business.DataDictionary'],
+        roles: ['BaseService.DataDictionary'],
         icon: 'data'
       }
     },
@@ -179,27 +179,26 @@ export const asyncRoutes = [
       name: 'Job',
       meta:{
         title: 'job',
-        roles: ['Business.Job'],
+        roles: ['BaseService.Job'],
         icon: 'job'
       }
     },
-    {
-      path: 'employee',
-      component: () => import('@/views/employee/index'),
-      name: 'Employee',
-      meta:{
-        title: 'employee',
-        roles: ['Business.Employee'],
-        icon: 'employee'
-      }
-    },
+    // {
+    //   path: 'employee',
+    //   component: () => import('@/views/employee/index'),
+    //   name: 'Employee',
+    //   meta:{
+    //     title: 'employee',
+    //     icon: 'employee'
+    //   }
+    // },
     {
       path: 'log',
       component: () => import('@/views/log/index'),
       name: 'Log',
       meta: {
         title: 'log',
-        roles: ['Business.AuditLogging'],
+        roles: ['BaseService.AuditLogging'],
         icon: 'log'
       }
     },
