@@ -7,12 +7,6 @@
     "Edit": "修改",
     "Delete": "删除",
     "Create": "新增",
-    "Business": "业务系统",
-    "DataDictionary": "数据字典",
-    "Organization": "组织机构",
-    "Job": "岗位",
-    "Employee": "职员",
-	"AbpSettingManagement": "设置管理",
-    "AuditLogging": "系统日志"
+    "Business": "业务系统"
   }
 }
