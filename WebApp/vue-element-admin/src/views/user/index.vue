@@ -1,5 +1,30 @@
 <template>
   <div class="app-container">
+    <el-row :gutter="20">
+      <!--侧边组织机构树形列表-->
+      <el-col :xs="9" :sm="6" :md="5" :lg="4" :xl="4">
+        <div class="head-container">
+          <el-input
+            v-model="orgName"
+            clearable
+            size="small"
+            placeholder="搜索..."
+            prefix-icon="el-icon-search"
+            class="filter-item"
+            @input="getOrgs"
+          />
+        </div>
+        <el-tree
+          :data="orgData"
+          :load="getOrgs"
+          :props="defaultProps"
+          :expand-on-click-node="false"
+          lazy
+          @node-click="handleNodeClick"
+          style="margin-top:15px"
+        />
+      </el-col>
+      <el-col :xs="15" :sm="18" :md="19" :lg="20" :xl="20">
     <!--工具栏-->
     <div class="head-container">
         <!-- 搜索 -->
@@ -138,6 +163,11 @@
           <span class="link-type" @click="handleUpdate(row)">{{row.userName}}</span>
         </template>
       </el-table-column>
+      <el-table-column label="所属机构" prop="orgIdToName" align="center">
+            <template slot-scope="scope">
+              <span>{{scope.row.orgIdToName}}</span>
+            </template>
+          </el-table-column>
       <el-table-column label="邮箱" prop="email" sortable="custom" align="center" width="200px">
         <template slot-scope="scope">
           <span>{{scope.row.email}}</span>
@@ -176,6 +206,8 @@
       :limit.sync="listQuery.MaxResultCount"
       @pagination="getList"
     />
+    </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -197,7 +229,8 @@ const defaultForm = {
   password:'',
   lockoutEnabled:false,
   roleNames:[],
-  jobs:[]
+  jobs:[],
+  orgIdToName: null,
 }
 
 export default {
@@ -233,16 +266,20 @@ export default {
           { required: true, trigger: "blur", validator: validPhone }
         ]
       },
+      defaultProps: { children: "children", label: "name", isLeaf: "leaf" },
       form: Object.assign({}, defaultForm),
       list: null,
+      orgName: "",
       orgs: [],
       jobData:[],
+      orgData: [],
       roleList: [],
       checkedRole: [],
       totalCount: 0,
       listLoading: true,
       formLoading: false,
       listQuery: {
+        OrgId: null,
         Filter: "",
         Sorting: "",
         SkipCount: 0,
@@ -332,19 +369,16 @@ export default {
       }
     },
     getAllRoles() {
-      //this.roleList = [];
       this.$axios.gets("/api/identity/roles/all").then(response => {
-        // response.items.forEach(element => {
-        //   let options = {};
-        //   options.value = element.name;
-        //   options.label = element.name;
-        //   this.roleList.push(options);
-        // });
         this.roleList=response.items
       });
     },
     handleFilter() {
       this.page = 1;
+      this.getList();
+    },
+    handleNodeClick(data) {
+      this.listQuery.OrgId = data.id;
       this.getList();
     },
     save() {

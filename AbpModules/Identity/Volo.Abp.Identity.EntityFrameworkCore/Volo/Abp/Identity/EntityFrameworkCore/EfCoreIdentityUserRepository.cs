@@ -41,14 +41,14 @@ namespace Volo.Abp.Identity.EntityFrameworkCore
                         where userRole.UserId == id
                         select role.Name;
             var organizationUnitIds = DbContext.Set<IdentityUserOrganizationUnit>().Where(q => q.UserId == id).Select(q => q.OrganizationUnitId).ToArray();
-            
+
             var organizationRoleIds = await (
                 from ouRole in DbContext.Set<OrganizationUnitRole>()
-                join ou in DbContext.Set<OrganizationUnit>() on ouRole.OrganizationUnitId equals ou.Id 
+                join ou in DbContext.Set<OrganizationUnit>() on ouRole.OrganizationUnitId equals ou.Id
                 where organizationUnitIds.Contains(ouRole.OrganizationUnitId)
                 select ouRole.RoleId
             ).ToListAsync(GetCancellationToken(cancellationToken));
-            
+
             var orgUnitRoleNameQuery = DbContext.Roles.Where(r => organizationRoleIds.Contains(r.Id)).Select(n => n.Name);
             var resultQuery = query.Union(orgUnitRoleNameQuery);
             return await resultQuery.ToListAsync(GetCancellationToken(cancellationToken));
@@ -60,7 +60,7 @@ namespace Volo.Abp.Identity.EntityFrameworkCore
         {
             var query = from userOu in DbContext.Set<IdentityUserOrganizationUnit>()
                         join roleOu in DbContext.Set<OrganizationUnitRole>() on userOu.OrganizationUnitId equals roleOu.OrganizationUnitId
-                        join ou in DbContext.Set<OrganizationUnit>() on roleOu.OrganizationUnitId equals ou.Id 
+                        join ou in DbContext.Set<OrganizationUnit>() on roleOu.OrganizationUnitId equals ou.Id
                         join userOuRoles in DbContext.Roles on roleOu.RoleId equals userOuRoles.Id
                         where userOu.UserId == id
                         select userOuRoles.Name;
@@ -142,6 +142,32 @@ namespace Volo.Abp.Identity.EntityFrameworkCore
                         (u.Surname != null && u.Surname.Contains(filter)) ||
                         (u.PhoneNumber != null && u.PhoneNumber.Contains(filter))
                 )
+                .OrderBy(sorting ?? nameof(IdentityUser.UserName))
+                .PageBy(skipCount, maxResultCount)
+                .ToListAsync(GetCancellationToken(cancellationToken));
+        }
+
+        public virtual async Task<List<IdentityUser>> GetListAsync(
+            List<Guid> orgIds,
+            string sorting = null,
+            int maxResultCount = int.MaxValue,
+            int skipCount = 0,
+            string filter = null,
+            bool includeDetails = false,
+            CancellationToken cancellationToken = default)
+        {
+            return await DbSet
+                .IncludeDetails(includeDetails)
+                .WhereIf(
+                    !filter.IsNullOrWhiteSpace(),
+                    u =>
+                        u.UserName.Contains(filter) ||
+                        u.Email.Contains(filter) ||
+                        (u.Name != null && u.Name.Contains(filter)) ||
+                        (u.Surname != null && u.Surname.Contains(filter)) ||
+                        (u.PhoneNumber != null && u.PhoneNumber.Contains(filter))
+                )
+                .WhereIf(orgIds != null, u => orgIds.Contains(u.OrgId))
                 .OrderBy(sorting ?? nameof(IdentityUser.UserName))
                 .PageBy(skipCount, maxResultCount)
                 .ToListAsync(GetCancellationToken(cancellationToken));

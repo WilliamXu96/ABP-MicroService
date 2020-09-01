@@ -1,4 +1,5 @@
 ﻿using BaseService.BaseData;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,6 +14,7 @@ using Volo.Abp.ObjectExtending;
 
 namespace BaseService.Systems.UserManagement
 {
+    //[Authorize(IdentityPermissions.Users.Default)]
     public class UserAppService : ApplicationService, IUserAppService
     {
         protected IdentityUserManager UserManager { get; }
@@ -44,6 +46,7 @@ namespace BaseService.Systems.UserManagement
             return dto;
         }
 
+        [Authorize(IdentityPermissions.Users.Create)]
         public async Task<IdentityUserDto> Create(IdentityUserCreateDto input)
         {
             var user = new IdentityUser(
@@ -71,6 +74,7 @@ namespace BaseService.Systems.UserManagement
             return dto;
         }
 
+        [Authorize(IdentityPermissions.Users.Update)]
         public async Task<IdentityUserDto> UpdateAsync(Guid id, IdentityUserUpdateDto input)
         {
             var user = await UserManager.GetByIdAsync(id);
@@ -104,8 +108,15 @@ namespace BaseService.Systems.UserManagement
 
         public async Task<PagedResultDto<IdentityUserDto>> GetAll(GetIdentityUsersInput input)
         {
+            List<Guid> orgIds = null;
+            if (input.OrgId.HasValue)
+            {
+                var org = await _orgRepository.GetAsync(input.OrgId.Value);
+                orgIds = await _orgRepository.Where(_ => _.CascadeId.Contains(org.CascadeId)).Select(_ => _.Id).ToListAsync();
+            }
+
             var totalCount = await UserRepository.GetCountAsync(input.Filter);
-            var items = await UserRepository.GetListAsync(input.Sorting, input.MaxResultCount, input.SkipCount, input.Filter);
+            var items = await UserRepository.GetListAsync(orgIds, input.Sorting, input.MaxResultCount, input.SkipCount, input.Filter);
             var orgs = await _orgRepository.Where(_ => items.Select(i => i.OrgId).Contains(_.Id)).ToListAsync();
 
             var dtos = ObjectMapper.Map<List<IdentityUser>, List<IdentityUserDto>>(items);

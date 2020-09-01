@@ -59,6 +59,16 @@ namespace Volo.Abp.Identity
             CancellationToken cancellationToken = default
         );
 
+        Task<List<IdentityUser>> GetListAsync(
+            List<Guid> orgIds,
+            string sorting = null,
+            int maxResultCount = int.MaxValue,
+            int skipCount = 0,
+            string filter = null,
+            bool includeDetails = false,
+            CancellationToken cancellationToken = default
+        );
+
         Task<List<IdentityRole>> GetRolesAsync(
             Guid id,
             bool includeDetails = false,
