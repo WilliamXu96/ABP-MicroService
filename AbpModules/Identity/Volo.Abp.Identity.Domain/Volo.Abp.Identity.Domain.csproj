@@ -3,12 +3,16 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Volo.Abp.Identity.Domain</AssemblyName>
-    <PackageId>Volo.Abp.Identity.Domain</PackageId>
+    <PackageId>XCZ.Abp.Identity.Domain</PackageId>
     <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <RootNamespace />
+    <Authors>XCZ.Abp.Identity.Domain</Authors>
+    <Version>3.0.4</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>基于Volo.Abp.Identity.Application.Contracts，扩展IdentityUser</Description>
   </PropertyGroup>
 
   <ItemGroup>

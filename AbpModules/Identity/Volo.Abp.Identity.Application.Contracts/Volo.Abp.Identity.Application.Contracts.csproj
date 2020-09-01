@@ -3,12 +3,16 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Volo.Abp.Identity.Application.Contracts</AssemblyName>
-    <PackageId>Volo.Abp.Identity.Application.Contracts</PackageId>
+    <PackageId>XCZ.Abp.Identity.Application.Contracts</PackageId>
     <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <RootNamespace />
+    <Authors>XCZ.Abp.Identity.Application.Contracts</Authors>
+    <Version>3.0.4</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>基于Volo.Abp.Identity.Application.Contracts库，扩展IdentityUserCreateOrUpdateDtoBase、IdentityUserDto、IIdentityUserAppService</Description>
   </PropertyGroup>
 
   <ItemGroup>

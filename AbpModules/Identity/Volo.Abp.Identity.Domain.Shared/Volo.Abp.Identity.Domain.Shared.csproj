@@ -3,12 +3,16 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Volo.Abp.Identity.Domain.Shared</AssemblyName>
-    <PackageId>Volo.Abp.Identity.Domain.Shared</PackageId>
+    <PackageId>XCZ.Abp.Identity.Domain.Shared</PackageId>
     <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <RootNamespace />
+    <Authors>XCZ.Abp.Identity.Domain.Shared</Authors>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>基于Volo.Abp.Identity.Domain.Shared，扩展AbpIdentity本地化</Description>
+    <Version>3.0.4</Version>
   </PropertyGroup>
 
   <ItemGroup>

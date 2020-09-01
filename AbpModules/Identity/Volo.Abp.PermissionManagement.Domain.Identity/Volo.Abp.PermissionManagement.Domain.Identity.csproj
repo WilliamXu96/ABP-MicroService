@@ -3,12 +3,16 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Volo.Abp.PermissionManagement.Domain.Identity</AssemblyName>
-    <PackageId>Volo.Abp.PermissionManagement.Domain.Identity</PackageId>
+    <PackageId>XCZ.Abp.PermissionManagement.Domain.Identity</PackageId>
     <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <RootNamespace />
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>XCZ.Abp.PermissionManagement.Domain.Identity</Authors>
+    <Version>3.0.4</Version>
+    <Description>基于Volo.Abp.PermissionManagement.Domain.Identity</Description>
   </PropertyGroup>
 
   <ItemGroup>

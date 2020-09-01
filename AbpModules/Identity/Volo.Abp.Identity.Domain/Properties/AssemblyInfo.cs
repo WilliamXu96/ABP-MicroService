@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Volo.Abp.Identity")]
+[assembly: AssemblyProduct("XCZ.Abp.Identity")]
 [assembly: AssemblyTrademark("")]
 [assembly: InternalsVisibleTo("Volo.Abp.Identity.Application.Tests")]
 [assembly: InternalsVisibleTo("Volo.Abp.Identity.TestBase.Orm")]

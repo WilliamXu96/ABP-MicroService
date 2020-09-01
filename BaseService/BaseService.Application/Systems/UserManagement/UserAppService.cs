@@ -14,7 +14,7 @@ using Volo.Abp.ObjectExtending;
 
 namespace BaseService.Systems.UserManagement
 {
-    //[Authorize(IdentityPermissions.Users.Default)]
+    [Authorize(IdentityPermissions.Users.Default)]
     public class UserAppService : ApplicationService, IUserAppService
     {
         protected IdentityUserManager UserManager { get; }

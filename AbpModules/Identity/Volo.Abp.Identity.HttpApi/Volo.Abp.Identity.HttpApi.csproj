@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>Volo.Abp.Identity.HttpApi</AssemblyName>
-    <PackageId>Volo.Abp.Identity.HttpApi</PackageId>
+    <PackageId>XCZ.Abp.Identity.HttpApi</PackageId>
     <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
@@ -11,6 +11,10 @@
     <OutputType>Library</OutputType>
     <IsPackable>true</IsPackable>
     <RootNamespace />
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>XCZ.Abp.Identity.HttpApi</Authors>
+    <Version>3.0.4</Version>
+    <Description>基于Volo.Abp.Identity.HttpApi</Description>
   </PropertyGroup>
 
   <ItemGroup>
