@@ -77,3 +77,9 @@
 /BaseService/BaseService.HttpApi/obj
 /BaseService/BaseService.HttpApi.Client/obj
 /BaseService/BaseService.HttpApi.Client/bin/Debug/netcoreapp3.1
+/AbpModules/Identity/Volo.Abp.Identity.Application/bin/Debug
+/AbpModules/Identity/Volo.Abp.Identity.Application.Contracts/bin/Debug
+/AbpModules/Identity/Volo.Abp.Identity.Domain/bin/Debug
+/AbpModules/Identity/Volo.Abp.Identity.EntityFrameworkCore/bin/Debug
+/AbpModules/Identity/Volo.Abp.Identity.HttpApi/bin/Debug
+/AbpModules/Identity/Volo.Abp.PermissionManagement.Domain.Identity/bin/Debug
