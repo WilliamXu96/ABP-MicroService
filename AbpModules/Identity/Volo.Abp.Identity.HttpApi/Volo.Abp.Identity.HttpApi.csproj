@@ -13,7 +13,7 @@
     <RootNamespace />
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>XCZ.Abp.Identity.HttpApi</Authors>
-    <Version>3.0.4</Version>
+    <Version>3.0.4.1</Version>
     <Description>基于Volo.Abp.Identity.HttpApi</Description>
   </PropertyGroup>
 

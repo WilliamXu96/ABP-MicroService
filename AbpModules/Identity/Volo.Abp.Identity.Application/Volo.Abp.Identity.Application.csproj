@@ -10,7 +10,7 @@
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <RootNamespace />
     <Authors>XCZ.Abp.Identity.Application</Authors>
-    <Version>3.0.4</Version>
+    <Version>3.0.4.1</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>基于Volo.Abp.Identity.Application库，实现用户---组织机构联动</Description>
   </PropertyGroup>

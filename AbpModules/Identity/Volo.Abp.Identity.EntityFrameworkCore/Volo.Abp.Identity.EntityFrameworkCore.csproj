@@ -11,7 +11,7 @@
     <RootNamespace />
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>XCZ.Abp.Identity.EntityFrameworkCore</Authors>
-    <Version>3.0.4</Version>
+    <Version>3.0.4.1</Version>
     <Description>基于Volo.Abp.Identity.EntityFrameworkCore，扩展AbpUsers表</Description>
   </PropertyGroup>
 

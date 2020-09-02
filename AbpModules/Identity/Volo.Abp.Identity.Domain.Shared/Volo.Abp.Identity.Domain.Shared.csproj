@@ -12,7 +12,7 @@
     <Authors>XCZ.Abp.Identity.Domain.Shared</Authors>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>基于Volo.Abp.Identity.Domain.Shared，扩展AbpIdentity本地化</Description>
-    <Version>3.0.4</Version>
+    <Version>3.0.4.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

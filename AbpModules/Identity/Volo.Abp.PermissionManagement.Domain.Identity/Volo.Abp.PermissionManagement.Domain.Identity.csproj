@@ -11,8 +11,10 @@
     <RootNamespace />
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>XCZ.Abp.PermissionManagement.Domain.Identity</Authors>
-    <Version>3.0.4</Version>
+    <Version>3.0.4.2</Version>
     <Description>基于Volo.Abp.PermissionManagement.Domain.Identity</Description>
+    <AssemblyVersion>3.0.4.1</AssemblyVersion>
+    <FileVersion>3.0.4.1</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

@@ -10,7 +10,7 @@
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <RootNamespace />
     <Authors>XCZ.Abp.Identity.Domain</Authors>
-    <Version>3.0.4</Version>
+    <Version>3.0.4.1</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>基于Volo.Abp.Identity.Application.Contracts，扩展IdentityUser</Description>
   </PropertyGroup>
