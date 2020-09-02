@@ -24,10 +24,7 @@
     <PackageReference Include="Volo.Abp.AuditLogging.Domain" Version="3.0.4" />
     <PackageReference Include="Volo.Abp.Ddd.Domain" Version="3.0.4" />
     <PackageReference Include="Volo.Abp.EntityFrameworkCore" Version="3.0.4" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\AbpModules\Identity\Volo.Abp.PermissionManagement.Domain.Identity\Volo.Abp.PermissionManagement.Domain.Identity.csproj" />
+    <PackageReference Include="XCZ.Abp.PermissionManagement.Domain.Identity" Version="3.0.4.2" />
   </ItemGroup>
 
 </Project>
