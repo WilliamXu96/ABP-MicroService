@@ -107,7 +107,7 @@ export default {
       this.listLoading = true;
       this.listQuery.SkipCount = (this.page - 1) * 10;
       this.$axios
-        .gets("/api/business/auditLogging/all", this.listQuery)
+        .gets("/api/base/auditLogging/all", this.listQuery)
         .then(response => {
           response.items.forEach(element => {
             if (!element.lastModificationTime) {
