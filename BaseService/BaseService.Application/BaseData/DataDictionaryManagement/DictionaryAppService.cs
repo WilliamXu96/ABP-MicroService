@@ -11,6 +11,7 @@ using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.MultiTenancy;
 
 namespace BaseService.BaseData.DataDictionaryManagement
 {
@@ -36,6 +37,7 @@ namespace BaseService.BaseData.DataDictionaryManagement
 
             var dic = new DataDictionary(
                 GuidGenerator.Create(),
+                CurrentTenant.Id,
                 input.Name,
                 input.Description);
 

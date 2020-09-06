@@ -42,14 +42,9 @@ namespace BaseService.BaseData.DataDictionaryManagement
                 throw new BusinessException("名称：" + input.Label + "字典已存在");
             }
 
-            //var top = await _detailRepository.OrderByDescending(_ => _.Sort).FirstAsync();
-            //if (top != null)
-            //{
-
-            //}
-
             var result = await _detailRepository.InsertAsync(new DataDictionaryDetail(
                                                                     GuidGenerator.Create(),
+                                                                    CurrentTenant.Id,
                                                                     input.Pid,
                                                                     input.Label,
                                                                     input.Value,

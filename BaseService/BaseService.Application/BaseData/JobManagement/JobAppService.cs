@@ -33,7 +33,7 @@ namespace BaseService.BaseData.JobManagement
                 throw new BusinessException("名称：" + input.Name + "岗位已存在");
             }
 
-            var result = await _repository.InsertAsync(new Job(GuidGenerator.Create(), input.Name, input.Enabled, input.Sort, input.Description));
+            var result = await _repository.InsertAsync(new Job(GuidGenerator.Create(),CurrentTenant.Id, input.Name, input.Enabled, input.Sort, input.Description));
             return ObjectMapper.Map<Job, JobDto>(result);
         }
 

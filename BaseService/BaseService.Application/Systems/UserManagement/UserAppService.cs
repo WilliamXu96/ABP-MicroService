@@ -66,7 +66,7 @@ namespace BaseService.Systems.UserManagement
 
             foreach (var jid in input.Jobs)
             {
-                await _userJobsRepository.InsertAsync(new UserJobs(user.Id, jid));
+                await _userJobsRepository.InsertAsync(new UserJobs(CurrentTenant.Id, user.Id, jid));
             }
 
             await CurrentUnitOfWork.SaveChangesAsync();
@@ -98,7 +98,7 @@ namespace BaseService.Systems.UserManagement
             await _userJobsRepository.DeleteAsync(_ => _.UserId == id);
             foreach (var jid in input.Jobs)
             {
-                await _userJobsRepository.InsertAsync(new UserJobs(id, jid));
+                await _userJobsRepository.InsertAsync(new UserJobs(CurrentTenant.Id, id, jid));
             }
 
             await CurrentUnitOfWork.SaveChangesAsync();

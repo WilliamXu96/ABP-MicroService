@@ -1,11 +1,14 @@
 ﻿using System;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
 
 namespace BaseService.BaseData
 {
-    public class DataDictionaryDetail : AuditedAggregateRoot<Guid>, ISoftDelete
+    public class DataDictionaryDetail : AuditedAggregateRoot<Guid>, ISoftDelete,IMultiTenant
     {
+        public Guid? TenantId { get; set; }
+
         public Guid Pid { get; set; }
 
         public string Label { get; set; }
@@ -16,8 +19,9 @@ namespace BaseService.BaseData
 
         public bool IsDeleted { get; set; }
 
-        public DataDictionaryDetail(Guid id, Guid pid, string label, string value, short sort)
+        public DataDictionaryDetail(Guid id, Guid? tenantId, Guid pid, string label, string value, short sort)
         {
+            TenantId = tenantId;
             Id = id;
             Pid = pid;
             Label = label;

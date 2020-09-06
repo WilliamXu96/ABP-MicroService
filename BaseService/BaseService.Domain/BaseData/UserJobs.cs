@@ -1,10 +1,13 @@
 ﻿using System;
 using Volo.Abp.Domain.Entities;
+using Volo.Abp.MultiTenancy;
 
 namespace BaseService.BaseData
 {
-    public class UserJobs : Entity
+    public class UserJobs : Entity, IMultiTenant
     {
+        public Guid? TenantId { get; set; }
+
         public Guid UserId { get; set; }
 
         public Guid JobId { get; set; }
@@ -14,8 +17,9 @@ namespace BaseService.BaseData
             return new object[] { UserId, JobId };
         }
 
-        public UserJobs(Guid userId, Guid jobId)
+        public UserJobs(Guid? tenantId, Guid userId, Guid jobId)
         {
+            TenantId = tenantId;
             UserId = userId;
             JobId = jobId;
         }

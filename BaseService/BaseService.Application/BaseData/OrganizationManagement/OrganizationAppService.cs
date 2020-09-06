@@ -31,6 +31,7 @@ namespace BaseService.BaseData.OrganizationManagement
             if (exist != null) throw new BusinessException("名称：" + input.Name + "机构已存在");
 
             var organization = new Organization(GuidGenerator.Create(),
+                                                CurrentTenant.Id,
                                                 input.CategoryId,
                                                 input.Pid,
                                                 input.Name,

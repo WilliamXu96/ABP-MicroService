@@ -1,14 +1,17 @@
 ﻿using System;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
 
 namespace BaseService.BaseData
 {
     /// <summary>
     /// 岗位
     /// </summary>
-    public class Job : AuditedAggregateRoot<Guid>, ISoftDelete
+    public class Job : AuditedAggregateRoot<Guid>, ISoftDelete, IMultiTenant
     {
+        public Guid? TenantId { get; set; }
+
         public string Name { get; set; }
 
         public bool Enabled { get; set; }
@@ -19,8 +22,9 @@ namespace BaseService.BaseData
 
         public bool IsDeleted { get; set; }
 
-        public Job(Guid id, string name, bool enabled, int sort,string description)
+        public Job(Guid id, Guid? tenantId, string name, bool enabled, int sort, string description)
         {
+            TenantId = tenantId;
             Id = id;
             Name = name;
             Enabled = enabled;
