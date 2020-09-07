@@ -270,9 +270,7 @@ export default {
       baseURL: config.base.ip + ':' + config.base.auth_port
     })
     if (params.tenant && params.tenant.trim() != '') {
-      instance.defaults.headers.post['__tenant'] = params.tenant
-    }else{
-      delete instance.defaults.headers.post['__tenant']
+      url=url+"?__tenant="+params.tenant
     }
     var data = qs.stringify(params)
     return new Promise((resolve, reject) => {
