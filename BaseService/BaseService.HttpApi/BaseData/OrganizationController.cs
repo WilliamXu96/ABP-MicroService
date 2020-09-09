@@ -9,7 +9,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace BaseService.BaseData
 {
-    [Area("business")]
+    [Area("base")]
     [Route("api/base/orgs")]
     public class OrganizationController : BaseServiceController, IOrganizationAppService
     {

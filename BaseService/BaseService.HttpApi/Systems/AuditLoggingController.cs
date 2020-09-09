@@ -8,7 +8,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace BaseService.Systems
 {
-    [Area("business")]
+    [Area("base")]
     [Route("api/base/auditLogging")]
     public class AuditLoggingController : BaseServiceController, IAuditLoggingAppService
     {

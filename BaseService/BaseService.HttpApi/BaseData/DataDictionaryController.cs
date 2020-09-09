@@ -9,7 +9,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace BaseService.BaseData
 {
-    [Area("business")]
+    [Area("base")]
     [Route("api/base/dict")]
     public class DataDictionaryController : BaseServiceController, IDictionaryAppService
     {

@@ -8,7 +8,7 @@ using Volo.Abp.Identity;
 
 namespace BaseService.HttpApi.Systems
 {
-    [Area("business")]
+    [Area("base")]
     [Route("api/base/user")]
     public class UserController: BaseServiceController,IUserAppService
     {

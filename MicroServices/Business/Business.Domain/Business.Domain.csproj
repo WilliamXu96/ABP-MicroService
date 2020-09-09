@@ -13,6 +13,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="BaseData\**" />
+    <EmbeddedResource Remove="BaseData\**" />
+    <None Remove="BaseData\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Localization\Business\cs.json" />
     <None Remove="Localization\Business\en.json" />
     <None Remove="Localization\Business\zh-Hans.json" />
@@ -36,7 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="BaseData\" />
+    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>
