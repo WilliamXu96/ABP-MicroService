@@ -3,7 +3,6 @@ export default {
   base: {
     ip: 'http://localhost',
     auth_port: '53362',
-    identity_port: '55389',
     backend_port: '62162'
   },
   basic: {},

@@ -23,6 +23,7 @@ using Volo.Abp.EntityFrameworkCore.SqlServer;
 using Volo.Abp.Identity;
 using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
+using Volo.Abp.MultiTenancy;
 using Volo.Abp.PermissionManagement;
 using Volo.Abp.PermissionManagement.EntityFrameworkCore;
 using Volo.Abp.PermissionManagement.HttpApi;
@@ -59,6 +60,10 @@ namespace WebAppGateway
             var configuration = context.Services.GetConfiguration();
             var hostingEnvironment = context.Services.GetHostingEnvironment();
 
+            Configure<AbpMultiTenancyOptions>(options =>
+            {
+                options.IsEnabled = true;
+            });
             ConfigureAuthentication(context, configuration);
             ConfigureSql();
             ConfigureRedis(context, configuration, hostingEnvironment);
@@ -77,25 +82,9 @@ namespace WebAppGateway
             app.UseRouting();
             app.UseCors(DefaultCorsPolicyName);
             app.UseAuthentication();
+            app.UseAbpClaimsMap();
             app.UseMultiTenancy();
             app.UseAuthorization();
-
-            app.Use(async (ctx, next) =>
-            {
-                var currentPrincipalAccessor = ctx.RequestServices.GetRequiredService<ICurrentPrincipalAccessor>();
-                var map = new Dictionary<string, string>()
-                {
-                    { "sub", AbpClaimTypes.UserId },
-                    { "role", AbpClaimTypes.Role },
-                    { "email", AbpClaimTypes.Email },
-                    { "name", AbpClaimTypes.UserName },
-                    { "tenantid", AbpClaimTypes.TenantId }
-                };
-                var mapClaims = currentPrincipalAccessor.Principal.Claims.Where(p => map.Keys.Contains(p.Type)).ToList();
-                currentPrincipalAccessor.Principal.AddIdentity(new ClaimsIdentity(mapClaims.Select(p => new Claim(map[p.Type], p.Value, p.ValueType, p.Issuer))));
-
-                await next();
-            });
 
             app.UseSwagger();
             app.UseSwaggerUI(options =>
@@ -103,15 +92,15 @@ namespace WebAppGateway
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "Business Service API");
             });
 
-            app.MapWhen(
-                ctx => ctx.Request.Path.ToString().StartsWith("/api/abp/") ||
-                       ctx.Request.Path.ToString().StartsWith("/Abp/"),
-                app2 =>
-                {
-                    app2.UseRouting();
-                    app2.UseConfiguredEndpoints();
-                }
-            );
+            //app.MapWhen(
+            //    ctx => ctx.Request.Path.ToString().StartsWith("/api/abp/") ||
+            //           ctx.Request.Path.ToString().StartsWith("/Abp/"),
+            //    app2 =>
+            //    {
+            //        app2.UseRouting();
+            //        app2.UseConfiguredEndpoints();
+            //    }
+            //);
 
             app.UseOcelot().Wait();
             app.UseAbpSerilogEnrichers();
