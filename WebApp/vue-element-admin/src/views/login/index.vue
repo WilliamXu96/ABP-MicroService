@@ -34,7 +34,6 @@
           name="username"
           type="text"
           tabindex="2"
-          autocomplete="on"
         />
       </el-form-item>
 

@@ -67,7 +67,10 @@ export default {
     org:'组织机构',
     job:'岗位管理',
     employee:'职员管理',
-    log:'系统日志'
+    log:'系统日志',
+    tool:'系统工具',
+    form:'表单设计',
+    formCreate:'新增表单'
   },
   navbar: {
     dashboard: '首页',

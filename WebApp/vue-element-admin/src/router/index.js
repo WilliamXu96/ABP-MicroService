@@ -183,15 +183,6 @@ export const asyncRoutes = [
         icon: 'job'
       }
     },
-    // {
-    //   path: 'employee',
-    //   component: () => import('@/views/employee/index'),
-    //   name: 'Employee',
-    //   meta:{
-    //     title: 'employee',
-    //     icon: 'employee'
-    //   }
-    // },
     {
       path: 'log',
       component: () => import('@/views/log/index'),
@@ -203,6 +194,34 @@ export const asyncRoutes = [
       }
     },
   ]},
+  {
+    path:'/tool',
+    component: Layout,
+    redirect: '/tool/form',
+    alwaysShow: true,
+    name:'Tool',
+    meta:{
+      title:'tool',
+      icon:'tool',
+    },
+    children:[{
+      path: 'form',
+      component: () => import('@/views/form/index'),
+      name: 'Form',
+      meta: {
+        title: 'form',
+        icon: 'form'
+      }
+    },
+    {
+      path: 'formCreate',
+      component: () => import('@/views/form/components/index'),
+      name: 'FormCreate',
+      meta: {
+        title: 'formCreate'
+      },
+      hidden: true
+    }]},
 
   /** when your routing map is too long, you can split it into small modules **/
   componentsRouter,
