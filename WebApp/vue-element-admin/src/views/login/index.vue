@@ -203,7 +203,16 @@ $light_gray:#fff;
 $cursor: #fff;
 
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
-  .login-container .el-input input {
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-image: url("../../../static/image/5e05c4467b9211577436230986.jpg");
+    background-size: cover;
+  }
+
+  .el-input input {
     color: $cursor;
   }
 }
