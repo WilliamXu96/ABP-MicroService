@@ -83,3 +83,5 @@
 /AbpModules/Identity/Volo.Abp.Identity.EntityFrameworkCore/bin/Debug
 /AbpModules/Identity/Volo.Abp.Identity.HttpApi/bin/Debug
 /AbpModules/Identity/Volo.Abp.PermissionManagement.Domain.Identity/bin/Debug
+/AbpModules/Identity/.vs
+/AbpModules/Identity/Identity.sln
