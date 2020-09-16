@@ -1,2 +1,2 @@
-cd ../WebApp/vue-element-admin
+cd ../WebApp/vue
 npm run dev
