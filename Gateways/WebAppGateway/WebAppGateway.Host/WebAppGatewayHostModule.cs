@@ -37,7 +37,7 @@ namespace WebAppGateway
             //ConfigureSql();
             //ConfigureRedis(context, configuration, hostingEnvironment);
             ConfigureCors(context, configuration);
-            ConfigureSwaggerServices(context);
+            //ConfigureSwaggerServices(context);
             ConfigureLocalization();
             context.Services.AddOcelot(context.Services.GetConfiguration());
         }
@@ -54,11 +54,11 @@ namespace WebAppGateway
             app.UseAbpClaimsMap();
             app.UseAuthorization();
 
-            app.UseSwagger();
-            app.UseSwaggerUI(options =>
-            {
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Business Service API");
-            });
+            //app.UseSwagger();
+            //app.UseSwaggerUI(options =>
+            //{
+            //    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Business Service API");
+            //});
 
             app.UseOcelot().Wait();
             app.UseAbpSerilogEnrichers();

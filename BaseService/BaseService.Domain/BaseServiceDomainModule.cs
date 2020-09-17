@@ -1,7 +1,4 @@
 ﻿using BaseService.Localization;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
 using Volo.Abp.PermissionManagement.Identity;
