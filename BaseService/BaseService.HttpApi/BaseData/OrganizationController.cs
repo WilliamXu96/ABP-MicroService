@@ -3,7 +3,7 @@ using BaseService.BaseData.OrganizationManagement.Dto;
 using BaseService.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 
@@ -26,11 +26,11 @@ namespace BaseService.BaseData
             return _organizationAppService.Create(input);
         }
 
-        [HttpDelete]
-        [Route("{id}")]
-        public Task Delete(Guid id)
+        [HttpPost]
+        [Route("delete")]
+        public Task Delete(List<Guid> ids)
         {
-            return _organizationAppService.Delete(id);
+            return _organizationAppService.Delete(ids);
         }
 
         [HttpGet]

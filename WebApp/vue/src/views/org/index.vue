@@ -422,21 +422,49 @@ export default {
       });
     },
     handleDelete(row) {
-      this.$confirm("是否删除" + alert.name + "?", "提示", {
+      var params = [];
+      let alert = "";
+      if (row) {
+        params.push(row.id);
+        alert = row.name;
+      } else {
+        if (this.multipleSelection.length === 0) {
+          this.$message({
+            message: "未选择",
+            type: "warning"
+          });
+          return;
+        }
+        this.multipleSelection.forEach(element => {
+          let id = element.id;
+          params.push(id);
+        });
+        alert = "选中项";
+      }
+      this.$confirm("是否删除" + alert + "?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      }).then(() => {
-        this.$axios.deletes("/api/base/orgs/" + row.id).then(response => {
-          this.$notify({
-            title: "成功",
-            message: "删除成功",
-            type: "success",
-            duration: 2000
+      })
+        .then(() => {
+          this.$axios
+            .posts("/api/base/orgs/delete", params)
+            .then(response => {
+              this.$notify({
+                title: "成功",
+                message: "删除成功",
+                type: "success",
+                duration: 2000
+              });
+              this.getList();
+            });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
           });
-          this.getList();
         });
-      });
     },
     handleUpdate(row) {
       this.formTitle = "修改机构";

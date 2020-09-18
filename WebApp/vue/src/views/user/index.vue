@@ -122,7 +122,7 @@
                 placeholder="选择所属机构"
               />
             </el-form-item>
-            <el-form-item label="岗位" prop="name">
+            <el-form-item label="岗位" prop="job">
               <el-select
                 class="filter-item"
                 size="small"
