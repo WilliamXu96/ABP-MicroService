@@ -2,6 +2,7 @@
 using Volo.Abp.Http.Client.IdentityModel;
 using Volo.Abp.Identity;
 using Volo.Abp.Modularity;
+using XCZ;
 
 namespace Business
 {
@@ -9,6 +10,7 @@ namespace Business
         typeof(BusinessApplicationContractsModule),
         typeof(AbpHttpClientIdentityModelModule),
         typeof(AbpIdentityHttpApiClientModule),
+        typeof(FormApplicationModule),
         typeof(AbpAutoMapperModule)
     )]
     public class BusinessApplicationModule : AbpModule
