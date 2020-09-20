@@ -1,10 +1,15 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace FileSystem
 {
-    class FileSystemApplicationAutoMapperProfile
+    public class FileSystemApplicationAutoMapperProfile : Profile
     {
+        public FileSystemApplicationAutoMapperProfile()
+        {
+
+        }
     }
 }

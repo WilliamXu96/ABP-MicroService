@@ -96,3 +96,4 @@
 /MicroServices/FileSystem/FileSystem.EntityFrameworkCore/obj
 /MicroServices/FileSystem/FileSystem.Host/bin/Debug/netcoreapp3.1
 /MicroServices/FileSystem/FileSystem.Host/obj
+/MicroServices/FileSystem/FileSystem.Host/Logs
