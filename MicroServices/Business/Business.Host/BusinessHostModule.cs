@@ -1,5 +1,6 @@
 ﻿using Business.EntityFrameworkCore;
 using Business.MultiTenancy;
+using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.DataProtection;
@@ -53,6 +54,7 @@ namespace Business
             ConfigureRedis(context, configuration, hostingEnvironment);
             ConfigureCors(context, configuration);
             ConfigureSwaggerServices(context);
+            ConfigureHangfire(context, configuration);
         }
 
         private void ConfigureMultiTenancy()
@@ -60,6 +62,14 @@ namespace Business
             Configure<AbpMultiTenancyOptions>(options =>
             {
                 options.IsEnabled = true;
+            });
+        }
+
+        private void ConfigureHangfire(ServiceConfigurationContext context, IConfiguration configuration)
+        {
+            context.Services.AddHangfire(config =>
+            {
+                config.UseSqlServerStorage(configuration.GetConnectionString("Business"));
             });
         }
 
@@ -185,6 +195,7 @@ namespace Business
             app.UseAuditing();
             app.UseAbpSerilogEnrichers();
             app.UseConfiguredEndpoints();
+            app.UseHangfireDashboard();
 
             AsyncHelper.RunSync(async () =>
             {
