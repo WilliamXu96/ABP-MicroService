@@ -85,3 +85,14 @@
 /AbpModules/Identity/Volo.Abp.PermissionManagement.Domain.Identity/bin/Debug
 /AbpModules/Identity/.vs
 /AbpModules/Identity/Identity.sln
+/MicroServices/FileSystem/.vs/FileSystem
+/MicroServices/FileSystem/FileSystem.Application/bin/Debug/netstandard2.0
+/MicroServices/FileSystem/FileSystem.Application/obj
+/MicroServices/FileSystem/FileSystem.Application.Contracts/bin/Debug/netstandard2.0
+/MicroServices/FileSystem/FileSystem.Application.Contracts/obj
+/MicroServices/FileSystem/FileSystem.Domain/bin/Debug/netstandard2.0
+/MicroServices/FileSystem/FileSystem.Domain/obj
+/MicroServices/FileSystem/FileSystem.EntityFrameworkCore/bin/Debug/netstandard2.0
+/MicroServices/FileSystem/FileSystem.EntityFrameworkCore/obj
+/MicroServices/FileSystem/FileSystem.Host/bin/Debug/netcoreapp3.1
+/MicroServices/FileSystem/FileSystem.Host/obj
