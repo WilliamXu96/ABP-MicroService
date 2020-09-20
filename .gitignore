@@ -97,3 +97,8 @@
 /MicroServices/FileSystem/FileSystem.Host/bin/Debug/netcoreapp3.1
 /MicroServices/FileSystem/FileSystem.Host/obj
 /MicroServices/FileSystem/FileSystem.Host/Logs
+/MicroServices/FileSystem/FileSystem.Application/bin/Release/netstandard2.0
+/MicroServices/FileSystem/FileSystem.Application.Contracts/bin/Release/netstandard2.0
+/MicroServices/FileSystem/FileSystem.Domain/bin/Release/netstandard2.0
+/MicroServices/FileSystem/FileSystem.EntityFrameworkCore/bin/Release/netstandard2.0
+/MicroServices/FileSystem/FileSystem.Host/bin/Release/netcoreapp3.1
