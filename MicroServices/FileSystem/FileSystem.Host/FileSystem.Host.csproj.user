@@ -6,5 +6,6 @@
   <PropertyGroup>
     <ActiveDebugProfile>FileSystem.Host</ActiveDebugProfile>
     <NameOfLastUsedPublishProfile>FolderProfile</NameOfLastUsedPublishProfile>
+    <ShowAllFiles>false</ShowAllFiles>
   </PropertyGroup>
 </Project>

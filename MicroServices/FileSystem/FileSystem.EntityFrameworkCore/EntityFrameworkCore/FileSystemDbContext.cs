@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FileSystem.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,6 +11,8 @@ namespace FileSystem.EntityFrameworkCore
     [ConnectionStringName("FileSystem")]
     public class FileSystemDbContext : AbpDbContext<FileSystemDbContext>
     {
+        public DbSet<FileInfo> FileInfos { get; set; }
+
         public FileSystemDbContext(DbContextOptions<FileSystemDbContext> options):base(options)
         {
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FileSystem.FileManagement.Dto;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,9 +9,10 @@ namespace FileSystem.FileManagement
 {
     public class FileAppService : ApplicationService, IFileAppService
     {
-        public Task Create()
+
+        public Task Create(CreateOrUpdateFileDto input)
         {
-            return null;
+            throw new NotImplementedException();
         }
     }
 }
