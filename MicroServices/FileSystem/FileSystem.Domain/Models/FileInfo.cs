@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FileSystem.Enums;
+using System;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
@@ -9,13 +10,24 @@ namespace FileSystem.Models
     {
         public Guid? TenantId { get; set; }
 
-        public string FileName { get; set; }
+        public string Name { get; set; }
+
+        public string RealName { get; set; }
+
+        /// <summary>
+        /// 后缀
+        /// </summary>
+        public string Suffix { get; set; }
 
         public string Md5Code { get; set; }
 
-        public long Size { get; set; }
+        public string Size { get; set; }
+
+        public string Path { get; set; }
 
         public string Url { get; set; }
+
+        public FileType Type { get; set; }
 
         public bool IsDeleted { get; set; }
 
@@ -24,13 +36,17 @@ namespace FileSystem.Models
 
         }
 
-        public FileInfo(Guid id, Guid? tenantId, string fileName, string md5code, long size, string url) : base(id)
+        public FileInfo(Guid id, Guid? tenantId, string name,string realName, string suffix, string md5code, string size, string path,string url, FileType type) : base(id)
         {
             TenantId = tenantId;
-            FileName = fileName;
+            Name = name;
+            RealName = realName;
+            Suffix = suffix;
             Md5Code = md5code;
             Size = size;
+            Path = path;
             Url = url;
+            Type = type;
         }
     }
 }

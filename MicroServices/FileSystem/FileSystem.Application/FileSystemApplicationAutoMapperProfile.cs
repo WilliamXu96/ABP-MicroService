@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using FileSystem.FileManagement.Dto;
+using FileSystem.Models;
 
 namespace FileSystem
 {
@@ -9,7 +8,7 @@ namespace FileSystem
     {
         public FileSystemApplicationAutoMapperProfile()
         {
-
+            CreateMap<FileInfo, FileInfoDto>();
         }
     }
 }

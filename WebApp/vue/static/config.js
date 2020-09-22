@@ -6,8 +6,8 @@ export default {
     backend_port: '62162'
   },
   basic: {},
-  upload: {
-    ip: 'http://localhost'
+  storage: {
+    ip: 'http://localhost:59958'
   },
   authServer: {
     ip: 'http://localhost'

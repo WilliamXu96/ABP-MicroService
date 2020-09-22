@@ -1,4 +1,5 @@
-﻿using FileSystem.Models;
+﻿using FileSystem.Enums;
+using FileSystem.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,8 +28,8 @@ namespace FileSystem.Controllers
         }
 
         [HttpPost]
-        [Route("file/upload")]
-        public async Task<ActionResult> Upload([Required]string fileName, IFormFile file)
+        [Route("upload")]
+        public async Task<ActionResult> Upload([Required]string name, IFormFile file)
         {
             string uniqueFileName = null;
 
@@ -46,6 +47,15 @@ namespace FileSystem.Controllers
                     return new BadRequestObjectResult("上传文件格式错误");
                 }
 
+                var size = "";
+                if (file.Length < 1024)
+                    size = file.Length.ToString() + "B";
+                else if (file.Length >= 1024 && file.Length < 1048576)
+                    size = ((float)file.Length / 1024).ToString("F2") + "KB";
+                else if (file.Length >= 1048576 && file.Length < 104857600)
+                    size = ((float)file.Length / 1024 / 1024).ToString("F2") + "MB";
+                else size = file.Length.ToString() + "B";
+
                 string uploadsFolder = Path.Combine(_hostEnvironment.WebRootPath, "Images");
                 if (!Directory.Exists(uploadsFolder))
                 {
@@ -59,7 +69,9 @@ namespace FileSystem.Controllers
                     file.CopyTo(fileStream);
                     fileStream.Flush();
                 }
-                await _fileManager.Create(fileName, "", file.Length, filePath);
+
+                //TODO：文件md5哈希校验
+                await _fileManager.Create(name, uniqueFileName, fileExtension, "", size, filePath, "/Images/" + uniqueFileName, FileType.Image);
             }
             return Ok(uniqueFileName);
         }

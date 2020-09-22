@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FileSystem.Enums;
+using System;
 using System.Threading.Tasks;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Domain.Services;
@@ -14,14 +15,18 @@ namespace FileSystem.Models
             _repository = repository;
         }
 
-        public async Task Create(string fileName, string md5, long size, string url)
+        public async Task Create(string name, string realName, string suffix, string md5, string size, string path,string url, FileType type)
         {
             await _repository.InsertAsync(new FileInfo(GuidGenerator.Create(),
                                                        CurrentTenant.Id,
-                                                       fileName,
+                                                       name,
+                                                       realName,
+                                                       suffix,
                                                        md5,
                                                        size,
-                                                       url));
+                                                       path,
+                                                       url,
+                                                       type));
         }
     }
 }

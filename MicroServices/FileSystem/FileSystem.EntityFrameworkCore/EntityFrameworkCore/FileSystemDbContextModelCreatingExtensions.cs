@@ -20,8 +20,12 @@ namespace FileSystem.EntityFrameworkCore
 
                 b.ConfigureByConvention();
 
-                b.Property(x => x.FileName).IsRequired().HasMaxLength(50);
+                b.Property(x => x.Name).IsRequired().HasMaxLength(64);
+                b.Property(x => x.RealName).IsRequired().HasMaxLength(64);
+                b.Property(x => x.Size).IsRequired().HasMaxLength(100);
+                b.Property(x => x.Suffix).IsRequired().HasMaxLength(50);
                 b.Property(x => x.Md5Code).IsRequired().HasMaxLength(256);
+                b.Property(x => x.Path).IsRequired().HasMaxLength(256);
                 b.Property(x => x.Url).IsRequired().HasMaxLength(256);
             });
         }
