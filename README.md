@@ -28,13 +28,14 @@
 - 操作日志
 - 表单管理
 - 后台作业
+- 存储管理
 #### TODO：
 - 代码生成
 - 流程管理
 #### 系统预览
 <table>
     <tr>
-        <td><img src="https://i.loli.net/2020/08/05/qxB2NFjKZhUn36g.png"/></td>
+        <td><img src="https://i.loli.net/2020/09/23/HSqvPoEt6IRNFek.png"/></td>
         <td><img src="https://i.loli.net/2020/08/07/7pLGg2VdFAvkZ4a.png"/></td>
     </tr>
     <tr>
@@ -50,6 +51,9 @@
         <td><img src="https://i.loli.net/2020/06/22/UZcrAliMTv7JntO.png"/></td>
     </tr>
 </table>
+
+#### 文件存储
+<img src="https://i.loli.net/2020/09/23/MgwR9oQWzmK5qGP.gif"/>
 
 #### 反馈交流
 - QQ交流群：1083795392
