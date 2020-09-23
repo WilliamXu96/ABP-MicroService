@@ -123,9 +123,17 @@
         </template>
       </el-table-column>
       <el-table-column label="文件格式" prop="suffix" align="center" />
-      <el-table-column label="类别" prop="type" align="center" />
+      <el-table-column label="类别" prop="type" align="center" >
+        <template slot-scope="scope">
+              <span>{{scope.row.type | displayType}}</span>
+            </template>
+      </el-table-column>
       <el-table-column label="大小" prop="size" align="center" />
-      <el-table-column label="创建日期" prop="creationTime" align="center" />
+      <el-table-column label="创建日期" prop="creationTime" align="center" >
+        <template slot-scope="scope">
+          <span>{{scope.row.creationTime | formatDate}}</span>
+        </template>
+      </el-table-column>
     </el-table>
 
     <pagination
@@ -151,6 +159,15 @@ export default {
   name: "Storage",
   components: { Pagination },
   directives: { permission },
+  filters: {
+    displayType(typeId) {
+      const typeMap = {
+        0: "图片",
+        1: "文件"
+      };
+      return typeMap[typeId];
+    }
+  },
   data() {
     return {
       storageApi: config.storage.ip,
