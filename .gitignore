@@ -102,3 +102,15 @@
 /MicroServices/FileSystem/FileSystem.Domain/bin/Release/netstandard2.0
 /MicroServices/FileSystem/FileSystem.EntityFrameworkCore/bin/Release/netstandard2.0
 /MicroServices/FileSystem/FileSystem.Host/bin/Release/netcoreapp3.1
+/MicroServices/FileStorage/.vs
+/MicroServices/FileStorage/FileStorage.Application/bin/Debug/netstandard2.0
+/MicroServices/FileStorage/FileStorage.Application/obj
+/MicroServices/FileStorage/FileStorage.Application.Contracts/bin/Debug/netstandard2.0
+/MicroServices/FileStorage/FileStorage.Application.Contracts/obj
+/MicroServices/FileStorage/FileStorage.Domain/bin/Debug/netstandard2.0
+/MicroServices/FileStorage/FileStorage.Domain/obj
+/MicroServices/FileStorage/FileStorage.EntityFrameworkCore/bin/Debug/netstandard2.0
+/MicroServices/FileStorage/FileStorage.EntityFrameworkCore/obj
+/MicroServices/FileStorage/FileStorage.Host/bin/Debug/netcoreapp3.1
+/MicroServices/FileStorage/FileStorage.Host/obj
+/MicroServices/FileStorage/FileStorage.Host/Logs
