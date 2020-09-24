@@ -1,16 +1,16 @@
 // 开发环境
 export default {
   base: {
-    ip: 'http://localhost',
+    ip: process.env.VUE_APP_BASE_API,
     auth_port: '53362',
     backend_port: '62162'
   },
   basic: {},
   storage: {
-    ip: 'http://localhost:59958'
+    ip: process.env.VUE_APP_STORAGE_API
   },
-  authServer: {
-    ip: 'http://localhost'
+  auth: {
+    ip: process.env.VUE_APP_AUTHSERVER_API
   },
   crm: {
     ip: 'http://localhost'
