@@ -268,6 +268,7 @@ export default {
       }
     },
     generate(data) {
+      debugger
       const func = this[`exec${titleCase(this.operationType)}`]
       this.generateConf = data
       func && func(data)
