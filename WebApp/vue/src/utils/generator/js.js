@@ -37,8 +37,12 @@ export function makeUpJs(conf, type) {
     propsList.join('\n'),
     methodList.join('\n')
   )
+  const imp = `import Pagination from "@/components/Pagination";
+    import permission from "@/directive/permission/index.js";
+    `
+
   confGlobal = null
-  return script
+  return imp + script
 }
 
 function buildAttributes(el, dataList, ruleList, optionsList, methodList, propsList, uploadVarList) {
@@ -83,7 +87,7 @@ function buildMethod(type) {
         this.listLoading = true;
         this.listQuery.SkipCount = (this.page - 1) * 10;
         this.$axios
-          .gets("${confGlobal.api}", this.listQuery)
+          .gets('${confGlobal.api}', this.listQuery)
           .then(response => {
             this.list = response.items;
             this.totalCount = response.totalCount;
@@ -91,7 +95,7 @@ function buildMethod(type) {
           });
       },`,
       fetchData:`fetchData(id) {
-        this.$axios.gets("${confGlobal.api}/" + /id).then(response => {
+        this.$axios.gets('${confGlobal.api}/' + /id).then(response => {
           this.form = response;
         });
       },`,
@@ -100,21 +104,21 @@ function buildMethod(type) {
         this.getList();
       },`,
       handleCreate:`handleCreate() {
-        this.formTitle = "新增${confGlobal.formName}";
+        this.formTitle = '新增${confGlobal.formName}';
         this.isEdit = false;
         this.dialogFormVisible = true;
       },`,
       handleDelete:`handleDelete(row) {
         var params = [];
-        let alert = "";
+        let alert = '';
         if (row) {
           params.push(row.id);
           alert = row.name;
         } else {
           if (this.multipleSelection.length === 0) {
             this.$message({
-              message: "未选择",
-              type: "warning"
+              message: '未选择',
+              type: 'warning'
             });
             return;
           }
@@ -122,21 +126,21 @@ function buildMethod(type) {
             let id = element.id;
             params.push(id);
           });
-          alert = "选中项";
+          alert = '选中项';
         }
-        this.$confirm("是否删除" + alert + "?", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
+        this.$confirm('是否删除' + alert + '?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
         })
           .then(() => {
             this.$axios
-              .posts("${confGlobal.formName}", params)
+              .posts('${confGlobal.formName}', params)
               .then(response => {
                 this.$notify({
-                  title: "成功",
-                  message: "删除成功",
-                  type: "success",
+                  title: '成功',
+                  message: '删除成功',
+                  type: 'success',
                   duration: 2000
                 });
                 this.getList();
@@ -144,13 +148,13 @@ function buildMethod(type) {
           })
           .catch(() => {
             this.$message({
-              type: "info",
-              message: "已取消删除"
+              type: 'info',
+              message: '已取消删除'
             });
           });
       },`,
       handleUpdate:`handleUpdate(row) {
-        this.formTitle = "修改${confGlobal.formName}";
+        this.formTitle = '修改${confGlobal.formName}';
         this.isEdit = true;
         if (row) {
           this.fetchData(row.id);
@@ -158,8 +162,8 @@ function buildMethod(type) {
         } else {
           if (this.multipleSelection.length != 1) {
             this.$message({
-              message: "编辑必须选择单行",
-              type: "warning"
+              message: '编辑必须选择单行',
+              type: 'warning'
             });
             return;
           } else {
@@ -175,13 +179,13 @@ function buildMethod(type) {
             this.form.roleNames = this.checkedRole;
             if (this.isEdit) {
               this.$axios
-                .puts("${confGlobal.api}/" + this.form.id, this.form)
+                .puts('${confGlobal.api}/' + this.form.id, this.form)
                 .then(response => {
                   this.formLoading = false;
                   this.$notify({
-                    title: "成功",
-                    message: "更新成功",
-                    type: "success",
+                    title: '成功',
+                    message: '更新成功',
+                    type: 'success',
                     duration: 2000
                   });
                   this.dialogFormVisible = false;
@@ -192,13 +196,13 @@ function buildMethod(type) {
                 });
             } else {
               this.$axios
-                .posts("${confGlobal.api}", this.form)
+                .posts('${confGlobal.api}', this.form)
                 .then(response => {
                   this.formLoading = false;
                   this.$notify({
-                    title: "成功",
-                    message: "新增成功",
-                    type: "success",
+                    title: '成功',
+                    message: '新增成功',
+                    type: 'success',
                     duration: 2000
                   });
                   this.dialogFormVisible = false;
@@ -217,7 +221,7 @@ function buildMethod(type) {
           this.handleFilter();
           return;
         }
-        this.listQuery.Sorting = prop + " " + order;
+        this.listQuery.Sorting = prop + ' ' + order;
         this.handleFilter();
       },`,
       handleSelectionChange:`handleSelectionChange(val) {
@@ -364,34 +368,33 @@ function buildOptionMethod(methodName, model, methodList) {
 function buildexport(conf, type, data, rules, selectOptions, uploadVar, props, methods) {
   var defaultForm=`const defaultForm = {
     id: null,
-    ${data}}`
+    ${data}}
+    `
   var query=`form: Object.assign({}, defaultForm),
     list: null,
     totalCount: 0,
     listLoading: true,
     formLoading: false,
     listQuery: {
-      Filter: "",
-      Sorting: "",
+      Filter: '',
+      Sorting: '',
       SkipCount: 0,
       MaxResultCount: 10
     },
     page: 1,
     dialogFormVisible: false,
     multipleSelection: [],
-    formTitle: "",
+    formTitle: '',
     isEdit: false,`
     
   const str = `${exportDefault}{
-  ${inheritAttrs[type]}
+  
+  name: '${confGlobal.formName}'
   components: {},
   props: [],
   data () {
     return {
-      ${conf.formModel}: {
-        ${data}
-      },
-      ${conf.formRules}: {
+      rules: {
         ${rules}
       },
       ${query}

@@ -1,6 +1,8 @@
 export const formConf = {
   formName: 'Form',
-  formModel: 'form',
+  displayName: '表单',
+  api: '',
+  //formModel: 'form',
   size: 'medium',
   labelPosition: 'right',
   labelWidth: 100,

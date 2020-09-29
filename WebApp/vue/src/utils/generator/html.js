@@ -4,19 +4,64 @@ import { trigger } from './config'
 let confGlobal
 let someSpanIsNot24
 
-export function dialogWrapper(str) {
-  return `<el-dialog v-bind="$attrs" v-on="$listeners" @open="onOpen" @close="onClose" title="Dialog Titile">
+export function dialogWrapper(str, tableStr) {
+  return `<el-dialog :visible.sync="dialogFormVisible" :close-on-click-modal="false" @close="cancel()" :title="formTitle">
     ${str}
     <div slot="footer">
-      <el-button @click="close">取消</el-button>
-      <el-button type="primary" @click="handelConfirm">确定</el-button>
+      <el-button size="small" type="text" @click="cancel">取消</el-button>
+      <el-button size="small" v-loading="formLoading" type="primary" @click="save">确认</el-button>
     </div>
-  </el-dialog>`
+  </el-dialog>
+  ${tableStr}
+  `
 }
 
 export function vueTemplate(str) {
   return `<template>
-    <div>
+    <div class="app-container">
+      <div class="head-container">
+        <!-- 搜索 -->
+        <el-input
+          v-model="listQuery.Filter"
+          clearable
+          size="small"
+          placeholder="搜索..."
+          style="width: 200px;"
+          class="filter-item"
+          @keyup.enter.native="handleFilter"
+        />
+        <el-button
+          class="filter-item"
+          size="mini"
+          type="success"
+          icon="el-icon-search"
+          @click="handleFilter"
+        >搜索</el-button>
+        <div style="padding: 6px 0;">
+          <el-button
+            class="filter-item"
+            size="mini"
+            type="primary"
+            icon="el-icon-plus"
+            @click="handleCreate"
+          >新增</el-button>
+          <el-button
+            class="filter-item"
+            size="mini"
+            type="success"
+            icon="el-icon-edit"
+            @click="handleUpdate()"
+          >修改</el-button>
+          <el-button
+            slot="reference"
+            class="filter-item"
+            type="danger"
+            icon="el-icon-delete"
+            size="mini"
+            @click="handleDelete()"
+          >删除</el-button>
+        </div>
+      </div>
       ${str}
     </div>
   </template>`
@@ -34,15 +79,14 @@ export function cssStyle(cssStr) {
   </style>`
 }
 
-function buildFormTemplate(conf, child, type) {
+function buildFormTemplate(conf, child) {
   let labelPosition = ''
   if (conf.labelPosition !== 'right') {
     labelPosition = `label-position="${conf.labelPosition}"`
   }
   const disabled = conf.disabled ? `:disabled="${conf.disabled}"` : ''
-  let str = `<el-form ref="${conf.formName}" :model="${conf.formModel}" :rules="${conf.formRules}" size="${conf.size}" ${disabled} label-width="${conf.labelWidth}px" ${labelPosition}>
+  let str = `<el-form ref="form" :model="form" :rules="rules" size="${conf.size}" ${disabled} label-width="${conf.labelWidth}px" ${labelPosition}>
       ${child}
-      ${buildFromBtns(conf, type)}
     </el-form>`
   if (someSpanIsNot24) {
     str = `<el-row :gutter="${conf.gutter}">
@@ -52,19 +96,45 @@ function buildFormTemplate(conf, child, type) {
   return str
 }
 
-function buildFromBtns(conf, type) {
-  let str = ''
-  if (conf.formBtns && type === 'file') {
-    str = `<el-form-item size="large">
-          <el-button type="primary" @click="submitForm">提交</el-button>
-          <el-button @click="resetForm">重置</el-button>
-        </el-form-item>`
-    if (someSpanIsNot24) {
-      str = `<el-col :span="24">
-          ${str}
-        </el-col>`
-    }
-  }
+function buildTable(columns) {
+  let str = `<el-table
+  ref="multipleTable"
+  v-loading="listLoading"
+  :data="list"
+  size="small"
+  style="width: 90%;"
+  @sort-change="sortChange"
+  @selection-change="handleSelectionChange"
+  @row-click="handleRowClick">
+  <el-table-column type="selection" width="44px"></el-table-column>
+  ${columns}
+  <el-table-column label="操作" align="center">
+        <template slot-scope="{row}">
+          <el-button
+            type="primary"
+            size="mini"
+            @click="handleUpdate(row)"
+            v-permission="['BaseService.Job.Update']"
+            icon="el-icon-edit"
+          />
+          <el-button
+            type="danger"
+            size="mini"
+            @click="handleDelete(row)"
+            v-permission="['BaseService.Job.Delete']"
+            icon="el-icon-delete"
+          />
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <pagination
+      v-show="totalCount>0"
+      :total="totalCount"
+      :page.sync="page"
+      :limit.sync="listQuery.MaxResultCount"
+      @pagination="getList"
+    />`
   return str
 }
 
@@ -264,7 +334,7 @@ const tags = {
 
 function attrBuilder(el) {
   return {
-    fieldName: `v-model="${confGlobal.formModel}.${el.fieldName}"`,
+    fieldName: `v-model="form.${el.fieldName}"`,
     clearable: el.clearable ? 'clearable' : '',
     placeholder: el.placeholder ? `placeholder="${el.placeholder}"` : '',
     width: el.style && el.style.width ? ':style="{width: \'100%\'}"' : '',
@@ -321,18 +391,21 @@ function buildElUploadChild(conf) {
 }
 
 export function makeUpHtml(conf, type) {
+  debugger
   const htmlList = []
+  const columnList = []
   confGlobal = conf
   someSpanIsNot24 = conf.fields.some(item => item.span !== 24)
   conf.fields.forEach(el => {
     htmlList.push(layouts[el.layout](el))
+    columnList.push(`<el-table-column label="${el.label}" prop="${el.fieldName}" align="center" />`)
   })
   const htmlStr = htmlList.join('\n')
+  const columnStr = columnList.join('\n')
 
-  let temp = buildFormTemplate(conf, htmlStr, type)
-  if (type === 'dialog') {
-    temp = dialogWrapper(temp)
-  }
+  let temp = buildFormTemplate(conf, htmlStr)
+  let table = buildTable(columnStr)
+  temp = dialogWrapper(temp, table)
   confGlobal = null
   return temp
 }
