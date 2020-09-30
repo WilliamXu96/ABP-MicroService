@@ -114,14 +114,12 @@ function buildTable(columns) {
             type="primary"
             size="mini"
             @click="handleUpdate(row)"
-            v-permission="['BaseService.Job.Update']"
             icon="el-icon-edit"
           />
           <el-button
             type="danger"
             size="mini"
             @click="handleDelete(row)"
-            v-permission="['BaseService.Job.Delete']"
             icon="el-icon-delete"
           />
         </template>
@@ -390,7 +388,7 @@ function buildElUploadChild(conf) {
   return list.join('\n')
 }
 
-export function makeUpHtml(conf, type) {
+export function makeUpHtml(conf) {
   debugger
   const htmlList = []
   const columnList = []

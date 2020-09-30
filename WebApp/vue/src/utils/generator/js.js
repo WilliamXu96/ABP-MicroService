@@ -14,13 +14,13 @@ const inheritAttrs = {
 }
 
 
-export function makeUpJs(conf, type) {
+export function makeUpJs(conf) {
   confGlobal = conf = JSON.parse(JSON.stringify(conf))
   const dataList = []
   const ruleList = []
   const optionsList = []
   const propsList = []
-  const methodList = buildMethod(type)
+  const methodList = buildMethod()
   const uploadVarList = []
 
   conf.fields.forEach(el => {
@@ -29,7 +29,6 @@ export function makeUpJs(conf, type) {
 
   const script = buildexport(
     conf,
-    type,
     dataList.join('\n'),
     ruleList.join('\n'),
     optionsList.join('\n'),
@@ -80,7 +79,7 @@ function buildAttributes(el, dataList, ruleList, optionsList, methodList, propsL
   }
 }
 
-function buildMethod(type) {
+function buildMethod() {
   const list = []; const
     funs = {
       getList: `getList() {
@@ -365,7 +364,7 @@ function buildOptionMethod(methodName, model, methodList) {
   methodList.push(str)
 }
 
-function buildexport(conf, type, data, rules, selectOptions, uploadVar, props, methods) {
+function buildexport(conf, data, rules, selectOptions, uploadVar, props, methods) {
   var defaultForm=`const defaultForm = {
     id: null,
     ${data}}

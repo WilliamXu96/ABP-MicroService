@@ -267,22 +267,20 @@ export default {
         ...this.formConf
       }
     },
-    generate(data) {
-      debugger
+    generate() {
       const func = this[`exec${titleCase(this.operationType)}`]
-      this.generateConf = data
-      func && func(data)
+      func && func()
     },
-    execRun(data) {
+    execRun() {
       this.AssembleFormData()
       this.drawerVisible = true
     },
-    execDownload(data) {
+    execDownload() {
       const codeStr = this.generateCode()
       const blob = new Blob([codeStr], { type: 'text/plain;charset=utf-8' })
-      saveAs(blob, data.fileName)
+      saveAs(blob, 'index.vue')
     },
-    execCopy(data) {
+    execCopy() {
       document.getElementById('copyNode').click()
     },
     empty() {
@@ -325,17 +323,14 @@ export default {
       })
     },
     generateCode() {
-      const { type } = this.generateConf
       this.AssembleFormData()
-      const script = vueScript(makeUpJs(this.formData, type))
-      const html = vueTemplate(makeUpHtml(this.formData, type))
+      const script = vueScript(makeUpJs(this.formData))
+      const html = vueTemplate(makeUpHtml(this.formData))
       const css = cssStyle(makeUpCss(this.formData))
       return beautifier.html(html + script + css, beautifierConf.html)
     },
     download() {
-      this.dialogVisible = true
-      this.showFileName = true
-      this.operationType = 'download'
+      this.execDownload()
     },
     run() {
       this.dialogVisible = true
@@ -343,9 +338,7 @@ export default {
       this.operationType = 'run'
     },
     copy() {
-      this.dialogVisible = true
-      this.showFileName = false
-      this.operationType = 'copy'
+      this.execCopy()
     },
     tagChange(newTag) {
       newTag = this.cloneComponent(newTag)
