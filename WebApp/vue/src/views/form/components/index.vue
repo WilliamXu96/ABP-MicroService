@@ -4,7 +4,7 @@
       <el-scrollbar class="left-scrollbar">
         <div class="components-list">
           <div class="components-title">
-            <svg-icon icon-class="plug" />输入型组件
+            <svg-icon icon-class="input" />输入型组件
           </div>
           <draggable
             class="components-draggable"
@@ -26,7 +26,7 @@
             </div>
           </draggable>
           <div class="components-title">
-            <svg-icon icon-class="plug" />选择型组件
+            <svg-icon icon-class="select" />选择型组件
           </div>
           <draggable
             class="components-draggable"
@@ -50,7 +50,7 @@
             </div>
           </draggable>
           <div class="components-title">
-            <svg-icon icon-class="plug" /> 布局型组件
+            <svg-icon icon-class="row" /> 布局型组件
           </div>
           <draggable
             class="components-draggable" :list="layoutComponents"
