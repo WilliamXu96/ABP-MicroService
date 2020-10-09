@@ -216,10 +216,19 @@ export const asyncRoutes = [{
       },
       {
         path: 'formCreate',
-        component: () => import('@/views/form/components/index'),
+        component: () => import('@/views/form/create'),
         name: 'FormCreate',
         meta: {
           title: 'formCreate'
+        },
+        hidden: true
+      },
+      {
+        path: 'formEdit/:id',
+        component: () => import('@/views/form/edit'),
+        name: 'FormEdit',
+        meta: {
+          title: 'formEdit'
         },
         hidden: true
       },

@@ -518,6 +518,9 @@
           <el-form-item label="api接口">
             <el-input v-model="formConf.api" placeholder="请输入表单名后台接口" />
           </el-form-item>
+          <el-form-item label="表单描述">
+            <el-input type="textarea" v-model="formConf.description" />
+          </el-form-item>
           <!-- <el-form-item label="表单模型">
             <el-input v-model="formConf.formModel" placeholder="请输入数据模型" />
           </el-form-item> -->

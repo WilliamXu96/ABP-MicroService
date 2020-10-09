@@ -2,11 +2,12 @@ export const formConf = {
   formName: 'Form',
   displayName: '表单',
   api: '',
+  description:'',
   //formModel: 'form',
   size: 'medium',
   labelPosition: 'right',
   labelWidth: 100,
-  formRules: 'rules',
+  //formRules: 'rules',
   gutter: 15,
   disabled: false,
   span: 24,
@@ -35,7 +36,7 @@ export const inputComponents = [
     isRequire: true,
     regList: [],
     changeTag: true,
-    document: 'https://element.eleme.cn/#/zh-CN/component/input'
+    //document: 'https://element.eleme.cn/#/zh-CN/component/input'
   },
   {
     label: '多行文本',
@@ -58,7 +59,7 @@ export const inputComponents = [
     isRequire: true,
     regList: [],
     changeTag: true,
-    document: 'https://element.eleme.cn/#/zh-CN/component/input'
+    //document: 'https://element.eleme.cn/#/zh-CN/component/input'
   },
   {
     label: '密码',
@@ -82,7 +83,7 @@ export const inputComponents = [
     isRequire: true,
     regList: [],
     changeTag: true,
-    document: 'https://element.eleme.cn/#/zh-CN/component/input'
+    //document: 'https://element.eleme.cn/#/zh-CN/component/input'
   },
   {
     label: '计数器',
@@ -102,7 +103,7 @@ export const inputComponents = [
     isRequire: true,
     regList: [],
     changeTag: true,
-    document: 'https://element.eleme.cn/#/zh-CN/component/input-number'
+    //document: 'https://element.eleme.cn/#/zh-CN/component/input-number'
   }
 ]
 
@@ -130,7 +131,7 @@ export const selectComponents = [
     }],
     regList: [],
     changeTag: true,
-    document: 'https://element.eleme.cn/#/zh-CN/component/select'
+    //document: 'https://element.eleme.cn/#/zh-CN/component/select'
   },
   {
     label: '级联选择',
@@ -168,7 +169,7 @@ export const selectComponents = [
     separator: '/',
     regList: [],
     changeTag: true,
-    document: 'https://element.eleme.cn/#/zh-CN/component/cascader'
+    //document: 'https://element.eleme.cn/#/zh-CN/component/cascader'
   },
   {
     label: '单选框组',
@@ -192,7 +193,7 @@ export const selectComponents = [
     }],
     regList: [],
     changeTag: true,
-    document: 'https://element.eleme.cn/#/zh-CN/component/radio'
+    //document: 'https://element.eleme.cn/#/zh-CN/component/radio'
   },
   {
     label: '多选框组',
@@ -216,7 +217,7 @@ export const selectComponents = [
     }],
     regList: [],
     changeTag: true,
-    document: 'https://element.eleme.cn/#/zh-CN/component/checkbox'
+    //document: 'https://element.eleme.cn/#/zh-CN/component/checkbox'
   },
   {
     label: '开关',
@@ -236,7 +237,7 @@ export const selectComponents = [
     'inactive-value': false,
     regList: [],
     changeTag: true,
-    document: 'https://element.eleme.cn/#/zh-CN/component/switch'
+    //document: 'https://element.eleme.cn/#/zh-CN/component/switch'
   },
   {
     label: '滑块',
@@ -254,7 +255,7 @@ export const selectComponents = [
     range: false,
     regList: [],
     changeTag: true,
-    document: 'https://element.eleme.cn/#/zh-CN/component/slider'
+    //document: 'https://element.eleme.cn/#/zh-CN/component/slider'
   },
   {
     label: '时间选择',
@@ -275,7 +276,7 @@ export const selectComponents = [
     'value-format': 'HH:mm:ss',
     regList: [],
     changeTag: true,
-    document: 'https://element.eleme.cn/#/zh-CN/component/time-picker'
+    //document: 'https://element.eleme.cn/#/zh-CN/component/time-picker'
   },
   {
     label: '时间范围',
@@ -296,7 +297,7 @@ export const selectComponents = [
     'value-format': 'HH:mm:ss',
     regList: [],
     changeTag: true,
-    document: 'https://element.eleme.cn/#/zh-CN/component/time-picker'
+    //document: 'https://element.eleme.cn/#/zh-CN/component/time-picker'
   },
   {
     label: '日期选择',
@@ -316,7 +317,7 @@ export const selectComponents = [
     isReadonly: false,
     regList: [],
     changeTag: true,
-    document: 'https://element.eleme.cn/#/zh-CN/component/date-picker'
+    //document: 'https://element.eleme.cn/#/zh-CN/component/date-picker'
   },
   {
     label: '日期范围',
@@ -338,7 +339,7 @@ export const selectComponents = [
     isReadonly: false,
     regList: [],
     changeTag: true,
-    document: 'https://element.eleme.cn/#/zh-CN/component/date-picker'
+    //document: 'https://element.eleme.cn/#/zh-CN/component/date-picker'
   },
   {
     label: '评分',
@@ -356,7 +357,7 @@ export const selectComponents = [
     isRequire: true,
     regList: [],
     changeTag: true,
-    document: 'https://element.eleme.cn/#/zh-CN/component/rate'
+    //document: 'https://element.eleme.cn/#/zh-CN/component/rate'
   },
   {
     label: '颜色选择',
@@ -371,7 +372,7 @@ export const selectComponents = [
     size: 'medium',
     regList: [],
     changeTag: true,
-    document: 'https://element.eleme.cn/#/zh-CN/component/color-picker'
+    //document: 'https://element.eleme.cn/#/zh-CN/component/color-picker'
   },
   {
     label: '上传',
@@ -393,7 +394,7 @@ export const selectComponents = [
     multiple: false,
     regList: [],
     changeTag: true,
-    document: 'https://element.eleme.cn/#/zh-CN/component/upload'
+    //document: 'https://element.eleme.cn/#/zh-CN/component/upload'
   }
 ]
 
@@ -407,7 +408,7 @@ export const layoutComponents = [
     label: '行容器',
     layoutTree: true,
     children: [],
-    document: 'https://element.eleme.cn/#/zh-CN/component/layout'
+    //document: 'https://element.eleme.cn/#/zh-CN/component/layout'
   }
 ]
 
