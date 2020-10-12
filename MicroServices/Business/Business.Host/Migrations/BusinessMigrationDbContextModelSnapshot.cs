@@ -93,23 +93,16 @@ namespace Business.Migrations
 
             modelBuilder.Entity("XCZ.FormManagement.FormField", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnName("ConcurrencyStamp")
                         .HasColumnType("nvarchar(40)")
                         .HasMaxLength(40);
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnName("CreationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("CreatorId")
-                        .HasColumnName("CreatorId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("DefaultValue")
                         .HasColumnType("nvarchar(256)")
@@ -159,15 +152,7 @@ namespace Business.Migrations
                         .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnName("LastModificationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("LastModifierId")
-                        .HasColumnName("LastModifierId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Maxlength")
+                    b.Property<int?>("Maxlength")
                         .HasColumnType("int");
 
                     b.Property<string>("Options")
@@ -181,7 +166,6 @@ namespace Business.Migrations
                         .HasColumnType("nvarchar(MAX)");
 
                     b.Property<Guid?>("TenantId")
-                        .HasColumnName("TenantId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");

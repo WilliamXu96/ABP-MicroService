@@ -82,8 +82,8 @@ axios.interceptors.response.use((res) => {
         break
 
       case 502:
-        error.message = err.response.data.error.message
-        error.details = err.response.data.error.details
+        error.message = '502 Bad Gateway'
+        error.details = '网络错误'
         break
 
       case 503:

@@ -7,7 +7,7 @@
         clearable
         size="small"
         placeholder="搜索..."
-        style="width: 200px;"
+        style="width: 200px"
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
@@ -17,23 +17,25 @@
         type="success"
         icon="el-icon-search"
         @click="handleFilter"
-      >搜索</el-button>
-      <div style="padding: 6px 0;">
-        <router-link :to="'/tool/formCreate'">
-          <el-button
-            class="filter-item"
-            size="mini"
-            type="primary"
-            icon="el-icon-plus"
-          >新增</el-button>
-        </router-link>
+        >搜索</el-button
+      >
+      <div style="padding: 6px 0">
+        <el-button
+          class="filter-item"
+          size="mini"
+          type="primary"
+          icon="el-icon-plus"
+          @click="handleCreate()"
+          >新增</el-button
+        >
         <el-button
           class="filter-item"
           size="mini"
           type="success"
           icon="el-icon-edit"
           @click="handleUpdate()"
-        >修改</el-button>
+          >修改</el-button
+        >
         <el-button
           slot="reference"
           class="filter-item"
@@ -41,7 +43,8 @@
           icon="el-icon-delete"
           size="mini"
           @click="handleDelete()"
-        >删除</el-button>
+          >删除</el-button
+        >
       </div>
     </div>
     <el-table
@@ -49,26 +52,34 @@
       v-loading="listLoading"
       :data="list"
       size="small"
-      style="width: 90%;"
+      style="width: 90%"
       @sort-change="sortChange"
       @selection-change="handleSelectionChange"
       @row-click="handleRowClick"
     >
       <el-table-column type="selection" width="44px"></el-table-column>
-      <el-table-column label="表单名称" prop="formName" sortable="custom" align="center" width="150px">
-        <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{row.formName}}</span>
+      <el-table-column
+        label="表单名称"
+        prop="formName"
+        sortable="custom"
+        align="center"
+        width="150px"
+      >
+        <template slot-scope="{ row }">
+          <span class="link-type" @click="handleUpdate(row)">{{
+            row.formName
+          }}</span>
         </template>
       </el-table-column>
       <el-table-column label="api接口" prop="api" align="center" />
       <el-table-column label="描述" prop="description" align="center" />
       <el-table-column label="禁用" prop="disabled" align="center">
         <template slot-scope="scope">
-          <span>{{scope.row.disabled | displayStatus }}</span>
+          <span>{{ scope.row.disabled | displayStatus }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center">
-        <template slot-scope="{row}">
+        <template slot-scope="{ row }">
           <el-button
             type="primary"
             size="mini"
@@ -87,7 +98,7 @@
     </el-table>
 
     <pagination
-      v-show="totalCount>0"
+      v-show="totalCount > 0"
       :total="totalCount"
       :page.sync="page"
       :limit.sync="listQuery.MaxResultCount"
@@ -114,8 +125,8 @@ export default {
   filters: {
     displayStatus(status) {
       const statusMap = {
-        true: "禁用",
-        false: "启用",
+        true: "是",
+        false: "否",
       };
       return statusMap[status];
     },
@@ -206,8 +217,25 @@ export default {
           });
         });
     },
+    handleCreate() {
+      this.$router.push({ path: "/tool/formCreate" });
+    },
     handleUpdate(row) {
-      this.$router.push({path: '/tool/formEdit/'+row.id})
+      if (row) {
+        this.$router.push({ path: "/tool/formEdit/" + row.id });
+      } else {
+        if (this.multipleSelection.length != 1) {
+          this.$message({
+            message: "编辑必须选择单行",
+            type: "warning",
+          });
+          return;
+        } else {
+          this.$router.push({
+            path: "/tool/formEdit/" + this.multipleSelection[0].id,
+          });
+        }
+      }
     },
     sortChange(data) {
       const { prop, order } = data;
@@ -224,32 +252,6 @@ export default {
     handleRowClick(row, column, event) {
       this.$refs.multipleTable.clearSelection();
       this.$refs.multipleTable.toggleRowSelection(row);
-    },
-    changeDisabled(data, val) {
-      data.active = val ? "启用" : "禁用";
-      this.$confirm("是否" + data.active + data.name + "？", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(() => {
-          this.$axios
-            .puts("/api/base/job/" + data.id, data)
-            .then((response) => {
-              this.$notify({
-                title: "成功",
-                message: "更新成功",
-                type: "success",
-                duration: 2000,
-              });
-            })
-            .catch(() => {
-              data.disabled = !data.disabled;
-            });
-        })
-        .catch(() => {
-          data.disabled = !data.disabled;
-        });
     },
   },
 };

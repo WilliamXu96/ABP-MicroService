@@ -389,7 +389,6 @@ function buildElUploadChild(conf) {
 }
 
 export function makeUpHtml(conf) {
-  debugger
   const htmlList = []
   const columnList = []
   confGlobal = conf

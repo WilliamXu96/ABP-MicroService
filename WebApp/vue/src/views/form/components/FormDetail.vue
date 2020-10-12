@@ -85,14 +85,11 @@
           导出vue文件
         </el-button>
         <el-button
-          class="copy-btn-main"
-          icon="el-icon-document-copy"
+          class="save-btn"
           type="text"
-          @click="copy"
+          @click="save"
+          v-loading.fullscreen.lock="fullscreenLoading"
         >
-          复制代码
-        </el-button>
-        <el-button class="save-btn" type="text" @click="save">
           <svg-icon icon-class="save" />
           保存
         </el-button>
@@ -147,12 +144,6 @@
       @tag-change="tagChange"
     />
 
-    <code-type-dialog
-      :visible.sync="dialogVisible"
-      title="选择生成类型"
-      :show-file-name="showFileName"
-      @confirm="generate"
-    />
     <input id="copyNode" type="hidden" />
   </div>
 </template>
@@ -204,8 +195,8 @@ export default {
   props: {
     isEdit: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
@@ -221,10 +212,9 @@ export default {
       activeId: drawingDefalut[0].formId,
       drawerVisible: false,
       formData: {},
-      dialogVisible: false,
       generateConf: null,
-      showFileName: false,
       activeData: drawingDefalut[0],
+      fullscreenLoading: false,
     };
   },
   computed: {},
@@ -248,36 +238,59 @@ export default {
       immediate: true,
     },
   },
-  mounted() {
-    const clipboard = new ClipboardJS("#copyNode", {
-      text: (trigger) => {
-        const codeStr = this.generateCode();
-        this.$notify({
-          title: "成功",
-          message: "代码已复制到剪切板，可粘贴。",
-          type: "success",
-        });
-        return codeStr;
-      },
-    });
-    clipboard.on("error", (e) => {
-      this.$message.error("代码复制失败");
-    });
-  },
   created() {
     if (this.isEdit) {
       const id = this.$route.params && this.$route.params.id;
+      this.drawingList = [];
       this.fetchData(id);
-    } else{
+    } else {
       this.formConf = Object.assign({}, formConf);
     }
-    //this.tempRoute = Object.assign({}, this.$route);
   },
   methods: {
     fetchData(id) {
       this.$axios.gets("/api/business/form/" + id).then((response) => {
-        //this.formData = response;
-        this.formConf.formName='form1'
+        this.formConf.formName = response.formName;
+        this.formConf.displayName = response.displayName;
+        this.formConf.api = response.api;
+        this.formConf.disabled = response.disabled;
+        this.formConf.id = response.id;
+        
+        debugger
+        response.fields.forEach((item) => {
+          let field={}
+          let clone = inputComponents.find(
+            (_) => _.fieldType == item.fieldType
+          );
+          field.formId = item.id;
+          field.fieldName = item.fieldName;
+          field.fieldType = item.fieldType;
+          field.label = item.label;
+          field.placeholder = item.placeholder;
+          field.defaultValue = item.defaultValue;
+          field.icon = item.icon;
+          field.maxlength = item.maxlength;
+          field.isReadonly = item.isReadonly;
+          field.isRequire = item.isRequire;
+          field.isSort = item.isSort;
+          field.disabled = item.disabled;
+          field.regx=clone.regx
+          //clone.options=item.disabled
+          field.span = formConf.span;
+          field.tag = clone.tag
+          field.style = clone.style
+          field.clearable = clone.clearable
+          field.prepend = clone.prepend
+          field.append = clone.append
+          field.changeTag = clone.changeTag
+          //clone.renderKey = +new Date();
+          if (!clone.layout) field.layout = "colFormItem";
+          this.drawingList.push(field);
+          //this.drawingList.push(clone);
+          //this.activeFormItem(clone);
+        });
+        this.activeId=this.drawingList[0].formId
+        //this.activeData= this.drawingList[0]
       });
     },
     activeFormItem(element) {
@@ -319,10 +332,6 @@ export default {
         ...this.formConf,
       };
     },
-    generate() {
-      const func = this[`exec${titleCase(this.operationType)}`];
-      func && func();
-    },
     execRun() {
       this.AssembleFormData();
       this.drawerVisible = true;
@@ -331,9 +340,6 @@ export default {
       const codeStr = this.generateCode();
       const blob = new Blob([codeStr], { type: "text/plain;charset=utf-8" });
       saveAs(blob, "index.vue");
-    },
-    execCopy() {
-      document.getElementById("copyNode").click();
     },
     empty() {
       this.$confirm("确定要清空所有组件吗？", "提示", { type: "warning" }).then(
@@ -351,21 +357,45 @@ export default {
         });
         return;
       }
-      this.$axios
-        .posts("/api/business/form", this.formData)
-        .then((response) => {
-          this.formLoading = false;
-          this.$notify({
-            title: "成功",
-            message: "新增成功",
-            type: "success",
-            duration: 2000,
+      this.fullscreenLoading = true;
+
+      if (this.isEdit) {
+        this.$axios
+          .puts("/api/business/form/" + this.formData.id, this.formData)
+          .then((response) => {
+            this.fullscreenLoading = false;
+            this.$notify({
+              title: "成功",
+              message: "更新成功",
+              type: "success",
+              duration: 2000,
+            });
+            this.jump();
+          })
+          .catch(() => {
+            this.fullscreenLoading = false;
           });
-          this.dialogFormVisible = false;
-        })
-        .catch(() => {
-          this.formLoading = false;
-        });
+      } else {
+        this.$axios
+          .posts("/api/business/form", this.formData)
+          .then((response) => {
+            this.fullscreenLoading = false;
+            this.$notify({
+              title: "成功",
+              message: "新增成功",
+              type: "success",
+              duration: 2000,
+            });
+            this.jump();
+          })
+          .catch(() => {
+            this.fullscreenLoading = false;
+          });
+      }
+    },
+    jump() {
+      this.$store.dispatch("tagsView/delView", this.$route);
+      this.$router.push({ path: "/tool/form" });
     },
     drawingItemCopy(item, parent) {
       let clone = JSON.parse(JSON.stringify(item));
@@ -406,14 +436,6 @@ export default {
     },
     download() {
       this.execDownload();
-    },
-    run() {
-      this.dialogVisible = true;
-      this.showFileName = false;
-      this.operationType = "run";
-    },
-    copy() {
-      this.execCopy();
     },
     tagChange(newTag) {
       newTag = this.cloneComponent(newTag);
