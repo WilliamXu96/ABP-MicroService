@@ -4,15 +4,17 @@ using Business.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Volo.Abp.EntityFrameworkCore;
 
 namespace Business.Migrations
 {
     [DbContext(typeof(BusinessMigrationDbContext))]
-    partial class BusinessMigrationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201015013710_update_Form")]
+    partial class update_Form
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,6 +62,7 @@ namespace Business.Migrations
                         .HasMaxLength(100);
 
                     b.Property<string>("EntityName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
@@ -87,10 +90,12 @@ namespace Business.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Remark")
+                        .IsRequired()
                         .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
 
                     b.Property<string>("TabelName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 

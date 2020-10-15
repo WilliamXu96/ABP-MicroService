@@ -21,6 +21,7 @@ using Volo.Abp.PermissionManagement.HttpApi;
 using Microsoft.AspNetCore.Cors;
 using Volo.Abp.MultiTenancy;
 using BaseService.EntityFrameworkCore;
+using Business;
 
 namespace BaseService
 {
@@ -30,20 +31,10 @@ namespace BaseService
         typeof(BaseServiceEntityFrameworkCoreModule),
         typeof(BaseServiceHttpApiModule),
         typeof(AbpAspNetCoreMultiTenancyModule),
-        //typeof(AbpEntityFrameworkCoreSqlServerModule),
-        //typeof(AbpAuditLoggingEntityFrameworkCoreModule),
-        //typeof(AbpPermissionManagementEntityFrameworkCoreModule),
         typeof(AbpPermissionManagementHttpApiModule),
-        //typeof(AbpPermissionManagementDomainIdentityModule),
-        //typeof(AbpPermissionManagementApplicationModule),
-        //typeof(AbpSettingManagementEntityFrameworkCoreModule),
-        //typeof(AbpTenantManagementEntityFrameworkCoreModule),
         typeof(AbpTenantManagementHttpApiModule),
-        //typeof(AbpTenantManagementApplicationModule),
         typeof(AbpIdentityHttpApiModule),
-        //typeof(BusinessHttpApiModule),
-        //typeof(AbpIdentityEntityFrameworkCoreModule),
-        //typeof(AbpIdentityApplicationModule),
+        typeof(BusinessHttpApiModule),
         typeof(AbpAspNetCoreSerilogModule)
     )]
     public class BaseServiceHostModule : AbpModule

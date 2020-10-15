@@ -233,6 +233,15 @@ export const asyncRoutes = [{
         hidden: true
       },
       {
+        path: 'build',
+        component: () => import('@/views/build/index'),
+        name: 'Build',
+        meta: {
+          title: 'build',
+          icon: 'code'
+        }
+      },
+      {
         path:'storage',
         component: () => import('@/views/storage/index'),
         name: 'Storage',

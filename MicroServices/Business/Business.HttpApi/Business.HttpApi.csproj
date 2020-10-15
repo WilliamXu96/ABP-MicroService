@@ -4,14 +4,14 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>Business</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.1.5</Version>
+    <Version>1.1.6</Version>
     <PackageId>XCZ.Business.HttpApi</PackageId>
     <Authors>WilliamXu</Authors>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Volo.Abp.AspNetCore.Mvc" Version="3.1.0" />
-    <PackageReference Include="XCZ.FormManagement.HttpApi" Version="1.0.4" />
+    <PackageReference Include="XCZ.FormManagement.HttpApi" Version="1.0.5" />
   </ItemGroup>
 
   <ItemGroup>
