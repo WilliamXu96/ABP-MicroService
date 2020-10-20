@@ -242,6 +242,15 @@ export const asyncRoutes = [{
         }
       },
       {
+        path: 'buildEdit/:id',
+        component: () => import('@/views/build/components/index'),
+        name: 'BuildEdit',
+        meta: {
+          title: 'buildEdit'
+        },
+        hidden: true
+      },
+      {
         path:'storage',
         component: () => import('@/views/storage/index'),
         name: 'Storage',

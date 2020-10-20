@@ -21,13 +21,17 @@
       >
       <div style="padding: 6px 0">
         <el-button
-          class="filter-item"
+          type="primary"
+          icon="el-icon-download"
           size="mini"
-          type="success"
-          icon="el-icon-edit"
-          @click="handleUpdate()"
-          >修改</el-button
-        >
+          @click="handleGen"
+        >配置表单</el-button>
+        <el-button
+          type="primary"
+          icon="el-icon-download"
+          size="mini"
+          @click="handleGen"
+        >生成代码</el-button>
       </div>
     </div>
     <el-table
@@ -41,27 +45,10 @@
       @row-click="handleRowClick"
     >
       <el-table-column type="selection" width="44px"></el-table-column>
-      <el-table-column label="表单名" prop="formName" align="center" />
-      <el-table-column label="实体" prop="entityName" align="center" />
-      <el-table-column label="表名" prop="tabelName" align="center" />
+      <el-table-column label="表单名称" prop="formName" align="center" />
+      <el-table-column label="实体名称" prop="entityName" align="center" />
+      <el-table-column label="表名称" prop="tabelName" align="center" />
       <el-table-column label="表描述" prop="remark" align="center" />
-      <el-table-column label="操作" align="center">
-        <template slot-scope="{ row }">
-          <el-button
-            type="primary"
-            size="mini"
-            @click="handleUpdate(row)"
-            icon="el-icon-edit"
-          />
-          <el-button
-            type="danger"
-            size="mini"
-            @click="handleDelete(row)"
-            v-permission="['BaseService.Job.Delete']"
-            icon="el-icon-delete"
-          />
-        </template>
-      </el-table-column>
     </el-table>
 
     <pagination
@@ -86,7 +73,7 @@ const defaultForm = {
   disabled: true,
 };
 export default {
-  name: "Form",
+  name: "Build",
   components: { Pagination },
   directives: { permission },
   filters: {
@@ -186,6 +173,19 @@ export default {
     },
     handleCreate() {
       this.$router.push({ path: "/tool/formCreate" });
+    },
+    handleGen(){
+      if (this.multipleSelection.length != 1) {
+          this.$message({
+            message: "代码生成必须选择单行",
+            type: "warning",
+          });
+          return;
+        } else {
+          this.$router.push({
+            path: "/tool/buildEdit/" + this.multipleSelection[0].id,
+          });
+        }
     },
     handleUpdate(row) {
       if (row) {
