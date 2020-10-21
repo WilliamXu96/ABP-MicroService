@@ -4,15 +4,17 @@ using Business.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Volo.Abp.EntityFrameworkCore;
 
 namespace Business.Migrations
 {
     [DbContext(typeof(BusinessMigrationDbContext))]
-    partial class BusinessMigrationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201020083554_update_FormField_TabelName")]
+    partial class update_FormField_TabelName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -116,11 +118,6 @@ namespace Business.Migrations
                         .HasColumnType("nvarchar(40)")
                         .HasMaxLength(40);
 
-                    b.Property<string>("DataType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
                     b.Property<string>("DefaultValue")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
@@ -158,7 +155,7 @@ namespace Business.Migrations
                     b.Property<bool>("IsReadonly")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsRequired")
+                    b.Property<bool>("IsRequire")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsSort")

@@ -14,7 +14,7 @@
           />
           <el-table-column label="字段描述" min-width="10%">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.label"></el-input>
+              <el-input size="mini" style="width:150px" v-model="scope.row.label"></el-input>
             </template>
           </el-table-column>
           <el-table-column
@@ -25,16 +25,16 @@
           />
           <el-table-column label="只读" min-width="5%">
             <template slot-scope="scope">
-              <el-checkbox true-label="1" v-model="scope.row.isInsert"></el-checkbox>
+              <el-checkbox true-label="true" v-model="scope.row.isReadonly"></el-checkbox>
             </template>
           </el-table-column>
           <el-table-column label="必填" min-width="5%">
             <template slot-scope="scope">
-              <el-checkbox true-label="1" v-model="scope.row.isRequired"></el-checkbox>
+              <el-checkbox true-label="true" v-model="scope.row.isRequired"></el-checkbox>
             </template>
           </el-table-column>
           
-          <el-table-column label="显示类型" min-width="12%">
+          <!-- <el-table-column label="显示类型" min-width="12%">
             <template slot-scope="scope">
               <el-select v-model="scope.row.htmlType">
                 <el-option label="文本框" value="input" />
@@ -45,10 +45,10 @@
                 <el-option label="日期控件" value="datetime" />
               </el-select>
             </template>
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column label="字典类型" min-width="12%">
             <template slot-scope="scope">
-              <el-select v-model="scope.row.dictType" clearable filterable placeholder="请选择">
+              <el-select size="mini" v-model="scope.row.dictType" clearable filterable placeholder="请选择">
                 <el-option
                   v-for="dict in dictOptions"
                   :key="dict.dictType"
@@ -62,9 +62,9 @@
           </el-table-column>
         </el-table>
       </el-tab-pane>
-      <el-tab-pane label="生成信息" name="genInfo">
+      <!-- <el-tab-pane label="生成信息" name="genInfo">
         <gen-info-form ref="genInfo" :info="info" :menus="menus"/>
-      </el-tab-pane>
+      </el-tab-pane> -->
     </el-tabs>
     <el-form label-width="100px">
       <el-form-item style="text-align: center;margin-left:-100px;margin-top:10px;">
@@ -118,8 +118,8 @@ export default {
     /** 提交按钮 */
     submitForm() {
       const basicForm = this.$refs.basicInfo.$refs.basicInfoForm;
-      const genForm = this.$refs.genInfo.$refs.genInfoForm;
-      Promise.all([basicForm, genForm].map(this.getFormPromise)).then(res => {
+      //const genForm = this.$refs.genInfo.$refs.genInfoForm;
+      Promise.all([basicForm].map(this.getFormPromise)).then(res => {
         const validateResult = res.every(item => !!item);
         if (validateResult) {
           // const genTable = Object.assign({}, basicForm.model, genForm.model);
@@ -130,7 +130,7 @@ export default {
           //   treeParentCode: genTable.treeParentCode,
           //   parentMenuId: genTable.parentMenuId
           // };
-          const form = Object.assign({}, basicForm.model, genForm.model);
+          const form = Object.assign({}, basicForm.model);
           form.fields=this.form.fields
           this.$axios
               .puts("/api/business/build/" + this.form.id, form)
@@ -164,7 +164,7 @@ export default {
     /** 关闭按钮 */
     close() {
       this.$store.dispatch("tagsView/delView", this.$route);
-      this.$router.push({ path: "/tool/form" })
+      this.$router.push({ path: "/tool/build" })
     }
   },
   mounted() {

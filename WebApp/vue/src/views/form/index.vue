@@ -29,12 +29,6 @@
           >新增</el-button
         >
         <el-button
-          type="primary"
-          icon="el-icon-download"
-          size="mini"
-          @click="handleGen"
-        >代码生成</el-button>
-        <el-button
           class="filter-item"
           size="mini"
           type="success"
@@ -225,19 +219,6 @@ export default {
     },
     handleCreate() {
       this.$router.push({ path: "/tool/formCreate" });
-    },
-    handleGen(){
-      if (this.multipleSelection.length != 1) {
-          this.$message({
-            message: "代码生成必须选择单行",
-            type: "warning",
-          });
-          return;
-        } else {
-          this.$router.push({
-            path: "/tool/build/" + this.multipleSelection[0].id,
-          });
-        }
     },
     handleUpdate(row) {
       if (row) {
