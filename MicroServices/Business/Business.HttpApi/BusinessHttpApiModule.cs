@@ -1,11 +1,13 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Modularity;
+using XCZ;
 
 namespace Business
 {
     [DependsOn(
         typeof(BusinessApplicationContractsModule),
+        typeof(FormHttpApiModule),
         typeof(AbpAspNetCoreMvcModule)
     )]
     public class BusinessHttpApiModule : AbpModule

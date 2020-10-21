@@ -48,9 +48,13 @@ namespace BaseService.BaseData.OrganizationManagement
         }
 
         [Authorize(BaseServicePermissions.Organization.Delete)]
-        public async Task Delete(Guid id)
+        public async Task Delete(List<Guid> ids)
         {
-            await _repository.DeleteAsync(id);
+            foreach (var id in ids)
+            {
+                var org = await _repository.GetAsync(id);
+                await _repository.DeleteAsync(_ => _.CascadeId.Contains(org.CascadeId));
+            }
         }
 
         public async Task<OrganizationDto> Get(Guid id)

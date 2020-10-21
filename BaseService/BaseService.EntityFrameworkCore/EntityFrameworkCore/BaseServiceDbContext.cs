@@ -12,8 +12,6 @@ namespace BaseService.EntityFrameworkCore
     [ConnectionStringName("Default")]
     public class BaseServiceDbContext : AbpDbContext<BaseServiceDbContext>
     {
-        //public DbSet<AppUser> Users { get; set; }
-
         public DbSet<DataDictionary> DataDictionaries { get; set; }
 
         public DbSet<DataDictionaryDetail> DataDictionaryDetails { get; set; }
@@ -22,7 +20,7 @@ namespace BaseService.EntityFrameworkCore
 
         public DbSet<Job> Jobs { get; set; }
 
-        public DbSet<UserJobs> EmployeeJobs { get; set; }
+        public DbSet<UserJobs> UserJobs { get; set; }
 
         public BaseServiceDbContext(DbContextOptions<BaseServiceDbContext> options)
             : base(options)

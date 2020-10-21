@@ -15,7 +15,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 //TODO:配置读取
 axios.defaults.headers['Accept-Language']="zh-Hans"
 // axios.defaults.baseURL = '';
-axios.defaults.baseURL = config.base.ip + ':' + config.base.backend_port
+axios.defaults.baseURL = config.base.ip // + ':' + config.base.backend_port
 // POST传参序列化
 axios.interceptors.request.use((config) => {
   // eslint-disable-next-line eqeqeq
@@ -82,8 +82,8 @@ axios.interceptors.response.use((res) => {
         break
 
       case 502:
-        error.message = err.response.data.error.message
-        error.details = err.response.data.error.details
+        error.message = '502 Bad Gateway'
+        error.details = '网络错误'
         break
 
       case 503:
@@ -267,7 +267,7 @@ export default {
   },
   instancePosts(url, params) { // 登录
     var instance = axios.create({
-      baseURL: config.base.ip + ':' + config.base.auth_port
+      baseURL: config.auth.ip
     })
     if (params.tenant && params.tenant.trim() != '') {
       url=url+"?__tenant="+params.tenant
@@ -305,7 +305,7 @@ export default {
   },
   getUserInfo(url) { // 获取用户信息
     var instance = axios.create({
-      baseURL: config.base.ip + ':' + config.base.auth_port
+      baseURL: config.auth.ip //+ ':' + config.base.auth_port
     })
     instance.defaults.headers.Authorization = 'Bearer ' + getToken()
     return new Promise((resolve, reject) => {
@@ -327,7 +327,7 @@ export default {
   },
   getPermissions(url, params) {
     var instance = axios.create({
-      baseURL: config.base.ip + ':' + config.base.backend_port
+      baseURL: config.base.ip //+ ':' + config.base.backend_port
     })
     instance.defaults.headers.Authorization = 'Bearer ' + getToken()
     return new Promise((resolve, reject) => {

@@ -6,15 +6,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Hangfire.SqlServer" Version="1.7.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.6">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Volo.Abp.AuditLogging.EntityFrameworkCore" Version="3.0.4" />
-    <PackageReference Include="Volo.Abp.EntityFrameworkCore.SqlServer" Version="3.0.4" />
-    <PackageReference Include="Volo.Abp.PermissionManagement.EntityFrameworkCore" Version="3.0.4" />
-    <PackageReference Include="Volo.Abp.SettingManagement.EntityFrameworkCore" Version="3.0.4" />
-    <PackageReference Include="Volo.Abp.TenantManagement.EntityFrameworkCore" Version="3.0.4" />
+    <PackageReference Include="Volo.Abp.AuditLogging.EntityFrameworkCore" Version="3.1.0" />
+    <PackageReference Include="Volo.Abp.EntityFrameworkCore.SqlServer" Version="3.1.0" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.EntityFrameworkCore" Version="3.1.0" />
+    <PackageReference Include="Volo.Abp.SettingManagement.EntityFrameworkCore" Version="3.1.0" />
+    <PackageReference Include="Volo.Abp.TenantManagement.EntityFrameworkCore" Version="3.1.0" />
+    <PackageReference Include="XCZ.FormManagement.EntityFrameworkCore" Version="1.0.5.1" />
   </ItemGroup>
 
   <ItemGroup>

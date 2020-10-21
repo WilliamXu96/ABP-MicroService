@@ -69,8 +69,11 @@ export default {
     employee:'职员管理',
     log:'系统日志',
     tool:'系统工具',
-    form:'表单设计',
-    formCreate:'新增表单'
+    form:'表单管理',
+    formCreate:'新增表单',
+    formEdit:'修改表单',
+    storage:'存储管理',
+    build:'代码生成'
   },
   navbar: {
     dashboard: '首页',

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
+using XCZ.EntityFrameworkCore;
 
 namespace Business.EntityFrameworkCore
 {
@@ -16,6 +17,7 @@ namespace Business.EntityFrameworkCore
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.ConfigureForm();
             modelBuilder.ConfigureBusiness();
         }
     }

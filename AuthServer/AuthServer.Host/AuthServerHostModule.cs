@@ -110,7 +110,6 @@ namespace AuthServer.Host
             app.UseAuthorization();
             app.UseAbpRequestLocalization();
             app.UseAuditing();
-            //app.UseMvcWithDefaultRouteAndArea();
 
             AsyncHelper.RunSync(async () =>
             {

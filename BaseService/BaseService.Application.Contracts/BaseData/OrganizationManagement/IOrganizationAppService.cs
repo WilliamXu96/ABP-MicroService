@@ -22,6 +22,6 @@ namespace BaseService.BaseData.OrganizationManagement
 
         Task<OrganizationDto> Update(Guid id, CreateOrUpdateOrganizationDto input);
 
-        Task Delete(Guid id);
+        Task Delete(List<Guid> ids);
     }
 }

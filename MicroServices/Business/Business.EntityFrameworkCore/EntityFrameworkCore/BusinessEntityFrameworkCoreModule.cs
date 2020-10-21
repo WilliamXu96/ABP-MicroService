@@ -5,6 +5,7 @@ using Volo.Abp.Modularity;
 using Volo.Abp.PermissionManagement.EntityFrameworkCore;
 using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
+using XCZ.EntityFrameworkCore;
 
 namespace Business.EntityFrameworkCore
 {
@@ -14,7 +15,8 @@ namespace Business.EntityFrameworkCore
         typeof(AbpPermissionManagementEntityFrameworkCoreModule),
         typeof(AbpSettingManagementEntityFrameworkCoreModule),
         typeof(AbpAuditLoggingEntityFrameworkCoreModule),
-        typeof(AbpTenantManagementEntityFrameworkCoreModule)
+        typeof(AbpTenantManagementEntityFrameworkCoreModule),
+        typeof(FormEntityFrameworkCoreModule)
     )]
     public class BusinessEntityFrameworkCoreModule : AbpModule
     {

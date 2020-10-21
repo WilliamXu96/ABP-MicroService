@@ -58,7 +58,9 @@ namespace BaseService.BaseData.JobManagement
 
             var totalCount = await query.CountAsync();
             var items = await query.OrderBy(input.Sorting ?? "Sort")
-                        .ToListAsync();
+                                   .Skip(input.SkipCount)
+                                   .Take(input.MaxResultCount)
+                                   .ToListAsync();
 
             var dots = ObjectMapper.Map<List<Job>, List<JobDto>>(items);
             return new PagedResultDto<JobDto>(totalCount, dots);

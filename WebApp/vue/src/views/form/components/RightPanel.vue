@@ -5,9 +5,6 @@
       <el-tab-pane label="表单属性" name="form" />
     </el-tabs>
     <div class="field-box">
-      <a class="document-link" target="_blank" :href="documentLink" title="查看组件文档">
-        <i class="el-icon-link" />
-      </a>
       <el-scrollbar class="right-scrollbar">
         <!-- 组件属性 -->
         <el-form v-show="currentTab==='field' && showField" size="small" label-width="90px">
@@ -515,12 +512,21 @@
           <el-form-item label="表单名">
             <el-input v-model="formConf.formName" placeholder="请输入表单名（ref）" />
           </el-form-item>
-          <el-form-item label="表单模型">
+          <el-form-item label="显示名">
+            <el-input v-model="formConf.displayName" placeholder="请输入表单名显示名称" />
+          </el-form-item>
+          <el-form-item label="api接口">
+            <el-input v-model="formConf.api" placeholder="请输入表单名后台接口" />
+          </el-form-item>
+          <el-form-item label="表单描述">
+            <el-input type="textarea" v-model="formConf.description" />
+          </el-form-item>
+          <!-- <el-form-item label="表单模型">
             <el-input v-model="formConf.formModel" placeholder="请输入数据模型" />
-          </el-form-item>
-          <el-form-item label="校验模型">
+          </el-form-item> -->
+          <!-- <el-form-item label="校验模型">
             <el-input v-model="formConf.formRules" placeholder="请输入校验模型" />
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="表单尺寸">
             <el-radio-group v-model="formConf.size">
               <el-radio-button label="medium">
