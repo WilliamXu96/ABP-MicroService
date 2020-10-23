@@ -10,7 +10,7 @@
     <PackageReference Include="Volo.Abp.BackgroundJobs.HangFire" Version="3.1.0" />
     <PackageReference Include="Volo.Abp.Http.Client.IdentityModel" Version="3.1.0" />
     <PackageReference Include="Volo.Abp.Identity.HttpApi.Client" Version="3.1.0" />
-    <PackageReference Include="XCZ.FormManagement.Application" Version="1.0.5" />
+    <PackageReference Include="XCZ.FormManagement.Application" Version="1.0.6" />
   </ItemGroup>
 
   <ItemGroup>

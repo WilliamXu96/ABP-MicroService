@@ -25,13 +25,13 @@
           icon="el-icon-download"
           size="mini"
           @click="handleGen"
-        >配置表单</el-button>
+        >配置</el-button>
         <el-button
           type="primary"
           icon="el-icon-download"
           size="mini"
           @click="handleGen"
-        >生成代码</el-button>
+        >生成</el-button>
       </div>
     </div>
     <el-table
@@ -47,7 +47,7 @@
       <el-table-column type="selection" width="44px"></el-table-column>
       <el-table-column label="表单名称" prop="formName" align="center" />
       <el-table-column label="实体名称" prop="entityName" align="center" />
-      <el-table-column label="表名称" prop="tabelName" align="center" />
+      <el-table-column label="表名称" prop="tableName" align="center" />
       <el-table-column label="表描述" prop="remark" align="center" />
     </el-table>
 
@@ -115,7 +115,7 @@ export default {
       this.listLoading = true;
       this.listQuery.SkipCount = (this.page - 1) * 10;
       this.$axios
-        .gets("/api/business/form", this.listQuery)
+        .gets("/api/business/build", this.listQuery)
         .then((response) => {
           this.list = response.items;
           this.totalCount = response.totalCount;

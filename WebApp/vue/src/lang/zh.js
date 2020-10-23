@@ -73,7 +73,8 @@ export default {
     formCreate:'新增表单',
     formEdit:'修改表单',
     storage:'存储管理',
-    build:'代码生成'
+    build:'代码生成',
+    buildEdit:'生成配置'
   },
   navbar: {
     dashboard: '首页',
