@@ -118,18 +118,9 @@ export default {
     /** 提交按钮 */
     submitForm() {
       const basicForm = this.$refs.basicInfo.$refs.basicInfoForm;
-      //const genForm = this.$refs.genInfo.$refs.genInfoForm;
       Promise.all([basicForm].map(this.getFormPromise)).then(res => {
         const validateResult = res.every(item => !!item);
         if (validateResult) {
-          // const genTable = Object.assign({}, basicForm.model, genForm.model);
-          // genTable.columns = this.cloumns;
-          // genTable.params = {
-          //   treeCode: genTable.treeCode,
-          //   treeName: genTable.treeName,
-          //   treeParentCode: genTable.treeParentCode,
-          //   parentMenuId: genTable.parentMenuId
-          // };
           const form = Object.assign({}, basicForm.model);
           form.fields=this.form.fields
           this.$axios
@@ -142,6 +133,7 @@ export default {
                   type: "success",
                   duration: 2000
                 });
+                this.close()
               })
               .catch(() => {
                 this.formLoading = false;
@@ -164,8 +156,8 @@ export default {
     /** 关闭按钮 */
     close() {
       this.$store.dispatch("tagsView/delView", this.$route);
-      this.$router.push({ path: "/tool/build" })
-    }
+      this.$router.replace({ path: "/tool/build" })
+    },
   },
   mounted() {
     const el = this.$refs.dragTable.$el.querySelectorAll(".el-table__body-wrapper > table > tbody")[0];

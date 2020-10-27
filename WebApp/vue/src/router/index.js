@@ -235,7 +235,7 @@ export const asyncRoutes = [{
       {
         path: 'build',
         component: () => import('@/views/build/index'),
-        name: 'Build',
+        name: 'Builds',
         meta: {
           title: 'build',
           icon: 'code'

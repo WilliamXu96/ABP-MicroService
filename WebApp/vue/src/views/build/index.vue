@@ -22,9 +22,9 @@
       <div style="padding: 6px 0">
         <el-button
           type="primary"
-          icon="el-icon-download"
+          icon="el-icon-setting"
           size="mini"
-          @click="handleGen"
+          @click="handleConfig"
         >配置</el-button>
         <el-button
           type="primary"
@@ -126,58 +126,13 @@ export default {
       this.page = 1;
       this.getList();
     },
-    handleDelete(row) {
-      var params = [];
-      let alert = "";
-      if (row) {
-        params.push(row.id);
-        alert = row.name;
-      } else {
-        if (this.multipleSelection.length === 0) {
-          this.$message({
-            message: "未选择",
-            type: "warning",
-          });
-          return;
-        }
-        this.multipleSelection.forEach((element) => {
-          let id = element.id;
-          params.push(id);
-        });
-        alert = "选中项";
-      }
-      this.$confirm("是否删除" + alert + "?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(() => {
-          this.$axios
-            .posts("/api/business/form/delete", params)
-            .then((response) => {
-              this.$notify({
-                title: "成功",
-                message: "删除成功",
-                type: "success",
-                duration: 2000,
-              });
-              this.getList();
-            });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除",
-          });
-        });
-    },
     handleCreate() {
       this.$router.push({ path: "/tool/formCreate" });
     },
-    handleGen(){
+    handleConfig(){
       if (this.multipleSelection.length != 1) {
           this.$message({
-            message: "代码生成必须选择单行",
+            message: "配置生成必须选择单行",
             type: "warning",
           });
           return;
@@ -185,6 +140,27 @@ export default {
           this.$router.push({
             path: "/tool/buildEdit/" + this.multipleSelection[0].id,
           });
+        }
+    },
+    handleGen(){
+      debugger
+      if (this.multipleSelection.length != 1) {
+          this.$message({
+            message: "生成代码必须选择单行",
+            type: "warning",
+          });
+          return;
+        } else {
+          this.$axios
+            .posts("/api/business/build/" + this.multipleSelection[0].id)
+            .then((response) => {
+              this.$notify({
+                title: "成功",
+                message: "生成成功",
+                type: "success",
+                duration: 2000,
+              });
+            });
         }
     },
     handleUpdate(row) {
