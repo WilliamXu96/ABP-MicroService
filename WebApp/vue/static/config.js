@@ -1,9 +1,7 @@
 // 开发环境
 export default {
   base: {
-    ip: process.env.VUE_APP_BASE_API,
-    auth_port: '53362',
-    backend_port: '62162'
+    ip: process.env.VUE_APP_BASE_API
   },
   basic: {},
   storage: {
