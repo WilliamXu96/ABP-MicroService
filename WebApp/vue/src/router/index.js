@@ -208,7 +208,7 @@ export const asyncRoutes = [{
     children: [{
         path: 'form',
         component: () => import('@/views/form/index'),
-        name: 'Form',
+        name: 'Forms',
         meta: {
           title: 'form',
           icon: 'control'

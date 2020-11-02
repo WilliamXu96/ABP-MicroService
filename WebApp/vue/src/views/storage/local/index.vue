@@ -67,7 +67,7 @@
             <div class="upload">
               <i class="el-icon-upload" /> 添加文件
             </div>
-            <div slot="tip" class="el-upload__tip">可上传任意格式文件，且不超过100M</div>
+            <div slot="tip" class="el-upload__tip">上传文件不超过100M</div>
           </el-upload>
         </el-form-item>
       </el-form>
@@ -172,7 +172,7 @@ export default {
     return {
       storageApi: config.storage.ip,
       rules: {
-        name: [{ required: true, message: "请输入岗位名", trigger: "blur" }],
+        name: [{ required: true, message: "请输入文件名", trigger: "blur" }],
       },
       form: Object.assign({}, defaultForm),
       list: null,
@@ -243,49 +243,6 @@ export default {
     handleFilter() {
       this.page = 1;
       this.getList();
-    },
-    save() {
-      this.$refs.form.validate((valid) => {
-        if (valid) {
-          this.formLoading = true;
-          this.form.roleNames = this.checkedRole;
-          if (this.isEdit) {
-            this.$axios
-              .puts("/api/base/job/" + this.form.id, this.form)
-              .then((response) => {
-                this.formLoading = false;
-                this.$notify({
-                  title: "成功",
-                  message: "更新成功",
-                  type: "success",
-                  duration: 2000,
-                });
-                this.dialogFormVisible = false;
-                this.getList();
-              })
-              .catch(() => {
-                this.formLoading = false;
-              });
-          } else {
-            this.$axios
-              .posts("/api/base/job", this.form)
-              .then((response) => {
-                this.formLoading = false;
-                this.$notify({
-                  title: "成功",
-                  message: "新增成功",
-                  type: "success",
-                  duration: 2000,
-                });
-                this.dialogFormVisible = false;
-                this.getList();
-              })
-              .catch(() => {
-                this.formLoading = false;
-              });
-          }
-        }
-      });
     },
     handleUpload() {
       this.formTitle = "文件上传";
