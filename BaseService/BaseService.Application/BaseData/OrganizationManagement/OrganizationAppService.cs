@@ -160,12 +160,14 @@ namespace BaseService.BaseData.OrganizationManagement
             if (org.Pid.HasValue)
             {
                 if (parent == null) throw new BusinessException("上级机构查询错误！");
-                org.CascadeId = parent.CascadeId + cascadeId + ".";
+                //TODO：限制层级数
+                org.CascadeId = parent.CascadeId + cascadeId.ToString("000") + ".";
                 org.FullName = parent.FullName + "/" + org.Name;
             }
             else
             {
-                org.CascadeId = ".0." + cascadeId + ".";
+                //TODO：限制层级数
+                org.CascadeId = ".0." + cascadeId.ToString("000") + ".";
                 org.FullName = org.Name;
             }
 
