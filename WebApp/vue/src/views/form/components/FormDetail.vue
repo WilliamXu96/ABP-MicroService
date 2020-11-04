@@ -207,13 +207,13 @@ export default {
       selectComponents,
       layoutComponents,
       labelWidth: 100,
-      drawingList: drawingDefalut,
+      drawingList: [],
       drawingData: {},
-      activeId: drawingDefalut[0].formId,
+      activeId: null,
       drawerVisible: false,
       formData: {},
       generateConf: null,
-      activeData: drawingDefalut[0],
+      activeData: {},
       fullscreenLoading: false,
     };
   },
@@ -250,13 +250,14 @@ export default {
   methods: {
     fetchData(id) {
       this.$axios.gets("/api/business/form/" + id).then((response) => {
+        //TODO：优化response结构
+        this.formConf.id = response.id;
         this.formConf.formName = response.formName;
         this.formConf.displayName = response.displayName;
         this.formConf.api = response.api;
         this.formConf.disabled = response.disabled;
-        this.formConf.id = response.id;
+        this.formConf.description = response.description;
         
-        debugger
         response.fields.forEach((item) => {
           let field={}
           let clone = inputComponents.find(
@@ -271,7 +272,7 @@ export default {
           field.icon = item.icon;
           field.maxlength = item.maxlength;
           field.isReadonly = item.isReadonly;
-          field.isRequire = item.isRequire;
+          field.isRequired = item.isRequired;
           field.isSort = item.isSort;
           field.disabled = item.disabled;
           field.regx=clone.regx
@@ -286,11 +287,9 @@ export default {
           //clone.renderKey = +new Date();
           if (!clone.layout) field.layout = "colFormItem";
           this.drawingList.push(field);
-          //this.drawingList.push(clone);
-          //this.activeFormItem(clone);
         });
         this.activeId=this.drawingList[0].formId
-        //this.activeData= this.drawingList[0]
+        this.activeData= this.drawingList[0]
       });
     },
     activeFormItem(element) {

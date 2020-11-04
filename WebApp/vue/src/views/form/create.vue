@@ -6,7 +6,7 @@
 import FormDetail from "./components/FormDetail";
 
 export default {
-  name: "formCreate",
+  name: "FormCreate",
   components: { FormDetail }
 };
 </script>

@@ -94,7 +94,7 @@ function buildMethod() {
           });
       },`,
       fetchData:`fetchData(id) {
-        this.$axios.gets('${confGlobal.api}/' + /id).then(response => {
+        this.$axios.gets('${confGlobal.api}/' + id).then(response => {
           this.form = response;
         });
       },`,
@@ -389,7 +389,8 @@ function buildexport(conf, data, rules, selectOptions, uploadVar, props, methods
   const str = `${exportDefault}{
   
   name: '${confGlobal.formName}'
-  components: {},
+  components: { Pagination },
+  directives: { permission },
   props: [],
   data () {
     return {

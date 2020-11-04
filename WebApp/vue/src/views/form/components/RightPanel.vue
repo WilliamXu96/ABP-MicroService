@@ -461,8 +461,8 @@
           <el-form-item v-if="activeData.tag === 'el-select'" label="是否多选">
             <el-switch v-model="activeData.multiple" @change="multipleChange" />
           </el-form-item>
-          <el-form-item v-if="activeData.isRequire !== undefined" label="是否必填">
-            <el-switch v-model="activeData.isRequire" />
+          <el-form-item v-if="activeData.isRequired !== undefined" label="是否必填">
+            <el-switch v-model="activeData.isRequired" />
           </el-form-item>
 
           <template v-if="activeData.layoutTree">
