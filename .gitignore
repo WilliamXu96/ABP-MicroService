@@ -114,3 +114,4 @@
 /MicroServices/FileStorage/FileStorage.Host/bin/Debug/netcoreapp3.1
 /MicroServices/FileStorage/FileStorage.Host/obj
 /MicroServices/FileStorage/FileStorage.Host/Logs
+/AuthServer/AuthServer.Host/bin/Debug/net5.0
