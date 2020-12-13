@@ -23,6 +23,7 @@ using Volo.Abp.MultiTenancy;
 using BaseService.EntityFrameworkCore;
 using Business;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace BaseService
 {
@@ -51,12 +52,12 @@ namespace BaseService
                 options.IsEnabled = true;
             });
 
-            context.Services.AddAuthentication("Bearer")
-                .AddIdentityServerAuthentication(options =>
+            context.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
                 {
                     options.Authority = configuration["AuthServer:Authority"];
-                    options.ApiName = configuration["AuthServer:ApiName"];
                     options.RequireHttpsMetadata = false;
+                    options.Audience = "BaseService";
                 });
 
             context.Services.AddSwaggerGen(options =>

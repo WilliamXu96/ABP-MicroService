@@ -8,11 +8,13 @@ using Volo.Abp.DependencyInjection;
 using Volo.Abp.Guids;
 using Volo.Abp.Identity;
 using Volo.Abp.IdentityServer.ApiResources;
+using Volo.Abp.IdentityServer.ApiScopes;
 using Volo.Abp.IdentityServer.Clients;
 using Volo.Abp.IdentityServer.IdentityResources;
 using Volo.Abp.PermissionManagement;
 using Volo.Abp.Uow;
 using ApiResource = Volo.Abp.IdentityServer.ApiResources.ApiResource;
+using ApiScope = Volo.Abp.IdentityServer.ApiScopes.ApiScope;
 using Client = Volo.Abp.IdentityServer.Clients.Client;
 
 namespace AuthServer.Host
@@ -20,6 +22,7 @@ namespace AuthServer.Host
     public class AuthServerDataSeeder : IDataSeedContributor, ITransientDependency
     {
         private readonly IApiResourceRepository _apiResourceRepository;
+        private readonly IApiScopeRepository _apiScopeRepository;
         private readonly IClientRepository _clientRepository;
         private readonly IIdentityResourceDataSeeder _identityResourceDataSeeder;
         private readonly IGuidGenerator _guidGenerator;
@@ -28,12 +31,14 @@ namespace AuthServer.Host
         public AuthServerDataSeeder(
             IClientRepository clientRepository,
             IApiResourceRepository apiResourceRepository,
+            IApiScopeRepository apiScopeRepository,
             IIdentityResourceDataSeeder identityResourceDataSeeder,
             IGuidGenerator guidGenerator,
             IPermissionDataSeeder permissionDataSeeder)
         {
             _clientRepository = clientRepository;
             _apiResourceRepository = apiResourceRepository;
+            _apiScopeRepository = apiScopeRepository;
             _identityResourceDataSeeder = identityResourceDataSeeder;
             _guidGenerator = guidGenerator;
             _permissionDataSeeder = permissionDataSeeder;
@@ -44,7 +49,17 @@ namespace AuthServer.Host
         {
             await _identityResourceDataSeeder.CreateStandardResourcesAsync();
             await CreateApiResourcesAsync();
+            await CreateApiScopesAsync();
             await CreateClientsAsync();
+        }
+
+        private async Task CreateApiScopesAsync()
+        {
+            await CreateApiScopeAsync("BaseService");
+            await CreateApiScopeAsync("InternalGateway");
+            await CreateApiScopeAsync("WebAppGateway");
+            await CreateApiScopeAsync("TenantService");
+            await CreateApiScopeAsync("BusinessService");
         }
 
         private async Task CreateApiResourcesAsync()
@@ -59,7 +74,7 @@ namespace AuthServer.Host
                 "role"
             };
 
-            await CreateApiResourceAsync("IdentityService", commonApiUserClaims);
+            await CreateApiResourceAsync("BaseService", commonApiUserClaims);
             await CreateApiResourceAsync("InternalGateway", commonApiUserClaims);
             await CreateApiResourceAsync("WebAppGateway", commonApiUserClaims);
             await CreateApiResourceAsync("TenantService", commonApiUserClaims);
@@ -92,6 +107,24 @@ namespace AuthServer.Host
             return await _apiResourceRepository.UpdateAsync(apiResource);
         }
 
+        private async Task<ApiScope> CreateApiScopeAsync(string name)
+        {
+            var apiScope = await _apiScopeRepository.GetByNameAsync(name);
+            if (apiScope == null)
+            {
+                apiScope = await _apiScopeRepository.InsertAsync(
+                    new ApiScope(
+                        _guidGenerator.Create(),
+                        name,
+                        name + " API"
+                    ),
+                    autoSave: true
+                );
+            }
+
+            return apiScope;
+        }
+
         private async Task CreateClientsAsync()
         {
             var commonScopes = new[]
@@ -106,14 +139,14 @@ namespace AuthServer.Host
 
             await CreateClientAsync(
                 "basic-web",
-                new[] { "IdentityService", "WebAppGateway", "BusinessService", "TenantService" },
+                new[] { "BaseService", "WebAppGateway", "BusinessService", "TenantService" },
                 new[] { "password" },
                 "1q2w3e*".Sha256()
             );
 
             await CreateClientAsync(
                 "business-app",
-                new[] { "InternalGateway", "IdentityService" },
+                new[] { "InternalGateway", "BaseService" },
                 new[] { "client_credentials" },
                 "1q2w3e*".Sha256(),
                 permissions: new[] { IdentityPermissions.Users.Default }
