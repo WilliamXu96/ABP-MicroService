@@ -28,7 +28,7 @@ const layouts = {
       <el-col span={element.span} class={className}
         nativeOnClick={event => { activeItem(element); event.stopPropagation() }}>
         <el-form-item label-width={element.labelWidth ? `${element.labelWidth}px` : null}
-          label={element.label} required={element.isRequire}>
+          label={element.label} required={element.isRequired}>
           <render key={element.renderKey} conf={element} onInput={ event => {
             this.$set(element, 'defaultValue', event)
           }} />

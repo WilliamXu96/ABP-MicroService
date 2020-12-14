@@ -19,7 +19,7 @@ export default [
     'show-word-limit': true,
     isReadonly: false,
     disabled: false,
-    isRequire: true,
+    isRequired: true,
     changeTag: true,
     regList: [{
       pattern: '/^1(3|4|5|7|8|9)\\d{9}$/',

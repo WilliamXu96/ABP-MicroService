@@ -15,7 +15,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 //TODO:配置读取
 axios.defaults.headers['Accept-Language']="zh-Hans"
 // axios.defaults.baseURL = '';
-axios.defaults.baseURL = config.base.ip // + ':' + config.base.backend_port
+axios.defaults.baseURL = config.base.ip
 // POST传参序列化
 axios.interceptors.request.use((config) => {
   // eslint-disable-next-line eqeqeq
@@ -305,7 +305,7 @@ export default {
   },
   getUserInfo(url) { // 获取用户信息
     var instance = axios.create({
-      baseURL: config.auth.ip //+ ':' + config.base.auth_port
+      baseURL: config.auth.ip
     })
     instance.defaults.headers.Authorization = 'Bearer ' + getToken()
     return new Promise((resolve, reject) => {
@@ -327,7 +327,7 @@ export default {
   },
   getPermissions(url, params) {
     var instance = axios.create({
-      baseURL: config.base.ip //+ ':' + config.base.backend_port
+      baseURL: config.base.ip
     })
     instance.defaults.headers.Authorization = 'Bearer ' + getToken()
     return new Promise((resolve, reject) => {

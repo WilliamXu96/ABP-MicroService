@@ -22,6 +22,8 @@ using Microsoft.AspNetCore.Cors;
 using Volo.Abp.MultiTenancy;
 using BaseService.EntityFrameworkCore;
 using Business;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace BaseService
 {
@@ -50,12 +52,12 @@ namespace BaseService
                 options.IsEnabled = true;
             });
 
-            context.Services.AddAuthentication("Bearer")
-                .AddIdentityServerAuthentication(options =>
+            context.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
                 {
                     options.Authority = configuration["AuthServer:Authority"];
-                    options.ApiName = configuration["AuthServer:ApiName"];
                     options.RequireHttpsMetadata = false;
+                    options.Audience = "BaseService";
                 });
 
             context.Services.AddSwaggerGen(options =>
@@ -63,6 +65,33 @@ namespace BaseService
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "BaseService Service API", Version = "v1" });
                 options.DocInclusionPredicate((docName, description) => true);
                 options.CustomSchemaIds(type => type.FullName);
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "请输入JWT令牌，例如：Bearer 12345abcdef",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                  {
+                    {
+                      new OpenApiSecurityScheme
+                      {
+                        Reference = new OpenApiReference
+                          {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                          },
+                          Scheme = "oauth2",
+                          Name = "Bearer",
+                          In = ParameterLocation.Header,
+
+                        },
+                        new List<string>()
+                      }
+                    });
             });
 
             Configure<AbpDbContextOptions>(options =>
@@ -128,12 +157,13 @@ namespace BaseService
             app.UseAbpClaimsMap();
             app.UseMultiTenancy();
 
-            app.UseAbpRequestLocalization(); 
+            app.UseAbpRequestLocalization();
             app.UseSwagger();
             app.UseSwaggerUI(options =>
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "Identity Service API");
             });
+
             app.UseAuditing();
             app.UseAbpSerilogEnrichers();
             app.UseConfiguredEndpoints();

@@ -114,3 +114,14 @@
 /MicroServices/FileStorage/FileStorage.Host/bin/Debug/netcoreapp3.1
 /MicroServices/FileStorage/FileStorage.Host/obj
 /MicroServices/FileStorage/FileStorage.Host/Logs
+/AuthServer/AuthServer.Host/bin/Debug/net5.0
+/BaseService/BaseService.Application/bin/Debug/net5.0
+/BaseService/BaseService.Application.Contracts/bin/Debug/net5.0
+/BaseService/BaseService.Domain/bin/Debug/net5.0
+/BaseService/BaseService.EntityFrameworkCore/bin/Debug/net5.0
+/BaseService/BaseService.Host/bin/Debug/net5.0
+/BaseService/BaseService.HttpApi/bin/Debug/net5.0
+/BaseService/BaseService.HttpApi.Client/bin/Debug/net5.0
+/Gateways/WebAppGateway/WebAppGateway.Host/bin/Debug/net5.0
+/MicroServices/Business/Business.Host/bin/Debug/net5.0
+/MicroServices/Business/Business.HttpApi.Client/bin/Debug/net5.0
