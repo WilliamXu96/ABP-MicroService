@@ -1,5 +1,6 @@
 ﻿using Volo.Abp.AutoMapper;
 using Volo.Abp.Identity;
+using Volo.Abp.Json;
 using Volo.Abp.Modularity;
 using Volo.Abp.PermissionManagement;
 using Volo.Abp.TenantManagement;
@@ -20,6 +21,14 @@ namespace BaseService
             Configure<AbpAutoMapperOptions>(options =>
             {
                 options.AddMaps<BaseServiceApplicationAutoMapperProfile>();
+            });
+        }
+
+        public override void PreConfigureServices(ServiceConfigurationContext context)
+        {
+            PreConfigure<AbpJsonOptions>(option =>
+            {
+                option.UseHybridSerializer = false;
             });
         }
     }
