@@ -22,7 +22,7 @@ namespace Business
         {
             Configure<AbpAutoMapperOptions>(options =>
             {
-                options.AddMaps<BusinessApplicationModule>();
+                options.AddMaps<BusinessApplicationAutoMapperProfile>();
             });
         }
 

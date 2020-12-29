@@ -62,9 +62,6 @@
           </el-table-column>
         </el-table>
       </el-tab-pane>
-      <!-- <el-tab-pane label="生成信息" name="genInfo">
-        <gen-info-form ref="genInfo" :info="info" :menus="menus"/>
-      </el-tab-pane> -->
     </el-tabs>
     <el-form label-width="100px">
       <el-form-item style="text-align: center;margin-left:-100px;margin-top:10px;">
@@ -76,14 +73,12 @@
 </template>
 <script>
 import basicInfoForm from "./basicInfoForm";
-import genInfoForm from "./genInfoForm";
 import Sortable from 'sortablejs'
 
 export default {
   name: "BuildEdit",
   components: {
-    basicInfoForm,
-    genInfoForm
+    basicInfoForm
   },
   data() {
     return {
