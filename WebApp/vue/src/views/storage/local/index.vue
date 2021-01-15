@@ -231,7 +231,7 @@ export default {
     },
     getList() {
       this.listLoading = true;
-      this.listQuery.SkipCount = (this.page - 1) * 10;
+      this.listQuery.SkipCount = (this.page - 1) * this.listQuery.MaxResultCount;
       this.$axios
         .gets(config.storage.ip + "/api/app/file", this.listQuery)
         .then((response) => {

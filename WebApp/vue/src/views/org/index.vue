@@ -300,7 +300,7 @@ export default {
     },
     getList() {
       this.listLoading = true;
-      this.listQuery.SkipCount = (this.page - 1) * 10;
+      this.listQuery.SkipCount = (this.page - 1) * this.listQuery.MaxResultCount;
       this.list = [];
       this.$axios
         .gets("/api/base/orgs/all", this.listQuery)

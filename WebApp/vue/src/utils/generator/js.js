@@ -84,7 +84,7 @@ function buildMethod() {
     funs = {
       getList: `getList() {
         this.listLoading = true;
-        this.listQuery.SkipCount = (this.page - 1) * 10;
+        this.listQuery.SkipCount = (this.page - 1) * this.listQuery.MaxResultCount;
         this.$axios
           .gets('${confGlobal.api}', this.listQuery)
           .then(response => {

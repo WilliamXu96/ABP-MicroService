@@ -146,7 +146,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true;
-      this.listQuery.SkipCount = (this.page - 1) * 10;
+      this.listQuery.SkipCount = (this.page - 1) * this.listQuery.MaxResultCount;
       this.$axios
         .gets("/api/multi-tenancy/tenants", this.listQuery)
         .then((response) => {
