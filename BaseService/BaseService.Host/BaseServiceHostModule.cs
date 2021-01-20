@@ -177,7 +177,7 @@ namespace BaseService
             app.UseSwagger();
             app.UseSwaggerUI(options =>
             {
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Identity Service API");
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "BaseService Service API");
             });
 
             app.UseAuditing();

@@ -58,7 +58,6 @@ namespace AuthServer.Host
             await CreateApiScopeAsync("BaseService");
             await CreateApiScopeAsync("InternalGateway");
             await CreateApiScopeAsync("WebAppGateway");
-            await CreateApiScopeAsync("TenantService");
             await CreateApiScopeAsync("BusinessService");
         }
 
@@ -77,7 +76,6 @@ namespace AuthServer.Host
             await CreateApiResourceAsync("BaseService", commonApiUserClaims);
             await CreateApiResourceAsync("InternalGateway", commonApiUserClaims);
             await CreateApiResourceAsync("WebAppGateway", commonApiUserClaims);
-            await CreateApiResourceAsync("TenantService", commonApiUserClaims);
             await CreateApiResourceAsync("BusinessService", commonApiUserClaims);
         }
 
@@ -139,7 +137,7 @@ namespace AuthServer.Host
 
             await CreateClientAsync(
                 "basic-web",
-                new[] { "BaseService", "WebAppGateway", "BusinessService", "TenantService" },
+                new[] { "BaseService", "WebAppGateway", "BusinessService" },
                 new[] { "password" },
                 "1q2w3e*".Sha256()
             );
@@ -149,7 +147,7 @@ namespace AuthServer.Host
                 new[] { "InternalGateway", "BaseService" },
                 new[] { "client_credentials" },
                 "1q2w3e*".Sha256(),
-                permissions: new[] { IdentityPermissions.Users.Default }
+                permissions: new[] { IdentityPermissions.Users.Default, IdentityPermissions.UserLookup.Default }
             );
         }
 

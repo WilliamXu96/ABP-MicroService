@@ -39,5 +39,12 @@ namespace Business.Controllers
 
             return null;
         }
+
+        [HttpGet]
+        [Route("user-count")]
+        public Task<long> GetUserCount()
+        {
+            return _testAppService.GetUserCount();
+        }
     }
 }
