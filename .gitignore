@@ -127,3 +127,4 @@
 /MicroServices/Business/Business.HttpApi.Client/bin/Debug/net5.0
 /Gateways/InternalGateway/InternalGateway.Host/bin/Debug/net5.0
 /MicroServices/Business/Business.Core/obj
+/MicroServices/Business/Business.Core/bin/Debug/netstandard2.0

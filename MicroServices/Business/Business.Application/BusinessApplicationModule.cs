@@ -9,6 +9,7 @@ using XCZ;
 namespace Business
 {
     [DependsOn(
+        typeof(BusinessDomainModule),
         typeof(BusinessApplicationContractsModule),
         typeof(AbpHttpClientIdentityModelModule),
         typeof(AbpIdentityHttpApiClientModule),

@@ -16,12 +16,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.Ddd.Application" Version="4.0.0" />
-    <PackageReference Include="Volo.Abp.PermissionManagement.Application.Contracts" Version="4.0.0" />
+    <None Remove="Localization\Business\cs.json" />
+    <None Remove="Localization\Business\en.json" />
+    <None Remove="Localization\Business\zh-Hans.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Business.Domain\Business.Domain.csproj" />
+    <EmbeddedResource Include="Localization\Business\cs.json" />
+    <EmbeddedResource Include="Localization\Business\en.json" />
+    <EmbeddedResource Include="Localization\Business\zh-Hans.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.Ddd.Application" Version="4.0.0" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.Application.Contracts" Version="4.0.0" />
   </ItemGroup>
 
 </Project>

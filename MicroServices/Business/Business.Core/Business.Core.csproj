@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Consts\" />
     <Folder Include="Enums\" />
     <Folder Include="Extensions\" />
     <Folder Include="Utilities\" />
