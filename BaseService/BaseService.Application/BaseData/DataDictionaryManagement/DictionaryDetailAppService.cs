@@ -48,7 +48,7 @@ namespace BaseService.BaseData.DataDictionaryManagement
                                                                     input.Pid,
                                                                     input.Label,
                                                                     input.Value,
-                                                                    0));//TODO:Sort排序
+                                                                    input.Sort));
             return ObjectMapper.Map<DataDictionaryDetail, DictionaryDetailDto>(result);
         }
 
@@ -70,7 +70,7 @@ namespace BaseService.BaseData.DataDictionaryManagement
         public async Task<PagedResultDto<DictionaryDetailDto>> GetAll(GetDictionaryDetailInputDto input)
         {
             var query = _detailRepository.Where(_ => _.Pid == input.Pid);
-            var items = await query.OrderBy(_=>_.Sort)
+            var items = await query.OrderBy(_ => _.Sort)
                      .Skip(input.SkipCount)
                      .Take(input.MaxResultCount)
                      .ToListAsync();

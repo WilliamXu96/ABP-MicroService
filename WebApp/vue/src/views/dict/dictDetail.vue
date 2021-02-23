@@ -3,6 +3,7 @@
     <el-dialog
       :visible.sync="dialogFormVisible"
       :close-on-click-modal="false"
+      @close="cancel()"
       :title="formTitle"
       width="500px"
     >
@@ -14,11 +15,11 @@
           <el-input v-model="form.value" style="width: 370px;" />
         </el-form-item>
         <el-form-item label="排序" prop="sort">
-          <el-input-number v-model.number="form.sort" :min="0" :max="999" style="width: 370px;" />
+          <el-input-number v-model="form.sort" :min="0" :max="999" style="width: 370px;" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="text" @click="cancel">取消</el-button>
+        <el-button type="text" @click="dialogFormVisible=false">取消</el-button>
         <el-button :loading="formLoading" type="primary" @click="save">确认</el-button>
       </div>
     </el-dialog>
@@ -68,6 +69,12 @@
 import permission from "@/directive/permission/index.js";
 import Pagination from "@/components/Pagination";
 
+const defaultForm = {
+  id: null,
+  label: null,
+  value: null,
+  sort: 999
+};
 export default {
   components: { Pagination },
   directives: { permission },
@@ -85,7 +92,7 @@ export default {
           }
         ]
       },
-      form: {},
+      form: Object.assign({}, defaultForm),
       list: null,
       totalCount: 0,
       listLoading: false,
@@ -106,7 +113,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true;
-      this.listQuery.SkipCount = (this.page - 1) * this.listQuery.MaxResultCount;
+      this.listQuery.SkipCount = (this.page - 1) * 10;
       this.$axios
         .gets("/api/base/dictDetails/all", this.listQuery)
         .then(response => {
@@ -210,6 +217,7 @@ export default {
         });
     },
     cancel() {
+      this.form = Object.assign({}, defaultForm);
       this.dialogFormVisible = false;
       this.$refs.form.clearValidate();
     }
