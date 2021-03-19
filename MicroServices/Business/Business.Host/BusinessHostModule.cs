@@ -1,6 +1,7 @@
 ﻿using Business.EntityFrameworkCore;
 using Business.MultiTenancy;
 using Hangfire;
+using Hangfire.Dashboard.BasicAuthorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.DataProtection;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Volo.Abp;
@@ -53,7 +55,7 @@ namespace Business
             ConfigureVirtualFileSystem(context);
             ConfigureRedis(context, configuration, hostingEnvironment);
             ConfigureCors(context, configuration);
-            ConfigureSwaggerServices(context);
+            ConfigureSwaggerServices(context, configuration);
             ConfigureHangfire(context, configuration);
         }
 
@@ -107,14 +109,44 @@ namespace Business
                 });
         }
 
-        private static void ConfigureSwaggerServices(ServiceConfigurationContext context)
+        private static void ConfigureSwaggerServices(ServiceConfigurationContext context, IConfiguration configuration)
         {
-            context.Services.AddSwaggerGen(
-                options =>
+            if (configuration["UseSwagger"] == "true")
+            {
+                context.Services.AddSwaggerGen(options =>
                 {
                     options.SwaggerDoc("v1", new OpenApiInfo { Title = "Business Service API", Version = "v1" });
                     options.DocInclusionPredicate((docName, description) => true);
+                    options.CustomSchemaIds(type => type.FullName);
+                    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                    {
+                        Description = "请输入JWT令牌，例如：Bearer 12345abcdef",
+                        Name = "Authorization",
+                        In = ParameterLocation.Header,
+                        Type = SecuritySchemeType.ApiKey,
+                        Scheme = "Bearer"
+                    });
+
+                    options.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                  {
+                    {
+                      new OpenApiSecurityScheme
+                      {
+                        Reference = new OpenApiReference
+                          {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                          },
+                          Scheme = "oauth2",
+                          Name = "Bearer",
+                          In = ParameterLocation.Header,
+
+                        },
+                        new List<string>()
+                      }
+                    });
                 });
+            }
         }
 
         private void ConfigureLocalization()
@@ -174,6 +206,7 @@ namespace Business
         public override void OnApplicationInitialization(ApplicationInitializationContext context)
         {
             var app = context.GetApplicationBuilder();
+            var configuration = context.GetConfiguration();
 
             app.UseCorrelationId();
             app.UseVirtualFiles();
@@ -187,15 +220,40 @@ namespace Business
             }
 
             app.UseAbpRequestLocalization();
-            app.UseSwagger();
-            app.UseSwaggerUI(options =>
+
+            if (configuration["UseSwagger"] == "true")
             {
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Business Service API");
-            });
+                app.UseSwagger();
+                app.UseSwaggerUI(options =>
+                {
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Business Service API");
+                });
+            }
             app.UseAuditing();
             app.UseAbpSerilogEnrichers();
             app.UseConfiguredEndpoints();
-            app.UseHangfireDashboard();
+            app.UseHangfireServer();
+            app.UseHangfireDashboard(options: new DashboardOptions
+            {
+                Authorization = new[]
+                {
+                    new BasicAuthAuthorizationFilter(new BasicAuthAuthorizationFilterOptions
+                    {
+                        RequireSsl = false,
+                        SslRedirect = false,
+                        LoginCaseSensitive = true,
+                        Users = new []
+                        {
+                            new BasicAuthAuthorizationUser
+                            {
+                                Login = configuration["Hangfire:Login"],
+                                PasswordClear =  configuration["Hangfire:Password"]
+                            }
+                        }
+                    })
+                },
+                DashboardTitle = "任务调度中心"
+            });
 
             AsyncHelper.RunSync(async () =>
             {
