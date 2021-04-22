@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business.HttpApi", "Busines
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business.HttpApi.Client", "Business.HttpApi.Client\Business.HttpApi.Client.csproj", "{06A26D1B-65D0-44BE-AECD-FF498CB1436D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business.Core", "Business.Core\Business.Core.csproj", "{183A14B9-5316-4D18-95E8-AE17D1302AF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business.Core", "Business.Core\Business.Core.csproj", "{183A14B9-5316-4D18-95E8-AE17D1302AF0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
