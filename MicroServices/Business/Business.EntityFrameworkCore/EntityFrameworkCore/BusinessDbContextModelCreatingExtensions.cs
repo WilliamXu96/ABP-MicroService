@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Business.Models;
+using Microsoft.EntityFrameworkCore;
 using Volo.Abp;
+using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace Business.EntityFrameworkCore
 {
@@ -9,6 +11,18 @@ namespace Business.EntityFrameworkCore
         {
             Check.NotNull(builder, nameof(builder));
 
+            builder.Entity<Book>(b =>
+            {
+                b.ToTable("Book");
+
+                b.ConfigureByConvention();
+
+                b.Property(x => x.Name).IsRequired();
+
+        
+            });
+
+            //Code generation...
         }
     }
 }
