@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\ABP-MicroService-Pro\form-management\XCZ.Form.Application\XCZ.Form.Application.csproj" />
     <ProjectReference Include="..\Business.Application.Contracts\Business.Application.Contracts.csproj" />
     <ProjectReference Include="..\Business.Domain\Business.Domain.csproj" />
   </ItemGroup>

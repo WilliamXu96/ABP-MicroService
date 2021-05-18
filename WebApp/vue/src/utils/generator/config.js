@@ -396,6 +396,29 @@ export const selectComponents = [
   }
 ]
 
+export const importComponents = [
+  {
+    label: '下拉引用',
+    tag: 'el-select',
+    fieldType: 'import',
+    importId:undefined,
+    importField:undefined,
+    placeholder: '请选择',
+    defaultValue: undefined,
+    span: 24,
+    labelWidth: null,
+    style: { width: '100%' },
+    clearable: true,
+    disabled: false,
+    isRequired: true,
+    filterable: false,
+    multiple: false,
+    options: [],
+    regList: [],
+    changeTag: true,
+  }
+]
+
 export const layoutComponents = [
   {
     layout: 'rowFormItem',

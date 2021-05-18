@@ -28,6 +28,37 @@
               </el-option-group>
             </el-select>
           </el-form-item>
+          <el-form-item v-if="activeData.fieldType==='import'" label="引用表单">
+            <el-select
+              v-model="activeData.importId"
+              placeholder="请选择表单"
+              :style="{width: '100%'}"
+              @change="importChange"
+            >
+                <el-option
+                  v-for="item in formList"
+                  :key="item.id"
+                  :label="item.formName"
+                  :value="item.id"
+                >
+                </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item v-if="activeData.importId!==undefined" label="表单字段">
+            <el-select
+              v-model="activeData.importField"
+              placeholder="请选择字段"
+              :style="{width: '100%'}"
+            >
+                <el-option
+                  v-for="item in fieldList"
+                  :key="item.fieldName"
+                  :label="item.fieldName"
+                  :value="item.fieldName"
+                >
+                </el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item v-if="activeData.fieldName!==undefined" label="字段名">
             <el-input v-model="activeData.fieldName" placeholder="请输入字段名（v-model）" />
           </el-form-item>
@@ -585,6 +616,7 @@ import IconsDialog from './IconsDialog'
 import {
   inputComponents,
   selectComponents,
+  importComponents,
   layoutComponents
 } from '@/utils/generator/config'
 
@@ -607,6 +639,8 @@ export default {
   props: ['showField', 'activeData', 'formConf'],
   data() {
     return {
+      formList:null,
+      fieldList:null,
       currentTab: 'field',
       currentNode: null,
       dialogVisible: false,
@@ -727,11 +761,32 @@ export default {
         {
           label: '选择型组件',
           options: selectComponents
+        },
+        {
+          label: '引用型组件',
+          options: importComponents
         }
       ]
     }
   },
+  created() {
+    this.getList();
+  },
   methods: {
+    getList() {
+      this.$axios
+        .gets("/api/business/form/list")
+        .then((response) => {
+          this.formList = response.items;
+        });
+    },
+    getField(id){
+      this.$axios
+        .gets("/api/business/form/field/"+id)
+        .then((response) => {
+          this.fieldList = response.items;
+        });
+    },
     addReg() {
       this.activeData.regList.push({
         pattern: '',
@@ -868,6 +923,9 @@ export default {
       let target = inputComponents.find(item => item.fieldType === fieldType)
       if (!target) target = selectComponents.find(item => item.fieldType === fieldType)
       this.$emit('tag-change', target)
+    },
+    importChange(importId) {
+      this.getField(importId)
     }
   }
 }

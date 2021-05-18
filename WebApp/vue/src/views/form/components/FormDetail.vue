@@ -51,7 +51,7 @@
               </div>
             </div>
           </draggable>
-          <div class="components-title">
+          <!-- <div class="components-title">
             <svg-icon icon-class="row" /> 布局型组件
           </div>
           <draggable
@@ -65,6 +65,30 @@
           >
             <div
               v-for="(element, index) in layoutComponents"
+              :key="index"
+              class="components-item"
+              @click="addComponent(element)"
+            >
+              <div class="components-body">
+                <svg-icon :icon-class="element.fieldType" />
+                {{ element.label }}
+              </div>
+            </div>
+          </draggable> -->
+          <div class="components-title">
+            <svg-icon icon-class="row" /> 引用型组件
+          </div>
+           <draggable
+            class="components-draggable"
+            :list="importComponents"
+            :group="{ name: 'componentsGroup', pull: 'clone', put: false }"
+            :clone="cloneComponent"
+            draggable=".components-item"
+            :sort="false"
+            @end="onEnd"
+          >
+            <div
+              v-for="(element, index) in importComponents"
               :key="index"
               class="components-item"
               @click="addComponent(element)"
@@ -159,6 +183,7 @@ import {
   inputComponents,
   selectComponents,
   layoutComponents,
+  importComponents,
   formConf,
 } from "@/utils/generator/config";
 import {
@@ -206,6 +231,7 @@ export default {
       inputComponents,
       selectComponents,
       layoutComponents,
+      importComponents,
       labelWidth: 100,
       drawingList: [],
       drawingData: {},
