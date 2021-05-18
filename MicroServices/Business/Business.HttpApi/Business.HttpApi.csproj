@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\ABP-MicroService-Pro\form-management\XCZ.Form.HttpApi\XCZ.Form.HttpApi.csproj" />
     <ProjectReference Include="..\Business.Application.Contracts\Business.Application.Contracts.csproj" />
   </ItemGroup>
 
