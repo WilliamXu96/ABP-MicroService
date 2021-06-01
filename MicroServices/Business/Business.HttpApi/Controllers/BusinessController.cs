@@ -3,7 +3,7 @@ using Volo.Abp.AspNetCore.Mvc;
 
 namespace Business.Controllers
 {
-    public class BusinessController : AbpController
+    public abstract class BusinessController : AbpController
     {
         protected BusinessController()
         {

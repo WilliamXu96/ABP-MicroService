@@ -17,6 +17,7 @@ using System.IO;
 using System.Linq;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.MultiTenancy;
+using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Serilog;
 using Volo.Abp.Autofac;
 using Volo.Abp.Caching;
@@ -48,15 +49,24 @@ namespace Business
             var configuration = context.Services.GetConfiguration();
             var hostingEnvironment = context.Services.GetHostingEnvironment();
 
+            //ConfigureConventionalControllers();
             ConfigureMultiTenancy();
             ConfigureAuthentication(context, configuration);
             ConfigureLocalization();
             ConfigureCache(configuration);
-            ConfigureVirtualFileSystem(context);
+            ConfigureVirtualFileSystem(context, hostingEnvironment);
             //ConfigureRedis(context, configuration, hostingEnvironment);
             ConfigureCors(context, configuration);
             ConfigureSwaggerServices(context, configuration);
             ConfigureHangfire(context, configuration);
+        }
+
+        private void ConfigureConventionalControllers()
+        {
+            Configure<AbpAspNetCoreMvcOptions>(options =>
+            {
+                options.ConventionalControllers.Create(typeof(BusinessApplicationModule).Assembly);
+            });
         }
 
         private void ConfigureMultiTenancy()
@@ -83,17 +93,17 @@ namespace Business
             });
         }
 
-        private void ConfigureVirtualFileSystem(ServiceConfigurationContext context)
+        private void ConfigureVirtualFileSystem(ServiceConfigurationContext context, IWebHostEnvironment webHostEnvironment)
         {
-            var hostingEnvironment = context.Services.GetHostingEnvironment();
+            //var hostingEnvironment = context.Services.GetHostingEnvironment();
 
-            if (hostingEnvironment.IsDevelopment())
+            if (webHostEnvironment.IsDevelopment())
             {
                 Configure<AbpVirtualFileSystemOptions>(options =>
                 {
-                    options.FileSets.ReplaceEmbeddedByPhysical<BusinessDomainModule>(Path.Combine(hostingEnvironment.ContentRootPath, $"..{Path.DirectorySeparatorChar}Business.Domain"));
-                    options.FileSets.ReplaceEmbeddedByPhysical<BusinessApplicationContractsModule>(Path.Combine(hostingEnvironment.ContentRootPath, $"..{Path.DirectorySeparatorChar}Business.Application.Contracts"));
-                    options.FileSets.ReplaceEmbeddedByPhysical<BusinessApplicationModule>(Path.Combine(hostingEnvironment.ContentRootPath, $"..{Path.DirectorySeparatorChar}Business.Application"));
+                    options.FileSets.ReplaceEmbeddedByPhysical<BusinessDomainModule>(Path.Combine(webHostEnvironment.ContentRootPath, $"..{Path.DirectorySeparatorChar}Business.Domain"));
+                    options.FileSets.ReplaceEmbeddedByPhysical<BusinessApplicationContractsModule>(Path.Combine(webHostEnvironment.ContentRootPath, $"..{Path.DirectorySeparatorChar}Business.Application.Contracts"));
+                    options.FileSets.ReplaceEmbeddedByPhysical<BusinessApplicationModule>(Path.Combine(webHostEnvironment.ContentRootPath, $"..{Path.DirectorySeparatorChar}Business.Application"));
                 });
             }
         }
@@ -209,7 +219,7 @@ namespace Business
             var configuration = context.GetConfiguration();
 
             app.UseCorrelationId();
-            app.UseVirtualFiles();
+            app.UseStaticFiles();
             app.UseRouting();
             app.UseCors(DefaultCorsPolicyName);
             app.UseAuthentication();
@@ -231,6 +241,7 @@ namespace Business
             }
             app.UseAuditing();
             app.UseAbpSerilogEnrichers();
+            app.UseUnitOfWork();
             app.UseConfiguredEndpoints();
             app.UseHangfireServer();
             app.UseHangfireDashboard(options: new DashboardOptions

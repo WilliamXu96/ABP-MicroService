@@ -152,7 +152,7 @@ namespace BaseService
             var app = context.GetApplicationBuilder();
 
             app.UseCorrelationId();
-            app.UseVirtualFiles();
+            app.UseStaticFiles();
             app.UseRouting();
             app.UseCors(DefaultCorsPolicyName);
             app.UseAuthentication();
@@ -182,6 +182,7 @@ namespace BaseService
 
             app.UseAuditing();
             app.UseAbpSerilogEnrichers();
+            app.UseUnitOfWork();
             app.UseConfiguredEndpoints();
 
             AsyncHelper.RunSync(async () =>

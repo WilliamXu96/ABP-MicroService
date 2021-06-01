@@ -41,7 +41,8 @@ namespace BaseService.Systems.UserManagement
         {
             var dto = ObjectMapper.Map<IdentityUser, IdentityUserDto>(await UserManager.GetByIdAsync(id));
             var empJobs = await _userJobsRepository.Where(_ => _.UserId == id).Select(_ => _.JobId).ToListAsync();
-            dto.Jobs = empJobs;
+            //TODO：
+            //dto.Jobs = empJobs;
 
             return dto;
         }
@@ -51,7 +52,8 @@ namespace BaseService.Systems.UserManagement
         {
             var user = new IdentityUser(
                 GuidGenerator.Create(),
-                input.OrgId,
+                //TODO：
+                //input.OrgId,
                 input.UserName,
                 input.Email,
                 CurrentTenant.Id
@@ -64,10 +66,11 @@ namespace BaseService.Systems.UserManagement
 
             var dto = ObjectMapper.Map<IdentityUser, IdentityUserDto>(user);
 
-            foreach (var jid in input.Jobs)
-            {
-                await _userJobsRepository.InsertAsync(new UserJobs(CurrentTenant.Id, user.Id, jid));
-            }
+            //TODO：
+            //foreach (var jid in input.Jobs)
+            //{
+            //    await _userJobsRepository.InsertAsync(new UserJobs(CurrentTenant.Id, user.Id, jid));
+            //}
 
             await CurrentUnitOfWork.SaveChangesAsync();
 
@@ -96,10 +99,11 @@ namespace BaseService.Systems.UserManagement
             var dto = ObjectMapper.Map<IdentityUser, IdentityUserDto>(user);
 
             await _userJobsRepository.DeleteAsync(_ => _.UserId == id);
-            foreach (var jid in input.Jobs)
-            {
-                await _userJobsRepository.InsertAsync(new UserJobs(CurrentTenant.Id, id, jid));
-            }
+            //TODO：
+            //foreach (var jid in input.Jobs)
+            //{
+            //    await _userJobsRepository.InsertAsync(new UserJobs(CurrentTenant.Id, id, jid));
+            //}
 
             await CurrentUnitOfWork.SaveChangesAsync();
 
@@ -109,22 +113,26 @@ namespace BaseService.Systems.UserManagement
         public async Task<PagedResultDto<IdentityUserDto>> GetAll(GetIdentityUsersInput input)
         {
             List<Guid> orgIds = null;
-            if (input.OrgId.HasValue)
-            {
-                var org = await _orgRepository.GetAsync(input.OrgId.Value);
-                orgIds = await _orgRepository.Where(_ => _.CascadeId.Contains(org.CascadeId)).Select(_ => _.Id).ToListAsync();
-            }
+            //TODO：
+            //if (input.OrgId.HasValue)
+            //{
+            //    var org = await _orgRepository.GetAsync(input.OrgId.Value);
+            //    orgIds = await _orgRepository.Where(_ => _.CascadeId.Contains(org.CascadeId)).Select(_ => _.Id).ToListAsync();
+            //}
 
             var totalCount = await UserRepository.GetCountAsync(input.Filter);
-            var items = await UserRepository.GetListAsync(orgIds, input.Sorting, input.MaxResultCount, input.SkipCount, input.Filter);
-            var orgs = await _orgRepository.Where(_ => items.Select(i => i.OrgId).Contains(_.Id)).ToListAsync();
+            //TODO：
+            var items = await UserRepository.GetListAsync(input.Sorting, input.MaxResultCount, input.SkipCount, input.Filter);
+            //TODO：
+            //var orgs = await _orgRepository.Where(_ => items.Select(i => i.OrgId).Contains(_.Id)).ToListAsync();
 
             var dtos = ObjectMapper.Map<List<IdentityUser>, List<IdentityUserDto>>(items);
 
-            foreach (var dto in dtos)
-            {
-                dto.OrgIdToName = orgs.FirstOrDefault(_ => _.Id == dto.OrgId)?.Name;
-            }
+            //TODO：
+            //foreach (var dto in dtos)
+            //{
+            //    dto.OrgIdToName = orgs.FirstOrDefault(_ => _.Id == dto.OrgId)?.Name;
+            //}
 
             return new PagedResultDto<IdentityUserDto>(totalCount, dtos);
         }

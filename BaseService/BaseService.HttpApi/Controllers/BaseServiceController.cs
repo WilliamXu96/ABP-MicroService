@@ -3,7 +3,7 @@ using Volo.Abp.AspNetCore.Mvc;
 
 namespace BaseService.Controllers
 {
-    public class BaseServiceController : AbpController
+    public abstract class BaseServiceController : AbpController
     {
         protected BaseServiceController()
         {
