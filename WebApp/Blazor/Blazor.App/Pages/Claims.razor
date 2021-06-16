@@ -1,0 +1,16 @@
+﻿@page "/claims"
+
+<AuthorizeView>
+    <Authorized>
+        <h2>Hello @context.User.Identity.Name, here's the list of your claims:</h2>
+        <ul>
+            @foreach (var claim in context.User.Claims)
+            {
+                <li><b>@claim.Type</b>: @claim.Value</li>
+            }
+        </ul>
+    </Authorized>
+    <NotAuthorized>
+        <p>I'm sorry, I can't display any claims until you log in</p>
+    </NotAuthorized>
+</AuthorizeView>

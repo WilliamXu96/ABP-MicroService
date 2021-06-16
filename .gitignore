@@ -128,3 +128,8 @@
 /Gateways/InternalGateway/InternalGateway.Host/bin/Debug/net5.0
 /MicroServices/Business/Business.Core/obj
 /MicroServices/Business/Business.Core/bin/Debug/netstandard2.0
+/WebApp/Blazor/.vs/Blazor
+/WebApp/Blazor/Blazor.App/bin/Debug/net5.0
+/WebApp/Blazor/Blazor.App/obj
+/WebApp/Blazor/Blazor.App.Web/bin/Debug/net5.0
+/WebApp/Blazor/Blazor.App.Web/obj
