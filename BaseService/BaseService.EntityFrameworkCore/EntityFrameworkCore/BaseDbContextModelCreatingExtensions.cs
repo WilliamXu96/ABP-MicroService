@@ -62,11 +62,18 @@ namespace BaseService.EntityFrameworkCore
                 b.Property(x => x.Description).HasMaxLength(BaseServiceConsts.MaxNotesLength);
             });
 
-            builder.Entity<UserJobs>(b =>
+            builder.Entity<UserJob>(b =>
             {
                 b.ToTable("base_user_jobs");
 
                 b.HasKey(k => new { k.UserId, k.JobId });
+            });
+
+            builder.Entity<UserOrganization>(b =>
+            {
+                b.ToTable("base_user_orgs");
+
+                b.HasKey(k => new { k.UserId, k.OrganizationId });
             });
         }
     }

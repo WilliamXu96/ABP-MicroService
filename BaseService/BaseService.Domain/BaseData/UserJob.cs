@@ -4,7 +4,7 @@ using Volo.Abp.MultiTenancy;
 
 namespace BaseService.BaseData
 {
-    public class UserJobs : Entity, IMultiTenant
+    public class UserJob : Entity, IMultiTenant
     {
         public Guid? TenantId { get; set; }
 
@@ -17,7 +17,7 @@ namespace BaseService.BaseData
             return new object[] { UserId, JobId };
         }
 
-        public UserJobs(Guid? tenantId, Guid userId, Guid jobId)
+        public UserJob(Guid? tenantId, Guid userId, Guid jobId)
         {
             TenantId = tenantId;
             UserId = userId;

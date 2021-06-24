@@ -21,14 +21,14 @@ namespace BaseService.Systems.UserManagement
         protected IIdentityUserRepository UserRepository { get; }
         public IIdentityRoleRepository RoleRepository { get; }
         private readonly IRepository<Organization, Guid> _orgRepository;
-        private readonly IRepository<UserJobs> _userJobsRepository;
+        private readonly IRepository<UserJob> _userJobsRepository;
 
         public UserAppService(
             IdentityUserManager userManager,
             IIdentityUserRepository userRepository,
             IIdentityRoleRepository roleRepository,
             IRepository<Organization, Guid> orgRepository,
-            IRepository<UserJobs> empJobsRepository)
+            IRepository<UserJob> empJobsRepository)
         {
             UserManager = userManager;
             UserRepository = userRepository;

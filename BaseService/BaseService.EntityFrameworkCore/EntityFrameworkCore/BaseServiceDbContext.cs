@@ -16,7 +16,9 @@ namespace BaseService.EntityFrameworkCore
 
         public DbSet<Job> Jobs { get; set; }
 
-        public DbSet<UserJobs> UserJobs { get; set; }
+        public DbSet<UserJob> UserJobs { get; set; }
+
+        public DbSet<UserOrganization> UserOrganizations { get; set; }
 
         public BaseServiceDbContext(DbContextOptions<BaseServiceDbContext> options)
             : base(options)
