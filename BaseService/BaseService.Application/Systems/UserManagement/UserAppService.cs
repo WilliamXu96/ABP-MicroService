@@ -1,4 +1,5 @@
 ﻿using BaseService.BaseData;
+using BaseService.Systems.UserManagement.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -22,19 +23,23 @@ namespace BaseService.Systems.UserManagement
         public IIdentityRoleRepository RoleRepository { get; }
         private readonly IRepository<Organization, Guid> _orgRepository;
         private readonly IRepository<UserJob> _userJobsRepository;
+        private readonly IRepository<UserOrganization> _userOrgsRepository;
 
         public UserAppService(
             IdentityUserManager userManager,
             IIdentityUserRepository userRepository,
             IIdentityRoleRepository roleRepository,
             IRepository<Organization, Guid> orgRepository,
-            IRepository<UserJob> empJobsRepository)
+            IRepository<UserJob> userJobsRepository,
+            IRepository<UserOrganization> userOrgsRepository
+            )
         {
             UserManager = userManager;
             UserRepository = userRepository;
             RoleRepository = roleRepository;
             _orgRepository = orgRepository;
-            _userJobsRepository = empJobsRepository;
+            _userJobsRepository = userJobsRepository;
+            _userOrgsRepository = userOrgsRepository;
         }
 
         public async Task<IdentityUserDto> Get(Guid id)
@@ -48,12 +53,10 @@ namespace BaseService.Systems.UserManagement
         }
 
         [Authorize(IdentityPermissions.Users.Create)]
-        public async Task<IdentityUserDto> Create(IdentityUserCreateDto input)
+        public async Task<IdentityUserDto> Create(BaseIdentityUserCreateDto input)
         {
             var user = new IdentityUser(
                 GuidGenerator.Create(),
-                //TODO：
-                //input.OrgId,
                 input.UserName,
                 input.Email,
                 CurrentTenant.Id
@@ -66,11 +69,15 @@ namespace BaseService.Systems.UserManagement
 
             var dto = ObjectMapper.Map<IdentityUser, IdentityUserDto>(user);
 
-            //TODO：
-            //foreach (var jid in input.Jobs)
-            //{
-            //    await _userJobsRepository.InsertAsync(new UserJobs(CurrentTenant.Id, user.Id, jid));
-            //}
+            foreach (var id in input.JobIds)
+            {
+                await _userJobsRepository.InsertAsync(new UserJob(CurrentTenant.Id, user.Id, id));
+            }
+
+            foreach (var id in input.OrganizationIds)
+            {
+                await _userOrgsRepository.InsertAsync(new UserOrganization(CurrentTenant.Id, user.Id, id));
+            }
 
             await CurrentUnitOfWork.SaveChangesAsync();
 
@@ -78,7 +85,7 @@ namespace BaseService.Systems.UserManagement
         }
 
         [Authorize(IdentityPermissions.Users.Update)]
-        public async Task<IdentityUserDto> UpdateAsync(Guid id, IdentityUserUpdateDto input)
+        public async Task<IdentityUserDto> UpdateAsync(Guid id, BaseIdentityUserUpdateDto input)
         {
             var user = await UserManager.GetByIdAsync(id);
             user.ConcurrencyStamp = input.ConcurrencyStamp;
@@ -99,11 +106,16 @@ namespace BaseService.Systems.UserManagement
             var dto = ObjectMapper.Map<IdentityUser, IdentityUserDto>(user);
 
             await _userJobsRepository.DeleteAsync(_ => _.UserId == id);
-            //TODO：
-            //foreach (var jid in input.Jobs)
-            //{
-            //    await _userJobsRepository.InsertAsync(new UserJobs(CurrentTenant.Id, id, jid));
-            //}
+
+            foreach (var jid in input.JobIds)
+            {
+                await _userJobsRepository.InsertAsync(new UserJob(CurrentTenant.Id, id, jid));
+            }
+
+            foreach (var oid in input.OrganizationIds)
+            {
+                await _userOrgsRepository.InsertAsync(new UserOrganization(CurrentTenant.Id, id, oid));
+            }
 
             await CurrentUnitOfWork.SaveChangesAsync();
 

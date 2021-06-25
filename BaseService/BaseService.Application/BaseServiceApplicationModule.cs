@@ -23,13 +23,5 @@ namespace BaseService
                 options.AddMaps<BaseServiceApplicationAutoMapperProfile>();
             });
         }
-
-        public override void PreConfigureServices(ServiceConfigurationContext context)
-        {
-            PreConfigure<AbpJsonOptions>(option =>
-            {
-                option.UseHybridSerializer = false;
-            });
-        }
     }
 }

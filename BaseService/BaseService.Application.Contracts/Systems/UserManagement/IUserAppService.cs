@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BaseService.Systems.UserManagement.Dto;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,9 +13,9 @@ namespace BaseService.Systems.UserManagement
     {
         Task<IdentityUserDto> Get(Guid id);
 
-        Task<IdentityUserDto> Create(IdentityUserCreateDto input);
+        Task<IdentityUserDto> Create(BaseIdentityUserCreateDto input);
 
-        Task<IdentityUserDto> UpdateAsync(Guid id, IdentityUserUpdateDto input);
+        Task<IdentityUserDto> UpdateAsync(Guid id, BaseIdentityUserUpdateDto input);
 
         Task<PagedResultDto<IdentityUserDto>> GetAll(GetIdentityUsersInput input);
     }

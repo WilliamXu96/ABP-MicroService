@@ -1,5 +1,6 @@
 ﻿using BaseService.Controllers;
 using BaseService.Systems.UserManagement;
+using BaseService.Systems.UserManagement.Dto;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -20,7 +21,7 @@ namespace BaseService.HttpApi.Systems
         }
 
         [HttpPost]
-        public Task<IdentityUserDto> Create(IdentityUserCreateDto input)
+        public Task<IdentityUserDto> Create(BaseIdentityUserCreateDto input)
         {
             return _userAppService.Create(input);
         }
@@ -40,7 +41,7 @@ namespace BaseService.HttpApi.Systems
 
         [HttpPut]
         [Route("{id}")]
-        public Task<IdentityUserDto> UpdateAsync(Guid id, IdentityUserUpdateDto input)
+        public Task<IdentityUserDto> UpdateAsync(Guid id, BaseIdentityUserUpdateDto input)
         {
             return _userAppService.UpdateAsync(id, input);
         }

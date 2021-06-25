@@ -16,5 +16,12 @@ namespace BaseService.BaseData
         {
             return new object[] { UserId, OrganizationId };
         }
+
+        public UserOrganization(Guid? tenantId, Guid userId, Guid organizationId)
+        {
+            TenantId = tenantId;
+            UserId = userId;
+            OrganizationId = organizationId;
+        }
     }
 }
