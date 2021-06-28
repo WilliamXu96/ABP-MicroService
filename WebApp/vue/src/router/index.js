@@ -215,6 +215,15 @@ export const asyncRoutes = [{
         }
       },
       {
+        path: 'dynamic',
+        component: () => import('@/views/form/dynamic'),
+        name: 'Dynamic',
+        meta: {
+          title: 'dynamic',
+          icon: 'control'
+        }
+      },
+      {
         path: 'formCreate',
         component: () => import('@/views/form/create'),
         name: 'FormCreate',

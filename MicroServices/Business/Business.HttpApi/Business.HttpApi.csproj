@@ -6,7 +6,9 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Version>1.5.0</Version>
     <PackageId>XCZ.Business.HttpApi</PackageId>
-    <Authors>WilliamXu</Authors>
+    <Authors>XCZ</Authors>
+    <Description>Business服务HttpApi远程依赖</Description>
+    <RepositoryUrl>https://github.com/WilliamXu96/ABP-MicroService</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
