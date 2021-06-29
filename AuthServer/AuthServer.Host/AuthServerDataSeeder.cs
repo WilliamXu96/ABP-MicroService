@@ -1,4 +1,5 @@
 ﻿using IdentityServer4.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -136,17 +137,28 @@ namespace AuthServer.Host
             };
 
             await CreateClientAsync(
-                "basic-web",
-                new[] { "BaseService", "WebAppGateway", "BusinessService" },
-                new[] { "password" },
-                "1q2w3e*".Sha256()
+                    name: "blazor-app",
+                    scopes: commonScopes.Append("BaseService").Append("WebAppGateway").Append("BusinessService"),
+                    grantTypes: new[] { "authorization_code" },
+                    secret: null,
+                    requireClientSecret: false,
+                    redirectUri: $"https://localhost:44307/authentication/login-callback",
+                    postLogoutRedirectUri: $"https://localhost:44307/authentication/logout-callback",
+                    corsOrigins: new[] { "https://localhost:44307" }
+                );
+
+            await CreateClientAsync(
+                name: "basic-web",
+                scopes: new[] { "BaseService", "WebAppGateway", "BusinessService" },
+                grantTypes: new[] { "password" },
+                secret: "1q2w3e*".Sha256()
             );
 
             await CreateClientAsync(
-                "business-app",
-                new[] { "InternalGateway", "BaseService" },
-                new[] { "client_credentials" },
-                "1q2w3e*".Sha256(),
+                name: "business-app",
+                scopes: new[] { "InternalGateway", "BaseService" },
+                grantTypes: new[] { "client_credentials" },
+                secret: "1q2w3e*".Sha256(),
                 permissions: new[] { IdentityPermissions.Users.Default, IdentityPermissions.UserLookup.Default }
             );
         }
@@ -155,10 +167,14 @@ namespace AuthServer.Host
             string name,
             IEnumerable<string> scopes,
             IEnumerable<string> grantTypes,
-            string secret,
+            string secret = null,
             string redirectUri = null,
             string postLogoutRedirectUri = null,
-            IEnumerable<string> permissions = null)
+            string frontChannelLogoutUri = null,
+            bool requireClientSecret = true,
+            bool requirePkce = false,
+            IEnumerable<string> permissions = null,
+            IEnumerable<string> corsOrigins = null)
         {
             var client = await _clientRepository.FindByClientIdAsync(name);
             if (client == null)
@@ -178,7 +194,10 @@ namespace AuthServer.Host
                         AccessTokenLifetime = 31536000, //365 days
                         AuthorizationCodeLifetime = 300,
                         IdentityTokenLifetime = 300,
-                        RequireConsent = false
+                        RequireConsent = false,
+                        FrontChannelLogoutUri = frontChannelLogoutUri,
+                        RequireClientSecret = requireClientSecret,
+                        RequirePkce = requirePkce
                     },
                     autoSave: true
                 );
@@ -200,9 +219,12 @@ namespace AuthServer.Host
                 }
             }
 
-            if (client.FindSecret(secret) == null)
+            if (!secret.IsNullOrEmpty())
             {
-                client.AddSecret(secret);
+                if (client.FindSecret(secret) == null)
+                {
+                    client.AddSecret(secret);
+                }
             }
 
             if (redirectUri != null)
@@ -226,8 +248,20 @@ namespace AuthServer.Host
                 await _permissionDataSeeder.SeedAsync(
                     ClientPermissionValueProvider.ProviderName,
                     name,
-                    permissions
+                    permissions,
+                    null
                 );
+            }
+
+            if (corsOrigins != null)
+            {
+                foreach (var origin in corsOrigins)
+                {
+                    if (!origin.IsNullOrWhiteSpace() && client.FindCorsOrigin(origin) == null)
+                    {
+                        client.AddCorsOrigin(origin);
+                    }
+                }
             }
 
             return await _clientRepository.UpdateAsync(client);

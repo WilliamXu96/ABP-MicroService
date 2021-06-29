@@ -133,3 +133,4 @@
 /WebApp/Blazor/Blazor.App/obj
 /WebApp/Blazor/Blazor.App.Web/bin/Debug/net5.0
 /WebApp/Blazor/Blazor.App.Web/obj
+/AuthServer/AuthServer.Host/.vs/AuthServer
