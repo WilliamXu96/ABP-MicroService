@@ -17,6 +17,7 @@ namespace Business.Test
 
         public async Task<string> TestApi(string name)
         {
+            var arr = name.Split('.');
 
             return "010101";
         }

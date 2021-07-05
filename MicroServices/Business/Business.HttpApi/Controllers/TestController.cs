@@ -19,9 +19,9 @@ namespace Business.Controllers
         }
 
         [HttpGet]
-        public async Task<string> GetAsync()
+        public async Task<string> GetAsync(string str)
         {
-            return await _testAppService.TestApi("1");
+            return await _testAppService.TestApi(str);
         }
 
         [HttpGet]
