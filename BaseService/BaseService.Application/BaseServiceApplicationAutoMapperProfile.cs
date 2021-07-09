@@ -4,10 +4,9 @@ using BaseService.BaseData.DataDictionaryManagement.Dto;
 using BaseService.BaseData.JobManagement.Dto;
 using BaseService.BaseData.OrganizationManagement.Dto;
 using BaseService.Systems.AuditLoggingManagement.Dto;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using BaseService.Systems.UserManagement.Dto;
 using Volo.Abp.AuditLogging;
+using Volo.Abp.Identity;
 
 namespace BaseService
 {
@@ -15,6 +14,8 @@ namespace BaseService
     {
         public BaseServiceApplicationAutoMapperProfile()
         {
+            CreateMap<IdentityUser, BaseIdentityUserDto>();
+
             CreateMap<AuditLog, AuditLogDto>()
                 .ForMember(t => t.EntityChanges, option => option.MapFrom(l => l.EntityChanges))
                 .ForMember(t => t.Actions, option => option.MapFrom(l => l.Actions));

@@ -28,13 +28,13 @@ namespace BaseService.HttpApi.Systems
 
         [HttpGet]
         [Route("{id}")]
-        public Task<IdentityUserDto> Get(Guid id)
+        public Task<BaseIdentityUserDto> Get(Guid id)
         {
             return _userAppService.Get(id);
         }
 
         [HttpGet]
-        public Task<PagedResultDto<IdentityUserDto>> GetAll(GetIdentityUsersInput input)
+        public Task<PagedResultDto<BaseIdentityUserDto>> GetAll(GetBaseIdentityUsersInput input)
         {
             return _userAppService.GetAll(input);
         }
