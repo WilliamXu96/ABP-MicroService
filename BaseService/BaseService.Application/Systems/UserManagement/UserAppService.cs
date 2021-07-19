@@ -125,52 +125,58 @@ namespace BaseService.Systems.UserManagement
 
         public async Task<PagedResultDto<BaseIdentityUserDto>> GetAll(GetBaseIdentityUsersInput input)
         {
-            var userDbSet = await UserRepository.GetDbSetAsync();
-
             if (input.OrganizationId.HasValue)
             {
+                var userDbSet = await UserRepository.GetDbSetAsync();
                 var org = await _orgRepository.GetAsync(input.OrganizationId.Value);
                 var orgs = await _orgRepository.Where(_ => _.CascadeId.Contains(org.CascadeId)).ToListAsync();
 
                 var totalCount = await _userOrgsRepository.Where(_ => orgs.Select(o => o.Id).Contains(_.OrganizationId))
                                                      .GroupBy(_ => _.UserId)
-                                                     .CountAsync();
+                                                     .LongCountAsync();
 
                 //TODO: Redis Query
-                var userOrgs = await _userOrgsRepository.Where(_ => orgs.Select(o => o.Id).Contains(_.OrganizationId))
+                var userIds = await _userOrgsRepository.Where(_ => orgs.Select(o => o.Id).Contains(_.OrganizationId))
+                                                        .Select(_ => _.UserId)
+                                                        .Distinct()
+                                                        .Skip(input.SkipCount)
+                                                        .Take(input.MaxResultCount)
                                                         .ToListAsync();
-                var userIds = userOrgs.Select(_ => _.UserId)
-                                      .Distinct()
-                                      .Skip(input.SkipCount)
-                                      .Take(input.MaxResultCount)
-                                      .ToList();
-
-                var items = await userDbSet.Where(_ => userIds.Contains(_.Id)).ToListAsync();
+                
+                var items = await userDbSet.WhereIf(!string.IsNullOrWhiteSpace(input.Filter), _ => _.UserName.Contains(input.Filter))
+                                           .Where(_ => userIds.Contains(_.Id)).ToListAsync();
+                var userOrgs = await _userOrgsRepository.Where(_ => items.Select(i => i.Id).Contains(_.UserId))
+                                        .ToListAsync();
+                var allOrg = await _orgRepository.Where(_ => userOrgs.Select(uo => uo.OrganizationId).Contains(_.Id))
+                                               .OrderBy(_ => _.CascadeId)
+                                               .ToListAsync();
                 var dtos = ObjectMapper.Map<List<IdentityUser>, List<BaseIdentityUserDto>>(items);
 
                 foreach (var dto in dtos)
                 {
-                    var oids = userOrgs.Where(_ => _.UserId == dto.Id).Select(_ => _.OrganizationId).ToList();
-
+                    var oids = userOrgs.Where(_ => _.UserId == dto.Id).Select(_ => _.OrganizationId);
+                    dto.OrganizationNames = string.Join(", ", allOrg.Where(_ => oids.Contains(_.Id)).Select(_ => _.Name).ToArray());
+                }
+                return new PagedResultDto<BaseIdentityUserDto>(totalCount, dtos);
+            }
+            else
+            {
+                var totalCount = await UserRepository.GetCountAsync(input.Filter);
+                var items = await UserRepository.GetListAsync(input.Sorting, input.MaxResultCount, input.SkipCount, input.Filter);
+                //TODO: Redis Query
+                var userOrgs = await _userOrgsRepository.Where(_ => items.Select(i => i.Id).Contains(_.UserId))
+                                                        .ToListAsync();
+                var orgs = await _orgRepository.Where(_ => userOrgs.Select(uo => uo.OrganizationId).Contains(_.Id))
+                                               .OrderBy(_ => _.CascadeId)
+                                               .ToListAsync();
+                var dtos = ObjectMapper.Map<List<IdentityUser>, List<BaseIdentityUserDto>>(items);
+                foreach (var dto in dtos)
+                {
+                    var oids = userOrgs.Where(_ => _.UserId == dto.Id).Select(_ => _.OrganizationId);
                     dto.OrganizationNames = string.Join(", ", orgs.Where(_ => oids.Contains(_.Id)).Select(_ => _.Name).ToArray());
                 }
+                return new PagedResultDto<BaseIdentityUserDto>(totalCount, dtos);
             }
-
-            //var totalCount = await UserRepository.GetCountAsync(input.Filter);
-            //TODO：
-            //var items = await UserRepository.GetListAsync(input.Sorting, input.MaxResultCount, input.SkipCount, input.Filter);
-            //TODO：
-            //var orgs = await _orgRepository.Where(_ => items.Select(i => i.OrgId).Contains(_.Id)).ToListAsync();
-
-            //var dtos = ObjectMapper.Map<List<IdentityUser>, List<BaseIdentityUserDto>>(items);
-
-            //TODO：
-            //foreach (var dto in dtos)
-            //{
-            //    dto.OrgIdToName = orgs.FirstOrDefault(_ => _.Id == dto.OrgId)?.Name;
-            //}
-
-            return new PagedResultDto<BaseIdentityUserDto>(totalCount, dtos);
         }
 
         protected virtual async Task UpdateUserByInput(IdentityUser user, IdentityUserCreateOrUpdateDtoBase input)
