@@ -134,3 +134,8 @@
 /WebApp/Blazor/Blazor.App.Web/bin/Debug/net5.0
 /WebApp/Blazor/Blazor.App.Web/obj
 /AuthServer/AuthServer.Host/.vs/AuthServer
+/MicroServices/FileStorage/FileStorage.Application/bin/Debug/netstandard2.1
+/MicroServices/FileStorage/FileStorage.Application.Contracts/bin/Debug/netstandard2.1
+/MicroServices/FileStorage/FileStorage.Domain/bin/Debug/netstandard2.1
+/MicroServices/FileStorage/FileStorage.EntityFrameworkCore/bin/Debug/netstandard2.1
+/MicroServices/FileStorage/FileStorage.Host/bin/Debug/net5.0
