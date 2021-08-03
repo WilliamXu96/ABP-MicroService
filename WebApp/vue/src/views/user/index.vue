@@ -92,7 +92,7 @@
           <el-input v-model="form.userName" style="width: 184px;" />
         </el-form-item>
         <el-form-item label="电话" prop="phoneNumber">
-          <el-input v-model.number="form.phoneNumber" style="width: 184px;" />
+          <el-input v-model="form.phoneNumber" style="width: 184px;" />
         </el-form-item>
         <el-form-item label="姓名" prop="name">
           <el-input v-model="form.name" style="width: 184px;" />
@@ -100,7 +100,7 @@
         <el-form-item label="邮箱" prop="email">
           <el-input v-model="form.email" style="width: 184px;" />
         </el-form-item>
-        <el-form-item label="密码" prop="password" v-if="!isEdit">
+        <el-form-item label="密码" prop="password">
           <el-input type="password" v-model="form.password" style="width: 184px;" />
         </el-form-item>
         <el-form-item label="角色" prop="roles">
@@ -113,22 +113,23 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="所属机构" prop="orgId">
+        <el-form-item label="所属机构" style="display:inline" prop="organizationIds">
               <treeselect
-                v-model="form.orgId"
+                :multiple="true"
+                v-model="form.organizationIds"
                 :load-options="loadOrgs"
                 :options="orgs"
-                style="width: 184px;"
+                style="width: 450px;line-height:18px"
                 placeholder="选择所属机构"
               />
             </el-form-item>
-            <el-form-item label="岗位" prop="job">
+            <el-form-item label="岗位" style="display:inline" prop="job">
               <el-select
                 class="filter-item"
                 size="small"
-                style="width: 184px"
+                style="width: 450px"
                 multiple
-                v-model="form.jobs"
+                v-model="form.jobIds"
                 placeholder="选择岗位"
               >
               <el-option v-for="item in jobData" :key="item.id" :label="item.name" :value="item.id" />
@@ -165,7 +166,7 @@
       </el-table-column>
       <el-table-column label="所属机构" prop="orgIdToName" align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.orgIdToName}}</span>
+              <span>{{scope.row.organizationNames}}</span>
             </template>
           </el-table-column>
       <el-table-column label="邮箱" prop="email" sortable="custom" align="center" width="200px">
@@ -216,12 +217,12 @@ import { isvalidPhone } from "@/utils/validate";
 import Pagination from "@/components/Pagination";
 import permission from "@/directive/permission/index.js";
 import Treeselect from "@riophae/vue-treeselect";
-import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import { LOAD_CHILDREN_OPTIONS } from "@riophae/vue-treeselect";
 
 const defaultForm = {
   id:undefined,
-  orgId:undefined,
+  organizationIds:[],
   userName:'',
   phoneNumber:'',
   name:'',
@@ -229,7 +230,7 @@ const defaultForm = {
   password:'',
   lockoutEnabled:false,
   roleNames:[],
-  jobs:[],
+  jobIds:[],
   orgIdToName: null,
 }
 
@@ -279,7 +280,7 @@ export default {
       listLoading: true,
       formLoading: false,
       listQuery: {
-        OrgId: null,
+        OrganizationId: null,
         Filter: "",
         Sorting: "",
         SkipCount: 0,
@@ -378,7 +379,7 @@ export default {
       this.getList();
     },
     handleNodeClick(data) {
-      this.listQuery.OrgId = data.id;
+      this.listQuery.OrganizationId = data.id;
       this.getList();
     },
     save() {

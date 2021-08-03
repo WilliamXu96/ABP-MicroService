@@ -113,6 +113,8 @@ namespace BaseService.Systems.UserManagement
                 await _userJobsRepository.InsertAsync(new UserJob(CurrentTenant.Id, id, jid));
             }
 
+            await _userOrgsRepository.DeleteAsync(_ => _.UserId == id);
+
             foreach (var oid in input.OrganizationIds)
             {
                 await _userOrgsRepository.InsertAsync(new UserOrganization(CurrentTenant.Id, id, oid));
