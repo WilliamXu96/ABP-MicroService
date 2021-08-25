@@ -22,13 +22,13 @@ namespace AuthServer.Host.EntityFrameworkCore
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.ConfigureIdentity();
+            //modelBuilder.ConfigureIdentity();
             modelBuilder.ConfigureIdentityServer();
-            modelBuilder.ConfigureAuditLogging();
-            modelBuilder.ConfigurePermissionManagement();
-            modelBuilder.ConfigureSettingManagement();
-            modelBuilder.ConfigureTenantManagement();
-            modelBuilder.ConfigureFeatureManagement();
+            //modelBuilder.ConfigureAuditLogging();
+            //modelBuilder.ConfigurePermissionManagement();
+            //modelBuilder.ConfigureSettingManagement();
+            //modelBuilder.ConfigureTenantManagement();
+            //modelBuilder.ConfigureFeatureManagement();
         }
     }
 }

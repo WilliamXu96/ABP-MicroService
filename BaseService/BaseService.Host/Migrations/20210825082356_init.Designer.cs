@@ -11,17 +11,17 @@ using Volo.Abp.EntityFrameworkCore;
 namespace BaseService.Migrations
 {
     [DbContext(typeof(BaseServiceMigrationDbContext))]
-    [Migration("20201212093126_update_ABP4")]
-    partial class update_ABP4
+    [Migration("20210825082356_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .UseIdentityColumns()
                 .HasAnnotation("_Abp_DatabaseProvider", EfCoreDatabaseProvider.SqlServer)
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.1");
+                .HasAnnotation("ProductVersion", "5.0.6")
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("BaseService.BaseData.DataDictionary", b =>
                 {
@@ -288,7 +288,7 @@ namespace BaseService.Migrations
                     b.ToTable("base_orgs");
                 });
 
-            modelBuilder.Entity("BaseService.BaseData.UserJobs", b =>
+            modelBuilder.Entity("BaseService.BaseData.UserJob", b =>
                 {
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -302,6 +302,22 @@ namespace BaseService.Migrations
                     b.HasKey("UserId", "JobId");
 
                     b.ToTable("base_user_jobs");
+                });
+
+            modelBuilder.Entity("BaseService.BaseData.UserOrganization", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("OrganizationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("UserId", "OrganizationId");
+
+                    b.ToTable("base_user_orgs");
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLog", b =>
@@ -877,9 +893,6 @@ namespace BaseService.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)")
                         .HasColumnName("NormalizedUserName");
-
-                    b.Property<Guid>("OrgId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("PasswordHash")
                         .HasMaxLength(256)
