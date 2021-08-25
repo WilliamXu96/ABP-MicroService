@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="5.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.6">
       <PrivateAssets>all</PrivateAssets>
