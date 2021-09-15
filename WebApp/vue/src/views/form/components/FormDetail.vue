@@ -289,10 +289,14 @@ export default {
           let clone = inputComponents.find(
             (_) => _.fieldType == item.fieldType
           );
+          if(!clone) {
+            return
+          }
           field.formId = item.id;
           field.fieldName = item.fieldName;
           field.fieldType = item.fieldType;
           field.label = item.label;
+          field.fieldOrder=item.fieldOrder
           field.placeholder = item.placeholder;
           field.defaultValue = item.defaultValue;
           field.icon = item.icon;
@@ -311,6 +315,40 @@ export default {
           field.append = clone.append
           field.changeTag = clone.changeTag
           //clone.renderKey = +new Date();
+          if (!clone.layout) field.layout = "colFormItem";
+          this.drawingList.push(field);
+        });
+        
+        response.fields.forEach((item) => {
+          let field={}
+          let clone = selectComponents.find(
+            (_) => _.fieldType == item.fieldType
+          );
+          if(!clone) {
+            return
+          }
+          field.formId = item.id;
+          field.fieldName = item.fieldName;
+          field.fieldType = item.fieldType;
+          field.label = item.label;
+          field.fieldOrder=item.fieldOrder
+          field.placeholder = item.placeholder;
+          field.defaultValue = item.defaultValue;
+          field.icon = item.icon;
+          field.maxlength = item.maxlength;
+          field.isReadonly = item.isReadonly;
+          field.isRequired = item.isRequired;
+          field.isSort = item.isSort;
+          field.disabled = item.disabled;
+          field.regx=clone.regx
+          //clone.options=item.disabled
+          field.span = formConf.span;
+          field.tag = clone.tag
+          field.style = clone.style
+          field.clearable = clone.clearable
+          field.prepend = clone.prepend
+          field.append = clone.append
+          field.changeTag = clone.changeTag
           if (!clone.layout) field.layout = "colFormItem";
           this.drawingList.push(field);
         });

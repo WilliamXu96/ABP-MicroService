@@ -71,6 +71,9 @@
           <el-form-item v-if="activeData.placeholder!==undefined" label="占位提示">
             <el-input v-model="activeData.placeholder" placeholder="请输入占位提示" />
           </el-form-item>
+          <el-form-item label="字段顺序">
+            <el-input-number v-model="activeData.fieldOrder" />
+          </el-form-item>
           <el-form-item v-if="activeData['start-placeholder']!==undefined" label="开始占位">
             <el-input v-model="activeData['start-placeholder']" placeholder="请输入占位提示" />
           </el-form-item>

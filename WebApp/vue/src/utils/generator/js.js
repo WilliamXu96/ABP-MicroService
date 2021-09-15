@@ -103,7 +103,7 @@ function buildMethod() {
         this.getList();
       },`,
       handleCreate:`handleCreate() {
-        this.formTitle = '新增${confGlobal.formName}';
+        this.formTitle = '新增${confGlobal.displayName}';
         this.isEdit = false;
         this.dialogFormVisible = true;
       },`,
@@ -134,7 +134,7 @@ function buildMethod() {
         })
           .then(() => {
             this.$axios
-              .posts('${confGlobal.formName}', params)
+              .posts('${confGlobal.api}/delete', params)
               .then(response => {
                 this.$notify({
                   title: '成功',
@@ -153,7 +153,7 @@ function buildMethod() {
           });
       },`,
       handleUpdate:`handleUpdate(row) {
-        this.formTitle = '修改${confGlobal.formName}';
+        this.formTitle = '修改${confGlobal.displayName}';
         this.isEdit = true;
         if (row) {
           this.fetchData(row.id);
@@ -178,7 +178,7 @@ function buildMethod() {
             this.form.roleNames = this.checkedRole;
             if (this.isEdit) {
               this.$axios
-                .puts('${confGlobal.api}/' + this.form.id, this.form)
+                .posts('${confGlobal.api}/data-post' , this.form)
                 .then(response => {
                   this.formLoading = false;
                   this.$notify({
@@ -195,7 +195,7 @@ function buildMethod() {
                 });
             } else {
               this.$axios
-                .posts('${confGlobal.api}', this.form)
+                .posts('${confGlobal.api}/data-post', this.form)
                 .then(response => {
                   this.formLoading = false;
                   this.$notify({
@@ -290,7 +290,7 @@ function buildRules(conf, ruleList) {
   if (conf.fieldName === undefined) return
   const rules = []
   if (trigger[conf.tag]) {
-    if (conf.isRequire) {
+    if (conf.isRequired) {
       const type = isArray(conf.defaultValue) ? 'type: \'array\',' : ''
       let message = isArray(conf.defaultValue) ? `请至少选择一个${conf.fieldName}` : conf.placeholder
       if (message === undefined) message = `${conf.label}不能为空`
@@ -388,7 +388,7 @@ function buildexport(conf, data, rules, selectOptions, uploadVar, props, methods
     
   const str = `${exportDefault}{
   
-  name: '${confGlobal.formName}'
+  name: '${confGlobal.formName}',
   components: { Pagination },
   directives: { permission },
   props: [],
@@ -405,7 +405,7 @@ function buildexport(conf, data, rules, selectOptions, uploadVar, props, methods
   },
   computed: {},
   watch: {},
-  created () {},
+  created () { this.getList() },
   mounted () {},
   methods: {
     ${methods}

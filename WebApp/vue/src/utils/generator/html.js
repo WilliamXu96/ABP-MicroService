@@ -37,7 +37,6 @@ export function vueTemplate(str) {
           icon="el-icon-search"
           @click="handleFilter"
         >搜索</el-button>
-        <div style="padding: 6px 0;">
           <el-button
             class="filter-item"
             size="mini"
@@ -60,7 +59,6 @@ export function vueTemplate(str) {
             size="mini"
             @click="handleDelete()"
           >删除</el-button>
-        </div>
       </div>
       ${str}
     </div>
