@@ -1,0 +1,91 @@
+$active-color: #409EFF;
+
+.btn-wrapper-simple {
+    height: 24px !important;
+    line-height: 24px !important;
+}
+.vue-contextmenu-listWrapper {
+    padding-left: 1px !important;
+}
+.child-ul-wrapper {
+    padding-left: 1px !important;
+}
+
+.flow-container {
+    width: 1000%;
+    height: 1000%;
+    position: relative;
+    transition: transform 0.5s ease 0s,transform-origin 0.5s ease 0s;
+    
+    &.grid {
+        background-image: -webkit-linear-gradient(90deg, rgba(235, 235, 235, 1) 5%, rgba(0, 0, 0, 0) 5%);
+        background-image: -moz-linear-gradient(90deg, rgba(235, 235, 235, 1) 5%, rgba(0, 0, 0, 0) 5%);
+        background-image: -o-linear-gradient(90deg, rgba(235, 235, 235, 1) 5%, rgba(0, 0, 0, 0) 5%);
+        background-image: -webkit-gradient(linear, 0 100%, 0 0, color-stop(0.05, rgba(235, 235, 235, 1)), color-stop(0.05, rgba(0, 0, 0, 0)));
+        background-image: linear-gradient(90deg, rgba(235, 235, 235, 1) 5%, rgba(0, 0, 0, 0) 5%),linear-gradient(rgba(235, 235, 235, 1) 5%, rgba(0, 0, 0, 0) 5%);
+        background-size: 1rem 1rem;
+    }
+    
+    &.zoomIn {
+        cursor: zoom-in;
+    }
+    &.zoomOut {
+        cursor: zoom-out;
+    }
+    &.canScale {
+        cursor: url(../assets/search.png), default;
+    }
+    &.canDrag {
+        cursor: grab;
+    }
+    &.canMultiple {
+        cursor: url(../assets/multip-pointer.png), default;
+    }
+}
+
+.rectangle-multiple {
+    position: absolute;
+    border: 1px dashed #31676f;
+    background-color: #0cceea29;
+}
+
+.flow-container-active {
+    background-color: #e4e4e438;
+    cursor: crosshair;
+}
+
+.auxiliary-line-x {
+    position: absolute;
+    border: 0.5px solid $active-color;
+    width: 100%;
+    z-index: 9999;
+}
+.auxiliary-line-y {
+    position: absolute;
+    border: 0.5px solid $active-color;
+    height: 100%;
+    z-index: 9999;
+}
+
+.link-active {
+    outline: 2px dashed $active-color;
+}
+
+.container-scale {
+    position: absolute;
+    top: 0;
+    left: 5px;
+}
+
+.mouse-position {
+    position: absolute;
+    bottom: 0;
+    right: 5px;
+}
+
+.common-remarks {
+    width: 100px;
+    height: 150px;
+    position: absolute;
+    background-color: #ffffaa;
+}

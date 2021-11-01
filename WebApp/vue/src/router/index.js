@@ -214,15 +214,15 @@ export const asyncRoutes = [{
           icon: 'control'
         }
       },
-      {
-        path: 'dynamic',
-        component: () => import('@/views/form/dynamic'),
-        name: 'Dynamic',
-        meta: {
-          title: 'dynamic',
-          icon: 'control'
-        }
-      },
+      // {
+      //   path: 'dynamic',
+      //   component: () => import('@/views/form/dynamic'),
+      //   name: 'Dynamic',
+      //   meta: {
+      //     title: 'dynamic',
+      //     icon: 'control'
+      //   }
+      // },
       {
         path: 'formCreate',
         component: () => import('@/views/form/create'),
@@ -238,6 +238,33 @@ export const asyncRoutes = [{
         name: 'FormEdit',
         meta: {
           title: 'formEdit'
+        },
+        hidden: true
+      },
+      {
+        path: 'flow',
+        component: () => import('@/views/flow-design/index'),
+        name: 'FlowDesign',
+        meta: {
+          title: 'flowDesign',
+          icon: 'flow'
+        },
+      },
+      {
+        path: 'flowCreate',
+        component: () => import('@/views/flow-design/create'),
+        name: 'FlowDesignCreate',
+        meta: {
+          title: 'flowDesignCreate'
+        },
+        hidden: true
+      },
+      {
+        path: 'flowEdit/:id',
+        component: () => import('@/views/flow-design/edit'),
+        name: 'FlowDesignEdit',
+        meta: {
+          title: 'flowDesignEdit'
         },
         hidden: true
       },

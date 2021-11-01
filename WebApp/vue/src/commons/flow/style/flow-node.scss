@@ -1,0 +1,151 @@
+$common-node-bg: #f4f6fc;
+$common-node-bg-hover: #f4f6fcb0;
+$common-node-active: #409EFF;
+
+.common-circle-node {
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    line-height: 50px;
+    text-align: center;
+    border: 1px solid #777;
+    border-radius: 50%;
+    background-color: $common-node-bg;
+    white-space: nowrap;
+    
+    &:hover {
+        background-color: $common-node-bg-hover;
+        z-index: 2;
+    }
+    
+    &.active {
+        outline: 2px dashed $common-node-active;
+        outline-offset: 0px;
+    }
+}
+
+.common-rectangle-node {
+    position: absolute;
+    height: 50px;
+    width: 120px;
+    line-height: 50px;
+    text-align: center;
+    border: 1px solid #777;
+    border-radius: 5px;
+    background-color: $common-node-bg;
+    white-space: nowrap;
+    
+    &:hover {
+        background-color: $common-node-bg-hover;
+        z-index: 2;
+    }
+    
+    &.active {
+        outline: 2px dashed $common-node-active;
+        outline-offset: 0px;
+    }
+}
+
+.common-diamond-node {
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    line-height: 50px;
+    text-align: center;
+    border: 1px solid #777;
+    border-radius: 3px;
+    background-color: $common-node-bg;
+    transform: rotate(45deg);
+    white-space: nowrap;
+    
+    &:before {
+        position: absolute;
+        content: '网关';
+        transform: rotate(-45deg);
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+    
+    &:hover {
+        background-color: $common-node-bg-hover;
+        z-index: 2;
+    }
+    
+    &.active {
+        outline: 2px dashed $common-node-active;
+        outline-offset: 0px;
+    }
+}
+
+.common-x-lane-node {
+    position: absolute;
+    text-align: center;
+    border: 1px solid #777;
+    border-radius: 2px;
+    z-index: -1;
+    
+    &.active {
+        outline: 2px dashed $common-node-active;
+        outline-offset: 0px;
+    }
+    
+    .lane-text-div {
+        width: 18px;
+        height: 100%;
+        position: absolute;
+        display: table;
+        border-right: 1px solid #777;
+        background-color: $common-node-bg;
+        
+        &:hover {
+            z-index: 2;
+        }
+        
+        .lane-text {
+            word-wrap: break-word;
+            display: table-cell;
+            vertical-align: middle;
+            font-size: 0.8em;
+        }
+    }
+}
+
+.common-y-lane-node {
+    position: absolute;
+    text-align: center;
+    border: 1px solid #777;
+    border-radius: 2px;
+    z-index: -1;
+    
+    &.active {
+        outline: 2px dashed $common-node-active;
+        outline-offset: 0px;
+    }
+    
+    .lane-text-div {
+        width: 100%;
+        height: 18px;
+        position: absolute;
+        display: table;
+        border-bottom: 1px solid #777;
+        background-color: $common-node-bg;
+        
+        &:hover {
+            z-index: 2;
+        }
+        
+        .lane-text {
+            word-wrap: break-word;
+            display: table-cell;
+            font-size: 0.8em;
+        }
+    }
+}
+
+.node-icon {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+}
