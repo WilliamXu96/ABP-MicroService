@@ -41,7 +41,7 @@
     <div class="mouse-position">
       x: {{ mouse.position.x }}, y: {{ mouse.position.y }}
     </div>
-    <vue-context-menu
+    <!-- <vue-context-menu
       :context-menu-data="containerContextMenuData"
       @flowInfo="flowInfo"
       @paste="paste"
@@ -54,12 +54,12 @@
       @levelCenter="levelCenter"
       @levelDown="levelDown"
       @addRemark="addRemark"
-    />
-    <vue-context-menu
+    /> -->
+    <!-- <vue-context-menu
       :context-menu-data="nodeContextMenuData"
       @copyNode="copyNode"
       @deleteNode="deleteNode"
-    />
+    /> -->
   </div>
 </template>
 

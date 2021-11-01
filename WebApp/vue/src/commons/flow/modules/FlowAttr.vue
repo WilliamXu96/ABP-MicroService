@@ -260,8 +260,8 @@
 
           <el-form-item label="表单字段条件" size="small">
             <br />
-            <div align="left">
-              <el-select v-model="fieldSelected" placeholder="请选择" size="mini" style="width:90px">
+            <div align="left" v-for="(item,index) in tempFieldForm" :key="index">
+              <el-select v-model="item.fieldName" placeholder="请选择" size="mini" style="width:90px">
                 <el-option
                   v-for="field in fieldOption"
                   :key="field.value"
@@ -270,10 +270,10 @@
                 ></el-option>
               </el-select>
               <el-select
-                v-model="conditionSelected"
+                v-model="item.condition"
                 placeholder="请选择"
                 size="mini"
-                style="width:90px"
+                style="width:70px"
               >
                 <el-option
                   v-for="condition in conditionOption"
@@ -282,9 +282,11 @@
                   :value="condition.value"
                 ></el-option>
               </el-select>
-              <el-input size="mini" style="width:90px"></el-input>
-              <el-button type="primary" icon="el-icon-plus" size="mini" @click="addform"></el-button>
+              <el-input size="mini" style="width:90px" v-model="item.content"></el-input>
+              <el-button type="danger" icon="el-icon-delete" size="mini" @click="removeRow(index)"></el-button>
             </div>
+            <el-button type="primary" icon="el-icon-plus" size="mini" @click="addRow">新增</el-button>
+              <el-button type="primary" icon="el-icon-plus" size="mini" @click="tempSave">暂存</el-button>
           </el-form-item>
         </el-form>
       </el-tab-pane>
@@ -340,7 +342,9 @@ export default {
         field:[{value:''}],
         condition:[{value:''}],
         text:[{value:''}]
-      }
+      },
+      tempFieldForm:[],
+      fieldForm:[]
     };
   },
   watch: {
@@ -383,6 +387,20 @@ export default {
         const labelOverlay = conn.getLabelOverlay();
         if (labelOverlay) conn.removeOverlay(labelOverlay.id);
       }
+    },
+    addRow(){
+      var row=new Object();
+      row.linkId=this.currentSelect.id
+      row.fieldName='name'
+      row.condition='>'
+      row.content='123'
+      this.tempFieldForm.push(row)
+    },
+    removeRow(index){
+      this.tempFieldForm.splice(index,1)
+    },
+    tempSave(){
+      console.log(this.tempFieldForm)
     }
   }
 };

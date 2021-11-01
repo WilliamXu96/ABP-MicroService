@@ -143,7 +143,7 @@
                 @getShortcut="getShortcut"
                 @saveFlow="saveFlow"
               ></flow-area>
-              <vue-context-menu :contextMenuData="linkContextMenuData" @deleteLink="deleteLink"></vue-context-menu>
+              <!-- <vue-context-menu :contextMenuData="linkContextMenuData" @deleteLink="deleteLink"></vue-context-menu> -->
             </div>
           </el-col>
           <el-col :span="7">
