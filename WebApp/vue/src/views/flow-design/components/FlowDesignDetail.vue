@@ -9,33 +9,33 @@
     </div>
     <div class="createPost-main-container">
       <div class="createPost-formContent" :hidden="active!=0">
-        <el-form label-width="90px">
+        <el-form label-width="90px" :model="form">
           <el-row>
             <el-col :md="12">
-              <el-form-item label="标题">
-                <el-input />
+              <el-form-item label="标题" prop="label">
+                <el-input v-model="form.label" />
               </el-form-item>
             </el-col>
             <el-col :md="12">
-              <el-form-item label="模板编号">
-                <el-input />
+              <el-form-item label="模板编号" prop="code">
+                <el-input v-model="form.code" />
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :md="12">
-              <el-form-item label="发布时间">
-                <el-input />
+              <el-form-item label="发布时间" prop="createTime">
+                <el-input v-model="form.createTime" />
               </el-form-item>
             </el-col>
             <el-col :md="12">
-              <el-form-item label="重要性">
-                <el-rate style="margin-top:8px" />
+              <el-form-item label="重要性" prop="level">
+                <el-rate  v-model="form.level" style="margin-top:8px" />
               </el-form-item>
             </el-col>
           </el-row>
-          <el-form-item label="摘要">
-            <el-input type="textarea" />
+          <el-form-item label="摘要" prop="description">
+            <el-input type="textarea" v-model="form.description" />
           </el-form-item>
         </el-form>
       </div>
@@ -198,6 +198,14 @@ import ShortcutModal from "../../../commons/flow/modules/ShortcutModal";
 import UsingDocModal from "../../../commons/flow/modules/UsingDocModal";
 import TestModal from "../../../commons/flow/modules/TestModal";
 
+const defaultForm = {
+  id: null,
+  label: '',
+  code: '',
+  createTime: '',
+  level: 0,
+  description:''
+};
 export default {
   name: "FlowDesignDetail",
   components: {
@@ -233,6 +241,7 @@ export default {
   },
   data() {
     return {
+      form: Object.assign({}, defaultForm),
       active: 0,
       end: false,
       tag: {
