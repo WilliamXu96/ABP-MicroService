@@ -65,6 +65,9 @@
 #### 表单设计/代码生成
 <img src="https://i.loli.net/2020/09/30/eGybATBz6874mq5.gif"/>
 
+#### 流程设计
+<img src="https://i.loli.net/2021/11/02/gucl5n3rQtRm8JH.gif"/>
+
 #### 文件存储
 <img src="https://i.loli.net/2020/09/23/MgwR9oQWzmK5qGP.gif"/>
 
