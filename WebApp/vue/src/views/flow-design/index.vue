@@ -6,11 +6,12 @@
           v-model="listQuery.Filter"
           placeholder="搜索..."
           style="width: 200px;"
+          size="small"
           class="filter-item"
           @keyup.enter.native="handleFilter"
         />
         <el-button
-          v-waves
+          size="mini"
           class="filter-item"
           type="primary"
           icon="el-icon-search"
@@ -20,6 +21,7 @@
       <div class="filter-right">
         <router-link :to="'/tool/flowCreate/'">
           <el-button
+            size="mini"
             class="filter-item"
             style="margin-left: 10px;"
             type="primary"
@@ -27,6 +29,7 @@
           >添加</el-button>
         </router-link>
         <el-button
+          size="mini"
           class="filter-item"
           style="margin-left: 10px;"
           type="success"
@@ -34,6 +37,7 @@
           @click="handleUpdate()"
         >编辑</el-button>
         <el-button
+          size="mini"
           class="filter-item"
           type="danger"
           icon="el-icon-delete"

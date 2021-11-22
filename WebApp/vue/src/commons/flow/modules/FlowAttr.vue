@@ -344,7 +344,7 @@ export default {
         text:[{value:''}]
       },
       tempFieldForm:[],
-      fieldForm:[]
+      //fieldForm:[]
     };
   },
   watch: {
@@ -352,6 +352,13 @@ export default {
       this.currentSelect = val;
       if (this.currentSelect.type == "link") {
         this.activeKey = "link-attr";
+        debugger
+        if(this.currentSelect.tempFieldForm){
+          this.tempFieldForm=this.currentSelect.tempFieldForm
+        }
+        else{
+          this.tempFieldForm=[]
+        }
       } else if (!this.currentSelect.type) {
         this.activeKey = "flow-attr";
       } else {
@@ -394,13 +401,24 @@ export default {
       row.fieldName='name'
       row.condition='>'
       row.content='123'
-      this.tempFieldForm.push(row)
+      debugger
+      if(this.currentSelect.tempFieldForm){
+        this.tempFieldForm=this.currentSelect.tempFieldForm
+        this.tempFieldForm.push(row)
+        this.currentSelect.tempFieldForm.push(row)
+      }
+      else{
+        this.tempFieldForm=[]
+        this.tempFieldForm.push(row)
+        this.currentSelect.tempFieldForm=this.tempFieldForm
+      }
+      console.log(this.currentSelect.tempFieldForm)
     },
     removeRow(index){
-      this.tempFieldForm.splice(index,1)
+      this.fieldForm.splice(index,1)
     },
     tempSave(){
-      console.log(this.tempFieldForm)
+      console.log(this.fieldForm)
     }
   }
 };
