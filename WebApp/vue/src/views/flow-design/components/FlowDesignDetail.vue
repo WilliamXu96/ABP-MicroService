@@ -143,7 +143,7 @@
                 @getShortcut="getShortcut"
                 @saveFlow="saveFlow"
               ></flow-area>
-              <!-- <vue-context-menu :contextMenuData="linkContextMenuData" @deleteLink="deleteLink"></vue-context-menu> -->
+              <vue-context-menu :contextMenuData="linkContextMenuData" @deleteLink="deleteLink"></vue-context-menu>
             </div>
           </el-col>
           <el-col :span="7">
@@ -165,6 +165,7 @@
 
 <script>
 import jsplumb from "jsplumb";
+import VueContextMenu from 'vue-contextmenu'
 import {
   tools,
   commonNodes,
@@ -881,7 +882,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "../../../commons/flow/style/flow-designer.scss";
 @import "~@/styles/mixin.scss";
 

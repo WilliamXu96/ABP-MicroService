@@ -284,9 +284,8 @@
               </el-select>
               <el-input size="mini" style="width:90px" v-model="item.content"></el-input>
               <el-button type="danger" icon="el-icon-delete" size="mini" @click="removeRow(index)"></el-button>
-            </div>
-            <el-button type="primary" icon="el-icon-plus" size="mini" @click="addRow">新增</el-button>
-              <el-button type="primary" icon="el-icon-plus" size="mini" @click="tempSave">暂存</el-button>
+            </div><el-button type="primary" icon="el-icon-plus" size="mini" @click="addRow">新增</el-button>
+            
           </el-form-item>
         </el-form>
       </el-tab-pane>
@@ -343,8 +342,7 @@ export default {
         condition:[{value:''}],
         text:[{value:''}]
       },
-      tempFieldForm:[],
-      //fieldForm:[]
+      tempFieldForm:[]
     };
   },
   watch: {
@@ -352,12 +350,12 @@ export default {
       this.currentSelect = val;
       if (this.currentSelect.type == "link") {
         this.activeKey = "link-attr";
-        debugger
+        this.tempFieldForm=[]
         if(this.currentSelect.tempFieldForm){
-          this.tempFieldForm=this.currentSelect.tempFieldForm
+          this.tempFieldForm.push.apply(this.tempFieldForm,this.currentSelect.tempFieldForm)
         }
         else{
-          this.tempFieldForm=[]
+          this.currentSelect.tempFieldForm=[]
         }
       } else if (!this.currentSelect.type) {
         this.activeKey = "flow-attr";
@@ -398,24 +396,15 @@ export default {
     addRow(){
       var row=new Object();
       row.linkId=this.currentSelect.id
-      row.fieldName='name'
-      row.condition='>'
-      row.content='123'
-      debugger
-      if(this.currentSelect.tempFieldForm){
-        this.tempFieldForm=this.currentSelect.tempFieldForm
-        this.tempFieldForm.push(row)
-        this.currentSelect.tempFieldForm.push(row)
-      }
-      else{
-        this.tempFieldForm=[]
-        this.tempFieldForm.push(row)
-        this.currentSelect.tempFieldForm=this.tempFieldForm
-      }
-      console.log(this.currentSelect.tempFieldForm)
+      // row.fieldName='name'
+      // row.condition='>'
+      // row.content=''
+      this.tempFieldForm.push(row)
+      this.currentSelect.tempFieldForm.push(row)
     },
     removeRow(index){
-      this.fieldForm.splice(index,1)
+      this.currentSelect.tempFieldForm.splice(index,1)
+      this.tempFieldForm.splice(index,1)
     },
     tempSave(){
       console.log(this.fieldForm)
