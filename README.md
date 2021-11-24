@@ -3,8 +3,6 @@
 #### 项目简介
 一个基于ABP vNext微服务架构、vue-element-admin的后台管理框架，适用于大型分布式业务系统和企业后台，也可以集成各种小程序、电商后台以及业务中台。
 
-**文档地址： https://xucz.vip:9001/**
-
 **GitHub： https://github.com/WilliamXu96/ABP-MicroService/**
 
 **Gitee： https://gitee.com/Bossxu666/abp-microservice**
@@ -15,10 +13,6 @@
 **快速启动：**
 运行run目录下脚本
 
-**体验地址：https://xucz.vip:8001/**
-**账号密码：** `admin/1q2w3E*`
-
-*服务器为1M带宽，首次加载略有延迟*
 
 #### 主要特性
 - 最新.net core框架，稳定强大

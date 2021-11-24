@@ -2,7 +2,6 @@
 #### Project Description
 A background management framework based on the ABP vNext microservice architecture and vue-element-admin, suitable for large-scale distributed business systems and enterprise backends, and can also integrate various small programs, e-commerce backends and business middle offices.
 
-**Document address: https://xucz.vip:9001/**
 
 **GitHub: https://github.com/WilliamXu96/ABP-MicroService/**
 
@@ -14,8 +13,6 @@ A background management framework based on the ABP vNext microservice architectu
 **Quick Start:**
 Run the script in the run directory
 
-**Experience address: https://xucz.vip:8001/**
-**Account Password: ** `admin/1q2w3E*`
 
 *The server has 1M bandwidth, and the first load is slightly delayed*
 
