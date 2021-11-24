@@ -27,7 +27,7 @@ namespace Business
                 options.Resources
                     .Add<BusinessResource>("zh-Hans")
                     .AddBaseTypes(typeof(AbpValidationResource))
-                    .AddVirtualJson("/Localization/BaseService");
+                    .AddVirtualJson("/Localization/Business");
             });
         }
     }
