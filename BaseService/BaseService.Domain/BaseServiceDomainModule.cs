@@ -16,7 +16,7 @@ namespace BaseService
         {
             Configure<AbpVirtualFileSystemOptions>(options =>
             {
-                options.FileSets.AddEmbedded<BaseServiceDomainModule>();
+                options.FileSets.AddEmbedded<BaseServiceDomainModule>("BaseService");
             });
 
             Configure<AbpLocalizationOptions>(options =>
@@ -25,8 +25,6 @@ namespace BaseService
                     .Add<BaseServiceResource>("zh-Hans")
                     .AddBaseTypes(typeof(AbpValidationResource))
                     .AddVirtualJson("/Localization/BaseService");
-
-                options.DefaultResourceType = typeof(BaseServiceResource);
             });
         }
     }

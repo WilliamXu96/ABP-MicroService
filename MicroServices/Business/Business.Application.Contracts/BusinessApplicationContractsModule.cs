@@ -19,7 +19,7 @@ namespace Business
         {
             Configure<AbpVirtualFileSystemOptions>(options =>
             {
-                options.FileSets.AddEmbedded<BusinessApplicationContractsModule>();
+                options.FileSets.AddEmbedded<BusinessApplicationContractsModule>("Business");
             });
 
             Configure<AbpLocalizationOptions>(options =>
@@ -27,9 +27,7 @@ namespace Business
                 options.Resources
                     .Add<BusinessResource>("zh-Hans")
                     .AddBaseTypes(typeof(AbpValidationResource))
-                    .AddVirtualJson("/Localization/Business");
-
-                options.DefaultResourceType = typeof(BusinessResource);
+                    .AddVirtualJson("/Localization/BaseService");
             });
         }
     }
