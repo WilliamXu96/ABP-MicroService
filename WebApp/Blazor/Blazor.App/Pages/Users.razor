@@ -1,0 +1,33 @@
+﻿@page "/users"
+@attribute [Authorize]
+
+@if (Items == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table" IsStriped="true">
+        <thead>
+            <tr>
+                <th>用户名</th>
+                <th>姓名</th>
+                <th>邮箱</th>
+                <th>电话</th>
+                <th>创建时间</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in Items)
+            {
+            <tr>
+                <td>@book.UserName</td>
+                <td>@book.Name</td>
+                <td>@book.Email</td>
+                <td>@book.PhoneNumber</td>
+                <td>@book.CreationTime</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}

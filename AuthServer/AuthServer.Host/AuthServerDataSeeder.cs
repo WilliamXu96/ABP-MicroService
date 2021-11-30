@@ -142,9 +142,9 @@ namespace AuthServer.Host
                     grantTypes: new[] { "authorization_code" },
                     secret: null,
                     requireClientSecret: false,
-                    redirectUri: $"https://localhost:44307/authentication/login-callback",
-                    postLogoutRedirectUri: $"https://localhost:44307/authentication/logout-callback",
-                    corsOrigins: new[] { "https://localhost:44307" }
+                    redirectUri: $"http://localhost:44307/authentication/login-callback",
+                    postLogoutRedirectUri: $"http://localhost:44307/authentication/logout-callback",
+                    corsOrigins: new[] { "http://localhost:44307" }
                 );
 
             await CreateClientAsync(

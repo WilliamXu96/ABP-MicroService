@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +21,23 @@ namespace Blazor.App.Web
 
             builder.RootComponents.Add<App>("app");
 
-            builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            //builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri("http://localhost:55389") });
+
+            builder.Services.AddHttpClient("companiesAPI", cl =>
+            {
+                cl.BaseAddress = new Uri("http://localhost:55389");
+            })
+            .AddHttpMessageHandler(sp =>
+            {
+                var handler = sp.GetService<AuthorizationMessageHandler>()
+                .ConfigureHandler(
+                    authorizedUrls: new[] { "http://localhost:55389" },
+                    scopes: new[] { "BaseService" }
+                 );
+                return handler;
+            });
+            builder.Services.AddScoped(
+                sp => sp.GetService<IHttpClientFactory>().CreateClient("companiesAPI"));
 
             // 增加 BootstrapBlazor 组件
             builder.Services.AddBootstrapBlazor();

@@ -51,7 +51,8 @@ namespace Blazor.App.Shared
             {
                 new MenuItem() { Text = "Index", Icon = "fa fa-fw fa-fa", Url = "" },
                 new MenuItem() { Text = "Counter", Icon = "fa fa-fw fa-check-square-o", Url = "counter" },
-                new MenuItem() { Text = "Claims", Icon = "fa fa-fw fa-database", Url = "claims" }
+                new MenuItem() { Text = "Claims", Icon = "fa fa-fw fa-database", Url = "claims" },
+                new MenuItem() { Text = "用户管理", Icon = "fa fa-fw fa-database", Url = "users" },
             };
 
             return menus;
