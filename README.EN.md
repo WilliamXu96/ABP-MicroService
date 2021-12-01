@@ -17,27 +17,28 @@ Run the script in the run directory
 *The server has 1M bandwidth, and the first load is slightly delayed*
 
 #### Main Features
--The latest .net core framework, stable and powerful
--Based on abp vNext, vue-element-admin, mature development community
--Microservice architecture design, DDD practice
--Unified authorization, identity, and authority management to simplify the development of microservices
--Multi-tenancy
--Containerization, ci/cd integration
+- The latest .net core framework, stable and powerful
+- Based on abp vNext, vue-element-admin, mature development community
+- Microservice architecture design, DDD practice
+- Unified authorization, identity, and authority management to simplify the development of microservices
+- Multi-tenancy
+- Containerization, ci/cd integration
+- Form design, code generation, workflow
 #### System functions
--Tenant management
-- User Management
--Role management
+- Tenant management
+- User management
+- Role management
 - organization
--Dictionary management
--Job management
--Operation log
--Form management
--Background job
--Storage management
--Code generation
+- Dictionary management
+- Job management
+- Operation log
+- Form management
+- Background job
+- Storage management
+- Code generation
 #### TODO:
--Process management
-- data permission
+- Process management
+- Data permission
 #### System Preview
 <table>
     <tr>
