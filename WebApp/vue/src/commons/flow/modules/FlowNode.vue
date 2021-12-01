@@ -52,7 +52,7 @@
     @click.stop="selectNode"
     @contextmenu.stop="showNodeContextMenu"
   >
-<svg-icon icon-class="sign" />
+<svg-icon icon-class="task-filling" />
   {{ node.nodeName }}</div>
 
     <div
@@ -67,7 +67,7 @@
     @click.stop="selectNode"
     @contextmenu.stop="showNodeContextMenu"
   >
-<svg-icon icon-class="sign1" />
+<svg-icon icon-class="task-filling" />
   {{ node.nodeName }}</div>
 
   <div

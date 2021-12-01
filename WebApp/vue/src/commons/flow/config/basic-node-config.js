@@ -25,12 +25,12 @@ export const commonNodes = [
   {
     type: 'start',
     nodeName: '开始',
-    icon: 'StartIcon'
+    icon: ''
   },
   {
     type: 'end',
     nodeName: '结束',
-    icon: 'EndIcon'
+    icon: ''
   },
   {
     type: 'task',
@@ -45,6 +45,16 @@ export const commonNodes = [
   {
     type: 'checkinEnd',
     nodeName: '签到结束',
+    icon: ''
+  },
+  {
+    type: 'judge', 
+    nodeName: '判断',
+    icon: ''
+  },
+  {
+    type: 'status',
+    nodeName: '状态',
     icon: ''
   },
   // {

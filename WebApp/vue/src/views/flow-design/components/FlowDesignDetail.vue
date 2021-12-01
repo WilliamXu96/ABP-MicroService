@@ -83,13 +83,13 @@
                 <el-row :gutter="8">
                   <el-col :span="12">
                     <div class="node-item" :type="field.commonNodes[2].type" belongto="commonNodes">
-                      <svg-icon icon-class="task" />
+                      <svg-icon icon-class="set" />
                       {{ field.commonNodes[2].nodeName }}
                     </div>
                   </el-col>
                   <el-col :span="12">
                     <div class="node-item" :type="field.commonNodes[3].type" belongto="commonNodes">
-                      <svg-icon icon-class="sign" />
+                      <svg-icon icon-class="task-filling" />
                       {{ field.commonNodes[3].nodeName }}
                     </div>
                   </el-col>
@@ -97,8 +97,22 @@
                 <el-row :gutter="8">
                   <el-col :span="12">
                     <div class="node-item" :type="field.commonNodes[4].type" belongto="commonNodes">
-                      <svg-icon icon-class="sign1" />
+                      <svg-icon icon-class="task-filling" />
                       {{ field.commonNodes[4].nodeName }}
+                    </div>
+                  </el-col>
+                  <el-col :span="12">
+                    <div class="node-item" :type="field.commonNodes[5].type" belongto="commonNodes">
+                      <svg-icon icon-class="equals" />
+                      {{ field.commonNodes[5].nodeName }}
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row :gutter="8">
+                  <el-col :span="12">
+                    <div class="node-item" :type="field.commonNodes[6].type" belongto="commonNodes">
+                      <svg-icon icon-class="status-success" />
+                      {{ field.commonNodes[6].nodeName }}
                     </div>
                   </el-col>
                 </el-row>
@@ -108,13 +122,13 @@
                 <el-row :gutter="8">
                   <el-col :span="12">
                     <div class="node-item" :type="field.laneNodes[0].type" belongto="laneNodes">
-                      <svg-icon icon-class="transverse" />
+                      <svg-icon icon-class="m-lane" />
                       {{ field.laneNodes[0].nodeName }}
                     </div>
                   </el-col>
                   <el-col :span="12">
                     <div class="node-item" :type="field.laneNodes[1].type" belongto="laneNodes">
-                      <svg-icon icon-class="vertical" />
+                      <svg-icon icon-class="m-lane1" />
                       {{ field.laneNodes[1].nodeName }}
                     </div>
                   </el-col>
@@ -173,18 +187,6 @@ import {
   laneNodes
 } from "../../../commons/flow/config/basic-node-config.js";
 import { flowConfig } from "../../../commons/flow/config/args-config.js";
-import {
-  startSvg,
-  endSvg,
-  commonSvg,
-  freedomSvg,
-  gatewaySvg,
-  eventSvg,
-  childFlowSvg,
-  xLaneSvg,
-  yLaneSvg,
-  lanePoolSvg
-} from "../../../commons/flow/config/basic-icon-config.js";
 import $ from "jquery";
 import "jquery-ui/ui/widgets/draggable";
 import "jquery-ui/ui/widgets/droppable";
@@ -219,17 +221,7 @@ export default {
     SettingModal,
     ShortcutModal,
     UsingDocModal,
-    TestModal,
-    StartIcon: { template: startSvg },
-    EndIcon: { template: endSvg },
-    CommonIcon: { template: commonSvg },
-    FreedomIcon: { template: freedomSvg },
-    GatewayIcon: { template: gatewaySvg },
-    EventIcon: { template: eventSvg },
-    ChildFlowIcon: { template: childFlowSvg },
-    XLaneIcon: { template: xLaneSvg },
-    YLaneIcon: { template: yLaneSvg },
-    LanePoolIcon: { template: lanePoolSvg }
+    TestModal
   },
   mounted() {
     const self = this;
