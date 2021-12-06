@@ -9,6 +9,9 @@
     <Authors>XCZ</Authors>
     <Description>Business服务HttpApi远程依赖</Description>
     <RepositoryUrl>https://github.com/WilliamXu96/ABP-MicroService</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/WilliamXu96/ABP-MicroService</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>

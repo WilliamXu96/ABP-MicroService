@@ -5,11 +5,14 @@
     <RootNamespace>Business</RootNamespace>
     <Version>1.4</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Authors>WilliamXu</Authors>
-    <Company>WilliamXu</Company>
-    <Product>ABC</Product>
+    <Authors>XCZ</Authors>
+    <Company>XCZ</Company>
+    <Product></Product>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageId>XCZ.Business.Domain</PackageId>
+    <PackageProjectUrl>https://github.com/WilliamXu96/ABP-MicroService</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/WilliamXu96/ABP-MicroService</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>
