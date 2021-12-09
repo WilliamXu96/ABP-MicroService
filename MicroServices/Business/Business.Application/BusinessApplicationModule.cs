@@ -14,6 +14,7 @@ namespace Business
         typeof(AbpHttpClientIdentityModelModule),
         typeof(AbpIdentityHttpApiClientModule),
         typeof(FormApplicationModule),
+        typeof(FlowApplicationModule),
         typeof(AbpAutoMapperModule),
         typeof(AbpBackgroundJobsHangfireModule)
     )]

@@ -18,6 +18,7 @@ namespace Business.EntityFrameworkCore
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ConfigureForm();
+            modelBuilder.ConfigureFlow();
             modelBuilder.ConfigureBusiness();
         }
     }

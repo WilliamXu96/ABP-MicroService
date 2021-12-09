@@ -11,6 +11,7 @@ namespace Business
     [DependsOn(
         typeof(BusinessApplicationContractsModule),
         typeof(FormHttpApiModule),
+        typeof(FlowHttpApiModule),
         typeof(AbpAspNetCoreMvcModule)
     )]
     public class BusinessHttpApiModule : AbpModule

@@ -16,7 +16,8 @@ namespace Business.EntityFrameworkCore
         typeof(AbpSettingManagementEntityFrameworkCoreModule),
         typeof(AbpAuditLoggingEntityFrameworkCoreModule),
         typeof(AbpTenantManagementEntityFrameworkCoreModule),
-        typeof(FormEntityFrameworkCoreModule)
+        typeof(FormEntityFrameworkCoreModule),
+        typeof(FlowEntityFrameworkCoreModule)
     )]
     public class BusinessEntityFrameworkCoreModule : AbpModule
     {

@@ -5,7 +5,7 @@
         <el-input
           v-model="listQuery.Filter"
           placeholder="搜索..."
-          style="width: 200px;"
+          style="width: 200px"
           size="small"
           class="filter-item"
           @keyup.enter.native="handleFilter"
@@ -16,67 +16,93 @@
           type="primary"
           icon="el-icon-search"
           @click="handleFilter"
-        >搜索</el-button>
+          >搜索</el-button
+        >
       </div>
       <div class="filter-right">
         <router-link :to="'/tool/flowCreate/'">
           <el-button
             size="mini"
             class="filter-item"
-            style="margin-left: 10px;"
+            style="margin-left: 10px"
             type="primary"
             icon="el-icon-plus"
-          >添加</el-button>
+            >添加</el-button
+          >
         </router-link>
         <el-button
           size="mini"
           class="filter-item"
-          style="margin-left: 10px;"
+          style="margin-left: 10px"
           type="success"
           icon="el-icon-edit"
           @click="handleUpdate()"
-        >编辑</el-button>
+          >编辑</el-button
+        >
         <el-button
           size="mini"
           class="filter-item"
           type="danger"
           icon="el-icon-delete"
-          style="margin-left: 10px;"
+          style="margin-left: 10px"
           @click="handleDelete()"
-        >删除</el-button>
+          >删除</el-button
+        >
       </div>
     </div>
     <el-table
       ref="multipleTable"
       v-loading="listLoading"
       :data="list"
-      border
-      style="width: 100%;"
-      height="500"
+      size="small"
+      style="width: 90%"
       @sort-change="sortChange"
       @selection-change="handleSelectionChange"
       @row-click="handleRowClick"
     >
-      <el-table-column type="selection" width="40px" />
-      <el-table-column label="编号" prop="Code" sortable="custom" align="center" width="150px">
-        <template slot-scope="scope">
-          <span>{{ scope.row.code }}</span>
+      <el-table-column type="selection" width="44px"></el-table-column>
+      <el-table-column
+        label="流程编号"
+        prop="code"
+        sortable="custom"
+        align="center"
+        width="150px"
+      >
+        <template slot-scope="{ row }">
+          <span class="link-type" @click="handleUpdate(row)">{{
+            row.formName
+          }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="名称" prop="Name" sortable="custom" align="center" width="150px">
-        <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.name }}</span>
+      <el-table-column label="流程标题" prop="title" align="center" />
+      <el-table-column label="关联表单" prop="formId" align="center" />
+      <el-table-column label="启用日期" sortable="custom" prop="useDate" align="center" />
+      <el-table-column label="级别" sortable="custom" prop="level" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.level | displayStatus }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center" width="200px">
-        <template slot-scope="scope">
-          <span>{{ scope.row.notes }}</span>
+      <el-table-column label="操作" align="center">
+        <template slot-scope="{ row }">
+          <el-button
+            type="primary"
+            size="mini"
+            @click="handleUpdate(row)"
+            icon="el-icon-edit"
+          />
+          <el-button
+            type="danger"
+            size="mini"
+            @click="handleDelete(row)"
+            v-permission="['BaseService.Job.Delete']"
+            icon="el-icon-delete"
+          />
         </template>
       </el-table-column>
     </el-table>
 
     <pagination
-      v-show="totalCount>0"
+      v-show="totalCount > 0"
       :total="totalCount"
       :page.sync="page"
       :limit.sync="listQuery.MaxResultCount"
@@ -103,17 +129,28 @@ export default {
         Filter: "",
         Sorting: "",
         SkipCount: 0,
-        MaxResultCount: 20
+        MaxResultCount: 20,
       },
       page: 1,
-      multipleSelection: []
+      multipleSelection: [],
     };
   },
   created() {
     this.getList();
   },
   methods: {
-    getList() {},
+    getList() {
+      this.listLoading = true;
+      this.listQuery.SkipCount =
+        (this.page - 1) * this.listQuery.MaxResultCount;
+      this.$axios
+        .gets("/api/business/flow", this.listQuery)
+        .then((response) => {
+          this.list = response.items;
+          this.totalCount = response.totalCount;
+          this.listLoading = false;
+        });
+    },
     handleFilter() {
       this.page = 1;
       this.getList();
@@ -125,12 +162,12 @@ export default {
         if (this.multipleSelection.length != 1) {
           this.$message({
             message: "编辑必须选择单行",
-            type: "warning"
+            type: "warning",
           });
           return;
         } else {
           this.$router.push({
-            path: "/tool/flowEdit/" + this.multipleSelection[0].id
+            path: "/tool/flowEdit/" + this.multipleSelection[0].id,
           });
         }
       }
@@ -139,29 +176,29 @@ export default {
       if (this.multipleSelection.length < 1) {
         this.$message({
           message: "删除至少选择一行数据",
-          type: "warning"
+          type: "warning",
         });
         return;
       } else {
         this.$confirm("是否删除?", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
-          type: "warning"
+          type: "warning",
         })
           .then(() => {
             var params = [];
-            this.multipleSelection.forEach(element => {
+            this.multipleSelection.forEach((element) => {
               const id = element.id;
               params.push(id);
             });
             this.$axios
               .posts("/api/basicData/material/delete", params)
-              .then(response => {
+              .then((response) => {
                 this.$notify({
                   title: "成功",
                   message: "删除成功",
                   type: "success",
-                  duration: 2000
+                  duration: 2000,
                 });
                 this.getList();
               });
@@ -169,7 +206,7 @@ export default {
           .catch(() => {
             this.$message({
               type: "info",
-              message: "已取消删除"
+              message: "已取消删除",
             });
           });
       }
@@ -189,7 +226,7 @@ export default {
     handleRowClick(row, column, event) {
       this.$refs.multipleTable.clearSelection();
       this.$refs.multipleTable.toggleRowSelection(row);
-    }
-  }
+    },
+  },
 };
 </script>
