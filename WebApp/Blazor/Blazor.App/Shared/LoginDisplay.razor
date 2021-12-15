@@ -6,12 +6,12 @@
 
 <AuthorizeView>
     <Authorized>
-        <a href="authentication/profile">Hello, @context.User.Identity!.Name!</a>
-        <button class="nav-link btn btn-link" @onclick="BeginSignOut">Log out</button>
+        <a href="authentication/profile" style="color:aliceblue">你好, @context.User.Identity!.Name!</a>
+        <button class="nav-link btn btn-link" style="color:aliceblue" @onclick="BeginSignOut">退出登录</button>
     </Authorized>
     <NotAuthorized>
-        <a href="authentication/register">Register</a>
-        <a href="authentication/login">Log in</a>
+        @*<a href="authentication/register" style="color:aliceblue">注册</a>*@
+        <a href="authentication/login" style="color:aliceblue">登录</a>
     </NotAuthorized>
 </AuthorizeView>
 

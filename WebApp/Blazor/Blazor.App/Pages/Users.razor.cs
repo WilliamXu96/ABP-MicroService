@@ -26,8 +26,66 @@ namespace Blazor.App.Pages
             await base.OnInitializedAsync();
             var result = await Http.GetFromJsonAsync<PagedResultDto<UserDto>>("/api/base/user");
             Items = result.Items;
+            //Items = new List<UserDto>()
+            //{
+            //    new UserDto
+            //    {
+            //        UserName="Aa",
+            //        Name="a",
+            //        Email="aa@aa.ca",
+            //        PhoneNumber="123",
+            //        CreationTime=DateTime.Now
+            //    }
+            //};
             //var content = JsonContent.Create(new BookDto());
             //var a = await Http.PostAsync("", content);
+        }
+
+        private static Task<UserDto> OnAddAsync() => Task.FromResult(new UserDto());
+
+        private Task<bool> OnSaveAsync(UserDto item, ItemChangedType changedType)
+        {
+            // 增加数据演示代码
+            //if (changedType == ItemChangedType.Add)
+            //{
+            //    item.Id = Items.Max(i => i.Id) + 1;
+            //    Items.Add(item);
+            //}
+            //else
+            //{
+            //    var oldItem = Items.FirstOrDefault(i => i.Id == item.Id);
+            //    if (oldItem != null)
+            //    {
+            //        oldItem.Name = item.Name;
+            //        oldItem.Address = item.Address;
+            //        oldItem.DateTime = item.DateTime;
+            //        oldItem.Count = item.Count;
+            //        oldItem.Complete = item.Complete;
+            //        oldItem.Education = item.Education;
+            //    }
+            //}
+            return Task.FromResult(true);
+        }
+
+        private async Task<QueryData<UserDto>> OnQueryAsync(QueryPageOptions options)
+        {
+            var result = await Http.GetFromJsonAsync<PagedResultDto<UserDto>>("/api/base/user");
+            var items = result.Items;
+
+            // 设置记录总数
+            var total = result.TotalCount;
+
+            // 内存分页
+            //items = items.Skip((options.PageIndex - 1) * options.PageItems).Take(options.PageItems).ToList();
+
+            return new QueryData<UserDto>()
+            {
+                Items = items,
+                TotalCount = total,
+                IsSorted = true,
+                IsFiltered = true,
+                IsSearch = true
+            };
         }
     }
     public class UserDto

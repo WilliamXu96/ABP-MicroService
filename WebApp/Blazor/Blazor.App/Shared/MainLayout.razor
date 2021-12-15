@@ -8,12 +8,9 @@
     </NotAuthorized>*@
     <Header>
         <span class="ml-3 flex-sm-fill d-none d-sm-block">Bootstrap of Blazor</span>
-        <Widget></Widget>
-        <a href="home.html" class="mr-3" style="color: #fff;">登录 home</a>
-        <a href="https://admin.blazor.zone" class="mr-3" style="color: #fff;">登录 BA</a>
-        <LoginDisplay />
+        @*<Widget></Widget>*@
         <img src="_content/Blazor.App/images/Argo.png" class="layout-avatar-right" />
-        <span class="mx-3 d-none d-sm-block">超级管理员</span>
+        <LoginDisplay />
         <div class="layout-drawer" @onclick="@(e => IsOpen = !IsOpen)"><i class="fa fa-gears"></i></div>
     </Header>
     <Side>
@@ -38,7 +35,7 @@
     </Main>
     <Footer>
         <div class="text-center flex-fill">
-            <a class="page-layout-demo-footer-link" href="https://gitee.com/LongbowEnterprise/BootstrapAdmin" target="_blank">Bootstrap Admin</a>
+            <a class="page-layout-demo-footer-link" href="https://github.com/WilliamXu96/ABP-MicroService" target="_blank">ABP-Admin</a>
         </div>
     </Footer>
 </Layout>

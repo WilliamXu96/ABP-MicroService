@@ -49,10 +49,10 @@ namespace Blazor.App.Shared
         {
             var menus = new List<MenuItem>
             {
-                new MenuItem() { Text = "Index", Icon = "fa fa-fw fa-fa", Url = "" },
+                new MenuItem() { Text = "首页", Icon = "fa fa-fw fa-fa", Url = "" },
                 new MenuItem() { Text = "Counter", Icon = "fa fa-fw fa-check-square-o", Url = "counter" },
                 new MenuItem() { Text = "Claims", Icon = "fa fa-fw fa-database", Url = "claims" },
-                new MenuItem() { Text = "用户管理", Icon = "fa fa-fw fa-database", Url = "users" },
+                new MenuItem() { Text = "用户管理", Icon = "fa fa-user", Url = "users" },
             };
 
             return menus;

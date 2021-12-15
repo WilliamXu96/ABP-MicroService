@@ -1,33 +1,31 @@
 ﻿@page "/users"
 @attribute [Authorize]
 
-@if (Items == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table" IsStriped="true">
-        <thead>
-            <tr>
-                <th>用户名</th>
-                <th>姓名</th>
-                <th>邮箱</th>
-                <th>电话</th>
-                <th>创建时间</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var book in Items)
-            {
-            <tr>
-                <td>@book.UserName</td>
-                <td>@book.Name</td>
-                <td>@book.Email</td>
-                <td>@book.PhoneNumber</td>
-                <td>@book.CreationTime</td>
-            </tr>
-            }
-        </tbody>
-    </table>
-}
+<Table TItem="UserDto" Items="@Items" HeaderStyle="TableHeaderStyle.Light" IsBordered="true" IsMultipleSelect="true"
+       ClickToSelect="true" ShowToolbar="true" OnAddAsync="@OnAddAsync" OnSaveAsync="@OnSaveAsync">
+    <TableColumns>
+        <TableColumn @bind-Field="@context.UserName" Width="180" />
+        <TableColumn @bind-Field="@context.Name" />
+        <TableColumn @bind-Field="@context.Email" />
+    </TableColumns>
+    <EditTemplate>
+        <div class="row g-3">
+            <div class="col-12 col-sm-6">
+                <BootstrapInput @bind-Value="@context.UserName" placeholder="不可为空，50字以内" maxlength="50">
+                </BootstrapInput>
+            </div>
+            <div class="col-12 col-sm-6">
+                <BootstrapInput @bind-Value="@context.Name" placeholder="不可为空，50字以内" maxlength="50">
+                </BootstrapInput>
+            </div>
+            <div class="col-12 col-sm-6">
+                <BootstrapInput @bind-Value="@context.Email" placeholder="不可为空，50字以内" maxlength="50">
+                </BootstrapInput>
+            </div>
+            <div class="col-12 col-sm-6">
+                <DateTimePicker @bind-Value="@context.CreationTime">
+                </DateTimePicker>
+            </div>
+        </div>
+    </EditTemplate>
+</Table>
