@@ -2,7 +2,7 @@
 @attribute [Authorize]
 
 <Table TItem="UserDto" Items="@Items" HeaderStyle="TableHeaderStyle.Light" IsBordered="true" IsMultipleSelect="true"
-       ClickToSelect="true" ShowToolbar="true" OnAddAsync="@OnAddAsync" OnSaveAsync="@OnSaveAsync">
+       ClickToSelect="true" ShowToolbar="true" OnQueryAsync="@OnQueryAsync" OnAddAsync="@OnAddAsync" OnSaveAsync="@OnSaveAsync">
     <TableColumns>
         <TableColumn @bind-Field="@context.UserName" Width="180" />
         <TableColumn @bind-Field="@context.Name" />

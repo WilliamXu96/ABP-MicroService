@@ -92,10 +92,10 @@ namespace AuthServer.Host
 
             context.Services.AddSameSiteCookiePolicy();
 
-            context.Services.AddStackExchangeRedisCache(options =>
-            {
-                options.Configuration = configuration["Redis:Configuration"];
-            });
+            //context.Services.AddStackExchangeRedisCache(options =>
+            //{
+            //    options.Configuration = configuration["Redis:Configuration"];
+            //});
 
             Configure<AbpAuditingOptions>(options =>
             {
@@ -104,9 +104,9 @@ namespace AuthServer.Host
             });
 
             //TODO: ConnectionMultiplexer.Connect call has problem since redis may not be ready when this service has started!
-            var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]);
-            context.Services.AddDataProtection()
-                .PersistKeysToStackExchangeRedis(redis, "MsDemo-DataProtection-Keys");
+            //var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]);
+            //context.Services.AddDataProtection()
+            //    .PersistKeysToStackExchangeRedis(redis, "MsDemo-DataProtection-Keys");
         }
 
         public override void OnApplicationInitialization(ApplicationInitializationContext context)

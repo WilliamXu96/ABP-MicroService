@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -17,7 +18,8 @@ namespace Blazor.App.Pages
         [Inject]
         private HttpClient Http { get; set; }
 
-        private List<UserDto>? Items;
+        [NotNull]
+        private List<UserDto>? Items { get; set; }
 
         private static IEnumerable<int> PageItemsSource => new int[] { 4, 10, 20 };
 
@@ -48,7 +50,8 @@ namespace Blazor.App.Pages
             // 增加数据演示代码
             if (changedType == ItemChangedType.Add)
             {
-                System.Console.WriteLine(item);
+                //System.Console.WriteLine(JsonSerializer.Serialize(item));
+                Items.Add(item);
             }
             else
             {
@@ -89,10 +92,12 @@ namespace Blazor.App.Pages
     }
     public class UserDto
     {
+        [Required(ErrorMessage ="{0}不能为空")]
         [Display(Name = "用户名")]
         [AutoGenerateColumn(Ignore = true)]
         public string UserName { get; set; }
 
+        [Required(ErrorMessage = "{0}姓名")]
         [Display(Name = "姓名")]
         [AutoGenerateColumn(Ignore = true)]
         public string Name { get; set; }

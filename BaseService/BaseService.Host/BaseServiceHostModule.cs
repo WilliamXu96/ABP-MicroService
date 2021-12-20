@@ -101,10 +101,10 @@ namespace BaseService
                 options.UseSqlServer();
             });
 
-            context.Services.AddStackExchangeRedisCache(options =>
-            {
-                options.Configuration = configuration["Redis:Configuration"];
-            });
+            //context.Services.AddStackExchangeRedisCache(options =>
+            //{
+            //    options.Configuration = configuration["Redis:Configuration"];
+            //});
 
             Configure<AbpAuditingOptions>(options =>
             {
@@ -131,9 +131,9 @@ namespace BaseService
                 });
             });
 
-            var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]);
-            context.Services.AddDataProtection()
-                .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
+            //var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]);
+            //context.Services.AddDataProtection()
+            //    .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
 
             Configure<AbpLocalizationOptions>(options =>
             {
