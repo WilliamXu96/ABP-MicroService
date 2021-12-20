@@ -46,24 +46,23 @@ namespace Blazor.App.Pages
         private Task<bool> OnSaveAsync(UserDto item, ItemChangedType changedType)
         {
             // 增加数据演示代码
-            //if (changedType == ItemChangedType.Add)
-            //{
-            //    item.Id = Items.Max(i => i.Id) + 1;
-            //    Items.Add(item);
-            //}
-            //else
-            //{
-            //    var oldItem = Items.FirstOrDefault(i => i.Id == item.Id);
-            //    if (oldItem != null)
-            //    {
-            //        oldItem.Name = item.Name;
-            //        oldItem.Address = item.Address;
-            //        oldItem.DateTime = item.DateTime;
-            //        oldItem.Count = item.Count;
-            //        oldItem.Complete = item.Complete;
-            //        oldItem.Education = item.Education;
-            //    }
-            //}
+            if (changedType == ItemChangedType.Add)
+            {
+                System.Console.WriteLine(item);
+            }
+            else
+            {
+                //var oldItem = Items.FirstOrDefault(i => i.Id == item.Id);
+                //if (oldItem != null)
+                //{
+                //    oldItem.Name = item.Name;
+                //    oldItem.Address = item.Address;
+                //    oldItem.DateTime = item.DateTime;
+                //    oldItem.Count = item.Count;
+                //    oldItem.Complete = item.Complete;
+                //    oldItem.Education = item.Education;
+                //}
+            }
             return Task.FromResult(true);
         }
 
