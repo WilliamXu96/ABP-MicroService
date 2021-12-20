@@ -67,3 +67,5 @@ Run the script in the run directory
 
 #### Feedback
 -QQ exchange group: 1083795392
+- bilibili：https://space.bilibili.com/702776220/channel/seriesdetail?sid=604812
+- YouTube：https://www.youtube.com/channel/UCtNrN0qggUFLv-fPcaKh7nw/featured

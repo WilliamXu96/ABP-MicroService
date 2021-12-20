@@ -68,3 +68,5 @@
 
 #### 反馈交流
 - QQ交流群：1083795392
+- B站：https://space.bilibili.com/702776220/channel/seriesdetail?sid=604812
+- YouTube：https://www.youtube.com/channel/UCtNrN0qggUFLv-fPcaKh7nw/featured
