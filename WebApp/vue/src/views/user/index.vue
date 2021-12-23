@@ -100,8 +100,16 @@
         <el-form-item label="邮箱" prop="email">
           <el-input v-model="form.email" style="width: 184px;" />
         </el-form-item>
-        <el-form-item label="密码" prop="password">
+        <el-form-item label="密码" prop="password" v-if="!isEdit">
           <el-input type="password" v-model="form.password" style="width: 184px;" />
+        </el-form-item>
+        <el-form-item label="密码" prop="pwd" v-if="isEdit">
+          <el-input
+            type="password"
+            v-model="form.password"
+            style="width: 184px"
+            placeholder="如果为空则不修改密码"
+          />
         </el-form-item>
         <el-form-item label="角色" prop="roles">
           <el-select v-model="checkedRole" multiple style="width: 188px" placeholder="请选择">

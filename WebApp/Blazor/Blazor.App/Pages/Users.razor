@@ -2,8 +2,10 @@
 @attribute [Authorize]
 
 <Table TItem="UserDto" Items="@Items" HeaderStyle="TableHeaderStyle.Light" IsBordered="true" IsMultipleSelect="true"
-       ClickToSelect="true" ShowToolbar="true" OnQueryAsync="@OnQueryAsync" OnAddAsync="@OnAddAsync" OnSaveAsync="@OnSaveAsync">
+       ClickToSelect="true" ShowToolbar="true" ShowEditButton="false" OnQueryAsync="@OnQueryAsync" OnAddAsync="@OnAddAsync" 
+       OnSaveAsync="@OnSaveAsync" OnDeleteAsync="@OnDeleteAsync"  ShowExtendButtons="true">
     <TableColumns>
+        <TableColumn @bind-Field="@context.Id" Width="180" />
         <TableColumn @bind-Field="@context.UserName" Width="180" />
         <TableColumn @bind-Field="@context.Name" />
         <TableColumn @bind-Field="@context.Email" />
@@ -20,6 +22,10 @@
             </div>
             <div class="col-12 col-sm-6">
                 <BootstrapInput @bind-Value="@context.Email" placeholder="不可为空，50字以内" maxlength="50">
+                </BootstrapInput>
+            </div>
+            <div class="col-12 col-sm-6">
+                <BootstrapInput @bind-Value="@context.Password" placeholder="不可为空，50字以内" maxlength="50">
                 </BootstrapInput>
             </div>
             <div class="col-12 col-sm-6">

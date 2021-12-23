@@ -1,10 +1,12 @@
-﻿using Blazor.App.Dtos;
+﻿using Blazor.App.Common;
+using Blazor.App.Dtos;
 using BootstrapBlazor.Components;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -45,13 +47,13 @@ namespace Blazor.App.Pages
 
         private static Task<UserDto> OnAddAsync() => Task.FromResult(new UserDto());
 
-        private Task<bool> OnSaveAsync(UserDto item, ItemChangedType changedType)
+        private async Task<bool> OnSaveAsync(UserDto item, ItemChangedType changedType)
         {
-            // 增加数据演示代码
             if (changedType == ItemChangedType.Add)
             {
-                //System.Console.WriteLine(JsonSerializer.Serialize(item));
-                Items.Add(item);
+                var response = await Http.PostAsJsonAsync("/api/base/user", item);
+                //var result = await response.Content.ReadFromJsonAsync<UserDto>();
+                //System.Console.WriteLine(JsonSerializer.Serialize(result));
             }
             else
             {
@@ -66,7 +68,8 @@ namespace Blazor.App.Pages
                 //    oldItem.Education = item.Education;
                 //}
             }
-            return Task.FromResult(true);
+            return false;
+
         }
 
         private async Task<QueryData<UserDto>> OnQueryAsync(QueryPageOptions options)
@@ -89,10 +92,21 @@ namespace Blazor.App.Pages
                 IsSearch = true
             };
         }
+
+        private async Task<bool> OnDeleteAsync(IEnumerable<UserDto> items)
+        {
+            var result = await Http.DeleteAsync("/api/identity/users/" + items.First().Id);
+            return true;
+        }
     }
+
     public class UserDto
     {
-        [Required(ErrorMessage ="{0}不能为空")]
+        [Display(Name = "Id")]
+        [AutoGenerateColumn(Ignore = true)]
+        public Guid Id { get; set; }
+
+        [Required(ErrorMessage = "{0}不能为空")]
         [Display(Name = "用户名")]
         [AutoGenerateColumn(Ignore = true)]
         public string UserName { get; set; }
@@ -102,9 +116,25 @@ namespace Blazor.App.Pages
         [AutoGenerateColumn(Ignore = true)]
         public string Name { get; set; }
 
+        //public string Surname { get; set; }
+
         [Display(Name = "邮箱")]
         [AutoGenerateColumn(Ignore = true)]
         public string Email { get; set; }
+
+        [Display(Name = "允许锁定")]
+        [AutoGenerateColumn(Ignore = true)]
+        public bool LockoutEnabled { get; set; }
+
+        public List<string> RoleNames { get; set; }
+
+        [Display(Name = "密码")]
+        [AutoGenerateColumn(Ignore = true)]
+        public string Password { get; set; }
+
+        public List<Guid> OrganizationIds { get; set; } = new List<Guid>();
+
+        public List<Guid> JobIds { get; set; } = new List<Guid>();
 
         [Display(Name = "电话")]
         [AutoGenerateColumn(Ignore = true)]
