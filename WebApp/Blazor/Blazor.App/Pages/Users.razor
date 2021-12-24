@@ -2,7 +2,7 @@
 @attribute [Authorize]
 
 <Table TItem="UserDto" Items="@Items" HeaderStyle="TableHeaderStyle.Light" IsBordered="true" IsMultipleSelect="true"
-       ClickToSelect="true" ShowToolbar="true" ShowEditButton="false" OnQueryAsync="@OnQueryAsync" OnAddAsync="@OnAddAsync" 
+       ClickToSelect="true" ShowToolbar="true" OnQueryAsync="@OnQueryAsync" OnAddAsync="@OnAddAsync" 
        OnSaveAsync="@OnSaveAsync" OnDeleteAsync="@OnDeleteAsync"  ShowExtendButtons="true">
     <TableColumns>
         <TableColumn @bind-Field="@context.Id" Width="180" />
@@ -31,6 +31,9 @@
             <div class="col-12 col-sm-6">
                 <DateTimePicker @bind-Value="@context.CreationTime">
                 </DateTimePicker>
+            </div>
+            <div class="col-12 col-sm-6">
+                <MultiSelect TValue="string" Items="@RoleItems" @bind-Value="@context.RoleNames"></MultiSelect>
             </div>
         </div>
     </EditTemplate>

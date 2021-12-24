@@ -23,29 +23,48 @@ namespace Blazor.App.Pages
         [NotNull]
         private List<UserDto>? Items { get; set; }
 
+        private List<SelectedItem> RoleItems { get; set; } = new List<SelectedItem>();
+
         private static IEnumerable<int> PageItemsSource => new int[] { 4, 10, 20 };
+
+        [Inject]
+        [NotNull]
+        public MessageService? MessageService { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
             var result = await Http.GetFromJsonAsync<PagedResultDto<UserDto>>("/api/base/user");
+            var roles = await GetRoleListAsync();
             Items = result.Items;
-            //Items = new List<UserDto>()
-            //{
-            //    new UserDto
-            //    {
-            //        UserName="Aa",
-            //        Name="a",
-            //        Email="aa@aa.ca",
-            //        PhoneNumber="123",
-            //        CreationTime=DateTime.Now
-            //    }
-            //};
-            //var content = JsonContent.Create(new BookDto());
-            //var a = await Http.PostAsync("", content);
+            foreach (var role in roles)
+            {
+                RoleItems.Add(new SelectedItem
+                {
+                    Text = role.Name,
+                    Value = role.Name
+                });
+            }
         }
 
         private static Task<UserDto> OnAddAsync() => Task.FromResult(new UserDto());
+
+        private async Task<bool> OnDeleteAsync(IEnumerable<UserDto> items)
+        {
+            if (items.Count() > 1)
+            {
+                await MessageService.Show(new MessageOption()
+                {
+                    Content = "暂不支持多选删除",
+                    Icon = "fa fa-info-circle",
+                    Color = Color.Warning
+                });
+
+                return false;
+            }
+            var result = await Http.DeleteAsync("/api/identity/users/" + items.First().Id);
+            return true;
+        }
 
         private async Task<bool> OnSaveAsync(UserDto item, ItemChangedType changedType)
         {
@@ -57,7 +76,6 @@ namespace Blazor.App.Pages
             }
             else
             {
-                //var oldItem = Items.FirstOrDefault(i => i.Id == item.Id);
                 //if (oldItem != null)
                 //{
                 //    oldItem.Name = item.Name;
@@ -67,6 +85,12 @@ namespace Blazor.App.Pages
                 //    oldItem.Complete = item.Complete;
                 //    oldItem.Education = item.Education;
                 //}
+                //var oldItem = Items.FirstOrDefault(i => i.Id == item.Id);
+                var jobList = await GetJobListAsync();
+                var OrgList = await GetOrgListAsync();
+                var user = await Http.GetFromJsonAsync<UserDto>("/api/base/user/" + item.Id);
+                var userRoles = await GetUserRoles(item.Id);
+                //item.RoleNames = string.Join(",", userRoles.Select(_ => _.Name).ToList());
             }
             return false;
 
@@ -76,13 +100,8 @@ namespace Blazor.App.Pages
         {
             var result = await Http.GetFromJsonAsync<PagedResultDto<UserDto>>("/api/base/user");
             var items = result.Items;
-
             // 设置记录总数
             var total = result.TotalCount;
-
-            // 内存分页
-            //items = items.Skip((options.PageIndex - 1) * options.PageItems).Take(options.PageItems).ToList();
-
             return new QueryData<UserDto>()
             {
                 Items = items,
@@ -93,10 +112,27 @@ namespace Blazor.App.Pages
             };
         }
 
-        private async Task<bool> OnDeleteAsync(IEnumerable<UserDto> items)
+        private async Task<List<RoleItem>> GetRoleListAsync()
         {
-            var result = await Http.DeleteAsync("/api/identity/users/" + items.First().Id);
-            return true;
+            var result = await Http.GetFromJsonAsync<ListResultDto<RoleItem>>("/api/identity/roles/all");
+            return new List<RoleItem>(result.Items);
+        }
+
+        private async Task<List<JobItem>> GetJobListAsync()
+        {
+            var result = await Http.GetFromJsonAsync<ListResultDto<JobItem>>("/api/base/job/jobs");
+            return new List<JobItem>(result.Items);
+        }
+
+        private async Task<List<OrgItem>> GetOrgListAsync()
+        {
+            var result = await Http.GetFromJsonAsync<ListResultDto<OrgItem>>("/api/base/orgs/loadNodes");
+            return new List<OrgItem>(result.Items);
+        }
+        private async Task<List<RoleItem>> GetUserRoles(Guid id)
+        {
+            var result = await Http.GetFromJsonAsync<ListResultDto<RoleItem>>("/api/identity/users/" + id + "/roles");
+            return new List<RoleItem>(result.Items);
         }
     }
 
@@ -126,7 +162,9 @@ namespace Blazor.App.Pages
         [AutoGenerateColumn(Ignore = true)]
         public bool LockoutEnabled { get; set; }
 
-        public List<string> RoleNames { get; set; }
+        [Display(Name = "角色")]
+        [AutoGenerateColumn(Ignore = true)]
+        public string RoleNames { get; set; }
 
         [Display(Name = "密码")]
         [AutoGenerateColumn(Ignore = true)]
@@ -143,5 +181,55 @@ namespace Blazor.App.Pages
         [Display(Name = "创建时间")]
         [AutoGenerateColumn(Ignore = true)]
         public DateTime CreationTime { get; set; }
+    }
+
+    public class RoleItem
+    {
+        public Guid Id { get; set; }
+
+        public string Name { get; set; }
+
+        public bool IsDefault { get; set; }
+
+        public bool IsStatic { get; set; }
+
+        public bool IsPublic { get; set; }
+    }
+
+    public class JobItem
+    {
+        public Guid Id { get; set; }
+
+        public string Name { get; set; }
+
+        public bool Enabled { get; set; }
+
+        public int Sort { get; set; }
+
+        public string Description { get; set; }
+    }
+
+    public class OrgItem
+    {
+        public Guid Id { get; set; }
+
+        public int CategoryId { get; set; }
+
+        public Guid? Pid { get; set; }
+
+        public string Name { get; set; }
+
+
+        public string FullName { get; set; }
+
+        public int Sort { get; set; }
+
+        public bool Enabled { get; set; }
+
+        public bool HasChildren { get; set; }
+
+        public bool Leaf { get; set; }
+
+        public string Label { get; set; }
     }
 }

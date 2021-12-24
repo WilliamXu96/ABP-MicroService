@@ -8,4 +8,9 @@ namespace Blazor.App.Dtos
 
         public List<T> Items { get; set; }
     }
+
+    public class ListResultDto<T> where T : class
+    {
+        public List<T> Items { get; set; }
+    }
 }
