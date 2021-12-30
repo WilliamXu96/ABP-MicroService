@@ -7,8 +7,9 @@ A background management framework based on the ABP vNext microservice architectu
 
 **Gitee: https://gitee.com/Bossxu666/abp-microservice**
 
-
 **Blog address:** [Blog Park](https://www.cnblogs.com/william-xu/)
+
+**Video address:** [bilibili](https://space.bilibili.com/702776220/channel/seriesdetail?sid=604812)
 
 **Quick Start:**
 Run the script in the run directory
@@ -67,5 +68,3 @@ Run the script in the run directory
 
 #### Feedback
 - **QQ exchange group: 1083795392**
-- **bilibili：https://space.bilibili.com/702776220/channel/seriesdetail?sid=604812**
-- **YouTube：https://www.youtube.com/channel/UCtNrN0qggUFLv-fPcaKh7nw/featured**

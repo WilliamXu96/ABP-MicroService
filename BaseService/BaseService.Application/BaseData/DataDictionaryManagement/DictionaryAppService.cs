@@ -11,7 +11,6 @@ using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
-using Volo.Abp.MultiTenancy;
 
 namespace BaseService.BaseData.DataDictionaryManagement
 {
@@ -62,7 +61,7 @@ namespace BaseService.BaseData.DataDictionaryManagement
 
         public async Task<PagedResultDto<DictionaryDto>> GetAll(GetDictionaryInputDto input)
         {
-            var query = _repository
+            var query = (await _repository.GetQueryableAsync())
                 .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), _ => _.Name.Contains(input.Filter) ||
                                                                         _.Description.Contains(input.Filter));
 

@@ -139,3 +139,17 @@
 /MicroServices/FileStorage/FileStorage.Domain/bin/Debug/netstandard2.1
 /MicroServices/FileStorage/FileStorage.EntityFrameworkCore/bin/Debug/netstandard2.1
 /MicroServices/FileStorage/FileStorage.Host/bin/Debug/net5.0
+/AuthServer/AuthServer.Host/bin/Debug/net6.0
+/BaseService/BaseService.Application/bin/Debug/net6.0
+/BaseService/BaseService.Application.Contracts/bin/Debug/net6.0
+/BaseService/BaseService.Domain/bin/Debug/net6.0
+/BaseService/BaseService.EntityFrameworkCore/bin/Debug/net6.0
+/BaseService/BaseService.Host/bin/Debug/net6.0
+/BaseService/BaseService.HttpApi/bin/Debug/net6.0
+/BaseService/BaseService.HttpApi.Client/bin/Debug/net6.0
+/MicroServices/Business/Business.Host/bin/Debug/net6.0
+/MicroServices/Business/Business.HttpApi.Client/bin/Debug/net6.0
+/MicroServices/FileStorage/FileStorage.Application/bin/Debug/net6.0
+/MicroServices/FileStorage/FileStorage.Domain/bin/Debug/net6.0
+/MicroServices/FileStorage/FileStorage.EntityFrameworkCore/bin/Debug/net6.0
+/MicroServices/FileStorage/FileStorage.Host/bin/Debug/net6.0

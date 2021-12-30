@@ -11,7 +11,7 @@ using Volo.Abp.AuditLogging;
 namespace BaseService.Systems.AuditLoggingManagement
 {
     [Authorize(BaseServicePermissions.AuditLogging.Default)]
-    public class AuditLoggingAppService: ApplicationService, IAuditLoggingAppService
+    public class AuditLoggingAppService : ApplicationService, IAuditLoggingAppService
     {
         private readonly IAuditLogRepository _auditLogRepository;
         public AuditLoggingAppService(
@@ -29,13 +29,12 @@ namespace BaseService.Systems.AuditLoggingManagement
 
         public async Task<PagedResultDto<AuditLogDto>> GetAll(GetAuditLogsInput input)
         {
-            var count = await _auditLogRepository.GetCountAsync(null, null, input.HttpMethod, input.Url,
-                input.UserName, input.ApplicationName, input.CorrelationId, input.MaxExecutionDuration,
-                input.MinExecutionDuration, input.HasException, input.HttpStatusCode);
-            var list = await _auditLogRepository.GetListAsync(input.Sorting,
-                input.MaxResultCount, input.SkipCount, null, null, input.HttpMethod, input.Url,
-                input.UserName, input.ApplicationName, input.CorrelationId, input.MaxExecutionDuration,
-                input.MinExecutionDuration, input.HasException, input.HttpStatusCode, true);
+            var count = await _auditLogRepository.GetCountAsync(httpMethod: input.HttpMethod, url: input.Url,
+                userName: input.UserName, applicationName: input.ApplicationName, correlationId: input.CorrelationId, maxExecutionDuration: input.MaxExecutionDuration,
+                minExecutionDuration: input.MinExecutionDuration, hasException: input.HasException, httpStatusCode: input.HttpStatusCode);
+            var list = await _auditLogRepository.GetListAsync(sorting: input.Sorting,maxResultCount: input.MaxResultCount, skipCount: input.SkipCount, httpMethod: input.HttpMethod, url: input.Url,
+                userName: input.UserName, applicationName: input.ApplicationName, correlationId: input.CorrelationId, maxExecutionDuration: input.MaxExecutionDuration,
+                minExecutionDuration: input.MinExecutionDuration, hasException: input.HasException, httpStatusCode: input.HttpStatusCode);
 
             return new PagedResultDto<AuditLogDto>(
                 count,

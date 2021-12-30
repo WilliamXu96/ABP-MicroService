@@ -41,7 +41,7 @@ namespace BaseService.BaseData.OrganizationManagement
                                                 input.Enabled
                                                 );
             var parent = await _repository.FirstOrDefaultAsync(_ => _.Id == input.Pid);
-            ChangeOrganizationModel(organization, parent);
+            await ChangeOrganizationModel(organization, parent);
             await _repository.InsertAsync(organization);
 
             return ObjectMapper.Map<Organization, OrganizationDto>(organization);
@@ -66,7 +66,7 @@ namespace BaseService.BaseData.OrganizationManagement
 
         public async Task<PagedResultDto<OrganizationDto>> GetAll(GetOrganizationInputDto input)
         {
-            var query = _repository
+            var query = (await _repository.GetQueryableAsync())
                 .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), _ => _.Name.Contains(input.Filter))
                 .WhereIf(input.CategoryId.HasValue, _ => _.CategoryId == input.CategoryId);
             if (input.Id.HasValue)
@@ -87,15 +87,16 @@ namespace BaseService.BaseData.OrganizationManagement
 
         public async Task<ListResultDto<OrganizationDto>> LoadAll(Guid? id, string filter)
         {
+            var queryable = await _repository.GetQueryableAsync();
             var items = new List<Organization>();
             if (!string.IsNullOrWhiteSpace(filter))
             {
-                items = await _repository.Where(_ => _.Name.Contains(filter)).ToListAsync();
+                items = await queryable.Where(_ => _.Name.Contains(filter)).ToListAsync();
             }
             else
             {
-                var query = id.HasValue ? _repository.Where(_ => _.Pid == id) :
-                                         _repository.Where(_ => _.Pid == null);
+                var query = id.HasValue ? queryable.Where(_ => _.Pid == id) :
+                                          queryable.Where(_ => _.Pid == null);
                 items = await query.ToListAsync();
             }
 
@@ -120,20 +121,20 @@ namespace BaseService.BaseData.OrganizationManagement
             if (organization.Pid != input.Pid)
             {
                 var parent = await _repository.FirstOrDefaultAsync(_ => _.Id == input.Pid);
-                var orgs = await _repository.Where(_ => _.CascadeId.Contains(organization.CascadeId) && _.Id != organization.Id)
+                var orgs = await (await _repository.GetQueryableAsync()).Where(_ => _.CascadeId.Contains(organization.CascadeId) && _.Id != organization.Id)
                                       .OrderBy(_ => _.CascadeId).ToListAsync();
                 organization.Pid = input.Pid;
-                ChangeOrganizationModel(organization, parent);
+                await ChangeOrganizationModel(organization, parent);
                 foreach (var org in orgs)
                 {
                     if (org.Pid == organization.Id)
                     {
-                        ChangeOrganizationModel(org, organization, false);
+                        await ChangeOrganizationModel(org, organization, false);
                     }
                     else
                     {
                         var orgParent = orgs.FirstOrDefault(_ => _.Id == org.Pid);
-                        ChangeOrganizationModel(org, orgParent, false);
+                        await ChangeOrganizationModel(org, orgParent, false);
                     }
                 }
             }
@@ -145,13 +146,13 @@ namespace BaseService.BaseData.OrganizationManagement
             return ObjectMapper.Map<Organization, OrganizationDto>(organization);
         }
 
-        private void ChangeOrganizationModel(Organization org, Organization parent, bool checkLevel = true)
+        private async Task ChangeOrganizationModel(Organization org, Organization parent, bool checkLevel = true)
         {
             var cascadeId = org.CascadeId == null ? 1 : int.Parse(org.CascadeId.TrimEnd('.').Split('.').Last());
             if (checkLevel)
             {
                 if (parent != null && parent.Leaf) parent.Leaf = false;
-                var lastLevel = _repository.Where(_ => _.Pid == org.Pid && _.Id != org.Id)
+                var lastLevel = (await _repository.GetQueryableAsync()).Where(_ => _.Pid == org.Pid && _.Id != org.Id)
                       .OrderByDescending(_ => _.CascadeId)
                       .FirstOrDefault();
                 cascadeId = lastLevel == null ? 1 : int.Parse(lastLevel.CascadeId.TrimEnd('.').Split('.').Last()) + 1;

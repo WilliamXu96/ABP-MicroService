@@ -69,7 +69,7 @@ namespace BaseService.BaseData.DataDictionaryManagement
 
         public async Task<PagedResultDto<DictionaryDetailDto>> GetAll(GetDictionaryDetailInputDto input)
         {
-            var query = _detailRepository.Where(_ => _.Pid == input.Pid);
+            var query = (await _detailRepository.GetQueryableAsync()).Where(_ => _.Pid == input.Pid);
             var items = await query.OrderBy(_ => _.Sort)
                      .Skip(input.SkipCount)
                      .Take(input.MaxResultCount)

@@ -23,7 +23,7 @@ namespace FileStorage.FileManagement
 
         public async Task<PagedResultDto<FileInfoDto>> GetAll(GetFileInputDto input)
         {
-            var query = _repository.WhereIf(!string.IsNullOrWhiteSpace(input.Filter), _ => _.Name.Contains(input.Filter));
+            var query = (await _repository.GetQueryableAsync()).WhereIf(!string.IsNullOrWhiteSpace(input.Filter), _ => _.Name.Contains(input.Filter));
 
             var totalCount = await query.CountAsync();
             var items = await query.OrderBy(input.Sorting ?? "Name")

@@ -10,6 +10,8 @@
 
 **博客地址：** [博客园](https://www.cnblogs.com/william-xu/)
 
+**视频地址：** [哔哩哔哩](https://space.bilibili.com/702776220/channel/seriesdetail?sid=604812)
+
 **快速启动：**
 运行run目录下脚本
 
@@ -68,5 +70,3 @@
 
 #### 反馈交流
 - **QQ交流群：1083795392**
-- **B站：https://space.bilibili.com/702776220/channel/seriesdetail?sid=604812**
-- **YouTube：https://www.youtube.com/channel/UCtNrN0qggUFLv-fPcaKh7nw/featured**

@@ -54,7 +54,7 @@ namespace BaseService.BaseData.JobManagement
 
         public async Task<PagedResultDto<JobDto>> GetAll(GetJobInputDto input)
         {
-            var query = _repository.WhereIf(!string.IsNullOrWhiteSpace(input.Filter), _ => _.Name.Contains(input.Filter));
+            var query =  (await _repository.GetQueryableAsync()).WhereIf(!string.IsNullOrWhiteSpace(input.Filter), _ => _.Name.Contains(input.Filter));
 
             var totalCount = await query.CountAsync();
             var items = await query.OrderBy(input.Sorting ?? "Sort")
