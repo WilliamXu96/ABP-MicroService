@@ -1,8 +1,6 @@
 ﻿using BootstrapBlazor.Components;
-using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Routing;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Threading.Tasks;
 
 namespace Blazor.App.Shared
 {
@@ -11,9 +9,6 @@ namespace Blazor.App.Shared
     /// </summary>
     public sealed partial class MainLayout
     {
-        [NotNull]
-        private Layout? Layout { get; set; }
-
         private bool UseTabSet { get; set; } = true;
 
         private string Theme { get; set; } = "";
@@ -30,10 +25,6 @@ namespace Blazor.App.Shared
 
         private List<MenuItem>? Menus { get; set; }
 
-        [Inject]
-        [NotNull]
-        private NavigationManager? Navigator { get; set; }
-
         /// <summary>
         /// OnInitialized 方法
         /// </summary>
@@ -41,7 +32,6 @@ namespace Blazor.App.Shared
         {
             base.OnInitialized();
 
-            // TODO: 菜单获取可以通过数据库获取，此处为示例直接拼装的菜单集合
             Menus = GetIconSideMenuItems();
         }
 

@@ -153,3 +153,5 @@
 /MicroServices/FileStorage/FileStorage.Domain/bin/Debug/net6.0
 /MicroServices/FileStorage/FileStorage.EntityFrameworkCore/bin/Debug/net6.0
 /MicroServices/FileStorage/FileStorage.Host/bin/Debug/net6.0
+/WebApp/Blazor/Blazor.App/bin/Debug/net6.0
+/WebApp/Blazor/Blazor.App.Web/bin/Debug/net6.0

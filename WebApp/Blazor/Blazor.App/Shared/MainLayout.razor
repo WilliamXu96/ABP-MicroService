@@ -2,10 +2,10 @@
 
 <Layout SideWidth="0" IsPage="true" ShowGotoTop="true" ShowCollapseBar="true"
         IsFullSide="@IsFullSide" IsFixedHeader="@IsFixedHeader" IsFixedFooter="@IsFixedFooter" ShowFooter="@ShowFooter"
-        Menus="@Menus" UseTabSet="@UseTabSet" AdditionalAssemblies="new[] { GetType().Assembly }" ExcludeUrls="@(new string[] { " authentication/*" })" class="@Theme" @ref="Layout">
-    @*<NotAuthorized>
+        Menus="@Menus" UseTabSet="@UseTabSet" AdditionalAssemblies="new[] { GetType().Assembly }" ExcludeUrls="@(new string[] { " authentication/*" })" class="@Theme">
+    <NotAuthorized>
         <RedirectToLogin />
-    </NotAuthorized>*@
+    </NotAuthorized>
     <Header>
         <span class="ml-3 flex-sm-fill d-none d-sm-block">Bootstrap of Blazor</span>
         @*<Widget></Widget>*@

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
 namespace Blazor.App.Web
@@ -23,7 +25,7 @@ namespace Blazor.App.Web
         {
             await base.OnAfterRenderAsync(firstRender);
 
-            if (firstRender)
+            if (firstRender && OperatingSystem.IsBrowser())
             {
                 await JSRuntime.InvokeVoidAsync("$.loading");
             }
