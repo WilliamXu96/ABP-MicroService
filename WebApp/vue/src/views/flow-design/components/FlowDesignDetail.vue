@@ -9,7 +9,7 @@
     </div>
     <div class="createPost-main-container">
       <div class="createPost-formContent" :hidden="active != 0">
-        <el-form label-width="90px" :model="form">
+        <el-form ref="form" :rules="rules" label-width="90px" :model="form">
           <el-row>
             <el-col :md="12">
               <el-form-item label="标题" prop="title">
@@ -257,7 +257,7 @@ import TestModal from "../../../commons/flow/modules/TestModal";
 const defaultForm = {
   id: null,
   flowId: null,
-  formId: null,
+  formId: '00000000-0000-0000-0000-000000000000',
   title: "",
   code: "",
   useDate: "",
@@ -266,6 +266,19 @@ const defaultForm = {
   nodeList: [],
   linkList: [],
 };
+const defaultCls={
+  linkType:'Flowchart',
+  linkColor:'#2a2929',
+  linkThickness:2
+}
+const defaultConfig={
+  showGrid:true,
+  showGridText:'隐藏网格',
+  showGridIcon:'eye'
+}
+const defaultAttr={
+  id:''
+}
 export default {
   name: "FlowDesignDetail",
   components: {
@@ -286,7 +299,7 @@ export default {
     self.initNodeSelectArea();
     self.initJsPlumb();
     self.listenShortcut();
-    self.initFlow();
+    //self.initFlow();
     self.listenPage();
   },
   props: {
@@ -297,6 +310,10 @@ export default {
   },
   data() {
     return {
+      rules: {
+        title: [{ required: true, message: "请输入标题", trigger: "blur" }],
+        code: [{ required: true, message: "请输入编号", trigger: "blur" }]
+      },
       form: Object.assign({}, defaultForm),
       loading: false,
       active: 0,
@@ -325,7 +342,7 @@ export default {
           showGridText: "隐藏网格",
           showGridIcon: "eye",
         },
-        status: flowConfig.flowStatus.CREATE,
+        status: flowConfig.flowStatus.LOADING,
         remarks: [],
       },
       currentTool: {
@@ -348,11 +365,44 @@ export default {
   created() {
     if (this.isEdit) {
       const id = this.$route.params && this.$route.params.id;
+      this.flowData.status=flowConfig.flowStatus.LOADING
       this.fetchData(id);
+      // this.dealCompatibility();
+      // this.initNodeSelectArea();
+      // this.initJsPlumb();
+      // this.listenShortcut();
+      // this.initFlow();
+      // this.listenPage();
     } else {
     }
   },
   methods: {
+    fetchData(id) {
+      this.$axios.gets("/api/business/flow/" + id).then(response => {
+        debugger
+        this.form = response;
+        response.linkList.forEach(_=>{
+          _.cls= Object.assign({}, defaultCls)
+        })
+        // let arrt=Object.assign({}, defaultAttr)
+        // arrt.id=response.flowId
+        // response.attr=AuthenticatorAssertionResponse
+        this.flowData.attr.id=response.flowId
+        //this.flowData.config=defaultConfig
+        //this.flowData.status=flowConfig.flowStatus.LOADING
+        this.flowData.linkList=response.linkList;
+        this.flowData.nodeList=response.nodeList
+        
+
+        this.loadFlow(this.flowData);
+        // response.linkList.forEach(_=>{
+        //   _.cls= Object.assign({}, defaultCls)
+        // })
+        console.log(this.flowData)
+      });
+
+
+    },
     getBrowserType() {
       let userAgent = navigator.userAgent;
       let isOpera = userAgent.indexOf("Opera") > -1;
@@ -394,6 +444,7 @@ export default {
       }
     },
     initJsPlumb() {
+      debugger
       const self = this;
 
       self.plumb = jsPlumb.getInstance(flowConfig.jsPlumbInsConfig);
@@ -406,7 +457,7 @@ export default {
           (link) => link.sourceId == sourceId && link.targetId == targetId
         );
         if (filter.length > 0) {
-          self.$message.error("同方向的两节点连线只能有一条！");
+          self.$message.error("同方向的两节点连线只能有一条");
           return false;
         }
         return true;
@@ -560,8 +611,8 @@ export default {
       };
     },
     initFlow() {
+      debugger
       const self = this;
-
       if (self.flowData.status == flowConfig.flowStatus.CREATE) {
         self.flowData.attr.id = "flow-" + ZFSN.getId();
       } else {
@@ -569,29 +620,29 @@ export default {
       }
       ZFSN.consoleLog(["初始化流程图成功..."]);
     },
-    loadFlow(json) {
+    loadFlow(loadData) {
+      debugger
       const self = this;
-
-      self.clear();
-      let loadData = JSON.parse(json);
-      self.flowData.attr = loadData.attr;
-      self.flowData.config = loadData.config;
-      self.flowData.status = flowConfig.flowStatus.LOADING;
+      //self.clear();
+      //let loadData = JSON.parse(json);
+      //self.flowData.attr.id = loadData.flowId;
+      //self.flowData.config = loadData.config;
+      this.flowData.status = flowConfig.flowStatus.LOADING;
       self.plumb.batch(function () {
-        let nodeList = loadData.nodeList;
-        nodeList.forEach(function (node, index) {
-          self.flowData.nodeList.push(node);
-        });
-        let linkList = loadData.linkList;
+        // let nodeList = loadData.nodeList;
+        // nodeList.forEach(function (node, index) {
+        //   self.flowData.nodeList.push(node);
+        // });
+        //let linkList = loadData.linkList;
         self.$nextTick(() => {
-          linkList.forEach(function (link, index) {
-            self.flowData.linkList.push(link);
+          self.flowData.linkList.forEach(function (link, index) {
+            //this.flowData.linkList.push(link);
             let conn = self.plumb.connect({
               source: link.sourceId,
               target: link.targetId,
               anchor: flowConfig.jsPlumbConfig.anchor.default,
               connector: [
-                link.cls.linkType,
+                'Flowchart',
                 {
                   gap: 5,
                   cornerRadius: 8,
@@ -599,8 +650,8 @@ export default {
                 },
               ],
               paintStyle: {
-                stroke: link.cls.linkColor,
-                strokeWidth: link.cls.linkThickness,
+                stroke: '#2a2929',
+                strokeWidth: 2
               },
             });
             if (link.label != "") {
@@ -705,7 +756,7 @@ export default {
       let nodeList = self.flowData.nodeList;
 
       if (nodeList.length <= 0) {
-        this.$message.error("流程图中无任何节点！");
+        this.$message.error("流程图中无任何节点");
         return false;
       }
       return true;
@@ -718,7 +769,7 @@ export default {
       flowObj.status = flowConfig.flowStatus.SAVE;
       let d = JSON.stringify(flowObj);
       console.log(d);
-      this.$message.success("保存流程成功！请查看控制台。");
+      this.$message.success("保存流程成功，请查看控制台。");
       return d;
     },
     exportFlowPicture() {
@@ -944,14 +995,14 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           this.loading = true;
-          if (this.isEdit) {
+          if (!this.isEdit) {
             this.form.flowId = this.flowData.attr.id;
             this.form.nodeList = this.flowData.nodeList;
             this.form.linkList = this.flowData.linkList;
             this.$axios
               .posts("/api/business/flow", this.form)
               .then(response => {
-                this.formLoading = false;
+                this.loading = false;
                 this.$notify({
                   title: "成功",
                   message: "新增成功",
@@ -962,7 +1013,7 @@ export default {
                 this.getList();
               })
               .catch(() => {
-                this.formLoading = false;
+                this.loading = false;
               });
           }
           else{

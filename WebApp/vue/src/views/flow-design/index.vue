@@ -70,7 +70,7 @@
       >
         <template slot-scope="{ row }">
           <span class="link-type" @click="handleUpdate(row)">{{
-            row.formName
+            row.code
           }}</span>
         </template>
       </el-table-column>
@@ -78,9 +78,9 @@
       <el-table-column label="关联表单" prop="formId" align="center" />
       <el-table-column label="启用日期" sortable="custom" prop="useDate" align="center" />
       <el-table-column label="级别" sortable="custom" prop="level" align="center">
-        <template slot-scope="scope">
+        <!-- <template slot-scope="scope">
           <span>{{ scope.row.level | displayStatus }}</span>
-        </template>
+        </template> -->
       </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="{ row }">

@@ -155,3 +155,5 @@
 /MicroServices/FileStorage/FileStorage.Host/bin/Debug/net6.0
 /WebApp/Blazor/Blazor.App/bin/Debug/net6.0
 /WebApp/Blazor/Blazor.App.Web/bin/Debug/net6.0
+/AuthServer/AuthServer.Host/bin/Release/net6.0
+/MicroServices/Business/.vs/Business
