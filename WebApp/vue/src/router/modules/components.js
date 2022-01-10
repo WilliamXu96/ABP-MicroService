@@ -13,6 +13,12 @@ const componentsRouter = {
   },
   children: [
     {
+      path: 'easy-flow',
+      component: () => import('@/views/flow/panel'),
+      name: 'EasyFlow',
+      meta: { title: 'EasyFlow' }
+    },
+    {
       path: 'tinymce',
       component: () => import('@/views/components-demo/tinymce'),
       name: 'TinymceDemo',

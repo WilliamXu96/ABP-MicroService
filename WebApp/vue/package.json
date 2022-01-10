@@ -72,6 +72,7 @@
     "sortablejs": "1.8.4",
     "tui-editor": "1.3.3",
     "vue": "2.6.10",
+    "vue-codemirror": "^4.0.6",
     "vue-contextmenu": "^1.5.10",
     "vue-count-to": "1.0.13",
     "vue-i18n": "7.3.2",
