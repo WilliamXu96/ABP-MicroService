@@ -155,6 +155,7 @@ import nodeMenu from "./node_menu";
 import FlowNodeForm from "./node_form";
 import FlowInfo from "@/components/Flow/info";
 import FlowHelp from "@/components/Flow/help";
+import { getDefaultData } from "@/components/Flow/default_data";
 import { getDataA } from "@/components/Flow/data_A";
 import { getDataB } from "@/components/Flow/data_B";
 import { getDataC } from "@/components/Flow/data_C";
@@ -164,6 +165,7 @@ import { ForceDirected } from "@/components/Flow/force-directed";
 import "@/components/Flow/index.css";
 
 export default {
+  name: "EasyFlow",
   data() {
     return {
       // jsPlumb 实例
@@ -241,7 +243,8 @@ export default {
     this.jsPlumb = jsPlumb.getInstance();
     this.$nextTick(() => {
       // 默认加载流程A的数据、在这里可以根据具体的业务返回符合流程数据格式的数据即可
-      this.dataReload(getDataB());
+      //this.dataReload(getDataB());
+      this.dataReload(getDefaultData());
     });
   },
   methods: {
@@ -250,7 +253,6 @@ export default {
       return Math.random().toString(36).substr(3, 10);
     },
     jsPlumbInit() {
-      debugger;
       this.jsPlumb.ready(() => {
         // 导入默认配置
         this.jsPlumb.importDefaults(this.jsplumbSetting);
@@ -274,7 +276,7 @@ export default {
           let from = evt.source.id;
           let to = evt.target.id;
           if (this.loadEasyFlowFinish) {
-            this.data.lineList.push({ from: from, to: to });
+            this.data.lineList.push({ id:'line-' + this.getUUID(), from: from, to: to });
           }
         });
 
@@ -322,7 +324,6 @@ export default {
     },
     // 加载流程图
     loadEasyFlow() {
-      debugger;
       // 初始化节点
       for (var i = 0; i < this.data.nodeList.length; i++) {
         let node = this.data.nodeList[i];
@@ -452,7 +453,7 @@ export default {
       // 居中
       left -= 85;
       top -= 16;
-      var nodeId = this.getUUID();
+      var nodeId = 'node-' + this.getUUID();
       // 动态生成名字
       var origName = nodeMenu.name;
       var nodeName = origName;
@@ -567,7 +568,7 @@ export default {
       this.easyFlowVisible = false;
       this.data.nodeList = [];
       this.data.lineList = [];
-      this.$nextTick(() => {
+        this.$nextTick(() => {
         data = lodash.cloneDeep(data);
         this.easyFlowVisible = true;
         this.data = data;
