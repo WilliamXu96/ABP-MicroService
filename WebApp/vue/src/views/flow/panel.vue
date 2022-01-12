@@ -260,7 +260,8 @@ export default {
         this.jsPlumb.setSuspendDrawing(false, true);
         // 初始化节点
         this.loadEasyFlow();
-        // 单点击了连接线, https://www.cnblogs.com/ysx215/p/7615677.html
+        // 单点击了连接线
+        debugger
         this.jsPlumb.bind("click", (conn, originalEvent) => {
           this.activeElement.type = "line";
           this.activeElement.sourceId = conn.sourceId;
@@ -268,8 +269,8 @@ export default {
           this.$refs.nodeForm.lineInit({
             from: conn.sourceId,
             to: conn.targetId,
-            label: conn.getLabel(),
-          });
+            label: conn.getLabel()
+          },this.data);
         });
         // 连线
         this.jsPlumb.bind("connection", (evt) => {
@@ -362,7 +363,7 @@ export default {
       });
     },
     // 设置连线条件
-    setLineLabel(from, to, label) {
+    setLineLabel(from, to, label, formField) {
       var conn = this.jsPlumb.getConnections({
         source: from,
         target: to,
@@ -379,6 +380,7 @@ export default {
       this.data.lineList.forEach(function (line) {
         if (line.from == from && line.to == to) {
           line.label = label;
+          line.formField = formField
         }
       });
     },

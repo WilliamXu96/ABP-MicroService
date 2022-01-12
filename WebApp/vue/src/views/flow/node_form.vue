@@ -58,8 +58,8 @@
             <el-input v-model="node.roles"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button icon="el-icon-close">重置</el-button>
-            <el-button type="primary" icon="el-icon-check" @click="save"
+            <el-button icon="el-icon-close" size="mini">重置</el-button>
+            <el-button type="primary" icon="el-icon-check" size="mini" @click="save"
               >暂存</el-button
             >
           </el-form-item>
@@ -71,13 +71,48 @@
           label-width="80px"
           v-show="type === 'line'"
         >
-          <el-form-item label="条件">
+          <el-form-item label="源节点" size="small">
+            <el-input :value="line.from" disabled />
+          </el-form-item>
+          <el-form-item label="目标节点" size="small">
+            <el-input :value="line.to" disabled />
+          </el-form-item>
+          <el-form-item label="名称">
             <el-input v-model="line.label"></el-input>
           </el-form-item>
+          <el-form-item label="字段条件" size="small">
+           
+            <div align="left" v-for="(item,index) in tempFormField" :key="index">
+              <el-select v-model="item.fieldName" placeholder="请选择" size="mini" style="width:60%">
+                <el-option
+                  v-for="field in fieldOption"
+                  :key="field.value"
+                  :label="field.label"
+                  :value="field.value"
+                ></el-option>
+              </el-select>
+              <el-select
+                v-model="item.condition"
+                placeholder="请选择"
+                size="mini"
+                style="width:35%"
+              >
+                <el-option
+                  v-for="condition in conditionOption"
+                  :key="condition.value"
+                  :label="condition.label"
+                  :value="condition.value"
+                ></el-option>
+              </el-select>
+              <el-input size="mini" style="width:80%" v-model="item.content"></el-input>
+              <el-button circle icon="el-icon-delete" size="mini" @click="removeRow(index)"></el-button>
+            </div>
+            
+          </el-form-item>
           <el-form-item>
-            <el-button icon="el-icon-close">重置</el-button>
-            <el-button type="primary" icon="el-icon-check" @click="saveLine"
-              >保存</el-button
+            <el-button type="primary" icon="el-icon-plus" size="mini" @click="addRow">新增</el-button>
+            <el-button type="primary" size="mini" icon="el-icon-check" @click="saveLine"
+              >暂存</el-button
             >
           </el-form-item>
         </el-form>
@@ -104,6 +139,20 @@ export default {
         { value: "users", label: "指定用户" },
         { value: "roles", label: "指定角色" }
       ],
+      fieldOption: [
+        { value: "name", label: "姓名" },
+        { value: "age", label: "年龄" },
+        { value: "sex", label: "性别" }
+      ],
+      conditionOption: [
+        { value: ">", label: ">" },
+        { value: ">=", label: ">=" },
+        { value: "<", label: "<" },
+        { value: "<=", label: "<=" },
+        { value: "=", label: "=" },
+        { value: "!=", label: "!=" }
+      ],
+      tempFormField:[],
       stateList: [
         {
           state: "success",
@@ -140,13 +189,27 @@ export default {
         }
       });
     },
-    lineInit(line) {
+    lineInit(line,data) {
       this.type = "line";
       this.line = line;
+      debugger
+      data.lineList.filter((i) => {
+        if (i.from == line.from && i.to == line.to) {
+          
+          this.tempFormField = !i.formField ? [{fieldName:'',condition:'',content:''}] : cloneDeep(i.formField);
+        }
+      });
     },
     // 修改连线
     saveLine() {
-      this.$emit("setLineLabel", this.line.from, this.line.to, this.line.label);
+      this.$emit("setLineLabel", this.line.from, this.line.to, this.line.label, this.tempFormField );
+    },
+    addRow(){
+      var row= {fieldName:'',condition:'',content:''}
+      this.tempFormField.push(row)
+    },
+    removeRow(index){
+      this.tempFormField.splice(index,1)
     },
     save() {
       this.data.nodeList.filter((node) => {
