@@ -1,145 +1,214 @@
 <template>
-  <div v-if="easyFlowVisible" style="height: calc(100vh)">
-    <el-row>
-      <!--顶部工具菜单-->
-      <el-col :span="24">
-        <div class="ef-tooltar">
-          <el-link type="primary" :underline="false">{{ data.name }}</el-link>
-          <el-divider direction="vertical"></el-divider>
-          <el-button
-            type="text"
-            icon="el-icon-delete"
-            size="large"
-            @click="deleteElement"
-            :disabled="!this.activeElement.type"
-          ></el-button>
-          <el-divider direction="vertical"></el-divider>
-          <el-button
-            type="text"
-            icon="el-icon-download"
-            size="large"
-            @click="downloadData"
-          ></el-button>
-          <el-divider direction="vertical"></el-divider>
-          <el-button
-            type="text"
-            icon="el-icon-plus"
-            size="large"
-            @click="zoomAdd"
-          ></el-button>
-          <el-divider direction="vertical"></el-divider>
-          <el-button
-            type="text"
-            icon="el-icon-minus"
-            size="large"
-            @click="zoomSub"
-          ></el-button>
-          <div style="float: right; margin-right: 5px">
+  <div>
+    <div style="padding: 40px 45px 10px 50px" :hidden="end">
+      <el-steps :active="active" finish-status="success">
+        <el-step title="基础信息" />
+        <el-step title="选择表单" />
+        <el-step title="流程设计" />
+      </el-steps>
+    </div>
+    <div :hidden="active != 0">
+      <el-form ref="form" :rules="rules" label-width="90px" :model="form">
+        <el-row>
+          <el-col :md="12">
+            <el-form-item label="标题" prop="title">
+              <el-input v-model="form.title" />
+            </el-form-item>
+          </el-col>
+          <el-col :md="12">
+            <el-form-item label="模板编号" prop="code">
+              <el-input v-model="form.code" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :md="12">
+            <el-form-item label="发布时间" prop="useDate">
+              <el-date-picker
+                v-model="form.useDate"
+                value-format="yyyy-MM-dd"
+                type="date"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :md="12">
+            <el-form-item label="重要级" prop="level">
+              <el-rate v-model="form.level" style="margin-top: 8px" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-form-item label="备注" prop="remark">
+          <el-input type="textarea" v-model="form.remark" />
+        </el-form-item>
+      </el-form>
+    </div>
+    <div :hidden="active != 1">
+      <el-tabs type="border-card">
+        <el-tab-pane label="请假">我要请假</el-tab-pane>
+        <el-tab-pane label="加班">我要加班</el-tab-pane>
+        <el-tab-pane label="用户注册">我要注册</el-tab-pane>
+        <el-tab-pane label="报销">我要报销</el-tab-pane>
+      </el-tabs>
+    </div>
+    <div
+      v-if="easyFlowVisible"
+      style="height: calc(100vh)"
+       :hidden="active != 2"
+    >
+      <el-row>
+        <!--顶部工具菜单-->
+        <el-col :span="24">
+          <div class="ef-tooltar">
+            <el-link type="primary" :underline="false">{{ data.name }}</el-link>
+            <el-divider direction="vertical"></el-divider>
             <el-button
-              type="info"
-              plain
-              round
-              icon="el-icon-document"
-              @click="dataInfo"
-              size="mini"
-              >流程信息</el-button
-            >
+              type="text"
+              icon="el-icon-delete"
+              size="large"
+              @click="deleteElement"
+              :disabled="!this.activeElement.type"
+            ></el-button>
+            <el-divider direction="vertical"></el-divider>
             <el-button
-              type="primary"
-              plain
-              round
-              @click="dataReloadA"
-              icon="el-icon-refresh"
-              size="mini"
-              >切换流程A</el-button
-            >
+              type="text"
+              icon="el-icon-download"
+              size="large"
+              @click="downloadData"
+            ></el-button>
+            <el-divider direction="vertical"></el-divider>
             <el-button
-              type="primary"
-              plain
-              round
-              @click="dataReloadB"
-              icon="el-icon-refresh"
-              size="mini"
-              >切换流程B</el-button
-            >
+              type="text"
+              icon="el-icon-plus"
+              size="large"
+              @click="zoomAdd"
+            ></el-button>
+            <el-divider direction="vertical"></el-divider>
             <el-button
-              type="primary"
-              plain
-              round
-              @click="dataReloadC"
-              icon="el-icon-refresh"
-              size="mini"
-              >切换流程C</el-button
+              type="text"
+              icon="el-icon-minus"
+              size="large"
+              @click="zoomSub"
+            ></el-button>
+            <div style="float: right; margin-right: 5px">
+              <el-button
+                type="info"
+                plain
+                round
+                icon="el-icon-document"
+                @click="dataInfo"
+                size="mini"
+                >流程信息</el-button
+              >
+              <el-button
+                type="primary"
+                plain
+                round
+                @click="dataReloadA"
+                icon="el-icon-refresh"
+                size="mini"
+                >切换流程A</el-button
+              >
+              <el-button
+                type="primary"
+                plain
+                round
+                @click="dataReloadB"
+                icon="el-icon-refresh"
+                size="mini"
+                >切换流程B</el-button
+              >
+              <el-button
+                type="primary"
+                plain
+                round
+                @click="dataReloadC"
+                icon="el-icon-refresh"
+                size="mini"
+                >切换流程C</el-button
+              >
+              <el-button
+                type="primary"
+                plain
+                round
+                @click="dataReloadD"
+                icon="el-icon-refresh"
+                size="mini"
+                >自定义样式</el-button
+              >
+              <el-button
+                type="primary"
+                plain
+                round
+                @click="dataReloadE"
+                icon="el-icon-refresh"
+                size="mini"
+                >力导图</el-button
+              >
+              <el-button
+                type="info"
+                plain
+                round
+                icon="el-icon-document"
+                @click="openHelp"
+                size="mini"
+                >帮助</el-button
+              >
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+      <div style="display: flex; height: calc(100% - 47px)">
+        <div style="width: 230px; border-right: 1px solid #dce3e8">
+          <node-menu @addNode="addNode" ref="nodeMenu"></node-menu>
+        </div>
+        <div id="efContainer" ref="efContainer" class="container" v-flowDrag>
+          <template v-for="node in data.nodeList">
+            <flow-node
+              :id="node.id"
+              :key="node.id"
+              :node="node"
+              :activeElement="activeElement"
+              @changeNodeSite="changeNodeSite"
+              @nodeRightMenu="nodeRightMenu"
+              @clickNode="clickNode"
             >
-            <el-button
-              type="primary"
-              plain
-              round
-              @click="dataReloadD"
-              icon="el-icon-refresh"
-              size="mini"
-              >自定义样式</el-button
-            >
-            <el-button
-              type="primary"
-              plain
-              round
-              @click="dataReloadE"
-              icon="el-icon-refresh"
-              size="mini"
-              >力导图</el-button
-            >
-            <el-button
-              type="info"
-              plain
-              round
-              icon="el-icon-document"
-              @click="openHelp"
-              size="mini"
-              >帮助</el-button
-            >
+            </flow-node>
+          </template>
+          <!-- 给画布一个默认的宽度和高度 -->
+          <div style="position: absolute; top: 2000px; left: 2000px">
+            &nbsp;
           </div>
         </div>
-      </el-col>
-    </el-row>
-    <div style="display: flex; height: calc(100% - 47px)">
-      <div style="width: 230px; border-right: 1px solid #dce3e8">
-        <node-menu @addNode="addNode" ref="nodeMenu"></node-menu>
+        <!-- 右侧表单 -->
+        <div
+          style="
+            width: 300px;
+            border-left: 1px solid #dce3e8;
+            background-color: #fbfbfb;
+          "
+        >
+          <flow-node-form
+            ref="nodeForm"
+            @setLineLabel="setLineLabel"
+            @repaintEverything="repaintEverything"
+          ></flow-node-form>
+        </div>
       </div>
-      <div id="efContainer" ref="efContainer" class="container" v-flowDrag>
-        <template v-for="node in data.nodeList">
-          <flow-node
-            :id="node.id"
-            :key="node.id"
-            :node="node"
-            :activeElement="activeElement"
-            @changeNodeSite="changeNodeSite"
-            @nodeRightMenu="nodeRightMenu"
-            @clickNode="clickNode"
-          >
-          </flow-node>
-        </template>
-        <!-- 给画布一个默认的宽度和高度 -->
-        <div style="position: absolute; top: 2000px; left: 2000px">&nbsp;</div>
-      </div>
-      <!-- 右侧表单 -->
-      <div
-        style="
-          width: 300px;
-          border-left: 1px solid #dce3e8;
-          background-color: #fbfbfb;
-        "
-      >
-        <flow-node-form
-          ref="nodeForm"
-          @setLineLabel="setLineLabel"
-          @repaintEverything="repaintEverything"
-        ></flow-node-form>
-      </div>
+      <!-- 流程数据详情 -->
+      <flow-info v-if="flowInfoVisible" ref="flowInfo" :data="data"></flow-info>
+      <flow-help v-if="flowHelpVisible" ref="flowHelp"></flow-help>
     </div>
-    <!-- 流程数据详情 -->
-    <flow-info v-if="flowInfoVisible" ref="flowInfo" :data="data"></flow-info>
-    <flow-help v-if="flowHelpVisible" ref="flowHelp"></flow-help>
+    <div align="center">
+      <el-button v-if="active != 0" type="primary" size="small" @click="back"
+        >上一步</el-button
+      >
+      <el-button v-if="!end" type="primary" size="small" @click="next"
+        >下一步</el-button
+      >
+      <el-button v-if="end" type="success" size="small" @click="save"
+        >保存</el-button
+      >
+    </div>
   </div>
 </template>
 
@@ -164,10 +233,30 @@ import { getDataE } from "@/components/Flow/data_E";
 import { ForceDirected } from "@/components/Flow/force-directed";
 import "@/components/Flow/index.css";
 
+const defaultForm = {
+  id: null,
+  flowId: null,
+  formId: "00000000-0000-0000-0000-000000000000",
+  title: "",
+  code: "",
+  useDate: "",
+  level: 0,
+  remark: "",
+  nodeList: [],
+  linkList: [],
+};
 export default {
   name: "EasyFlow",
   data() {
     return {
+      rules: {
+        title: [{ required: true, message: "请输入标题", trigger: "blur" }],
+        code: [{ required: true, message: "请输入编号", trigger: "blur" }],
+      },
+      form: Object.assign({}, defaultForm),
+      loading: false,
+      active: 0,
+      end: false,
       // jsPlumb 实例
       jsPlumb: null,
       // 控制画布销毁
@@ -248,6 +337,44 @@ export default {
     });
   },
   methods: {
+    next() {
+      if (this.active++ == 1) {
+        this.end = true;
+      }
+    },
+    back() {
+      this.active--;
+      this.end = false;
+    },
+    save() {
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          this.loading = true;
+          if (!this.isEdit) {
+            this.form.flowId = this.flowData.attr.id;
+            this.form.nodeList = this.flowData.nodeList;
+            this.form.linkList = this.flowData.linkList;
+            this.$axios
+              .posts("/api/business/flow", this.form)
+              .then((response) => {
+                this.loading = false;
+                this.$notify({
+                  title: "成功",
+                  message: "新增成功",
+                  type: "success",
+                  duration: 2000,
+                });
+                this.dialogFormVisible = false;
+                this.getList();
+              })
+              .catch(() => {
+                this.loading = false;
+              });
+          } else {
+          }
+        }
+      });
+    },
     // 返回唯一标识
     getUUID() {
       return Math.random().toString(36).substr(3, 10);
@@ -261,23 +388,29 @@ export default {
         // 初始化节点
         this.loadEasyFlow();
         // 单点击了连接线
-        debugger
         this.jsPlumb.bind("click", (conn, originalEvent) => {
           this.activeElement.type = "line";
           this.activeElement.sourceId = conn.sourceId;
           this.activeElement.targetId = conn.targetId;
-          this.$refs.nodeForm.lineInit({
-            from: conn.sourceId,
-            to: conn.targetId,
-            label: conn.getLabel()
-          },this.data);
+          this.$refs.nodeForm.lineInit(
+            {
+              from: conn.sourceId,
+              to: conn.targetId,
+              label: conn.getLabel(),
+            },
+            this.data
+          );
         });
         // 连线
         this.jsPlumb.bind("connection", (evt) => {
           let from = evt.source.id;
           let to = evt.target.id;
           if (this.loadEasyFlowFinish) {
-            this.data.lineList.push({ id:'line-' + this.getUUID(), from: from, to: to });
+            this.data.lineList.push({
+              id: "line-" + this.getUUID(),
+              from: from,
+              to: to,
+            });
           }
         });
 
@@ -380,7 +513,7 @@ export default {
       this.data.lineList.forEach(function (line) {
         if (line.from == from && line.to == to) {
           line.label = label;
-          line.formField = formField
+          line.formField = formField;
         }
       });
     },
@@ -455,7 +588,7 @@ export default {
       // 居中
       left -= 85;
       top -= 16;
-      var nodeId = 'node-' + this.getUUID();
+      var nodeId = "node-" + this.getUUID();
       // 动态生成名字
       var origName = nodeMenu.name;
       var nodeName = origName;
@@ -570,7 +703,7 @@ export default {
       this.easyFlowVisible = false;
       this.data.nodeList = [];
       this.data.lineList = [];
-        this.$nextTick(() => {
+      this.$nextTick(() => {
         data = lodash.cloneDeep(data);
         this.easyFlowVisible = true;
         this.data = data;
