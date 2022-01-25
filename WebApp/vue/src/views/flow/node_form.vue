@@ -192,7 +192,6 @@ export default {
     lineInit(line,data) {
       this.type = "line";
       this.line = line;
-      debugger
       data.lineList.filter((i) => {
         if (i.from == line.from && i.to == line.to) {
           

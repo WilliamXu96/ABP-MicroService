@@ -72,6 +72,7 @@ export default {
     form:'表单管理',
     formCreate:'新增表单',
     formEdit:'修改表单',
+    flows:'流程管理',
     flowDesign:'流程设计',
     flowDesignCreate:'新增流程',
     flowDesignEdit:'修改流程',

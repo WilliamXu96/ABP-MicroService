@@ -1,12 +1,12 @@
 <template>
-  <flow-design-detail :is-edit="true" />
+  <easy-flow :is-edit="true" />
 </template>
 
 <script>
-import FlowDesignDetail from './components/FlowDesignDetail'
+import EasyFlow from '../flow/panel'
 
 export default {
   name: "FlowDesignEdit",
-  components: { FlowDesignDetail }
+  components: { EasyFlow }
 };
 </script>

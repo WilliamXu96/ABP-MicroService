@@ -7,7 +7,7 @@
         <el-step title="流程设计" />
       </el-steps>
     </div>
-    <div :hidden="active != 0">
+    <div :hidden="active != 0 || isEdit">
       <el-form ref="form" :rules="rules" label-width="90px" :model="form">
         <el-row>
           <el-col :md="12">
@@ -42,7 +42,7 @@
         </el-form-item>
       </el-form>
     </div>
-    <div :hidden="active != 1">
+    <div style="padding: 0px 45px 20px 20px" :hidden="active != 1 || isEdit">
       <el-tabs type="border-card">
         <el-tab-pane label="请假">我要请假</el-tab-pane>
         <el-tab-pane label="加班">我要加班</el-tab-pane>
@@ -53,7 +53,7 @@
     <div
       v-if="easyFlowVisible"
       style="height: calc(100vh)"
-       :hidden="active != 2"
+      :hidden="active != 2"
     >
       <el-row>
         <!--顶部工具菜单-->
@@ -199,13 +199,22 @@
       <flow-help v-if="flowHelpVisible" ref="flowHelp"></flow-help>
     </div>
     <div align="center">
-      <el-button v-if="active != 0" type="primary" size="small" @click="back"
+      <el-button
+        v-if="active != 0 && !isEdit"
+        type="primary"
+        size="small"
+        @click="back"
         >上一步</el-button
       >
       <el-button v-if="!end" type="primary" size="small" @click="next"
         >下一步</el-button
       >
-      <el-button v-if="end" type="success" size="small" @click="save"
+      <el-button
+        v-if="end"
+        type="success"
+        size="small"
+        @click="save"
+        v-loading.fullscreen.lock="fullscreenLoading"
         >保存</el-button
       >
     </div>
@@ -215,8 +224,6 @@
 <script>
 import draggable from "vuedraggable";
 import lodash from "lodash";
-// import { jsPlumb } from 'jsplumb'
-// 使用修改后的jsplumb
 import "../../components/Flow/jsplumb";
 import { easyFlowMixin } from "@/components/Flow/mixins";
 import flowNode from "./node";
@@ -243,10 +250,16 @@ const defaultForm = {
   level: 0,
   remark: "",
   nodeList: [],
-  linkList: [],
+  lineList: [],
 };
 export default {
   name: "EasyFlow",
+  props: {
+    isEdit: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
       rules: {
@@ -254,7 +267,7 @@ export default {
         code: [{ required: true, message: "请输入编号", trigger: "blur" }],
       },
       form: Object.assign({}, defaultForm),
-      loading: false,
+      fullscreenLoading: false,
       active: 0,
       end: false,
       // jsPlumb 实例
@@ -331,12 +344,38 @@ export default {
   mounted() {
     this.jsPlumb = jsPlumb.getInstance();
     this.$nextTick(() => {
-      // 默认加载流程A的数据、在这里可以根据具体的业务返回符合流程数据格式的数据即可
       //this.dataReload(getDataB());
-      this.dataReload(getDefaultData());
+      //this.dataReload(getDefaultData());
     });
   },
+  created() {
+    if (this.isEdit) {
+      this.active = 2;
+      this.end = true;
+      const id = this.$route.params && this.$route.params.id;
+      //this.dataReload(getDataB());
+      this.fetchData(id);
+    } else {
+      this.dataReload(getDefaultData());
+    }
+  },
   methods: {
+    fetchData(id) {
+      this.$axios.gets("/api/business/flow/" + id).then((response) => {
+        debugger;
+        this.form = response;
+        let data = {
+          name: response.title,
+          nodeList: response.nodeList,
+          lineList: response.lineList,
+        };
+        this.dataReload(data);
+      });
+    },
+    jump() {
+      this.$store.dispatch("tagsView/delView", this.$route);
+      this.$router.push({ path: "/tool/flow" });
+    },
     next() {
       if (this.active++ == 1) {
         this.end = true;
@@ -349,29 +388,47 @@ export default {
     save() {
       this.$refs.form.validate((valid) => {
         if (valid) {
-          this.loading = true;
+          this.fullscreenLoading = true;
+          this.form.nodeList = this.data.nodeList;
+          this.form.lineList = this.data.lineList;
           if (!this.isEdit) {
-            this.form.flowId = this.flowData.attr.id;
-            this.form.nodeList = this.flowData.nodeList;
-            this.form.linkList = this.flowData.linkList;
             this.$axios
               .posts("/api/business/flow", this.form)
               .then((response) => {
-                this.loading = false;
+                this.fullscreenLoading = false;
                 this.$notify({
                   title: "成功",
                   message: "新增成功",
                   type: "success",
                   duration: 2000,
                 });
-                this.dialogFormVisible = false;
-                this.getList();
+                this.jump();
               })
               .catch(() => {
-                this.loading = false;
+                this.fullscreenLoading = false;
               });
           } else {
+            this.$axios
+              .puts("/api/business/flow/" + this.form.id, this.form)
+              .then((response) => {
+                this.fullscreenLoading = false;
+                this.$notify({
+                  title: "成功",
+                  message: "更新成功",
+                  type: "success",
+                  duration: 2000,
+                });
+                this.jump();
+              })
+              .catch(() => {
+                this.fullscreenLoading = false;
+              });
           }
+        } else {
+          this.$message({
+            message: "请完善基础信息",
+            type: "warning",
+          });
         }
       });
     },
@@ -456,7 +513,6 @@ export default {
         this.jsPlumb.setContainer(this.$refs.efContainer);
       });
     },
-    // 加载流程图
     loadEasyFlow() {
       // 初始化节点
       for (var i = 0; i < this.data.nodeList.length; i++) {
@@ -478,7 +534,6 @@ export default {
           });
         }
       }
-      // 初始化连线
       for (var i = 0; i < this.data.lineList.length; i++) {
         let line = this.data.lineList[i];
         var connParam = {
@@ -560,12 +615,6 @@ export default {
         }
       }
     },
-    /**
-     * 拖拽结束后添加新的节点
-     * @param evt
-     * @param nodeMenu 被添加的节点对象
-     * @param mousePosition 鼠标拖拽结束的坐标
-     */
     addNode(evt, nodeMenu, mousePosition) {
       var screenX = evt.originalEvent.clientX,
         screenY = evt.originalEvent.clientY;

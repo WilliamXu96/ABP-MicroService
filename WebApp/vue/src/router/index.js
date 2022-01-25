@@ -244,9 +244,9 @@ export const asyncRoutes = [{
       {
         path: 'flow',
         component: () => import('@/views/flow-design/index'),
-        name: 'FlowDesign',
+        name: 'Flows',
         meta: {
-          title: 'flowDesign',
+          title: 'flows',
           icon: 'flow'
         },
       },

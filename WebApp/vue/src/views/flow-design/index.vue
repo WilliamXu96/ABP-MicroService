@@ -117,7 +117,7 @@ import Pagination from "@/components/Pagination";
 import permission from "@/directive/permission/index.js";
 
 export default {
-  name: "FlowDesign",
+  name: "Flow",
   components: { Pagination },
   directives: { waves, permission },
   data() {
