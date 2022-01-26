@@ -28,7 +28,7 @@
             </el-tab-pane>
             <el-tab-pane label="如何添加条件">
                 <el-divider content-position="left">如何添加条件</el-divider>
-                <div>点击画布中的连线，在页面右侧会出现一个表单，输入新的条件，点击【保存】</div>
+                <div>点击画布中的连线，在页面右侧会出现一个表单，输入新的条件，点击【暂存】</div>
             </el-tab-pane>
         </el-tabs>
     </el-dialog>

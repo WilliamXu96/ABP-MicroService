@@ -44,10 +44,46 @@
     </div>
     <div style="padding: 0px 45px 20px 20px" :hidden="active != 1 || isEdit">
       <el-tabs type="border-card">
-        <el-tab-pane label="请假">我要请假</el-tab-pane>
-        <el-tab-pane label="加班">我要加班</el-tab-pane>
-        <el-tab-pane label="用户注册">我要注册</el-tab-pane>
-        <el-tab-pane label="报销">我要报销</el-tab-pane>
+        <el-table
+          ref="table"
+          v-loading="listLoading"
+          :data="formList"
+          size="small"
+          style="width: 90%"
+          @row-click="handleRowClick"
+        >
+          <el-table-column width="30px" align="center">
+            <template v-slot="props">
+              <el-radio
+                v-model="form.formId"
+                :label="props.row.id"
+                @change="handleRowClick(props.row)"
+                >{{ "" }}</el-radio
+              >
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="表单名称"
+            prop="formName"
+            align="center"
+            width="150px"
+          />
+          <el-table-column label="api接口" prop="api" align="center" />
+          <el-table-column label="描述" prop="description" align="center" />
+          <el-table-column label="禁用" prop="disabled" align="center">
+            <template slot-scope="scope">
+              <span>{{ scope.row.disabled | displayStatus }}</span>
+            </template>
+          </el-table-column>
+        </el-table>
+        <pagination
+          style="margin-top:0px"
+          v-show="totalCount > 0"
+          :total="totalCount"
+          :page.sync="page"
+          :limit.sync="listQuery.MaxResultCount"
+          @pagination="getFormList"
+        />
       </el-tabs>
     </div>
     <div
@@ -59,15 +95,9 @@
         <!--顶部工具菜单-->
         <el-col :span="24">
           <div class="ef-tooltar">
-            <el-link type="primary" :underline="false">{{ data.name }}</el-link>
-            <el-divider direction="vertical"></el-divider>
-            <el-button
-              type="text"
-              icon="el-icon-delete"
-              size="large"
-              @click="deleteElement"
-              :disabled="!this.activeElement.type"
-            ></el-button>
+            <el-link type="primary" :underline="false">{{
+              form.title
+            }}</el-link>
             <el-divider direction="vertical"></el-divider>
             <el-button
               type="text"
@@ -77,6 +107,41 @@
             ></el-button>
             <el-divider direction="vertical"></el-divider>
             <el-button
+              type="text"
+              icon="el-icon-remove"
+              size="large"
+              @click="deleteElement"
+              :disabled="!this.activeElement.type"
+              >移除</el-button
+            >
+            <el-divider direction="vertical"></el-divider>
+
+            <el-button
+              type="text"
+              icon="el-icon-delete-solid"
+              size="large"
+              style="color: #f56c6c"
+              @click="clear"
+              >清空</el-button
+            >
+            <el-divider direction="vertical"></el-divider>
+            <el-button
+              type="text"
+              size="large"
+              @click="save"
+              v-loading.fullscreen.lock="fullscreenLoading"
+              ><svg-icon icon-class="save" /> 保存</el-button
+            >
+            <el-divider direction="vertical"></el-divider>
+            <el-button
+              v-if="active != 0 && !isEdit"
+              type="text"
+              icon="el-icon-top"
+              size="large"
+              @click="back"
+              >上一步</el-button
+            >
+            <!-- <el-button
               type="text"
               icon="el-icon-plus"
               size="large"
@@ -88,7 +153,7 @@
               icon="el-icon-minus"
               size="large"
               @click="zoomSub"
-            ></el-button>
+            ></el-button> -->
             <div style="float: right; margin-right: 5px">
               <el-button
                 type="info"
@@ -145,7 +210,7 @@
                 >力导图</el-button
               >
               <el-button
-                type="info"
+                type="warning"
                 plain
                 round
                 icon="el-icon-document"
@@ -200,7 +265,7 @@
     </div>
     <div align="center">
       <el-button
-        v-if="active != 0 && !isEdit"
+        v-if="active != 0 && !isEdit && !end"
         type="primary"
         size="small"
         @click="back"
@@ -208,14 +273,6 @@
       >
       <el-button v-if="!end" type="primary" size="small" @click="next"
         >下一步</el-button
-      >
-      <el-button
-        v-if="end"
-        type="success"
-        size="small"
-        @click="save"
-        v-loading.fullscreen.lock="fullscreenLoading"
-        >保存</el-button
       >
     </div>
   </div>
@@ -239,6 +296,7 @@ import { getDataD } from "@/components/Flow/data_D";
 import { getDataE } from "@/components/Flow/data_E";
 import { ForceDirected } from "@/components/Flow/force-directed";
 import "@/components/Flow/index.css";
+import Pagination from "@/components/Pagination";
 
 const defaultForm = {
   id: null,
@@ -260,6 +318,15 @@ export default {
       default: false,
     },
   },
+  filters: {
+    displayStatus(status) {
+      const statusMap = {
+        true: "是",
+        false: "否",
+      };
+      return statusMap[status];
+    },
+  },
   data() {
     return {
       rules: {
@@ -267,6 +334,16 @@ export default {
         code: [{ required: true, message: "请输入编号", trigger: "blur" }],
       },
       form: Object.assign({}, defaultForm),
+      formList: null,
+      page: 1,
+      totalCount: 0,
+      listLoading: true,
+      listQuery: {
+        Filter: "",
+        Sorting: "",
+        SkipCount: 0,
+        MaxResultCount: 10,
+      },
       fullscreenLoading: false,
       active: 0,
       end: false,
@@ -303,6 +380,7 @@ export default {
     FlowInfo,
     FlowNodeForm,
     FlowHelp,
+    Pagination
   },
   directives: {
     flowDrag: {
@@ -356,6 +434,7 @@ export default {
       //this.dataReload(getDataB());
       this.fetchData(id);
     } else {
+      this.getFormList();
       this.dataReload(getDefaultData());
     }
   },
@@ -365,12 +444,23 @@ export default {
         debugger;
         this.form = response;
         let data = {
-          name: response.title,
           nodeList: response.nodeList,
           lineList: response.lineList,
         };
         this.dataReload(data);
       });
+    },
+    getFormList() {
+      this.listLoading = true;
+      this.listQuery.SkipCount =
+        (this.page - 1) * this.listQuery.MaxResultCount;
+      this.$axios
+        .gets("/api/business/form", this.listQuery)
+        .then((response) => {
+          this.formList = response.items;
+          this.totalCount = response.totalCount;
+          this.listLoading = false;
+        });
     },
     jump() {
       this.$store.dispatch("tagsView/delView", this.$route);
@@ -384,6 +474,9 @@ export default {
     back() {
       this.active--;
       this.end = false;
+    },
+    handleRowClick(row) {
+      this.form.formId = row.id;
     },
     save() {
       this.$refs.form.validate((valid) => {
@@ -591,6 +684,17 @@ export default {
           })
           .catch(() => {});
       }
+    },
+    clear() {
+      this.$confirm("确定清空流程图吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.dataReload(getDefaultData());
+        })
+        .catch(() => {});
     },
     // 删除线
     deleteLine(from, to) {
