@@ -19,7 +19,6 @@ import './permission' // permission control
 import './utils/error-log' // error log
 import axios from './axios'
 import moment from 'moment'
-import VueContextMenu from 'vue-contextmenu'
 
 import * as filters from './filters' // global filters
 
@@ -35,8 +34,6 @@ if (process.env.NODE_ENV === 'production') {
   const { mockXHR } = require('../mock')
   mockXHR()
 }
-
-Vue.use(VueContextMenu)
 
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium', // set element-ui default size
