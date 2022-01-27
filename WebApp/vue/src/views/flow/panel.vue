@@ -301,7 +301,7 @@ import Pagination from "@/components/Pagination";
 const defaultForm = {
   id: null,
   flowId: null,
-  formId: "00000000-0000-0000-0000-000000000000",
+  formId: null,
   title: "",
   code: "",
   useDate: "",
@@ -441,7 +441,6 @@ export default {
   methods: {
     fetchData(id) {
       this.$axios.gets("/api/business/flow/" + id).then((response) => {
-        debugger;
         this.form = response;
         let data = {
           nodeList: response.nodeList,
@@ -548,7 +547,8 @@ export default {
               to: conn.targetId,
               label: conn.getLabel(),
             },
-            this.data
+            this.data,
+            this.form.formId
           );
         });
         // 连线

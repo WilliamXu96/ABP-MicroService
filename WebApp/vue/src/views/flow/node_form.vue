@@ -36,7 +36,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="执行权限">
-            <el-select v-model="executor" placeholder="所有人" style="width: 100%">
+            <el-select v-model="executor" placeholder="所有人" clearable  @change="handleRowClick()" style="width: 100%">
               <el-option
                 v-for="execut in executOption"
                 :key="execut.value"
@@ -46,16 +46,30 @@
             </el-select>
           </el-form-item>
           <el-form-item
-            label="指定用户"
+            label="选择用户"
             v-if="executor == 'users'"
           >
-            <el-input v-model="node.users"></el-input>
+            <el-select v-model="node.users" multiple style="width: 100%" placeholder="请选择">
+            <el-option
+              v-for="item in userList"
+              :key="item.userName"
+              :label="item.userName"
+              :value="item.userName"
+            ></el-option>
+          </el-select>
           </el-form-item>
           <el-form-item
-            label="指定角色"
+            label="选择角色"
             v-if="executor == 'roles'"
           >
-            <el-input v-model="node.roles"></el-input>
+            <el-select v-model="node.roles" multiple style="width: 100%" placeholder="请选择">
+            <el-option
+              v-for="item in roleList"
+              :key="item.name"
+              :label="item.name"
+              :value="item.name"
+            ></el-option>
+          </el-select>
           </el-form-item>
           <el-form-item>
             <el-button icon="el-icon-close" size="mini">重置</el-button>
@@ -85,10 +99,10 @@
             <div align="left" v-for="(item,index) in tempFormField" :key="index">
               <el-select v-model="item.fieldName" placeholder="请选择" size="mini" style="width:60%">
                 <el-option
-                  v-for="field in fieldOption"
-                  :key="field.value"
+                  v-for="field in fieldList"
+                  :key="field.fieldName"
                   :label="field.label"
-                  :value="field.value"
+                  :value="field.fieldName"
                 ></el-option>
               </el-select>
               <el-select
@@ -134,6 +148,9 @@ export default {
       node: {},
       line: {},
       data: {},
+      roleList: [],
+      userList:[],
+      fieldList:[],
       executor:'',
       executOption: [
         { value: "users", label: "指定用户" },
@@ -174,11 +191,22 @@ export default {
     };
   },
   methods: {
-    /**
-     * 表单修改，这里可以根据传入的ID进行业务信息获取
-     * @param data
-     * @param id
-     */
+    getAllRoles() {
+      this.$axios.gets("/api/identity/roles/all").then(response => {
+        this.roleList=response.items
+      });
+    },
+    //修改用户接口
+    getAllUsers() {
+      this.$axios.gets("/api/base/user").then(response => {
+        this.userList=response.items
+      });
+    },
+    getAllFields(id) {
+      this.$axios.gets("/api/business/form/" + id).then((response) => {
+        this.fieldList=response.fields
+      });
+    },
     nodeInit(data, id) {
       this.type = "node";
       this.data = data;
@@ -189,12 +217,12 @@ export default {
         }
       });
     },
-    lineInit(line,data) {
+    lineInit(line,data,formId) {
       this.type = "line";
       this.line = line;
+      this.getAllFields(formId)
       data.lineList.filter((i) => {
         if (i.from == line.from && i.to == line.to) {
-          
           this.tempFormField = !i.formField ? [{fieldName:'',condition:'',content:''}] : cloneDeep(i.formField);
         }
       });
@@ -209,6 +237,14 @@ export default {
     },
     removeRow(index){
       this.tempFormField.splice(index,1)
+    },
+    handleRowClick(){
+      if(this.executor=='users'){
+        this.getAllUsers()
+      }
+      if(this.executor=='roles'){
+        this.getAllRoles()
+      }
     },
     save() {
       this.data.nodeList.filter((node) => {

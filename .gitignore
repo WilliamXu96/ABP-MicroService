@@ -157,3 +157,4 @@
 /WebApp/Blazor/Blazor.App.Web/bin/Debug/net6.0
 /AuthServer/AuthServer.Host/bin/Release/net6.0
 /MicroServices/Business/.vs/Business
+/MicroServices/Business/Business.Core/bin/Debug/netstandard2.1
