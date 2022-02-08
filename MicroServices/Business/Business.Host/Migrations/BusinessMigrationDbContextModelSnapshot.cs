@@ -265,8 +265,8 @@ namespace Business.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Roles")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("State")
                         .HasMaxLength(50)
@@ -287,8 +287,8 @@ namespace Business.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Users")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.HasKey("Id");
 
@@ -324,7 +324,7 @@ namespace Business.Migrations
                     b.Property<Guid>("FieldId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("FlowLinkId")
+                    b.Property<Guid>("FlowLineId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
