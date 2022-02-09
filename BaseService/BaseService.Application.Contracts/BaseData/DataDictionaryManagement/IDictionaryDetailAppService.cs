@@ -12,6 +12,8 @@ namespace BaseService.BaseData.DataDictionaryManagement
     {
         Task<PagedResultDto<DictionaryDetailDto>> GetAll(GetDictionaryDetailInputDto input);
 
+        Task<ListResultDto<DictionaryDetailDto>> GetAllByDictionaryName(string name);
+
         Task<DictionaryDetailDto> Get(Guid id);
 
         Task<DictionaryDetailDto> Create(CreateOrUpdateDictionaryDetailDto input);

@@ -67,6 +67,11 @@ namespace BaseService.BaseData.DataDictionaryManagement
             return ObjectMapper.Map<DataDictionaryDetail, DictionaryDetailDto>(result);
         }
 
+        /// <summary>
+        /// 分页查询
+        /// </summary>
+        /// <param name="input">分页条件</param>
+        /// <returns></returns>
         public async Task<PagedResultDto<DictionaryDetailDto>> GetAll(GetDictionaryDetailInputDto input)
         {
             var query = (await _detailRepository.GetQueryableAsync()).Where(_ => _.Pid == input.Pid);
@@ -78,6 +83,21 @@ namespace BaseService.BaseData.DataDictionaryManagement
             var dots = ObjectMapper.Map<List<DataDictionaryDetail>, List<DictionaryDetailDto>>(items);
             var totalCount = await query.CountAsync();
             return new PagedResultDto<DictionaryDetailDto>(totalCount, dots);
+        }
+
+        /// <summary>
+        /// 列表查询
+        /// </summary>
+        /// <param name="name">父级字典名称</param>
+        /// <returns></returns>
+        public async Task<ListResultDto<DictionaryDetailDto>> GetAllByDictionaryName(string name)
+        {
+            var master = await _masterRepository.GetAsync(_ => _.Name == name);
+            var details = await (await _detailRepository.GetQueryableAsync()).Where(_ => _.Pid == master.Id)
+                                                                             .OrderBy(_ => _.Sort)
+                                                                             .ToListAsync();
+
+            return new ListResultDto<DictionaryDetailDto>(ObjectMapper.Map<List<DataDictionaryDetail>, List<DictionaryDetailDto>>(details));
         }
 
         [Authorize(BaseServicePermissions.DataDictionary.Update)]

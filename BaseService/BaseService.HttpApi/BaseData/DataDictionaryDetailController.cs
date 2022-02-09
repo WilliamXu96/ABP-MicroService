@@ -47,6 +47,13 @@ namespace BaseService.BaseData
             return _dictionaryDetailAppService.GetAll(input);
         }
 
+        [HttpGet]
+        [Route("list")]
+        public Task<ListResultDto<DictionaryDetailDto>> GetAllByDictionaryName(string name)
+        {
+            return _dictionaryDetailAppService.GetAllByDictionaryName(name);
+        }
+
         [HttpPut]
         [Route("{id}")]
         public Task<DictionaryDetailDto> Update(Guid id, CreateOrUpdateDictionaryDetailDto input)
