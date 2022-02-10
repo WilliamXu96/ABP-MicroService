@@ -95,14 +95,13 @@
             <el-input v-model="line.label"></el-input>
           </el-form-item>
           <el-form-item label="字段条件" size="small">
-           
             <div align="left" v-for="(item,index) in tempFormField" :key="index">
-              <el-select v-model="item.fieldName" placeholder="请选择" size="mini" style="width:60%">
+              <el-select v-model="item.fieldId" placeholder="请选择" size="mini" style="width:60%">
                 <el-option
                   v-for="field in fieldList"
-                  :key="field.fieldName"
+                  :key="field.id"
                   :label="field.label"
-                  :value="field.fieldName"
+                  :value="field.id"
                 ></el-option>
               </el-select>
               <el-select
@@ -113,9 +112,9 @@
               >
                 <el-option
                   v-for="condition in conditionOption"
-                  :key="condition.value"
+                  :key="condition.id"
                   :label="condition.label"
-                  :value="condition.value"
+                  :value="condition.id"
                 ></el-option>
               </el-select>
               <el-input size="mini" style="width:80%" v-model="item.content"></el-input>
@@ -207,6 +206,11 @@ export default {
         this.fieldList=response.fields
       });
     },
+    getAllConditions(){
+      this.$axios.gets("/api/base/dictDetails/list",{name:'condition'}).then((response) => {
+        this.conditionOption=response.items
+      });
+    },
     nodeInit(data, id) {
       this.type = "node";
       this.data = data;
@@ -221,9 +225,10 @@ export default {
       this.type = "line";
       this.line = line;
       this.getAllFields(formId)
+      this.getAllConditions()
       data.lineList.filter((i) => {
         if (i.from == line.from && i.to == line.to) {
-          this.tempFormField = !i.formField ? [{fieldName:'',condition:'',content:''}] : cloneDeep(i.formField);
+          this.tempFormField = !i.formField ? [{fieldId:'',condition:'',content:''}] : cloneDeep(i.formField);
         }
       });
     },
@@ -232,7 +237,7 @@ export default {
       this.$emit("setLineLabel", this.line.from, this.line.to, this.line.label, this.tempFormField );
     },
     addRow(){
-      var row= {fieldName:'',condition:'',content:''}
+      var row= {fieldId:'',condition:'',content:''}
       this.tempFormField.push(row)
     },
     removeRow(index){
