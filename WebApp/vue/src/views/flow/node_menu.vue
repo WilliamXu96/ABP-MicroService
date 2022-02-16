@@ -59,7 +59,14 @@
                                 ico: 'el-icon-odometer',
                                 // 自定义覆盖样式
                                 style: {}
-                            }
+                            },{
+                                id: '11',
+                                type: 'end',
+                                name: '流程结束',
+                                ico: 'el-icon-switch-button',
+                                // 自定义覆盖样式
+                                style: {}
+                            },
                         ]
                     },
                     {

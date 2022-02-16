@@ -57,6 +57,27 @@ Vue.filter('formatDateTime', function(value) {
   }
 })
 
+Vue.filter('displayWorkflowStatus', function(value) {
+  if (value == 0) {
+    return '待审核'
+  }
+  if (value == 1) {
+    return '已审核'
+  }
+})
+
+Vue.filter('workflowStatusFilter', function(value) {
+  if (value == 0) {
+    return 'info'
+  }
+  else if (value == 1) {
+    return 'success'
+  }
+  else{
+    return 'info'
+  }
+})
+
 Vue.prototype.$axios = axios
 Vue.config.productionTip = false
 

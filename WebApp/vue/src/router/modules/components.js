@@ -9,7 +9,7 @@ const componentsRouter = {
   name: 'ComponentDemo',
   meta: {
     title: 'components',
-    icon: 'component'
+    icon: 'plugin'
   },
   children: [
     {

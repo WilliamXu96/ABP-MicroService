@@ -108,7 +108,7 @@ export const asyncRoutes = [{
     alwaysShow: true,
     name: 'SAAS',
     meta: {
-      title: 'Saas',
+      title: 'SaaS',
       icon: 'cloud',
       roles: ['AbpTenantManagement.Tenants'],
     },
@@ -194,6 +194,26 @@ export const asyncRoutes = [{
         }
       },
     ]
+  },
+  {
+    path: '/base',
+    component: Layout,
+    redirect: '/base/book',
+    alwaysShow: true,
+    name: 'BASE',
+    meta: {
+      title: 'base',
+      icon: 'base'
+    },
+    children: [{
+      path: 'book',
+      component: () => import('@/views/book/index'),
+      name: 'Book',
+      meta: {
+        title: 'book',
+        icon: 'book'
+      }
+    }]
   },
   {
     path: '/tool',

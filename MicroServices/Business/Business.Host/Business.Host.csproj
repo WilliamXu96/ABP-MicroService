@@ -34,4 +34,8 @@
     <ProjectReference Include="..\Business.HttpApi\Business.HttpApi.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

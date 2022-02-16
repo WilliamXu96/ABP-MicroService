@@ -75,7 +75,7 @@
         </template>
       </el-table-column>
       <el-table-column label="流程标题" prop="title" align="center" />
-      <el-table-column label="关联表单" prop="formId" align="center" />
+      <el-table-column label="关联表单" prop="formName" align="center" />
       <el-table-column label="启用日期" sortable="custom" prop="useDate" align="center" />
       <el-table-column label="级别" sortable="custom" prop="level" align="center">
         <!-- <template slot-scope="scope">

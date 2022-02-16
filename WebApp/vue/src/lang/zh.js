@@ -59,6 +59,8 @@ export default {
     pdf: 'PDF',
     exportZip: 'Export Zip',
     profile: '个人中心',
+    base: '基础资料',
+    book: '书籍管理',
     tenant:'租户管理',
     systemManagement:'系统管理',
     user:'用户管理',

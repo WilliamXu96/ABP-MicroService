@@ -7,25 +7,26 @@ using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
-using XCZ.Extensions;
-using XCZ.FormManagement.Dto;
 using Business.BookManagement.Dto;
 using Business.Models;
-using Microsoft.AspNetCore.Authorization;
-using Business.Permissions;
+using XCZ.WrokFlowManagement;
 
 namespace Business.BookManagement
 {
     //[Authorize(BusinessPermissions.Book.Default)]
-    public class BookAppService : ApplicationService,IBookAppService
+    public class BookAppService : ApplicationService, IBookAppService
     {
+        private const string FormName = "Book";
         private IRepository<Book, Guid> _repository;
+        private readonly IWrokFlowAppService _wrokFlowAppService;
 
         public BookAppService(
-            IRepository<Book, Guid> repository
+            IRepository<Book, Guid> repository,
+            IWrokFlowAppService wrokFlowAppService
             )
         {
             _repository = repository;
+            _wrokFlowAppService = wrokFlowAppService;
         }
         #region 增删改查基础方法
 
@@ -44,8 +45,8 @@ namespace Business.BookManagement
             var items = await query.OrderBy(input.Sorting ?? "Id")
                         .ToListAsync();
 
-            var dto = ObjectMapper.Map<List<Book>, List<BookDto>>(items);
-            return new PagedResultDto<BookDto>(totalCount, dto);
+            var dtos = ObjectMapper.Map<List<Book>, List<BookDto>>(items);
+            return new PagedResultDto<BookDto>(totalCount, dtos);
         }
 
         public async Task<BookDto> CreateOrUpdate(CreateOrUpdateBookDto input)
@@ -55,12 +56,17 @@ namespace Business.BookManagement
             {
                 input.Id = GuidGenerator.Create();
                 result = await _repository.InsertAsync(ObjectMapper.Map<CreateOrUpdateBookDto, Book>(input));
+
+                //创建工作流
+                await _wrokFlowAppService.CreateWorkFlow(FormName, input.Id.Value);
             }
             else
             {
                 var data = await _repository.GetAsync(input.Id.Value);
                 result = await _repository.UpdateAsync(ObjectMapper.Map(input, data));
             }
+
+
             return ObjectMapper.Map<Book, BookDto>(result);
         }
 
@@ -72,8 +78,6 @@ namespace Business.BookManagement
             }
 
         }
-
-     
         #endregion
 
     }

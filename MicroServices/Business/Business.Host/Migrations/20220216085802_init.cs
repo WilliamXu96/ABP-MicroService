@@ -163,6 +163,30 @@ namespace Business.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "base_form_workflow",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    FormId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    BaseFlowId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    NodeId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
+                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_base_form_workflow", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Book",
                 columns: table => new
                 {
@@ -188,6 +212,11 @@ namespace Business.Migrations
                 name: "IX_base_flow_FormId",
                 table: "base_flow",
                 column: "FormId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_base_form_workflow_EntityId",
+                table: "base_form_workflow",
+                column: "EntityId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -209,6 +238,9 @@ namespace Business.Migrations
 
             migrationBuilder.DropTable(
                 name: "base_form_fields");
+
+            migrationBuilder.DropTable(
+                name: "base_form_workflow");
 
             migrationBuilder.DropTable(
                 name: "Book");
