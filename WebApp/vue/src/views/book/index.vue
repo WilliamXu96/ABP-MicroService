@@ -14,7 +14,7 @@
       <el-button slot="reference" class="filter-item" type="danger" icon="el-icon-delete" size="mini"
         @click="handleDelete()">删除</el-button>
         <el-button class="filter-item" type="warning" icon="el-icon-s-check" size="mini"
-        @click="handleDelete()">审核</el-button>
+        @click="handleCheck()">审核</el-button>
       </div>
     </div>
     <el-dialog :visible.sync="dialogFormVisible" :close-on-click-modal="false" @close="cancel()"
@@ -123,7 +123,7 @@ export default {
   },
   mounted() {},
   methods: {
-    getWorkFlowStatus(items,ids){
+    getListStatus(items,ids){
       this.$axios.posts('api/business/workflow/status', ids).then(response => {
         items.forEach(element=>{response.items.filter((i)=>{if(i.entityId===element.id){element.status=i.status}})})
         this.list=items
@@ -134,9 +134,8 @@ export default {
       this.listLoading = true;
       this.listQuery.SkipCount = (this.page - 1) * this.listQuery.MaxResultCount;
       this.$axios.gets('/api/business/book', this.listQuery).then(response => {
-        //this.list = response.items;
         this.totalCount = response.totalCount;
-        this.getWorkFlowStatus(response.items,response.items.map(_=>_.id))
+        this.getListStatus(response.items,response.items.map(_=>_.id))
       });
     },
     fetchData(id) {
@@ -192,6 +191,42 @@ export default {
         this.$message({
           type: 'info',
           message: '已取消删除'
+        });
+      });
+    },
+    handleCheck() {
+        if (this.multipleSelection.length === 0) {
+          this.$message({
+            message: '未选择',
+            type: 'warning'
+          });
+          return;
+        }
+        if (this.multipleSelection.length > 1) {
+          this.$message({
+            message: '暂不支持批量审核',
+            type: 'warning'
+          });
+          return;
+        }
+      this.$confirm('是否审核所选项?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$axios.puts('api/business/workflow/do/'+ this.multipleSelection[0].id).then(response => {
+          this.$notify({
+            title: '成功',
+            message: '审核成功',
+            type: 'success',
+            duration: 2000
+          });
+          this.getList();
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消审核'
         });
       });
     },

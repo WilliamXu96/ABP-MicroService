@@ -164,7 +164,7 @@
                 size="mini"
                 >流程信息</el-button
               >
-              <el-button
+              <!-- <el-button
                 type="primary"
                 plain
                 round
@@ -208,7 +208,7 @@
                 icon="el-icon-refresh"
                 size="mini"
                 >力导图</el-button
-              >
+              > -->
               <el-button
                 type="warning"
                 plain

@@ -13,7 +13,7 @@ import {
 axios.defaults.timeout = 10000
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8;'
 //TODO:配置读取
-axios.defaults.headers['Accept-Language']="zh-Hans"
+axios.defaults.headers['Accept-Language'] = "zh-Hans"
 // axios.defaults.baseURL = '';
 axios.defaults.baseURL = config.base.ip
 // POST传参序列化
@@ -52,51 +52,65 @@ axios.interceptors.response.use((res) => {
         break
 
       case 400:
+        error.code = err.response.data.error.code
         error.message = err.response.data.error.message
         error.details = err.response.data.error.details
         break
 
       case 403:
+        error.code = err.response.data.error.code
         error.message = err.response.data.error.message
-        error.details = err.response.data.error.code
+        error.details = err.response.data.error.details
         break
 
       case 404:
-        error.message = '未找到服务'
-        error.details = '未找到服务'
+        if (!err.response.data) {
+          error.code = '未找到服务！'
+        } else {
+          error.code = err.response.data.error.code
+          error.message = err.response.data.error.message
+          error.details = err.response.data.error.details
+        }
         break
 
       case 408:
+        error.code = err.response.data.error.code
         error.message = err.response.data.error.message
         error.details = err.response.data.error.details
         break
 
       case 500:
+        error.code = err.response.data.error.code
         error.message = err.response.data.error.message
-        error.details = err.response.data.error.message
+        error.details = err.response.data.error.details
         break
 
       case 501:
+        error.code = err.response.data.error.code
         error.message = err.response.data.error.message
         error.details = err.response.data.error.details
         break
 
       case 502:
-        error.message = '502 Bad Gateway'
-        error.details = '网络错误'
+        error.code = err.response.data.error.code
+        error.message = err.response.data.error.message
+        error.details = err.response.data.error.details
         break
 
       case 503:
+        error.code = err.response.data.error.code
         error.message = err.response.data.error.message
         error.details = err.response.data.error.details
         break
 
       case 504:
+        error.code = err.response.data.error.code
         error.message = err.response.data.error.message
         error.details = err.response.data.error.details
         break
 
       case 505:
+        error.code = err.response.data.error.code
         error.message = err.response.data.error.message
         error.details = err.response.data.error.details
         break
@@ -119,7 +133,7 @@ export default {
           resolve(response.data)
         }, err => {
           Message({
-            message: err.error.details,
+            message: !err.error.code?err.error.message:err.error.code,
             type: 'error',
             duration: 5 * 1000
           })
@@ -127,83 +141,6 @@ export default {
         })
         .catch((error) => {
           reject(error)
-        })
-    })
-  },
-  saves(url, params) { // 保存方法
-    return new Promise((resolve, reject) => {
-      const loading = Loading.service({
-        lock: true,
-        target: document.querySelector('.contentWrapper')
-      })
-      axios.post(url, params)
-        .then(response => {
-          loading.close()
-          resolve(response.data)
-        }, err => {
-          Message({
-            message: err.error.message,
-            type: 'error',
-            duration: 5 * 1000
-          })
-          reject(err)
-          loading.close()
-        })
-        .catch((error) => {
-          loading.close()
-          reject(error)
-        })
-    })
-  },
-  update(url, params) { // 修改方法
-    return new Promise((resolve, reject) => {
-      const loading = Loading.service({
-        lock: true,
-        target: document.querySelector('.contentWrapper')
-      })
-      axios.put(url, params)
-        .then(response => {
-          loading.close()
-          resolve(response.data)
-        }, err => {
-          Message({
-            message: err.error.message,
-            type: 'error',
-            duration: 5 * 1000
-          })
-          reject(err)
-          loading.close()
-        })
-        .catch((error) => {
-          loading.close()
-          reject(error)
-        })
-    })
-  },
-  view(url, params) {
-    return new Promise((resolve, reject) => {
-      const loading = Loading.service({
-        lock: true,
-        target: document.querySelector('.contentWrapper')
-      })
-      axios.get(url, {
-          'params': params
-        })
-        .then(response => {
-          resolve(response.data)
-          loading.close()
-        }, err => {
-          Message({
-            message: err.error.message,
-            type: 'error',
-            duration: 5 * 1000
-          })
-          reject(err)
-          loading.close()
-        })
-        .catch((error) => {
-          reject(error)
-          loading.close()
         })
     })
   },
@@ -216,7 +153,7 @@ export default {
           resolve(response.data)
         }, err => {
           Message({
-            message: err.error.message,
+            message: !err.error.code?err.error.message:err.error.code,
             type: 'error',
             duration: 5 * 1000
           })
@@ -236,7 +173,7 @@ export default {
           resolve(response.data)
         }, err => {
           Message({
-            message: err.error.message,
+            message: !err.error.code?err.error.message:err.error.code,
             type: 'error',
             duration: 5 * 1000
           })
@@ -254,7 +191,7 @@ export default {
           resolve(response.data)
         }, err => {
           Message({
-            message: err.error.message,
+            message: !err.error.code?err.error.message:err.error.code,
             type: 'error',
             duration: 5 * 1000
           })
@@ -270,7 +207,7 @@ export default {
       baseURL: config.auth.ip
     })
     if (params.tenant && params.tenant.trim() != '') {
-      url=url+"?__tenant="+params.tenant
+      url = url + "?__tenant=" + params.tenant
     }
     var data = qs.stringify(params)
     return new Promise((resolve, reject) => {

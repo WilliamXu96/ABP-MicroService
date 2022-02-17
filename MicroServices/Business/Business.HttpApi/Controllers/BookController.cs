@@ -12,7 +12,7 @@ namespace Business.Controllers
 {
     [RemoteService]
     [Area("Business")]
-    [Route("api/app/Book")]
+    [Route("api/business/book")]
     public class BookController : AbpController
     {
         private readonly IBookAppService _BookAppService;
