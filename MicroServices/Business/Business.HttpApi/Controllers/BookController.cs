@@ -23,6 +23,7 @@ namespace Business.Controllers
         }
 
         [HttpPost]
+        [Route("data-post")]
         public Task<BookDto> CreateOrUpdate(CreateOrUpdateBookDto input)
         {
             return _BookAppService.CreateOrUpdate(input);

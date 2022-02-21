@@ -567,8 +567,10 @@ namespace Business.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("LastModifierId");
 
-                    b.Property<Guid?>("NodeId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("NodeId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("Status")
                         .ValueGeneratedOnAdd()
@@ -582,6 +584,8 @@ namespace Business.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("EntityId");
+
+                    b.HasIndex("NodeId");
 
                     b.ToTable("base_form_workflow", (string)null);
                 });

@@ -214,6 +214,8 @@ export default {
     nodeInit(data, id) {
       this.type = "node";
       this.data = data;
+      this.getAllUsers()
+      this.getAllRoles()
       data.nodeList.filter((node) => {
         if (node.id === id) {
           this.node = cloneDeep(node);
@@ -244,12 +246,12 @@ export default {
       this.tempFormField.splice(index,1)
     },
     handleRowClick(){
-      if(this.executor=='users'){
-        this.getAllUsers()
-      }
-      if(this.executor=='roles'){
-        this.getAllRoles()
-      }
+      // if(this.executor=='users'){
+      //   this.getAllUsers()
+      // }
+      // if(this.executor=='roles'){
+      //   this.getAllRoles()
+      // }
     },
     save() {
       this.data.nodeList.filter((node) => {
