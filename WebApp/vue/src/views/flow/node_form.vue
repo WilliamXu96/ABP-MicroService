@@ -114,7 +114,7 @@
                   v-for="condition in conditionOption"
                   :key="condition.id"
                   :label="condition.label"
-                  :value="condition.id"
+                  :value="condition.value"
                 ></el-option>
               </el-select>
               <el-input size="mini" style="width:80%" v-model="item.content"></el-input>

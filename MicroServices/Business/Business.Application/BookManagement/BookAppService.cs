@@ -58,7 +58,7 @@ namespace Business.BookManagement
                 result = await _repository.InsertAsync(ObjectMapper.Map<CreateOrUpdateBookDto, Book>(input));
 
                 //创建工作流
-                await _wrokFlowAppService.CreateWorkFlow(FormName, input.Id.Value);
+                await _wrokFlowAppService.CreateWorkFlow(FormName, result);
             }
             else
             {

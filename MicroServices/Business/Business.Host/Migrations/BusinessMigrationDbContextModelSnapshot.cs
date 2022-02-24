@@ -310,8 +310,9 @@ namespace Business.Migrations
                         .HasColumnType("nvarchar(40)")
                         .HasColumnName("ConcurrencyStamp");
 
-                    b.Property<Guid>("Condition")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Condition")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Content")
                         .HasMaxLength(1000)

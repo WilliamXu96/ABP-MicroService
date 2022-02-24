@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>Business</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>2.7.0</Version>
+    <Version>2.7.1</Version>
     <PackageId>XCZ.Business.HttpApi</PackageId>
     <Authors>XCZ</Authors>
     <Description>Business服务HttpApi远程依赖</Description>
@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="Volo.Abp.AspNetCore.Mvc" Version="5.0.0" />
-    <PackageReference Include="XCZ.FlowManagement.HttpApi" Version="1.1.2" />
+    <PackageReference Include="XCZ.FlowManagement.HttpApi" Version="1.1.3" />
     <PackageReference Include="XCZ.FormManagement.HttpApi" Version="1.6.0" />
   </ItemGroup>
 
