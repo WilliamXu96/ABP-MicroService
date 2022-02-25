@@ -158,3 +158,4 @@
 /AuthServer/AuthServer.Host/bin/Release/net6.0
 /MicroServices/Business/.vs/Business
 /MicroServices/Business/Business.Core/bin/Debug/netstandard2.1
+/Gateways/WebAppGateway/WebAppGateway.Host/bin/Debug/net6.0

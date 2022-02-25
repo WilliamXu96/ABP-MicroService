@@ -40,7 +40,7 @@ namespace WebAppGateway
 
             try
             {
-                Log.Information("Starting Business.Host");
+                Log.Information("Starting WebAppGateway.Host");
                 CreateHostBuilder(args).Build().Run();
                 return 0;
             }
