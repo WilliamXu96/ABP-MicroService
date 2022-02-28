@@ -1,4 +1,5 @@
 ﻿using BaseService.BaseData;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 using Volo.Abp.Data;
@@ -33,6 +34,8 @@ namespace BaseService.DataSeeder
         //创建数据字典
         private async Task CreateDataDictionaries()
         {
+            var exist = await (await _dataDicRepository.GetQueryableAsync()).AnyAsync(d => d.Name == "condition");
+            if (exist) return;
             var id = _guidGenerator.Create();
             await _dataDicRepository.InsertAsync(new DataDictionary(id, null, "condition", "表单条件"));
             await CreateDataDictionaryDetails(id);
