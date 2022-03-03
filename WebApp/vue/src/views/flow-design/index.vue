@@ -192,7 +192,7 @@ export default {
               params.push(id);
             });
             this.$axios
-              .posts("/api/basicData/material/delete", params)
+              .posts("/api/business/flow/delete", params)
               .then((response) => {
                 this.$notify({
                   title: "成功",
