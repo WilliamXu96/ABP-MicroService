@@ -123,7 +123,7 @@
             
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" icon="el-icon-plus" size="mini" @click="addRow">新增</el-button>
+            <el-button type="primary" icon="el-icon-plus" size="mini" @click="addRow">添加</el-button>
             <el-button type="primary" size="mini" icon="el-icon-check" @click="saveLine"
               >暂存</el-button
             >
@@ -239,6 +239,13 @@ export default {
       this.$emit("setLineLabel", this.line.from, this.line.to, this.line.label, this.tempFormField );
     },
     addRow(){
+      if(this.tempFormField.length>0){
+        this.$alert("暂不支持多字段条件", "提示", {
+          confirmButtonText: "确定",
+        });
+        return
+      }
+      
       var row= {fieldId:'',condition:'',content:''}
       this.tempFormField.push(row)
     },
@@ -246,12 +253,6 @@ export default {
       this.tempFormField.splice(index,1)
     },
     handleRowClick(){
-      // if(this.executor=='users'){
-      //   this.getAllUsers()
-      // }
-      // if(this.executor=='roles'){
-      //   this.getAllRoles()
-      // }
     },
     save() {
       this.data.nodeList.filter((node) => {

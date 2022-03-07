@@ -63,6 +63,9 @@ Run the script in the run directory
 #### Form design/code generation
 <img src="https://i.loli.net/2020/09/30/eGybATBz6874mq5.gif"/>
 
+#### Flow design
+<img src="https://s2.loli.net/2022/03/03/9ReEZNYSTiQBIvC.gif"/>
+
 #### File storage
 <img src="https://i.loli.net/2020/09/23/MgwR9oQWzmK5qGP.gif"/>
 
