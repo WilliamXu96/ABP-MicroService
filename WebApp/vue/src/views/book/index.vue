@@ -214,7 +214,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$axios.puts('api/business/workflow/do/'+ this.multipleSelection[0].id).then(response => {
+        this.$axios.puts('api/business/workflow/do/'+ this.multipleSelection[0].id, { data: JSON.stringify(this.multipleSelection[0])}).then(response => {
           this.$notify({
             title: '成功',
             message: '审核成功',

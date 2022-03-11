@@ -10,10 +10,12 @@ using Volo.Abp.Domain.Repositories;
 using Business.BookManagement.Dto;
 using Business.Models;
 using XCZ.WrokFlowManagement;
+using Microsoft.AspNetCore.Authorization;
+using Business.Permissions;
 
 namespace Business.BookManagement
 {
-    //[Authorize(BusinessPermissions.Book.Default)]
+    [Authorize(BusinessPermissions.Book.Default)]
     public class BookAppService : ApplicationService, IBookAppService
     {
         private const string FormName = "Book";
