@@ -1,15 +1,23 @@
 ﻿using BaseService.Localization;
+using Business;
 using Localization.Resources.AbpUi;
 using Microsoft.Extensions.DependencyInjection;
-using Volo.Abp.AspNetCore.Mvc;
+using Volo.Abp.Account;
+using Volo.Abp.Identity;
 using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
+using Volo.Abp.PermissionManagement.HttpApi;
+using Volo.Abp.TenantManagement;
 
 namespace BaseService
 {
     [DependsOn(
         typeof(BaseServiceApplicationContractsModule),
-        typeof(AbpAspNetCoreMvcModule)
+        typeof(AbpAccountHttpApiModule),
+        typeof(AbpPermissionManagementHttpApiModule),
+        typeof(AbpTenantManagementHttpApiModule),
+        typeof(AbpIdentityHttpApiModule),
+        typeof(BusinessHttpApiModule)
     )]
     public class BaseServiceHttpApiModule : AbpModule
     {

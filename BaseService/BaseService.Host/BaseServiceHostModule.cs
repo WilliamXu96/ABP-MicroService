@@ -35,10 +35,7 @@ namespace BaseService
         typeof(BaseServiceEntityFrameworkCoreModule),
         typeof(BaseServiceHttpApiModule),
         typeof(AbpAspNetCoreMultiTenancyModule),
-        typeof(AbpPermissionManagementHttpApiModule),
-        typeof(AbpTenantManagementHttpApiModule),
-        typeof(AbpIdentityHttpApiModule),
-        typeof(BusinessHttpApiModule),
+        
         typeof(AbpAspNetCoreSerilogModule)
     )]
     public class BaseServiceHostModule : AbpModule

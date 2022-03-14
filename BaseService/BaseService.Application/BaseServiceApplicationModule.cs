@@ -1,4 +1,5 @@
-﻿using Volo.Abp.AutoMapper;
+﻿using Volo.Abp.Account;
+using Volo.Abp.AutoMapper;
 using Volo.Abp.Identity;
 using Volo.Abp.Modularity;
 using Volo.Abp.PermissionManagement;
@@ -8,6 +9,7 @@ namespace BaseService
 {
     [DependsOn(
         typeof(BaseServiceApplicationContractsModule),
+        typeof(AbpAccountApplicationModule),
         typeof(AbpPermissionManagementApplicationModule),
         typeof(AbpTenantManagementApplicationModule),
         typeof(AbpIdentityApplicationModule),
