@@ -224,6 +224,7 @@ export const asyncRoutes = [{
     meta: {
       title: 'tool',
       icon: 'tool',
+      roles: ['FormManagement.Form','FlowManagement.Flow','FormManagement.FormBuild','StorageManagement.File']
     },
     children: [{
         path: 'form',
@@ -231,6 +232,7 @@ export const asyncRoutes = [{
         name: 'Forms',
         meta: {
           title: 'form',
+          roles: ['FormManagement.Form'],
           icon: 'control'
         }
       },
@@ -248,6 +250,7 @@ export const asyncRoutes = [{
         component: () => import('@/views/form/create'),
         name: 'FormCreate',
         meta: {
+          roles: ['FormManagement.Form.Create'],
           title: 'formCreate'
         },
         hidden: true
@@ -257,6 +260,7 @@ export const asyncRoutes = [{
         component: () => import('@/views/form/edit'),
         name: 'FormEdit',
         meta: {
+          roles: ['FormManagement.Form.Update'],
           title: 'formEdit'
         },
         hidden: true
@@ -267,6 +271,7 @@ export const asyncRoutes = [{
         name: 'Flows',
         meta: {
           title: 'flows',
+          roles: ['FlowManagement.Flow'],
           icon: 'flow'
         },
       },
@@ -275,6 +280,7 @@ export const asyncRoutes = [{
         component: () => import('@/views/flow-design/create'),
         name: 'FlowDesignCreate',
         meta: {
+          roles: ['FlowManagement.Flow.Create'],
           title: 'flowDesignCreate'
         },
         hidden: true
@@ -284,6 +290,7 @@ export const asyncRoutes = [{
         component: () => import('@/views/flow-design/edit'),
         name: 'FlowDesignEdit',
         meta: {
+          roles: ['FlowManagement.Flow.Update'],
           title: 'flowDesignEdit'
         },
         hidden: true
@@ -294,6 +301,7 @@ export const asyncRoutes = [{
         name: 'Builds',
         meta: {
           title: 'build',
+          roles: ['FormManagement.FormBuild'],
           icon: 'code'
         }
       },
@@ -302,6 +310,7 @@ export const asyncRoutes = [{
         component: () => import('@/views/build/components/index'),
         name: 'BuildEdit',
         meta: {
+          roles: ['FormManagement.FormBuild.Update'],
           title: 'buildEdit'
         },
         hidden: true
@@ -312,6 +321,7 @@ export const asyncRoutes = [{
         name: 'Storage',
         meta: {
           title: 'storage',
+          roles: ['StorageManagement.File'],
           icon: 'storage'
         },
       }

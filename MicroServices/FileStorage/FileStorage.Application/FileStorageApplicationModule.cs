@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Volo.Abp.AutoMapper;
+﻿using Volo.Abp.AutoMapper;
 using Volo.Abp.Modularity;
 
 namespace FileStorage
 {
     [DependsOn(
+        typeof(FileStorageDomainModule),
         typeof(FileStorageApplicationContractsModule),
         typeof(AbpAutoMapperModule)
     )]

@@ -3,15 +3,41 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>FileStorage</RootNamespace>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageId>XCZ.FileStorage.Application.Contracts</PackageId>
+    <Version>0.1.1</Version>
+    <Authors>XCZ</Authors>
+    <Product>FileStorage</Product>
+    <Description>FileStorage服务Application.Contracts远程依赖</Description>
+    <PackageProjectUrl>https://github.com/WilliamXu96/ABP-MicroService</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/WilliamXu96/ABP-MicroService</RepositoryUrl>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Localization\Storage\cs.json" />
+    <None Remove="Localization\Storage\en.json" />
+    <None Remove="Localization\Storage\pl.json" />
+    <None Remove="Localization\Storage\pt-BR.json" />
+    <None Remove="Localization\Storage\tr.json" />
+    <None Remove="Localization\Storage\vi.json" />
+    <None Remove="Localization\Storage\zh-Hans.json" />
+    <None Remove="Localization\Storage\zh-Hant.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Localization\Storage\cs.json" />
+    <EmbeddedResource Include="Localization\Storage\en.json" />
+    <EmbeddedResource Include="Localization\Storage\pl.json" />
+    <EmbeddedResource Include="Localization\Storage\pt-BR.json" />
+    <EmbeddedResource Include="Localization\Storage\tr.json" />
+    <EmbeddedResource Include="Localization\Storage\vi.json" />
+    <EmbeddedResource Include="Localization\Storage\zh-Hans.json" />
+    <EmbeddedResource Include="Localization\Storage\zh-Hant.json" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Volo.Abp.Ddd.Application" Version="5.0.0" />
     <PackageReference Include="Volo.Abp.PermissionManagement.Application.Contracts" Version="5.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\FileStorage.Domain\FileStorage.Domain.csproj" />
   </ItemGroup>
 
 </Project>

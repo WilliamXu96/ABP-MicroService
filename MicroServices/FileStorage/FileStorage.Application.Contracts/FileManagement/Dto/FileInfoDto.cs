@@ -1,5 +1,4 @@
-﻿using FileStorage.Enums;
-using System;
+﻿using System;
 using Volo.Abp.Application.Dtos;
 
 namespace FileStorage.FileManagement.Dto
@@ -16,7 +15,7 @@ namespace FileStorage.FileManagement.Dto
 
         public string Url { get; set; }
 
-        public FileType Type { get; set; }
+        public int Type { get; set; }
 
         public DateTime CreationTime { get; set; }
     }

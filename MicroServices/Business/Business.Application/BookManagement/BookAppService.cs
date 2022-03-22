@@ -9,7 +9,7 @@ using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
 using Business.BookManagement.Dto;
 using Business.Models;
-using XCZ.WrokFlowManagement;
+using XCZ.WorkFlowManagement;
 using Microsoft.AspNetCore.Authorization;
 using Business.Permissions;
 
@@ -20,15 +20,15 @@ namespace Business.BookManagement
     {
         private const string FormName = "Book";
         private IRepository<Book, Guid> _repository;
-        private readonly IWrokFlowAppService _wrokFlowAppService;
+        private readonly IWorkFlowAppService _workFlowAppService;
 
         public BookAppService(
             IRepository<Book, Guid> repository,
-            IWrokFlowAppService wrokFlowAppService
+            IWorkFlowAppService workFlowAppService
             )
         {
             _repository = repository;
-            _wrokFlowAppService = wrokFlowAppService;
+            _workFlowAppService = workFlowAppService;
         }
         #region 增删改查基础方法
 
@@ -60,7 +60,7 @@ namespace Business.BookManagement
                 result = await _repository.InsertAsync(ObjectMapper.Map<CreateOrUpdateBookDto, Book>(input));
 
                 //创建工作流
-                await _wrokFlowAppService.CreateWorkFlow(FormName, result);
+                await _workFlowAppService.CreateWorkFlow(FormName, result);
             }
             else
             {

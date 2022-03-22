@@ -1,15 +1,14 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Modularity;
+using Volo.Abp.PermissionManagement.EntityFrameworkCore;
 
 namespace FileStorage.EntityFrameworkCore
 {
     [DependsOn(
         typeof(FileStorageDomainModule),
-        typeof(AbpEntityFrameworkCoreModule)
+        typeof(AbpEntityFrameworkCoreModule),
+        typeof(AbpPermissionManagementEntityFrameworkCoreModule)
     )]
     public class FileStorageEntityFrameworkCoreModule : AbpModule
     {
