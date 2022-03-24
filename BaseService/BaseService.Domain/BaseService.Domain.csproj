@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Localization\BaseService\cs.json" />
+    <None  Remove="Localization\BaseService\cs.json" />
     <None Remove="Localization\BaseService\en.json" />
     <None Remove="Localization\BaseService\zh-Hans.json" />
     <None Remove="Localization\BaseService\zh-Hant.json" />
