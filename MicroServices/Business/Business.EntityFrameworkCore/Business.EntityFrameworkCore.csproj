@@ -21,7 +21,7 @@
     <PackageReference Include="Volo.Abp.SettingManagement.EntityFrameworkCore" Version="5.0.0" />
     <PackageReference Include="Volo.Abp.TenantManagement.EntityFrameworkCore" Version="5.0.0" />
     <PackageReference Include="XCZ.FlowManagement.EntityFrameworkCore" Version="1.1.6" />
-    <PackageReference Include="XCZ.FormManagement.EntityFrameworkCore" Version="1.6.0" />
+    <PackageReference Include="XCZ.FormManagement.EntityFrameworkCore" Version="1.6.4" />
   </ItemGroup>
 
   <ItemGroup>
