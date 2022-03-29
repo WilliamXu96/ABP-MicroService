@@ -4,6 +4,7 @@ using BaseService.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Volo.Abp.EntityFrameworkCore;
 
@@ -12,9 +13,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace BaseService.Migrations
 {
     [DbContext(typeof(BaseServiceMigrationDbContext))]
-    partial class BaseServiceMigrationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220325061005_update_abp5.1.4")]
+    partial class update_abp514
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
