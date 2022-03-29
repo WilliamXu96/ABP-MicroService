@@ -307,7 +307,7 @@ export default {
           field.regx=clone.regx
           field.span=item.span
           //clone.options=item.disabled
-          // field.span = formConf.span;
+          //field.span = formConf.span;
           field.tag = clone.tag
           field.style = clone.style
           field.clearable = clone.clearable
