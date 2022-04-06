@@ -64,7 +64,10 @@ namespace Business.Migrations
                     BaseFlowId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FlowLineId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FieldId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Condition = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FieldName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    FieldType = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    Condition = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    IntContent = table.Column<int>(type: "int", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     Remark = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
@@ -154,6 +157,7 @@ namespace Business.Migrations
                     Disabled = table.Column<bool>(type: "bit", nullable: false),
                     Regx = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Options = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Span = table.Column<int>(type: "int", nullable: false),
                     ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true)
                 },
@@ -173,7 +177,7 @@ namespace Business.Migrations
                     BaseFlowId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     EntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    NodeId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    NodeId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
                     CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -217,6 +221,11 @@ namespace Business.Migrations
                 name: "IX_base_form_workflow_EntityId",
                 table: "base_form_workflow",
                 column: "EntityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_base_form_workflow_NodeId",
+                table: "base_form_workflow",
+                column: "NodeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
