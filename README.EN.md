@@ -70,4 +70,4 @@ Run the script in the run directory
 <img src="https://i.loli.net/2020/09/23/MgwR9oQWzmK5qGP.gif"/>
 
 #### Feedback
-- **QQ exchange group: 1083795392  491813069**
+- **QQ exchange group: 1083795392,  491813069**
