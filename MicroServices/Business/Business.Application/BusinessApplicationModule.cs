@@ -1,4 +1,5 @@
-﻿using Volo.Abp.AutoMapper;
+﻿using Volo.Abp.Application;
+using Volo.Abp.AutoMapper;
 using Volo.Abp.BackgroundJobs.Hangfire;
 using Volo.Abp.Http.Client.IdentityModel;
 using Volo.Abp.Identity;
@@ -10,6 +11,7 @@ namespace Business
     [DependsOn(
         typeof(BusinessDomainModule),
         typeof(BusinessApplicationContractsModule),
+        typeof(AbpDddApplicationModule),
         typeof(AbpHttpClientIdentityModelModule),
         typeof(AbpIdentityHttpApiClientModule),
         typeof(FormApplicationModule),
