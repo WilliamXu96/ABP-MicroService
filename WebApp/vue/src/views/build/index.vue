@@ -27,11 +27,17 @@
           @click="handleConfig"
         >配置</el-button>
         <el-button
-          type="primary"
-          icon="el-icon-download"
+          type="warning"
+          icon="el-icon-plus"
           size="mini"
           @click="handleGen"
         >生成</el-button>
+        <el-button
+          type="info"
+          icon="el-icon-download"
+          size="mini"
+          @click="handleDownload"
+        >下载</el-button>
       </div>
     </div>
     <el-table
@@ -160,6 +166,32 @@ export default {
                 type: "success",
                 duration: 2000,
               });
+            });
+        }
+    },
+    handleDownload(){
+      if (this.multipleSelection.length != 1) {
+          this.$message({
+            message: "下载代码必须选择单行",
+            type: "warning",
+          });
+          return;
+        } else {
+          this.$axios
+            .downLoad("/api/business/build/download/" + this.multipleSelection[0].id)
+            .then((response) => {
+              this.$notify({
+                title: "成功",
+                message: "下载成功",
+                type: "success",
+                duration: 2000,
+              });
+              const url = window.URL.createObjectURL(new Blob([response.data]));
+              const link = document.createElement('a');
+              link.href = url;
+              link.setAttribute('download',this.multipleSelection[0].formName+'.zip');
+              document.body.appendChild(link);
+              link.click();
             });
         }
     },

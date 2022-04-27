@@ -202,6 +202,26 @@ export default {
         })
     })
   },
+  downLoad(url, params) {
+    var instance = axios.create({
+      responseType: 'blob'
+    })
+    instance.defaults.headers.Authorization = 'Bearer ' + getToken()
+    instance.defaults.headers['Accept-Language']="zh-Hans"
+    return new Promise((resolve, reject) => {
+      instance.get(url, {
+        'params': params
+      })
+        .then(response => {
+          resolve(response)
+        }, err => {
+          reject(err)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
   instancePosts(url, params) { // 登录
     var instance = axios.create({
       baseURL: config.auth.ip
