@@ -9,4 +9,4 @@ RUN dotnet publish -c Release -o publish
 FROM mcr.microsoft.com/dotnet/aspnet:6.0
 WORKDIR /app
 COPY --from=build /src/publish ./
-ENTRYPOINT ["dotnet", "WebAppGateway.Host.dll"]
+ENTRYPOINT ["dotnet", "Business.Host.dll"]
