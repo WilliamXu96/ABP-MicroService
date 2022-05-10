@@ -151,7 +151,8 @@ namespace AuthServer.Host
                 name: "basic-web",
                 scopes: new[] { "BaseService", "WebAppGateway", "BusinessService" },
                 grantTypes: new[] { "password" },
-                secret: "1q2w3e*".Sha256()
+                secret: null,
+                requireClientSecret: false
             );
 
             await CreateClientAsync(

@@ -52,7 +52,6 @@ export default {
         username: "",
         password: "",
         client_id: config.client.client_id,
-        client_secret: config.client.client_secret,
         grant_type: config.client.grant_type,
       },
       loginRules: {

@@ -22,7 +22,6 @@ export default {
   },
   client: {
     client_id: 'basic-web',
-    client_secret: '1q2w3e*',
     grant_type: 'password'
   }
 }
