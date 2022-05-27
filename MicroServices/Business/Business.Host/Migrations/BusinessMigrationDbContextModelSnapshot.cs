@@ -514,9 +514,6 @@ namespace Business.Migrations
                     b.Property<int?>("Maxlength")
                         .HasColumnType("int");
 
-                    b.Property<string>("Options")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Placeholder")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
@@ -525,7 +522,9 @@ namespace Business.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Span")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(24);
 
                     b.Property<Guid?>("TenantId")
                         .HasColumnType("uniqueidentifier");
@@ -533,6 +532,46 @@ namespace Business.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("base_form_fields", (string)null);
+                });
+
+            modelBuilder.Entity("XCZ.FormManagement.FormFieldOption", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("ConcurrencyStamp");
+
+                    b.Property<string>("ExtraProperties")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ExtraProperties");
+
+                    b.Property<Guid>("FormFieldId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("FormId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Label")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("base_form_fields_opts", (string)null);
                 });
 
             modelBuilder.Entity("XCZ.WorkFlow.FormWorkFlow", b =>

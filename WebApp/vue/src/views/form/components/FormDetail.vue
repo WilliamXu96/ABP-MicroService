@@ -306,8 +306,7 @@ export default {
           field.disabled = item.disabled;
           field.regx=clone.regx
           field.span=item.span
-          //clone.options=item.disabled
-          //field.span = formConf.span;
+          field.options=item.options
           field.tag = clone.tag
           field.style = clone.style
           field.clearable = clone.clearable
@@ -341,8 +340,7 @@ export default {
           field.isSort = item.isSort;
           field.disabled = item.disabled;
           field.regx=clone.regx
-          //clone.options=item.disabled
-          // field.span = formConf.span;
+          field.options=item.options
           field.span = item.span;
           field.tag = clone.tag
           field.style = clone.style
