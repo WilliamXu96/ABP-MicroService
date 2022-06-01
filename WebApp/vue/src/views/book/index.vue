@@ -47,6 +47,11 @@
           <el-tag :type="row.status | workflowStatusFilter">{{ row.status | displayWorkflowStatus }}</el-tag>
         </template>
       </el-table-column>
+      <el-table-column label="流程节点" prop="nodeStatus" align="center" >
+        <template slot-scope="{row}">
+          <span class="link-type" @click="findFlow(row)">{{row.nodeStatus}}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="{row}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)" icon="el-icon-edit" />
@@ -124,8 +129,8 @@ export default {
   mounted() {},
   methods: {
     getListStatus(items,ids){
-      this.$axios.posts('api/business/workflow/status', ids).then(response => {
-        items.forEach(element=>{response.items.filter((i)=>{if(i.entityId===element.id){element.status=i.status}})})
+      this.$axios.posts('api/business/workflow/node-status', ids).then(response => {
+        items.forEach(element=>{response.items.filter((i)=>{if(i.entityId===element.id){element.status=i.status;element.nodeId=i.nodeId;element.nodeStatus=i.nodeName}})})
         this.list=items
         this.listLoading = false;
       });
@@ -229,6 +234,9 @@ export default {
           message: '已取消审核'
         });
       });
+    },
+    findFlow(row){
+      this.$router.push({ path: "/tool/flowDisplay/" + row.nodeId });
     },
     handleUpdate(row) {
       this.formTitle = '修改图书';

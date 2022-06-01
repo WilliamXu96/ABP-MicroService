@@ -141,19 +141,6 @@
               @click="back"
               >上一步</el-button
             >
-            <!-- <el-button
-              type="text"
-              icon="el-icon-plus"
-              size="large"
-              @click="zoomAdd"
-            ></el-button>
-            <el-divider direction="vertical"></el-divider>
-            <el-button
-              type="text"
-              icon="el-icon-minus"
-              size="large"
-              @click="zoomSub"
-            ></el-button> -->
             <div style="float: right; margin-right: 5px">
               <el-button
                 type="info"
@@ -164,51 +151,6 @@
                 size="mini"
                 >流程信息</el-button
               >
-              <!-- <el-button
-                type="primary"
-                plain
-                round
-                @click="dataReloadA"
-                icon="el-icon-refresh"
-                size="mini"
-                >切换流程A</el-button
-              >
-              <el-button
-                type="primary"
-                plain
-                round
-                @click="dataReloadB"
-                icon="el-icon-refresh"
-                size="mini"
-                >切换流程B</el-button
-              >
-              <el-button
-                type="primary"
-                plain
-                round
-                @click="dataReloadC"
-                icon="el-icon-refresh"
-                size="mini"
-                >切换流程C</el-button
-              >
-              <el-button
-                type="primary"
-                plain
-                round
-                @click="dataReloadD"
-                icon="el-icon-refresh"
-                size="mini"
-                >自定义样式</el-button
-              >
-              <el-button
-                type="primary"
-                plain
-                round
-                @click="dataReloadE"
-                icon="el-icon-refresh"
-                size="mini"
-                >力导图</el-button
-              > -->
               <el-button
                 type="warning"
                 plain
@@ -281,7 +223,7 @@
 <script>
 import draggable from "vuedraggable";
 import lodash from "lodash";
-import "../../components/Flow/jsplumb";
+import "@/components/Flow/jsplumb";
 import { easyFlowMixin } from "@/components/Flow/mixins";
 import flowNode from "./node";
 import nodeMenu from "./node_menu";

@@ -276,6 +276,16 @@ export const asyncRoutes = [{
         },
       },
       {
+        path: 'flowDisplay/:id',
+        component: () => import('@/views/flow/display'),
+        name: 'FlowDisplay',
+        meta: {
+          title: 'flowDisplay',
+          roles: ['FlowManagement.Flow'],
+        },
+        hidden: true
+      },
+      {
         path: 'flowCreate',
         component: () => import('@/views/flow-design/create'),
         name: 'FlowDesignCreate',
