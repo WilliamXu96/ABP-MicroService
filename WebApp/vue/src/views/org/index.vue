@@ -86,7 +86,7 @@
             label-width="80px"
           >
             <el-form-item label="机构类型" prop="category">
-              <el-select v-model="form.categoryId" placeholder="请选择" style="width: 380px;">
+              <el-select v-model="form.categoryId" placeholder="请选择" style="width: 380px;" :disabled="isEdit">
                 <el-option label="公司" :value="1"></el-option>
                 <el-option label="组织" :value="2"></el-option>
                 <el-option label="部门" :value="3"></el-option>
@@ -106,7 +106,7 @@
               />
             </el-form-item>
             <el-form-item label="顶级机构">
-              <el-radio-group v-model="isTop" style="width: 140px">
+              <el-radio-group v-model="isTop" style="width: 140px" :disabled="isEdit">
                 <el-radio :label="true">是</el-radio>
                 <el-radio :label="false">否</el-radio>
               </el-radio-group>
@@ -163,7 +163,7 @@
               <span>{{scope.row.categoryId | displayCategory}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="状态" prop="enable" align="center" width="150px">
+          <el-table-column label="启用" prop="enable" align="center" width="150px">
             <template slot-scope="scope">
               <el-switch
                 v-model="scope.row.enabled"

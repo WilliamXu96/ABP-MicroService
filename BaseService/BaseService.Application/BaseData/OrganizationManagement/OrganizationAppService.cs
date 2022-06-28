@@ -91,13 +91,13 @@ namespace BaseService.BaseData.OrganizationManagement
             var items = new List<Organization>();
             if (!string.IsNullOrWhiteSpace(filter))
             {
-                items = await queryable.Where(_ => _.Name.Contains(filter)).ToListAsync();
+                items = await queryable.Where(_ => _.Name.Contains(filter)).OrderBy(_ => _.Sort).ToListAsync();
             }
             else
             {
                 var query = id.HasValue ? queryable.Where(_ => _.Pid == id) :
                                           queryable.Where(_ => _.Pid == null);
-                items = await query.ToListAsync();
+                items = await query.OrderBy(_ => _.Sort).ToListAsync();
             }
 
             var dtos = ObjectMapper.Map<List<Organization>, List<OrganizationDto>>(items);
