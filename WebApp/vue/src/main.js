@@ -59,9 +59,12 @@ Vue.filter('formatDateTime', function(value) {
 
 Vue.filter('displayWorkflowStatus', function(value) {
   if (value == 0) {
-    return '待审核'
+    return '未审核'
   }
   if (value == 1) {
+    return '审核中'
+  }
+  if (value == 2) {
     return '已审核'
   }
 })
@@ -70,11 +73,11 @@ Vue.filter('workflowStatusFilter', function(value) {
   if (value == 0) {
     return 'info'
   }
-  else if (value == 1) {
+  else if (value == 2) {
     return 'success'
   }
   else{
-    return 'info'
+    return 'warning'
   }
 })
 

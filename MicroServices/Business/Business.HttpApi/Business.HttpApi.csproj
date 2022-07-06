@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="Volo.Abp.AspNetCore.Mvc" Version="5.1.4" />
-    <PackageReference Include="XCZ.FlowManagement.HttpApi" Version="1.2.3" />
+    <PackageReference Include="XCZ.FlowManagement.HttpApi" Version="1.2.5" />
     <PackageReference Include="XCZ.FormManagement.HttpApi" Version="2.1.1" />
   </ItemGroup>
 

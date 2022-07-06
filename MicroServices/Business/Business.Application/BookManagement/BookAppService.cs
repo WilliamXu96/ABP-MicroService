@@ -60,10 +60,10 @@ namespace Business.BookManagement
             }
             else
             {
-                //检查流程状态
-                await WorkFlow.CheckFormStatus(input.Id.Value);
                 var data = await _repository.GetAsync(input.Id.Value);
                 result = await _repository.UpdateAsync(ObjectMapper.Map(input, data));
+                //检查流程状态
+                await WorkFlow.CheckFormStatus(input.Id.Value, result);
             }
             return ObjectMapper.Map<Book, BookDto>(result);
         }
