@@ -78,7 +78,7 @@
       v-loading="listLoading"
       :data="tableData"
       size="small"
-      style="width: 100%;"
+      style="width: 100%"
       @sort-change="sortChange"
       @selection-change="handleSelectionChange"
       @row-click="handleRowClick"
@@ -104,19 +104,11 @@
 </template>
 
 <script>
-import {
-  inputComponents,
-  selectComponents,
-  layoutComponents,
-  importComponents,
-  formConf,
-} from "@/utils/generator/config";
-import drawingDefalut from "@/utils/generator/drawingDefalut";
-
 export default {
   name: "Dynamic",
   data() {
     return {
+      formId: "39b45d6b-83e5-4a01-9f2b-e861b900db20",
       rules: {
         name: [{ required: true, message: "请输入岗位名", trigger: "blur" }],
       },
@@ -125,7 +117,6 @@ export default {
       totalCount: 0,
       listLoading: true,
       formLoading: false,
-      inputComponents,
       drawingList: [],
       tableData: [
         {
@@ -163,16 +154,15 @@ export default {
   methods: {
     getForm() {
       this.$axios
-        .gets(
-          "http://localhost:62162/api/business/form/39b45d6b-83e5-4a01-9f2b-e861b900db20"
-        )
+        .gets("http://localhost:62162/api/business/form/" + this.formId)
         .then((response) => {
           this.form = response;
         });
     },
     getList() {
       //this.listLoading = true;
-      this.listQuery.SkipCount = (this.page - 1) * this.listQuery.MaxResultCount;
+      this.listQuery.SkipCount =
+        (this.page - 1) * this.listQuery.MaxResultCount;
       // this.$axios.gets("/api/base/user", this.listQuery).then(response => {
       //   this.list = response.items;
       //   this.totalCount = response.totalCount;
@@ -273,47 +263,48 @@ export default {
       //this.$refs.form.clearValidate();
     },
     save() {
-      this.$refs.form.validate(valid => {
-        if (valid) {
-          this.formLoading = true;
-          this.form.roleNames = this.checkedRole;
-          if (this.isEdit) {
-            this.$axios
-              .puts("/api/base/job/" + this.form.id, this.form)
-              .then(response => {
-                this.formLoading = false;
-                this.$notify({
-                  title: "成功",
-                  message: "更新成功",
-                  type: "success",
-                  duration: 2000
-                });
-                this.dialogFormVisible = false;
-                this.getList();
-              })
-              .catch(() => {
-                this.formLoading = false;
-              });
-          } else {
-            this.$axios
-              .posts("/api/base/job", this.form)
-              .then(response => {
-                this.formLoading = false;
-                this.$notify({
-                  title: "成功",
-                  message: "新增成功",
-                  type: "success",
-                  duration: 2000
-                });
-                this.dialogFormVisible = false;
-                this.getList();
-              })
-              .catch(() => {
-                this.formLoading = false;
-              });
-          }
-        }
-      });
+      this.formLoading = true;
+      if (this.isEdit) {
+        this.$axios
+          .puts("/api/business/form-data", {
+            formId: this.formId,
+            data: this.form.fields
+          })
+          .then((response) => {
+            this.formLoading = false;
+            this.$notify({
+              title: "成功",
+              message: "更新成功",
+              type: "success",
+              duration: 2000,
+            });
+            this.dialogFormVisible = false;
+            this.getList();
+          })
+          .catch(() => {
+            this.formLoading = false;
+          });
+      } else {
+        this.$axios
+          .posts("/api/business/form-data", {
+            formId: this.formId,
+            data: this.form.fields
+          })
+          .then((response) => {
+            this.formLoading = false;
+            this.$notify({
+              title: "成功",
+              message: "新增成功",
+              type: "success",
+              duration: 2000,
+            });
+            this.dialogFormVisible = false;
+            this.getList();
+          })
+          .catch(() => {
+            this.formLoading = false;
+          });
+      }
     },
   },
 };
