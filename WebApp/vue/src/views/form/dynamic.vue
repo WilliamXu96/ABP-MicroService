@@ -76,7 +76,7 @@
     <el-table
       ref="multipleTable"
       v-loading="listLoading"
-      :data="tableData"
+      :data="list"
       size="small"
       style="width: 100%"
       @sort-change="sortChange"
@@ -93,19 +93,22 @@
       </el-table-column>
     </el-table>
 
-    <!-- <pagination
+    <pagination
       v-show="totalCount>0"
       :total="totalCount"
       :page.sync="page"
       :limit.sync="listQuery.MaxResultCount"
       @pagination="getList"
-    /> -->
+    />
   </div>
 </template>
 
 <script>
+import Pagination from "@/components/Pagination";
+
 export default {
   name: "Dynamic",
+  components: { Pagination },
   data() {
     return {
       formId: "39b45d6b-83e5-4a01-9f2b-e861b900db20",
@@ -135,6 +138,7 @@ export default {
         },
       ],
       listQuery: {
+        FormId: null,
         Filter: "",
         Sorting: "",
         SkipCount: 0,
@@ -160,14 +164,17 @@ export default {
         });
     },
     getList() {
-      //this.listLoading = true;
+      this.listLoading = true;
       this.listQuery.SkipCount =
         (this.page - 1) * this.listQuery.MaxResultCount;
-      // this.$axios.gets("/api/base/user", this.listQuery).then(response => {
-      //   this.list = response.items;
-      //   this.totalCount = response.totalCount;
-      //   this.listLoading = false;
-      // });
+      this.listQuery.formId = this.formId;
+      this.$axios
+        .gets("/api/business/form-data", this.listQuery)
+        .then((response) => {
+          this.list = response.items;
+          this.totalCount = response.totalCount;
+          this.listLoading = false;
+        });
       this.listLoading = false;
     },
     handleFilter() {
@@ -268,7 +275,7 @@ export default {
         this.$axios
           .puts("/api/business/form-data", {
             formId: this.formId,
-            data: this.form.fields
+            data: this.form.fields,
           })
           .then((response) => {
             this.formLoading = false;
@@ -288,7 +295,7 @@ export default {
         this.$axios
           .posts("/api/business/form-data", {
             formId: this.formId,
-            data: this.form.fields
+            data: this.form.fields,
           })
           .then((response) => {
             this.formLoading = false;

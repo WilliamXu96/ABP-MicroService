@@ -115,7 +115,14 @@
               >移除</el-button
             >
             <el-divider direction="vertical"></el-divider>
-
+            <el-button
+              type="text"
+              size="large"
+              @click="save"
+              v-loading.fullscreen.lock="fullscreenLoading"
+              ><svg-icon icon-class="save" /> 保存</el-button
+            >
+            <el-divider direction="vertical"></el-divider>
             <el-button
               type="text"
               icon="el-icon-delete-solid"
@@ -123,14 +130,6 @@
               style="color: #f56c6c"
               @click="clear"
               >清空</el-button
-            >
-            <el-divider direction="vertical"></el-divider>
-            <el-button
-              type="text"
-              size="large"
-              @click="save"
-              v-loading.fullscreen.lock="fullscreenLoading"
-              ><svg-icon icon-class="save" /> 保存</el-button
             >
             <el-divider direction="vertical"></el-divider>
             <el-button
