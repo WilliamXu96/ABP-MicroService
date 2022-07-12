@@ -79,6 +79,7 @@
       :data="list"
       size="small"
       style="width: 100%"
+      empty-text="空"
       @sort-change="sortChange"
       @selection-change="handleSelectionChange"
       @row-click="handleRowClick"
@@ -153,7 +154,6 @@ export default {
   },
   created() {
     this.getForm();
-    this.getList();
   },
   methods: {
     getForm() {
@@ -161,6 +161,7 @@ export default {
         .gets("http://localhost:62162/api/business/form/" + this.formId)
         .then((response) => {
           this.form = response;
+          this.getList();
         });
     },
     getList() {
@@ -176,6 +177,13 @@ export default {
           this.listLoading = false;
         });
       this.listLoading = false;
+    },
+    fetchData(id) {
+      this.$axios.gets("/api/business/form-data/" + id).then(response => {
+        let data =[]
+        this.form.fields.forEach(element=>{Object.keys(response).filter(key => {if(key===element.fieldName){let t={}; t=element; t.value=response[key];data.push(t)}})})
+        this.form.fields=data
+      });
     },
     handleFilter() {
       this.page = 1;
@@ -208,7 +216,7 @@ export default {
       })
         .then(() => {
           this.$axios
-            .posts("/api/business/form/delete", params)
+            .posts("/api/business/form-data/delete", params)
             .then((response) => {
               this.$notify({
                 title: "成功",
@@ -232,19 +240,21 @@ export default {
       this.dialogFormVisible = true;
     },
     handleUpdate(row) {
+      this.formTitle = "修改" + this.form.displayName;
+      //this.isEdit = true;
       if (row) {
-        this.$router.push({ path: "/tool/formEdit/" + row.id });
+        this.fetchData(row.id);
+        this.dialogFormVisible = true;
       } else {
         if (this.multipleSelection.length != 1) {
           this.$message({
             message: "编辑必须选择单行",
-            type: "warning",
+            type: "warning"
           });
           return;
         } else {
-          this.$router.push({
-            path: "/tool/formEdit/" + this.multipleSelection[0].id,
-          });
+          this.fetchData(this.multipleSelection[0].id);
+          this.dialogFormVisible = true;
         }
       }
     },
