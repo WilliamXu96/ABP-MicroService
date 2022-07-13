@@ -55,7 +55,7 @@
       width="500px"
     >
       <el-form ref="form" :inline="true" size="small" label-width="66px">
-        <div v-for="(item, index) in form.fields" :key="index">
+        <div v-for="(item, index) in data" :key="index">
           <el-form-item :label="item.label">
             <el-input :type="item.fieldType" v-model="item.value" />
           </el-form-item>
@@ -106,6 +106,7 @@
 
 <script>
 import Pagination from "@/components/Pagination";
+import lodash from "lodash";
 
 export default {
   name: "Dynamic",
@@ -117,6 +118,7 @@ export default {
         name: [{ required: true, message: "请输入岗位名", trigger: "blur" }],
       },
       form: {},
+      data: [],
       list: null,
       totalCount: 0,
       listLoading: true,
@@ -161,6 +163,7 @@ export default {
         .gets("http://localhost:62162/api/business/form/" + this.formId)
         .then((response) => {
           this.form = response;
+          this.data = response.fields
           this.getList();
         });
     },
@@ -180,9 +183,8 @@ export default {
     },
     fetchData(id) {
       this.$axios.gets("/api/business/form-data/" + id).then(response => {
-        let data =[]
-        this.form.fields.forEach(element=>{Object.keys(response).filter(key => {if(key===element.fieldName){let t={}; t=element; t.value=response[key];data.push(t)}})})
-        this.form.fields=data
+        this.form.fields.forEach(element=>{Object.keys(response).filter(key => {if(key===element.fieldName){element.value=response[key]}})})
+        this.data=lodash.cloneDeep(this.form.fields);
       });
     },
     handleFilter() {
@@ -241,7 +243,7 @@ export default {
     },
     handleUpdate(row) {
       this.formTitle = "修改" + this.form.displayName;
-      //this.isEdit = true;
+      this.isEdit = true;
       if (row) {
         this.fetchData(row.id);
         this.dialogFormVisible = true;
@@ -283,9 +285,9 @@ export default {
       this.formLoading = true;
       if (this.isEdit) {
         this.$axios
-          .puts("/api/business/form-data", {
+          .puts("/api/business/form-data/" + this.multipleSelection[0].id, {
             formId: this.formId,
-            data: this.form.fields,
+            data: this.data,
           })
           .then((response) => {
             this.formLoading = false;
