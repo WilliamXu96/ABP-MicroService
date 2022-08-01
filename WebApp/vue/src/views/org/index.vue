@@ -85,7 +85,7 @@
             size="small"
             label-width="80px"
           >
-            <el-form-item label="机构类型" prop="category">
+            <el-form-item label="机构类型" prop="categoryId">
               <el-select v-model="form.categoryId" placeholder="请选择" style="width: 380px;" :disabled="isEdit">
                 <el-option label="公司" :value="1"></el-option>
                 <el-option label="组织" :value="2"></el-option>
