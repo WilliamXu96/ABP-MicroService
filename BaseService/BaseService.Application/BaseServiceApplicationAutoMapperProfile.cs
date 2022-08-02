@@ -3,7 +3,9 @@ using BaseService.BaseData;
 using BaseService.BaseData.DataDictionaryManagement.Dto;
 using BaseService.BaseData.JobManagement.Dto;
 using BaseService.BaseData.OrganizationManagement.Dto;
+using BaseService.Systems;
 using BaseService.Systems.AuditLoggingManagement.Dto;
+using BaseService.Systems.MenuManagement.Dto;
 using BaseService.Systems.UserManagement.Dto;
 using Volo.Abp.AuditLogging;
 using Volo.Abp.Identity;
@@ -33,6 +35,8 @@ namespace BaseService
                 .ForMember(dto => dto.Label, opt => opt.MapFrom(src => src.Name));
 
             CreateMap<Job, JobDto>();
+
+            CreateMap<Menu, MenuDto>();
         }
     }
 }
