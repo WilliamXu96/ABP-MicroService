@@ -1,4 +1,5 @@
 ﻿using BaseService.BaseData;
+using BaseService.Systems;
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
@@ -19,6 +20,10 @@ namespace BaseService.EntityFrameworkCore
         public DbSet<UserJob> UserJobs { get; set; }
 
         public DbSet<UserOrganization> UserOrganizations { get; set; }
+
+        public DbSet<Menu> Menus { get; set; }
+
+        public DbSet<RoleMenu> RoleMenus { get; set; }
 
         public BaseServiceDbContext(DbContextOptions<BaseServiceDbContext> options)
             : base(options)

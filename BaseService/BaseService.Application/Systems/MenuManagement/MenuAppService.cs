@@ -4,7 +4,9 @@ using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Text;
 using System.Threading.Tasks;
+using BaseService.Permissions;
 using BaseService.Systems.MenuManagement.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
@@ -13,6 +15,7 @@ using Volo.Abp.Domain.Repositories;
 
 namespace BaseService.Systems.MenuManagement
 {
+    [Authorize(BaseServicePermissions.Menu.Default)]
     public class MenuAppService : ApplicationService, IMenuAppService
     {
         private readonly IRepository<Menu, Guid> _repository;

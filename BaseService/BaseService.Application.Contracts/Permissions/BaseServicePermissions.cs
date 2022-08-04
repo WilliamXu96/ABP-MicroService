@@ -52,5 +52,13 @@ namespace BaseService.Permissions
             public const string Update = Default + ".Update";
             public const string Create = Default + ".Create";
         }
+
+        public static class Menu
+        {
+            public const string Default = BaseService + ".Menu";
+            public const string Delete = Default + ".Delete";
+            public const string Update = Default + ".Update";
+            public const string Create = Default + ".Create";
+        }
     }
 }

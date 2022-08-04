@@ -8,6 +8,7 @@ using Volo.Abp.TenantManagement;
 namespace BaseService
 {
     [DependsOn(
+        typeof(BaseServiceDomainModule),
         typeof(BaseServiceApplicationContractsModule),
         typeof(AbpAccountApplicationModule),
         typeof(AbpPermissionManagementApplicationModule),

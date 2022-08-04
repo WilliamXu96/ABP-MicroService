@@ -7,14 +7,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Localization\BaseService\cs.json" />
+    <None Remove="Localization\BaseService\en.json" />
+    <None Remove="Localization\BaseService\zh-Hans.json" />
+    <None Remove="Localization\BaseService\zh-Hant.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Localization\BaseService\cs.json" />
+    <EmbeddedResource Include="Localization\BaseService\en.json" />
+    <EmbeddedResource Include="Localization\BaseService\zh-Hans.json" />
+    <EmbeddedResource Include="Localization\BaseService\zh-Hant.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Volo.Abp.Ddd.Application" Version="5.1.4" />
     <PackageReference Include="Volo.Abp.PermissionManagement.Application.Contracts" Version="5.1.4" />
     <PackageReference Include="Volo.Abp.Identity.Application.Contracts" Version="5.1.4" />
     <PackageReference Include="XCZ.FileStorage.Application.Contracts" Version="0.1.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\BaseService.Domain\BaseService.Domain.csproj" />
   </ItemGroup>
 
 </Project>

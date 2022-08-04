@@ -1,4 +1,5 @@
 ﻿using BaseService.BaseData;
+using BaseService.Systems;
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp;
 using Volo.Abp.EntityFrameworkCore.Modeling;
@@ -74,6 +75,25 @@ namespace BaseService.EntityFrameworkCore
                 b.ToTable("base_user_orgs");
 
                 b.HasKey(k => new { k.UserId, k.OrganizationId });
+            });
+
+            builder.Entity<Menu>(b =>
+            {
+                b.ToTable("base_menu");
+
+                b.ConfigureByConvention();
+
+                b.Property(x => x.Name).IsRequired().HasMaxLength(BaseServiceConsts.MaxNameLength);
+                b.Property(x => x.Route).IsRequired().HasMaxLength(BaseServiceConsts.MaxNotesLength);
+                b.Property(x => x.Permission).IsRequired().HasMaxLength(BaseServiceConsts.MaxNotesLength);
+                b.Property(x => x.Icon).IsRequired().HasMaxLength(BaseServiceConsts.MaxFullNameLength);
+            });
+
+            builder.Entity<RoleMenu>(b =>
+            {
+                b.ToTable("base_role_menu");
+
+                b.HasKey(k => new { k.RoleId, k.MenuId });
             });
         }
     }

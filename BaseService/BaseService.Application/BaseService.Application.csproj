@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BaseService.Application.Contracts\BaseService.Application.Contracts.csproj" />
+    <ProjectReference Include="..\BaseService.Domain\BaseService.Domain.csproj" />
   </ItemGroup>
 
 </Project>
