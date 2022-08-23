@@ -63,6 +63,7 @@ export default {
     book: '书籍管理',
     tenant:'租户管理',
     systemManagement:'系统管理',
+    menu:'菜单管理',
     user:'用户管理',
     role:'角色管理',
     dict:'数据字典',

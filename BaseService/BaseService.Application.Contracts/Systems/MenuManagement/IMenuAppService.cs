@@ -18,5 +18,7 @@ namespace BaseService.Systems.MenuManagement
         Task<PagedResultDto<MenuDto>> GetAll(GetMenuInputDto input);
 
         Task<MenuDto> Get(Guid id);
+
+        Task<ListResultDto<MenuDto>> LoadAll(Guid? id);
     }
 }

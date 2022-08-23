@@ -36,7 +36,8 @@ namespace BaseService
 
             CreateMap<Job, JobDto>();
 
-            CreateMap<Menu, MenuDto>();
+            CreateMap<Menu, MenuDto>()
+                .ForMember(dto => dto.Label, opt => opt.MapFrom(src => src.Name));
         }
     }
 }

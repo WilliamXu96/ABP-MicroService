@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace BaseService.Systems.MenuManagement.Dto
 {
@@ -13,14 +14,18 @@ namespace BaseService.Systems.MenuManagement.Dto
         /// </summary>
         public int CategoryId { get; set; }
 
+        [Required]
         public string Name { get; set; }
 
         public int Sort { get; set; }
 
+        [Required]
         public string Route { get; set; }
 
+        [Required]
         public string Permission { get; set; }
 
+        [Required]
         public string Icon { get; set; }
     }
 }

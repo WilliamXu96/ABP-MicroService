@@ -7,7 +7,7 @@
         clearable
         size="small"
         placeholder="搜索..."
-        style="width: 200px;"
+        style="width: 200px"
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
@@ -17,8 +17,9 @@
         type="success"
         icon="el-icon-search"
         @click="handleFilter"
-      >搜索</el-button>
-      <div style="padding: 6px 0;">
+        >搜索</el-button
+      >
+      <div style="padding: 6px 0">
         <el-button
           class="filter-item"
           size="mini"
@@ -26,7 +27,8 @@
           icon="el-icon-plus"
           @click="handleCreate"
           v-permission="['BaseService.Job.Create']"
-        >新增</el-button>
+          >新增</el-button
+        >
         <el-button
           class="filter-item"
           size="mini"
@@ -34,7 +36,8 @@
           icon="el-icon-edit"
           v-permission="['BaseService.Job.Update']"
           @click="handleUpdate()"
-        >修改</el-button>
+          >修改</el-button
+        >
         <el-button
           slot="reference"
           class="filter-item"
@@ -43,7 +46,8 @@
           size="mini"
           v-permission="['BaseService.Job.Delete']"
           @click="handleDelete()"
-        >删除</el-button>
+          >删除</el-button
+        >
       </div>
     </div>
     <el-dialog
@@ -51,7 +55,7 @@
       :close-on-click-modal="false"
       :title="formTitle"
       @close="cancel()"
-      width="500px"
+      width="600px"
     >
       <el-form
         ref="form"
@@ -59,31 +63,31 @@
         :model="form"
         :rules="rules"
         size="small"
-        label-width="66px"
+        label-width="80px"
       >
-        <el-row>
-          <el-col :span="24">
-            <el-form-item label="菜单类型" prop="categoryId">
-              <el-select v-model="form.categoryId" placeholder="请选择" style="width: 380px;" :disabled="isEdit">
-                <el-option label="菜单" :value="1"></el-option>
-                <el-option label="按钮" :value="2"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
-            <el-form-item label="上级菜单" prop="menuType">
-              <!-- <treeselect
+        <el-form-item label="菜单类型" prop="categoryId">
+          <el-select
+            v-model="form.categoryId"
+            placeholder="请选择"
+            style="width: 184px;" 
+            :disabled="isEdit"
+          >
+            <el-option label="菜单" :value="1"></el-option>
+            <el-option label="按钮" :value="2"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="上级菜单" prop="menuType">
+          <treeselect
                 v-model="form.pid"
-                :load-options="loadOrgs"
-                :options="orgs"
-                style="width: 370px;"
-                placeholder="选择上级机构"
-              /> -->
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
-            <el-form-item label="菜单图标">
-              <!-- <el-popover
+                :load-options="loadMenus"
+                :options="menus"
+                :disabled="isEdit"
+                style="width: 184px;"
+                placeholder="选择上级菜单"
+              />
+        </el-form-item>
+        <el-form-item label="菜单图标" prop="icon">
+          <!-- <el-popover
                 placement="bottom-start"
                 width="460"
                 trigger="click"
@@ -101,33 +105,40 @@
                   <i v-else slot="prefix" class="el-icon-search el-input__icon" />
                 </el-input>
               </el-popover> -->
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="菜单名称" prop="name">
-              <el-input v-model="form.name" placeholder="请输入菜单名称" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="排序" prop="sort">
-              <el-input-number v-model="form.sort" controls-position="right" :min="0" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="路由地址" prop="route">
-              <el-input v-model="form.route" placeholder="请输入路由地址" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="权限标识">
-              <el-input v-model="form.permission" placeholder="请权限标识" maxlength="50" />
-            </el-form-item>
-          </el-col>
-        </el-row>
+              <el-input v-model="form.icon" placeholder="请输入图标名称" style="width: 184px;" />
+        </el-form-item>
+        <el-form-item label="菜单名称" prop="name">
+          <el-input v-model="form.name" placeholder="请输入菜单名称" style="width: 184px;" />
+        </el-form-item>
+        <el-form-item label="排序" prop="sort">
+          <el-input-number
+            v-model="form.sort"
+            controls-position="right"
+            :min="0"
+            style="width: 184px;" 
+          />
+        </el-form-item>
+        <el-form-item label="路由地址" prop="route">
+          <el-input v-model="form.route" placeholder="请输入路由地址" style="width: 184px;" />
+        </el-form-item>
+        <el-form-item label="权限标识">
+          <el-input
+            v-model="form.permission"
+            placeholder="请权限标识"
+            maxlength="50"
+           style="width: 184px;" 
+          />
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" type="text" @click="cancel">取消</el-button>
-        <el-button size="small" v-loading="formLoading" type="primary" @click="save">确认</el-button>
+        <el-button
+          size="small"
+          v-loading="formLoading"
+          type="primary"
+          @click="save"
+          >确认</el-button
+        >
       </div>
     </el-dialog>
     <el-table
@@ -135,29 +146,37 @@
       v-loading="listLoading"
       :data="list"
       size="small"
-      style="width: 90%;"
+      style="width: 90%"
       @sort-change="sortChange"
       @selection-change="handleSelectionChange"
       @row-click="handleRowClick"
     >
       <el-table-column type="selection" width="44px"></el-table-column>
-      <el-table-column label="菜单名称" prop="name" sortable="custom" align="center" width="150px">
-        <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{row.name}}</span>
+      <el-table-column
+        label="菜单名称"
+        prop="name"
+        sortable="custom"
+        align="center"
+        width="150px"
+      >
+        <template slot-scope="{ row }">
+          <span class="link-type" @click="handleUpdate(row)">{{
+            row.name
+          }}</span>
         </template>
       </el-table-column>
       <el-table-column label="排序" prop="sort" align="center">
         <template slot-scope="scope">
-          <span>{{scope.row.sort}}</span>
+          <span>{{ scope.row.sort }}</span>
         </template>
       </el-table-column>
       <el-table-column label="菜单类型" prop="categoryId" align="center">
         <template slot-scope="scope">
-          <span>{{scope.row.description}}</span>
-        </template>
+              <span>{{scope.row.categoryId | displayCategory}}</span>
+            </template>
       </el-table-column>
       <el-table-column label="操作" align="center">
-        <template slot-scope="{row}">
+        <template slot-scope="{ row }">
           <el-button
             type="primary"
             size="mini"
@@ -177,7 +196,7 @@
     </el-table>
 
     <pagination
-      v-show="totalCount>0"
+      v-show="totalCount > 0"
       :total="totalCount"
       :page.sync="page"
       :limit.sync="listQuery.MaxResultCount"
@@ -189,26 +208,43 @@
 <script>
 import Pagination from "@/components/Pagination";
 import permission from "@/directive/permission/index.js";
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+import { LOAD_CHILDREN_OPTIONS } from "@riophae/vue-treeselect";
 
 const defaultForm = {
   id: null,
+  pid:null,
   name: null,
   description: null,
   sort: 999,
-  enabled: true
+  enabled: true,
 };
 export default {
   name: "Menu",
-  components: { Pagination },
+  components: { Pagination, Treeselect },
   directives: { permission },
+  filters: {
+    displayCategory(categoryId) {
+      const categoryMap = {
+        1: "菜单",
+        2: "按钮",
+      };
+      return categoryMap[categoryId];
+    }
+  },
+
   data() {
     return {
       rules: {
+        icon: [{ required: true, message: "请输入菜单图标", trigger: "blur" }],
         name: [{ required: true, message: "请输入菜单名", trigger: "blur" }],
-        sort: [{ required: true, message: "请输入序号", trigger: "blur" }]
+        sort: [{ required: true, message: "请输入序号", trigger: "blur" }],
+        route: [{ required: true, message: "请输入路由地址", trigger: "blur" }],
       },
       form: Object.assign({}, defaultForm),
       list: null,
+      menus:[],
       totalCount: 0,
       listLoading: true,
       formLoading: false,
@@ -216,13 +252,13 @@ export default {
         Filter: "",
         Sorting: "",
         SkipCount: 0,
-        MaxResultCount: 10
+        MaxResultCount: 10,
       },
       page: 1,
       dialogFormVisible: false,
       multipleSelection: [],
       formTitle: "",
-      isEdit: false
+      isEdit: false,
     };
   },
   created() {
@@ -231,39 +267,56 @@ export default {
   methods: {
     getList() {
       this.listLoading = true;
-      this.listQuery.SkipCount = (this.page - 1) * this.listQuery.MaxResultCount;
-      this.$axios
-        .gets("/api/base/job/all", this.listQuery)
-        .then(response => {
-          this.list = response.items;
-          this.totalCount = response.totalCount;
-          this.listLoading = false;
-        });
+      this.listQuery.SkipCount =
+        (this.page - 1) * this.listQuery.MaxResultCount;
+      this.$axios.gets("/api/base/menu/all", this.listQuery).then((response) => {
+        this.list = response.items;
+        this.totalCount = response.totalCount;
+        this.listLoading = false;
+      });
     },
     fetchData(id) {
-      this.$axios.gets("/api/base/job/" + id).then(response => {
+      this.$axios.gets("/api/base/menu/" + id).then((response) => {
         this.form = response;
+        this.menus.push({id:response.pid, label:response.parentName})
       });
+    },
+    loadMenus({ action, parentNode, callback }) {
+      if (action === LOAD_CHILDREN_OPTIONS) {
+        this.$axios
+          .gets("/api/base/menu/loadMenus", { id: parentNode.id })
+          .then(response => {
+            parentNode.children = response.items.map(function(obj) {
+              if (!obj.leaf) {
+                obj.children = null;
+              }
+              return obj;
+            });
+            setTimeout(() => {
+              callback();
+            }, 100);
+          });
+      }
     },
     handleFilter() {
       this.page = 1;
       this.getList();
     },
     save() {
-      this.$refs.form.validate(valid => {
+      this.$refs.form.validate((valid) => {
         if (valid) {
           this.formLoading = true;
           this.form.roleNames = this.checkedRole;
           if (this.isEdit) {
             this.$axios
-              .puts("/api/base/job/" + this.form.id, this.form)
-              .then(response => {
+              .puts("/api/base/menu/" + this.form.id, this.form)
+              .then((response) => {
                 this.formLoading = false;
                 this.$notify({
                   title: "成功",
                   message: "更新成功",
                   type: "success",
-                  duration: 2000
+                  duration: 2000,
                 });
                 this.dialogFormVisible = false;
                 this.getList();
@@ -273,14 +326,14 @@ export default {
               });
           } else {
             this.$axios
-              .posts("/api/base/job", this.form)
-              .then(response => {
+              .posts("/api/base/menu", this.form)
+              .then((response) => {
                 this.formLoading = false;
                 this.$notify({
                   title: "成功",
                   message: "新增成功",
                   type: "success",
-                  duration: 2000
+                  duration: 2000,
                 });
                 this.dialogFormVisible = false;
                 this.getList();
@@ -293,9 +346,17 @@ export default {
       });
     },
     handleCreate() {
-      this.formTitle = "新增岗位";
+      this.formTitle = "新增菜单";
       this.isEdit = false;
       this.dialogFormVisible = true;
+      this.$axios.gets("/api/base/menu/loadMenus").then(response => {
+        this.menus = response.items.map(function(obj) {
+          if (!obj.leaf) {
+            obj.children = null;
+          }
+          return obj;
+        });
+      });
     },
     handleDelete(row) {
       var params = [];
@@ -307,11 +368,11 @@ export default {
         if (this.multipleSelection.length === 0) {
           this.$message({
             message: "未选择",
-            type: "warning"
+            type: "warning",
           });
           return;
         }
-        this.multipleSelection.forEach(element => {
+        this.multipleSelection.forEach((element) => {
           let id = element.id;
           params.push(id);
         });
@@ -320,30 +381,28 @@ export default {
       this.$confirm("是否删除" + alert + "?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       })
         .then(() => {
-          this.$axios
-            .posts("/api/base/job/delete", params)
-            .then(response => {
-              this.$notify({
-                title: "成功",
-                message: "删除成功",
-                type: "success",
-                duration: 2000
-              });
-              this.getList();
+          this.$axios.posts("/api/base/menu/delete", params).then((response) => {
+            this.$notify({
+              title: "成功",
+              message: "删除成功",
+              type: "success",
+              duration: 2000,
             });
+            this.getList();
+          });
         })
         .catch(() => {
           this.$message({
             type: "info",
-            message: "已取消删除"
+            message: "已取消删除",
           });
         });
     },
     handleUpdate(row) {
-      this.formTitle = "修改岗位";
+      this.formTitle = "修改菜单";
       this.isEdit = true;
       if (row) {
         this.fetchData(row.id);
@@ -352,7 +411,7 @@ export default {
         if (this.multipleSelection.length != 1) {
           this.$message({
             message: "编辑必须选择单行",
-            type: "warning"
+            type: "warning",
           });
           return;
         } else {
@@ -387,17 +446,17 @@ export default {
       this.$confirm("是否" + data.active + data.name + "？", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       })
         .then(() => {
           this.$axios
-            .puts("/api/base/job/" + data.id, data)
-            .then(response => {
+            .puts("/api/base/menu/" + data.id, data)
+            .then((response) => {
               this.$notify({
                 title: "成功",
                 message: "更新成功",
                 type: "success",
-                duration: 2000
+                duration: 2000,
               });
             })
             .catch(() => {
@@ -407,7 +466,7 @@ export default {
         .catch(() => {
           data.enabled = !data.enabled;
         });
-    }
-  }
+    },
+  },
 };
 </script>

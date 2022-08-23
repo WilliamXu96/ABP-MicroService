@@ -47,6 +47,13 @@ namespace BaseService.HttpApi.Systems
             return _menuAppService.GetAll(input);
         }
 
+        [HttpGet]
+        [Route("loadMenus")]
+        public Task<ListResultDto<MenuDto>> LoadAll(Guid? id)
+        {
+            return _menuAppService.LoadAll(id);
+        }
+
         [HttpPut]
         [Route("{id}")]
         public Task<MenuDto> Update(Guid id, CreateOrUpdateMenuDto input)

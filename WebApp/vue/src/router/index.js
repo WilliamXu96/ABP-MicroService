@@ -133,7 +133,18 @@ export const asyncRoutes = [{
       title: 'systemManagement',
       icon: 'system'
     },
-    children: [{
+    children: [
+      {
+        path: 'menu',
+        component: () => import('@/views/menu/index'),
+        name: 'Menu',
+        meta: {
+          title: 'menu',
+          //roles: ['BaseService.Menu'],
+          icon: 'menu'
+        }
+      },
+      {
         path: 'user',
         component: () => import('@/views/user/index'),
         name: 'User',

@@ -63,14 +63,24 @@ namespace BaseService.Systems.MenuManagement
                                    .Take(input.MaxResultCount)
                                    .ToListAsync();
 
-            var dots = ObjectMapper.Map<List<Menu>, List<MenuDto>>(items);
-            return new PagedResultDto<MenuDto>(totalCount, dots);
+            var dtos = ObjectMapper.Map<List<Menu>, List<MenuDto>>(items);
+            return new PagedResultDto<MenuDto>(totalCount, dtos);
         }
 
         public async Task<MenuDto> Get(Guid id)
         {
             var result = await _repository.GetAsync(id);
-            return ObjectMapper.Map<Menu, MenuDto>(result);
+            var dto = ObjectMapper.Map<Menu, MenuDto>(result);
+            if (dto.Pid.HasValue)
+                dto.ParentName = (await _repository.FirstOrDefaultAsync(_ => _.Id == result.Pid))?.Name;
+            return dto;
+        }
+
+        public async Task<ListResultDto<MenuDto>> LoadAll(Guid? id)
+        {
+            var items = await (await _repository.GetQueryableAsync()).Where(_ => _.Pid == id).OrderBy(_ => _.Sort).ToListAsync();
+            var dtos = ObjectMapper.Map<List<Menu>, List<MenuDto>>(items);
+            return new ListResultDto<MenuDto>(dtos);
         }
 
         public async Task<MenuDto> Update(Guid id, CreateOrUpdateMenuDto input)
@@ -83,6 +93,7 @@ namespace BaseService.Systems.MenuManagement
             menu.Sort = input.Sort;
             menu.Route = input.Route;
             menu.Icon = input.Icon;
+            menu.Permission = input.Permission;
 
             return ObjectMapper.Map<Menu, MenuDto>(menu);
         }
