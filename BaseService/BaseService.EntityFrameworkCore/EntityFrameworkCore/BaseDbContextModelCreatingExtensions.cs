@@ -84,7 +84,8 @@ namespace BaseService.EntityFrameworkCore
                 b.ConfigureByConvention();
 
                 b.Property(x => x.Name).IsRequired().HasMaxLength(BaseServiceConsts.MaxNameLength);
-                b.Property(x => x.Route).IsRequired().HasMaxLength(BaseServiceConsts.MaxNotesLength);
+                b.Property(x => x.Path).IsRequired().HasMaxLength(BaseServiceConsts.MaxNotesLength);
+                b.Property(x => x.Component).HasMaxLength(BaseServiceConsts.MaxNotesLength);
                 b.Property(x => x.Permission).IsRequired().HasMaxLength(BaseServiceConsts.MaxNotesLength);
                 b.Property(x => x.Icon).IsRequired().HasMaxLength(BaseServiceConsts.MaxFullNameLength);
             });

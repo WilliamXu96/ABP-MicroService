@@ -22,7 +22,9 @@ namespace BaseService.Systems
 
         public int Sort { get; set; }
 
-        public string Route { get; set; }
+        public string Path { get; set; }
+
+        public string Component { get; set; }
 
         public string Permission { get; set; }
 

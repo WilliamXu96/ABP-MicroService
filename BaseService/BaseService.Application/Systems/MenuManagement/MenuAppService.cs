@@ -37,7 +37,7 @@ namespace BaseService.Systems.MenuManagement
                 Name = input.Name,
                 CategoryId = input.CategoryId,
                 Sort = input.Sort,
-                Route = input.Route,
+                Path = input.Path,
                 Permission = input.Permission,
                 Icon = input.Icon
             });
@@ -91,7 +91,7 @@ namespace BaseService.Systems.MenuManagement
             //TODO：菜单名重复验证
             menu.Name = input.Name;
             menu.Sort = input.Sort;
-            menu.Route = input.Route;
+            menu.Path = input.Path;
             menu.Icon = input.Icon;
             menu.Permission = input.Permission;
 

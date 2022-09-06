@@ -16,7 +16,9 @@ namespace BaseService.Systems.MenuManagement.Dto
 
         public string Name { get; set; }
 
-        public int Sort { get; set; }
+        public int Path { get; set; }
+
+        public string Component { get; set; }
 
         public string Route { get; set; }
 

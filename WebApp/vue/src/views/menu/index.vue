@@ -118,8 +118,11 @@
             style="width: 184px;" 
           />
         </el-form-item>
-        <el-form-item label="路由地址" prop="route">
-          <el-input v-model="form.route" placeholder="请输入路由地址" style="width: 184px;" />
+        <el-form-item label="路由地址" prop="path">
+          <el-input v-model="form.path" placeholder="请输入路由地址" style="width: 184px;" />
+        </el-form-item>
+        <el-form-item label="组件地址" prop="component">
+          <el-input v-model="form.component" placeholder="请输入组件地址" style="width: 184px;" />
         </el-form-item>
         <el-form-item label="权限标识">
           <el-input
@@ -240,7 +243,7 @@ export default {
         icon: [{ required: true, message: "请输入菜单图标", trigger: "blur" }],
         name: [{ required: true, message: "请输入菜单名", trigger: "blur" }],
         sort: [{ required: true, message: "请输入序号", trigger: "blur" }],
-        route: [{ required: true, message: "请输入路由地址", trigger: "blur" }],
+        path: [{ required: true, message: "请输入路由地址", trigger: "blur" }],
       },
       form: Object.assign({}, defaultForm),
       list: null,
