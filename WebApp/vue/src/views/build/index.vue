@@ -149,7 +149,6 @@ export default {
         }
     },
     handleGen(){
-      debugger
       if (this.multipleSelection.length != 1) {
           this.$message({
             message: "生成代码必须选择单行",

@@ -17,17 +17,17 @@ namespace BaseService.Systems.MenuManagement.Dto
         [Required]
         public string Name { get; set; }
 
+        [Required]
+        public string Label { get; set; }
+
         public int Sort { get; set; }
 
-        [Required]
         public string Path { get; set; }
 
         public string Component { get; set; }
 
-        [Required]
         public string Permission { get; set; }
 
-        [Required]
         public string Icon { get; set; }
     }
 }

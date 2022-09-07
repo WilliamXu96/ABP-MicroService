@@ -1,6 +1,7 @@
 import { login, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
-import router, { resetRouter } from '@/router'
+import { resetRouter, constantRoutes } from '@/router'
+import Layout from '@/layout/index'
 import axiosMethods from '../../axios/index.js'
 
 const state = {
@@ -8,7 +9,9 @@ const state = {
   name: '',
   avatar: '',
   introduction: '',
-  roles: []
+  roles: [],
+  routes: [],
+  addRoutes: [],
 }
 
 const mutations = {
@@ -26,6 +29,13 @@ const mutations = {
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
+  },
+  SET_ROUTES: (state, routes) => {
+    state.addRoutes = routes
+    state.routes = constantRoutes.concat(routes)
+  },
+  SET_PERMISSIONS: (state, permissions) => {
+    state.permissions = permissions
   }
 }
 
@@ -120,30 +130,40 @@ const actions = {
     })
   },
 
-  // dynamically modify permissions
-  changeRoles({ commit, dispatch }, role) {
-    return new Promise(async resolve => {
-      const token = role + '-token'
-
-      commit('SET_TOKEN', token)
-      setToken(token)
-
-      const { roles } = await dispatch('getInfo')
-
-      resetRouter()
-
-      // generate accessible routes map based on roles
-      const accessRoutes = await dispatch('permission/generateRoutes', roles, { root: true })
-
-      // dynamically add accessible routes
-      router.addRoutes(accessRoutes)
-
-      // reset visited views and cached views
-      dispatch('tagsView/delAllViews', null, { root: true })
-
-      resolve()
+  GenerateRoutes({ commit }) {
+    return new Promise((resolve, reject) => {
+      axiosMethods.getMenus('/api/base/role-menus')
+        .then(response => {
+          const accessedRoutes = filterAsyncRouter(response.items)
+          accessedRoutes.push({ path: '*', redirect: '/404', hidden: true })
+          commit('SET_ROUTES', accessedRoutes)
+          resolve(accessedRoutes)
+        }).catch(error => {
+          reject(error)
+        })
     })
   }
+}
+
+function filterAsyncRouter(asyncRouterMap) {
+  return asyncRouterMap.filter(route => {
+    if (route.component) {
+      // Layout组件特殊处理
+      if (route.component === 'Layout') {
+        route.component = Layout
+      } else {
+        route.component = loadView(route.component)
+      }
+    }
+    if (route.children != null && route.children && route.children.length) {
+      route.children = filterAsyncRouter(route.children)
+    }
+    return true
+  })
+}
+
+export const loadView = (view) => { // 路由懒加载
+  return (resolve) =>  require([`@/views/${view}`], resolve)
 }
 
 export default {

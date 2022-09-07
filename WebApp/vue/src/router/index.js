@@ -7,7 +7,7 @@ Vue.use(Router)
 import Layout from '@/layout'
 
 /* Router Modules */
-import componentsRouter from './modules/components'
+//import componentsRouter from './modules/components'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -101,264 +101,264 @@ export const constantRoutes = [{
  * asyncRoutes
  * the routes that need to be dynamically loaded based on user roles
  */
-export const asyncRoutes = [{
-    path: '/saas',
-    component: Layout,
-    redirect: '/saas/tenant',
-    alwaysShow: true,
-    name: 'SAAS',
-    meta: {
-      title: 'SaaS',
-      icon: 'cloud',
-      roles: ['AbpTenantManagement.Tenants'],
-    },
-    children: [{
-      path: 'tenant',
-      component: () => import('@/views/tenant/index'),
-      name: 'Tenant',
-      meta: {
-        title: 'tenant',
-        roles: ['AbpTenantManagement.Tenants'],
-        icon: 'users'
-      }
-    }]
-  },
-  {
-    path: '/system',
-    component: Layout,
-    redirect: '/system/user',
-    alwaysShow: true,
-    name: 'SystemManagement',
-    meta: {
-      title: 'systemManagement',
-      icon: 'system'
-    },
-    children: [
-      {
-        path: 'menu',
-        component: () => import('@/views/menu/index'),
-        name: 'Menu',
-        meta: {
-          title: 'menu',
-          //roles: ['BaseService.Menu'],
-          icon: 'menu'
-        }
-      },
-      {
-        path: 'user',
-        component: () => import('@/views/user/index'),
-        name: 'User',
-        meta: {
-          title: 'user',
-          roles: ['AbpIdentity.Users'],
-          icon: 'user'
-        }
-      },
-      {
-        path: 'role',
-        component: () => import('@/views/role/index'),
-        name: 'Role',
-        meta: {
-          title: 'role',
-          roles: ['AbpIdentity.Roles'],
-          icon: 'role'
-        }
-      },
-      {
-        path: 'org',
-        component: () => import('@/views/org/index'),
-        name: 'Organization',
-        meta: {
-          title: 'org',
-          roles: ['BaseService.Organization'],
-          icon: 'org'
-        }
-      },
-      {
-        path: 'dict',
-        component: () => import('@/views/dict/index'),
-        name: 'Dictionary',
-        meta: {
-          title: 'dict',
-          roles: ['BaseService.DataDictionary'],
-          icon: 'data'
-        }
-      },
-      {
-        path: 'job',
-        component: () => import('@/views/job/index'),
-        name: 'Job',
-        meta: {
-          title: 'job',
-          roles: ['BaseService.Job'],
-          icon: 'job'
-        }
-      },
-      {
-        path: 'log',
-        component: () => import('@/views/log/index'),
-        name: 'Log',
-        meta: {
-          title: 'log',
-          roles: ['BaseService.AuditLogging'],
-          icon: 'log'
-        }
-      },
-    ]
-  },
-  {
-    path: '/base',
-    component: Layout,
-    redirect: '/base/book',
-    alwaysShow: true,
-    name: 'BASE',
-    meta: {
-      title: 'base',
-      icon: 'base'
-    },
-    children: [{
-      path: 'book',
-      component: () => import('@/views/book/index'),
-      name: 'Book',
-      meta: {
-        title: 'book',
-        icon: 'book'
-      }
-    }]
-  },
-  {
-    path: '/tool',
-    component: Layout,
-    redirect: '/tool/form',
-    alwaysShow: true,
-    name: 'Tool',
-    meta: {
-      title: 'tool',
-      icon: 'tool',
-      roles: ['FormManagement.Form','FlowManagement.Flow','FormManagement.FormBuild','StorageManagement.File']
-    },
-    children: [{
-        path: 'form',
-        component: () => import('@/views/form/index'),
-        name: 'Forms',
-        meta: {
-          title: 'form',
-          roles: ['FormManagement.Form'],
-          icon: 'control'
-        }
-      },
-      // {
-      //   path: 'dynamic',
-      //   component: () => import('@/views/form/dynamic'),
-      //   name: 'Dynamic',
-      //   meta: {
-      //     title: 'dynamic',
-      //     icon: 'control'
-      //   }
-      // },
-      {
-        path: 'formCreate',
-        component: () => import('@/views/form/create'),
-        name: 'FormCreate',
-        meta: {
-          roles: ['FormManagement.Form.Create'],
-          title: 'formCreate'
-        },
-        hidden: true
-      },
-      {
-        path: 'formEdit/:id',
-        component: () => import('@/views/form/edit'),
-        name: 'FormEdit',
-        meta: {
-          roles: ['FormManagement.Form.Update'],
-          title: 'formEdit'
-        },
-        hidden: true
-      },
-      {
-        path: 'flow',
-        component: () => import('@/views/flow-design/index'),
-        name: 'Flows',
-        meta: {
-          title: 'flows',
-          roles: ['FlowManagement.Flow'],
-          icon: 'flow'
-        },
-      },
-      {
-        path: 'flowDisplay/:id',
-        component: () => import('@/views/flow/display'),
-        name: 'FlowDisplay',
-        meta: {
-          title: 'flowDisplay',
-          roles: ['FlowManagement.Flow'],
-        },
-        hidden: true
-      },
-      {
-        path: 'flowCreate',
-        component: () => import('@/views/flow-design/create'),
-        name: 'FlowDesignCreate',
-        meta: {
-          roles: ['FlowManagement.Flow.Create'],
-          title: 'flowDesignCreate'
-        },
-        hidden: true
-      },
-      {
-        path: 'flowEdit/:id',
-        component: () => import('@/views/flow-design/edit'),
-        name: 'FlowDesignEdit',
-        meta: {
-          roles: ['FlowManagement.Flow.Update'],
-          title: 'flowDesignEdit'
-        },
-        hidden: true
-      },
-      {
-        path: 'build',
-        component: () => import('@/views/build/index'),
-        name: 'Builds',
-        meta: {
-          title: 'build',
-          roles: ['FormManagement.FormBuild'],
-          icon: 'code'
-        }
-      },
-      {
-        path: 'buildEdit/:id',
-        component: () => import('@/views/build/components/index'),
-        name: 'BuildEdit',
-        meta: {
-          roles: ['FormManagement.FormBuild.Update'],
-          title: 'buildEdit'
-        },
-        hidden: true
-      },
-      {
-        path:'storage',
-        component: () => import('@/views/storage/index'),
-        name: 'Storage',
-        meta: {
-          title: 'storage',
-          roles: ['StorageManagement.File'],
-          icon: 'storage'
-        },
-      }
-    ]
-  },
+// export const asyncRoutes = [{
+//     path: '/saas',
+//     component: Layout,
+//     redirect: '/saas/tenant',
+//     alwaysShow: true,
+//     name: 'SAAS',
+//     meta: {
+//       title: 'SaaS',
+//       icon: 'cloud',
+//       roles: ['AbpTenantManagement.Tenants'],
+//     },
+//     children: [{
+//       path: 'tenant',
+//       component: () => import('@/views/tenant/index'),
+//       name: 'Tenant',
+//       meta: {
+//         title: 'tenant',
+//         roles: ['AbpTenantManagement.Tenants'],
+//         icon: 'users'
+//       }
+//     }]
+//   },
+//   {
+//     path: '/system',
+//     component: Layout,
+//     redirect: '/system/user',
+//     alwaysShow: true,
+//     name: 'SystemManagement',
+//     meta: {
+//       title: 'systemManagement',
+//       icon: 'system'
+//     },
+//     children: [
+//       {
+//         path: 'menu',
+//         component: () => import('@/views/menu/index'),
+//         name: 'Menu',
+//         meta: {
+//           title: 'menu',
+//           //roles: ['BaseService.Menu'],
+//           icon: 'menu'
+//         }
+//       },
+//       {
+//         path: 'user',
+//         component: () => import('@/views/user/index'),
+//         name: 'User',
+//         meta: {
+//           title: 'user',
+//           roles: ['AbpIdentity.Users'],
+//           icon: 'user'
+//         }
+//       },
+//       {
+//         path: 'role',
+//         component: () => import('@/views/role/index'),
+//         name: 'Role',
+//         meta: {
+//           title: 'role',
+//           roles: ['AbpIdentity.Roles'],
+//           icon: 'role'
+//         }
+//       },
+//       {
+//         path: 'org',
+//         component: () => import('@/views/org/index'),
+//         name: 'Organization',
+//         meta: {
+//           title: 'org',
+//           roles: ['BaseService.Organization'],
+//           icon: 'org'
+//         }
+//       },
+//       {
+//         path: 'dict',
+//         component: () => import('@/views/dict/index'),
+//         name: 'Dictionary',
+//         meta: {
+//           title: 'dict',
+//           roles: ['BaseService.DataDictionary'],
+//           icon: 'data'
+//         }
+//       },
+//       {
+//         path: 'job',
+//         component: () => import('@/views/job/index'),
+//         name: 'Job',
+//         meta: {
+//           title: 'job',
+//           roles: ['BaseService.Job'],
+//           icon: 'job'
+//         }
+//       },
+//       {
+//         path: 'log',
+//         component: () => import('@/views/log/index'),
+//         name: 'Log',
+//         meta: {
+//           title: 'log',
+//           roles: ['BaseService.AuditLogging'],
+//           icon: 'log'
+//         }
+//       },
+//     ]
+//   },
+//   {
+//     path: '/base',
+//     component: Layout,
+//     redirect: '/base/book',
+//     alwaysShow: true,
+//     name: 'BASE',
+//     meta: {
+//       title: 'base',
+//       icon: 'base'
+//     },
+//     children: [{
+//       path: 'book',
+//       component: () => import('@/views/book/index'),
+//       name: 'Book',
+//       meta: {
+//         title: 'book',
+//         icon: 'book'
+//       }
+//     }]
+//   },
+//   {
+//     path: '/tool',
+//     component: Layout,
+//     redirect: '/tool/form',
+//     alwaysShow: true,
+//     name: 'Tool',
+//     meta: {
+//       title: 'tool',
+//       icon: 'tool',
+//       roles: ['FormManagement.Form','FlowManagement.Flow','FormManagement.FormBuild','StorageManagement.File']
+//     },
+//     children: [{
+//         path: 'form',
+//         component: () => import('@/views/form/index'),
+//         name: 'Forms',
+//         meta: {
+//           title: 'form',
+//           roles: ['FormManagement.Form'],
+//           icon: 'control'
+//         }
+//       },
+//       // {
+//       //   path: 'dynamic',
+//       //   component: () => import('@/views/form/dynamic'),
+//       //   name: 'Dynamic',
+//       //   meta: {
+//       //     title: 'dynamic',
+//       //     icon: 'control'
+//       //   }
+//       // },
+//       {
+//         path: 'formCreate',
+//         component: () => import('@/views/form/create'),
+//         name: 'FormCreate',
+//         meta: {
+//           roles: ['FormManagement.Form.Create'],
+//           title: 'formCreate'
+//         },
+//         hidden: true
+//       },
+//       {
+//         path: 'formEdit/:id',
+//         component: () => import('@/views/form/edit'),
+//         name: 'FormEdit',
+//         meta: {
+//           roles: ['FormManagement.Form.Update'],
+//           title: 'formEdit'
+//         },
+//         hidden: true
+//       },
+//       {
+//         path: 'flow',
+//         component: () => import('@/views/flow-design/index'),
+//         name: 'Flows',
+//         meta: {
+//           title: 'flows',
+//           roles: ['FlowManagement.Flow'],
+//           icon: 'flow'
+//         },
+//       },
+//       {
+//         path: 'flowDisplay/:id',
+//         component: () => import('@/views/flow/display'),
+//         name: 'FlowDisplay',
+//         meta: {
+//           title: 'flowDisplay',
+//           roles: ['FlowManagement.Flow'],
+//         },
+//         hidden: true
+//       },
+//       {
+//         path: 'flowCreate',
+//         component: () => import('@/views/flow-design/create'),
+//         name: 'FlowDesignCreate',
+//         meta: {
+//           roles: ['FlowManagement.Flow.Create'],
+//           title: 'flowDesignCreate'
+//         },
+//         hidden: true
+//       },
+//       {
+//         path: 'flowEdit/:id',
+//         component: () => import('@/views/flow-design/edit'),
+//         name: 'FlowDesignEdit',
+//         meta: {
+//           roles: ['FlowManagement.Flow.Update'],
+//           title: 'flowDesignEdit'
+//         },
+//         hidden: true
+//       },
+//       {
+//         path: 'build',
+//         component: () => import('@/views/build/index'),
+//         name: 'Builds',
+//         meta: {
+//           title: 'build',
+//           roles: ['FormManagement.FormBuild'],
+//           icon: 'code'
+//         }
+//       },
+//       {
+//         path: 'buildEdit/:id',
+//         component: () => import('@/views/build/components/index'),
+//         name: 'BuildEdit',
+//         meta: {
+//           roles: ['FormManagement.FormBuild.Update'],
+//           title: 'buildEdit'
+//         },
+//         hidden: true
+//       },
+//       {
+//         path:'storage',
+//         component: () => import('@/views/storage/index'),
+//         name: 'Storage',
+//         meta: {
+//           title: 'storage',
+//           roles: ['StorageManagement.File'],
+//           icon: 'storage'
+//         },
+//       }
+//     ]
+//   },
 
-  /** when your routing map is too long, you can split it into small modules **/
-  componentsRouter,
+//   /** when your routing map is too long, you can split it into small modules **/
+//   componentsRouter,
 
-  // 404 page must be placed at the end !!!
-  {
-    path: '*',
-    redirect: '/404',
-    hidden: true
-  }
-]
+//   // 404 page must be placed at the end !!!
+//   {
+//     path: '*',
+//     redirect: '/404',
+//     hidden: true
+//   }
+// ]
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support

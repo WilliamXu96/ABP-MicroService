@@ -305,6 +305,26 @@ export default {
           reject(error)
         })
     })
+  },
+  getMenus(url, params) {
+    return new Promise((resolve, reject) => {
+      axios.get(url, {
+          'params': params
+        })
+        .then(response => {
+          resolve(response.data)
+        }, err => {
+          Message({
+            message: err.message,
+            type: 'error',
+            duration: 5 * 1000
+          })
+          reject(err)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
   }
 
 }

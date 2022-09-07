@@ -83,18 +83,32 @@
                 :options="menus"
                 :disabled="isEdit"
                 style="width: 184px;"
-                placeholder="选择上级菜单"
+                placeholder="根目录"
               />
         </el-form-item>
-        <el-form-item label="菜单图标" prop="icon">
-          <!-- <el-popover
+        <el-form-item label="菜单名称" prop="name">
+          <el-input v-model="form.name" placeholder="请输入菜单名称" style="width: 184px;" />
+        </el-form-item>
+        <el-form-item label="显示名称" prop="label">
+          <el-input v-model="form.label" placeholder="请输入显示名称" style="width: 184px;" />
+        </el-form-item>
+        <el-form-item label="菜单排序" prop="sort">
+          <el-input-number
+            v-model="form.sort"
+            controls-position="right"
+            :min="0"
+            style="width: 184px;" 
+          />
+        </el-form-item>
+         <el-form-item label="菜单图标" prop="icon" v-if="form.categoryId==1">
+          <el-popover
                 placement="bottom-start"
                 width="460"
                 trigger="click"
                 @show="$refs['iconSelect'].reset()"
               >
                 <IconSelect ref="iconSelect" @selected="selected" />
-                <el-input slot="reference" v-model="form.icon" placeholder="点击选择图标" readonly>
+                <el-input slot="reference" v-model="form.icon" placeholder="点击选择图标" style="width: 184px;" readonly>
                   <svg-icon
                     v-if="form.icon"
                     slot="prefix"
@@ -104,25 +118,13 @@
                   />
                   <i v-else slot="prefix" class="el-icon-search el-input__icon" />
                 </el-input>
-              </el-popover> -->
-              <el-input v-model="form.icon" placeholder="请输入图标名称" style="width: 184px;" />
+              </el-popover>
         </el-form-item>
-        <el-form-item label="菜单名称" prop="name">
-          <el-input v-model="form.name" placeholder="请输入菜单名称" style="width: 184px;" />
-        </el-form-item>
-        <el-form-item label="排序" prop="sort">
-          <el-input-number
-            v-model="form.sort"
-            controls-position="right"
-            :min="0"
-            style="width: 184px;" 
-          />
-        </el-form-item>
-        <el-form-item label="路由地址" prop="path">
+        <el-form-item label="路由地址" prop="path" v-if="form.categoryId==1">
           <el-input v-model="form.path" placeholder="请输入路由地址" style="width: 184px;" />
         </el-form-item>
-        <el-form-item label="组件地址" prop="component">
-          <el-input v-model="form.component" placeholder="请输入组件地址" style="width: 184px;" />
+        <el-form-item label="组件路径" prop="component" v-if="form.categoryId==1">
+          <el-input v-model="form.component" placeholder="请输入组件路径" style="width: 184px;" />
         </el-form-item>
         <el-form-item label="权限标识">
           <el-input
@@ -150,50 +152,46 @@
       :data="list"
       size="small"
       style="width: 90%"
-      @sort-change="sortChange"
-      @selection-change="handleSelectionChange"
-      @row-click="handleRowClick"
+      row-key="id"
+      :tree-props="{children: 'children'}"
     >
-      <el-table-column type="selection" width="44px"></el-table-column>
       <el-table-column
-        label="菜单名称"
-        prop="name"
+        label="菜单名"
+        prop="label"
         sortable="custom"
-        align="center"
-        width="150px"
       >
         <template slot-scope="{ row }">
           <span class="link-type" @click="handleUpdate(row)">{{
-            row.name
+            row.label
           }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="排序" prop="sort" align="center">
+      <el-table-column prop="icon" label="图标" align="center" width="100">
         <template slot-scope="scope">
-          <span>{{ scope.row.sort }}</span>
+          <svg-icon :icon-class="scope.row.icon" />
         </template>
       </el-table-column>
+      <el-table-column label="排序" prop="sort" align="center" />
       <el-table-column label="菜单类型" prop="categoryId" align="center">
         <template slot-scope="scope">
               <span>{{scope.row.categoryId | displayCategory}}</span>
             </template>
       </el-table-column>
+      <el-table-column label="组件路径" prop="component" align="center" />
       <el-table-column label="操作" align="center">
         <template slot-scope="{ row }">
           <el-button
-            type="primary"
+            type="text"
             size="mini"
             @click="handleUpdate(row)"
-            v-permission="['BaseService.Job.Update']"
             icon="el-icon-edit"
-          />
+          >修改</el-button>
           <el-button
-            type="danger"
+            type="text"
             size="mini"
             @click="handleDelete(row)"
-            v-permission="['BaseService.Job.Delete']"
             icon="el-icon-delete"
-          />
+          >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -209,23 +207,24 @@
 </template>
 
 <script>
-import Pagination from "@/components/Pagination";
 import permission from "@/directive/permission/index.js";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import { LOAD_CHILDREN_OPTIONS } from "@riophae/vue-treeselect";
+import IconSelect from "@/components/IconSelect";
 
 const defaultForm = {
   id: null,
   pid:null,
+  categoryId:1,
   name: null,
-  description: null,
+  path: '',
   sort: 999,
-  enabled: true,
+  icon: '',
 };
 export default {
   name: "Menu",
-  components: { Pagination, Treeselect },
+  components: { IconSelect, Treeselect },
   directives: { permission },
   filters: {
     displayCategory(categoryId) {
@@ -240,13 +239,12 @@ export default {
   data() {
     return {
       rules: {
-        icon: [{ required: true, message: "请输入菜单图标", trigger: "blur" }],
         name: [{ required: true, message: "请输入菜单名", trigger: "blur" }],
-        sort: [{ required: true, message: "请输入序号", trigger: "blur" }],
-        path: [{ required: true, message: "请输入路由地址", trigger: "blur" }],
+        label: [{ required: true, message: "请输入显示名", trigger: "blur" }],
+        sort: [{ required: true, message: "请输入序号", trigger: "blur" }]
       },
       form: Object.assign({}, defaultForm),
-      list: null,
+      list: [],
       menus:[],
       totalCount: 0,
       listLoading: true,
@@ -268,20 +266,35 @@ export default {
     this.getList();
   },
   methods: {
+    selected(name) {
+      this.form.icon = name;
+    },
     getList() {
       this.listLoading = true;
-      this.listQuery.SkipCount =
-        (this.page - 1) * this.listQuery.MaxResultCount;
       this.$axios.gets("/api/base/menu/all", this.listQuery).then((response) => {
-        this.list = response.items;
-        this.totalCount = response.totalCount;
+        this.list = response.items.filter(_=>_.pid==null)
+        this.setChildren(this.list,response.items)
         this.listLoading = false;
+      });
+    },
+    setChildren(roots, items) {
+      roots.forEach(element => {
+        items.forEach(item => {
+          if (item.pid == element.id) {
+            if(!element.children)
+              element.children=[]
+            element.children.push(item);
+          }
+        });
+        if (element.children) {
+          this.setChildren(element.children, items);
+        }
       });
     },
     fetchData(id) {
       this.$axios.gets("/api/base/menu/" + id).then((response) => {
         this.form = response;
-        this.menus.push({id:response.pid, label:response.parentName})
+        this.menus.push({id:response.pid, label:response.parentLabel})
       });
     },
     loadMenus({ action, parentNode, callback }) {

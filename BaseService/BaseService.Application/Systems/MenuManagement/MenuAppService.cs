@@ -27,19 +27,20 @@ namespace BaseService.Systems.MenuManagement
 
         public async Task<MenuDto> Create(CreateOrUpdateMenuDto input)
         {
-            var exist = await _repository.FirstOrDefaultAsync(_ => _.Name == input.Name);
-            if (exist != null) throw new BusinessException("名称：" + input.Name + "菜单已存在");
-
             var result = await _repository.InsertAsync(new Menu(GuidGenerator.Create())
             {
                 FormId = input.FormId,
                 Pid = input.Pid,
                 Name = input.Name,
+                Label = input.Label,
                 CategoryId = input.CategoryId,
                 Sort = input.Sort,
                 Path = input.Path,
+                Component = input.Component,
                 Permission = input.Permission,
-                Icon = input.Icon
+                Icon = input.Icon,
+                AlwaysShow = input.Pid == null ? true : false,
+                Hidden = input.CategoryId == 2 ? true : false
             });
             return ObjectMapper.Map<Menu, MenuDto>(result);
         }
@@ -53,18 +54,13 @@ namespace BaseService.Systems.MenuManagement
             }
         }
 
-        public async Task<PagedResultDto<MenuDto>> GetAll(GetMenuInputDto input)
+        public async Task<ListResultDto<MenuDto>> GetAll(GetMenuInputDto input)
         {
             var query = (await _repository.GetQueryableAsync()).WhereIf(!string.IsNullOrWhiteSpace(input.Filter), _ => _.Name.Contains(input.Filter));
-
-            var totalCount = await query.CountAsync();
             var items = await query.OrderBy(input.Sorting ?? "Sort")
-                                   .Skip(input.SkipCount)
-                                   .Take(input.MaxResultCount)
                                    .ToListAsync();
-
             var dtos = ObjectMapper.Map<List<Menu>, List<MenuDto>>(items);
-            return new PagedResultDto<MenuDto>(totalCount, dtos);
+            return new ListResultDto<MenuDto>(dtos);
         }
 
         public async Task<MenuDto> Get(Guid id)
@@ -72,7 +68,7 @@ namespace BaseService.Systems.MenuManagement
             var result = await _repository.GetAsync(id);
             var dto = ObjectMapper.Map<Menu, MenuDto>(result);
             if (dto.Pid.HasValue)
-                dto.ParentName = (await _repository.FirstOrDefaultAsync(_ => _.Id == result.Pid))?.Name;
+                dto.ParentLabel = (await _repository.FirstOrDefaultAsync(_ => _.Id == result.Pid))?.Label;
             return dto;
         }
 
@@ -90,8 +86,10 @@ namespace BaseService.Systems.MenuManagement
             menu.CategoryId = input.CategoryId;
             //TODO：菜单名重复验证
             menu.Name = input.Name;
+            menu.Label = input.Label;
             menu.Sort = input.Sort;
             menu.Path = input.Path;
+            menu.Component = input.Component;
             menu.Icon = input.Icon;
             menu.Permission = input.Permission;
 

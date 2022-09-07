@@ -16,7 +16,9 @@ namespace BaseService.Systems.MenuManagement.Dto
 
         public string Name { get; set; }
 
-        public int Path { get; set; }
+        public int Sort { get; set; }
+
+        public string Path { get; set; }
 
         public string Component { get; set; }
 
@@ -26,6 +28,6 @@ namespace BaseService.Systems.MenuManagement.Dto
 
         public string Icon { get; set; }
 
-        public string ParentName { get; set; }
+        public string ParentLabel { get; set; }
     }
 }

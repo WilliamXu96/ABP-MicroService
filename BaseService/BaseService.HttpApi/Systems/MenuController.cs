@@ -42,7 +42,7 @@ namespace BaseService.HttpApi.Systems
 
         [HttpGet]
         [Route("all")]
-        public Task<PagedResultDto<MenuDto>> GetAll(GetMenuInputDto input)
+        public Task<ListResultDto<MenuDto>> GetAll(GetMenuInputDto input)
         {
             return _menuAppService.GetAll(input);
         }
