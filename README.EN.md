@@ -29,7 +29,8 @@ Run the script in the run directory
 - Tenant management
 - User management
 - Role management
-- organization
+- Menu management
+- Organization
 - Dictionary management
 - Job management
 - Operation log
