@@ -21,7 +21,8 @@ namespace BaseService.Systems.UserMenusManagement
 
         public async Task<ListResultDto<RoleMenusDto>> GetRoleMenus()
         {
-            var menus = await _menuRepository.GetListAsync();
+            //获取所有菜单
+            var menus = await _menuRepository.GetListAsync(_ => _.CategoryId == 1);
             var root = menus.Where(_ => _.Pid == null).OrderBy(_ => _.Sort).ToList();
             return new ListResultDto<RoleMenusDto>(LoadTree(root, menus));
         }

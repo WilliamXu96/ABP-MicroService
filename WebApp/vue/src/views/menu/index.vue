@@ -129,7 +129,7 @@
         <el-form-item label="权限标识">
           <el-input
             v-model="form.permission"
-            placeholder="请权限标识"
+            placeholder="请输入权限标识"
             maxlength="50"
            style="width: 184px;" 
           />

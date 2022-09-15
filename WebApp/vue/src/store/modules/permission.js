@@ -17,7 +17,7 @@ const permission = {
     // 生成路由
     GenerateRoutes({ commit }) {
       return new Promise(resolve => {
-        // 向后端请求路由数据
+        // 获取角色菜单
         axiosMethods.getMenus('/api/base/role-menus').then(res => {
           const accessedRoutes = filterAsyncRouter(res.items)
           accessedRoutes.push({ path: '*', redirect: '/404', hidden: true })

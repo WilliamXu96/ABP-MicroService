@@ -84,7 +84,6 @@ namespace BaseService.Systems.MenuManagement
             var menu = await _repository.GetAsync(id);
             menu.Pid = input.Pid;
             menu.CategoryId = input.CategoryId;
-            //TODO：菜单名重复验证
             menu.Name = input.Name;
             menu.Label = input.Label;
             menu.Sort = input.Sort;

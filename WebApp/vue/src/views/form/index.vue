@@ -218,7 +218,7 @@ export default {
         });
     },
     handleCreate() {
-      this.$router.push({ path: "/tool/formCreate" });
+      this.$router.push({ path: "/tool/form/create" });
     },
     handleUpdate(row) {
       if (row) {
