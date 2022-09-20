@@ -160,3 +160,4 @@
 /MicroServices/Business/Business.Core/bin/Debug/netstandard2.1
 /Gateways/WebAppGateway/WebAppGateway.Host/bin/Debug/net6.0
 /Gateways/InternalGateway/InternalGateway.Host/bin/Debug/net6.0
+/MicroServices/FileStorage/FileStorage.Application.Contracts/bin/Debug
