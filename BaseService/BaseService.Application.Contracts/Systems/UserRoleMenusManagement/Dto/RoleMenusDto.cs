@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BaseService.Systems.UserMenusManagement.Dto
+namespace BaseService.Systems.UserRoleMenusManagement.Dto
 {
     public class RoleMenusDto
     {

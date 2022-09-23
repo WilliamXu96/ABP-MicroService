@@ -1,33 +1,73 @@
-﻿using BaseService.Systems.UserMenusManagement.Dto;
+﻿using BaseService.Systems.UserRoleMenusManagement.Dto;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Identity;
 
 namespace BaseService.Systems.UserMenusManagement
 {
+    //[Authorize]
     public class RoleMenusAppService : ApplicationService, IRoleMenusAppService
     {
+        public IIdentityRoleRepository RoleRepository { get; }
         private readonly IRepository<Menu, Guid> _menuRepository;
+        private readonly IRepository<RoleMenu> _roleMenuRepository;
 
-        public RoleMenusAppService(IRepository<Menu, Guid> menuRepository)
+        public RoleMenusAppService(
+            IIdentityRoleRepository roleRepository,
+            IRepository<Menu, Guid> menuRepository,
+            IRepository<RoleMenu> roleMenuRepository)
         {
+            RoleRepository = roleRepository;
             _menuRepository = menuRepository;
+            _roleMenuRepository = roleMenuRepository;
         }
 
+        public async Task Update(UpdateRoleMenuDto input)
+        {
+            var roleMenus = new List<RoleMenu>();
+            foreach (var menuId in input.MenuIds)
+            {
+                roleMenus.Add(new RoleMenu(input.RoleId, menuId));
+            }
+            await _roleMenuRepository.InsertManyAsync(roleMenus);
+        }
+
+        public async Task<ListResultDto<MenusTreeDto>> GetMenusTree()
+        {
+            var menus = await _menuRepository.GetListAsync();
+            var root = menus.Where(_ => _.Pid == null).OrderBy(_ => _.Sort).ToList();
+            var dtos = ObjectMapper.Map<List<Menu>, List<MenusTreeDto>>(menus);
+            return new ListResultDto<MenusTreeDto>(dtos.OrderBy(_ => _.Sort).ToList());
+        }
+
+        /// <summary>
+        /// 获取当前角色菜单
+        /// </summary>
+        /// <returns></returns>
         public async Task<ListResultDto<RoleMenusDto>> GetRoleMenus()
         {
-            //获取所有菜单
-            var menus = await _menuRepository.GetListAsync(_ => _.CategoryId == 1);
+            var roleIds = await (await RoleRepository.GetDbSetAsync()).Where(_ => CurrentUser.Roles.Contains(_.Name)).Select(_ => _.Id).ToListAsync();
+            var roleMenus = await (await _roleMenuRepository.GetQueryableAsync()).Where(_ => roleIds.Contains(_.RoleId)).Select(_ => _.MenuId).ToListAsync();
+            var menus = await _menuRepository.GetListAsync(_ => _.CategoryId == 1 && roleMenus.Contains(_.Id));
             var root = menus.Where(_ => _.Pid == null).OrderBy(_ => _.Sort).ToList();
-            return new ListResultDto<RoleMenusDto>(LoadTree(root, menus));
+            return new ListResultDto<RoleMenusDto>(LoadRoleMenusTree(root, menus));
         }
 
-        private List<RoleMenusDto> LoadTree(List<Menu> roots, List<Menu> menus)
+        public async Task<ListResultDto<Guid>> GetRoleMenuIds(Guid id)
+        {
+            var menuIds = await _roleMenuRepository.GetListAsync(_ => _.RoleId == id);
+            var menus = await _menuRepository.GetListAsync(_ => menuIds.Select(m => m.MenuId).Contains(_.Id));
+            return new ListResultDto<Guid>(menus.Select(_ => _.Id).ToList());
+        }
+
+        private List<RoleMenusDto> LoadRoleMenusTree(List<Menu> roots, List<Menu> menus)
         {
             var result = new List<RoleMenusDto>();
             foreach (var root in roots)
@@ -43,7 +83,7 @@ namespace BaseService.Systems.UserMenusManagement
                 };
                 if (menus.Where(_ => _.Pid == root.Id).Any())
                 {
-                    menu.Children = LoadTree(menus.Where(_ => _.Pid == root.Id).OrderBy(_ => _.Sort).ToList(), menus);
+                    menu.Children = LoadRoleMenusTree(menus.Where(_ => _.Pid == root.Id).OrderBy(_ => _.Sort).ToList(), menus);
                 }
                 result.Add(menu);
             }

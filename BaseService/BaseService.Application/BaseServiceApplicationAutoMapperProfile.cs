@@ -7,6 +7,7 @@ using BaseService.Systems;
 using BaseService.Systems.AuditLoggingManagement.Dto;
 using BaseService.Systems.MenuManagement.Dto;
 using BaseService.Systems.UserManagement.Dto;
+using BaseService.Systems.UserRoleMenusManagement.Dto;
 using Volo.Abp.AuditLogging;
 using Volo.Abp.Identity;
 
@@ -37,6 +38,7 @@ namespace BaseService
             CreateMap<Job, JobDto>();
 
             CreateMap<Menu, MenuDto>();
+            CreateMap<Menu, MenusTreeDto>();
         }
     }
 }
