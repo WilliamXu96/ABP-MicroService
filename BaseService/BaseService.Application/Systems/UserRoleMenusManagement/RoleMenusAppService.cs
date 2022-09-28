@@ -12,7 +12,7 @@ using Volo.Abp.Identity;
 
 namespace BaseService.Systems.UserMenusManagement
 {
-    //[Authorize]
+    [Authorize]
     public class RoleMenusAppService : ApplicationService, IRoleMenusAppService
     {
         public IIdentityRoleRepository RoleRepository { get; }
@@ -36,6 +36,7 @@ namespace BaseService.Systems.UserMenusManagement
             {
                 roleMenus.Add(new RoleMenu(input.RoleId, menuId));
             }
+            await _roleMenuRepository.DeleteAsync(_ => _.RoleId == input.RoleId);
             await _roleMenuRepository.InsertManyAsync(roleMenus);
         }
 

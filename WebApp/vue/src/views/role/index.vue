@@ -390,19 +390,26 @@ export default {
             this.multipleSelection[0].name,
           params
         )
-        .then((response) => {
-          this.$notify({
+        .then(() => {
+          this.$axios
+          .posts("/api/base/role-menus/update", {
+            roleId: this.multipleSelection[0].id,
+            menuIds: checkedKeys,
+          }).then(()=>{
+            this.$notify({
             title: "成功",
             message: "更新成功",
             type: "success",
             duration: 2000,
           });
+            this.savePerLoading = false;
+          }).catch(() => {
           this.savePerLoading = false;
         });
-      this.$axios
-        .posts("/api/base/role-menus/update", {
-          roleId: this.multipleSelection[0].id,
-          menuIds: checkedKeys,
+          
+        })
+        .catch(() => {
+          this.savePerLoading = false;
         });
     },
     handleCreate() {
