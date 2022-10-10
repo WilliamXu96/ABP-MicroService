@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.AutoMapper"  Version="5.1.4" />
+    <PackageReference Include="Volo.Abp.AutoMapper"  Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>

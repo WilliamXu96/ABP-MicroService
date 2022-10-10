@@ -9,7 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hangfire.Core" Version="1.7.28" />
     <PackageReference Include="Hangfire.Dashboard.BasicAuthorization" Version="1.0.2" />
 	 <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="6.0.3" />
@@ -22,10 +21,10 @@
     <PackageReference Include="Serilog.Sinks.Async" Version="1.5.0" />
     <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="8.4.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
-    <PackageReference Include="Volo.Abp.AspNetCore.MultiTenancy" Version="5.1.4" />
-    <PackageReference Include="Volo.Abp.AspNetCore.Serilog" Version="5.1.4" />
-    <PackageReference Include="Volo.Abp.Autofac" Version="5.1.4" />
-    <PackageReference Include="Volo.Abp.Caching" Version="5.1.4" />
+    <PackageReference Include="Volo.Abp.AspNetCore.MultiTenancy" Version="6.0.0" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Serilog" Version="6.0.0" />
+    <PackageReference Include="Volo.Abp.Autofac" Version="6.0.0" />
+    <PackageReference Include="Volo.Abp.Caching" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
