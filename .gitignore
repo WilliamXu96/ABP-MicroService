@@ -161,3 +161,7 @@
 /Gateways/WebAppGateway/WebAppGateway.Host/bin/Debug/net6.0
 /Gateways/InternalGateway/InternalGateway.Host/bin/Debug/net6.0
 /MicroServices/FileStorage/FileStorage.Application.Contracts/bin/Debug
+/AuthServer/IdentityServer/AuthServer.Host/obj
+/AuthServer/IdentityServer/AuthServer.Host/bin/Debug/net6.0
+/AuthServer/IdentityServer/AuthServer.Host/Logs
+/AuthServer/IdentityServer/.vs/AuthServer
