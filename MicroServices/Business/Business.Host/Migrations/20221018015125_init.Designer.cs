@@ -13,7 +13,7 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Business.Migrations
 {
     [DbContext(typeof(BusinessMigrationDbContext))]
-    [Migration("20220406020740_init")]
+    [Migration("20221018015125_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,7 +21,7 @@ namespace Business.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("_Abp_DatabaseProvider", EfCoreDatabaseProvider.SqlServer)
-                .HasAnnotation("ProductVersion", "6.0.3")
+                .HasAnnotation("ProductVersion", "6.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -446,6 +446,59 @@ namespace Business.Migrations
                     b.ToTable("base_form", (string)null);
                 });
 
+            modelBuilder.Entity("XCZ.FormManagement.FormData", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("ConcurrencyStamp");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<string>("Data")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ExtraProperties")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ExtraProperties");
+
+                    b.Property<Guid>("FormId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("IsDeleted");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("LastModificationTime");
+
+                    b.Property<Guid?>("LastModifierId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("LastModifierId");
+
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("TenantId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("base_form_datas", (string)null);
+                });
+
             modelBuilder.Entity("XCZ.FormManagement.FormField", b =>
                 {
                     b.Property<Guid>("Id")
@@ -516,9 +569,6 @@ namespace Business.Migrations
                     b.Property<int?>("Maxlength")
                         .HasColumnType("int");
 
-                    b.Property<string>("Options")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Placeholder")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
@@ -527,7 +577,9 @@ namespace Business.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Span")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(24);
 
                     b.Property<Guid?>("TenantId")
                         .HasColumnType("uniqueidentifier");
@@ -535,6 +587,46 @@ namespace Business.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("base_form_fields", (string)null);
+                });
+
+            modelBuilder.Entity("XCZ.FormManagement.FormFieldOption", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("ConcurrencyStamp");
+
+                    b.Property<string>("ExtraProperties")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ExtraProperties");
+
+                    b.Property<Guid>("FormFieldId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("FormId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Label")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("base_form_fields_opts", (string)null);
                 });
 
             modelBuilder.Entity("XCZ.WorkFlow.FormWorkFlow", b =>

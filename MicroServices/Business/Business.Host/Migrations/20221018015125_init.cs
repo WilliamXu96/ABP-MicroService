@@ -135,6 +135,27 @@ namespace Business.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "base_form_datas",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    FormId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Data = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
+                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_base_form_datas", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "base_form_fields",
                 columns: table => new
                 {
@@ -156,14 +177,31 @@ namespace Business.Migrations
                     IsSort = table.Column<bool>(type: "bit", nullable: false),
                     Disabled = table.Column<bool>(type: "bit", nullable: false),
                     Regx = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Options = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Span = table.Column<int>(type: "int", nullable: false),
+                    Span = table.Column<int>(type: "int", nullable: false, defaultValue: 24),
                     ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_base_form_fields", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "base_form_fields_opts",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    FormId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FormFieldId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Label = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_base_form_fields_opts", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -246,7 +284,13 @@ namespace Business.Migrations
                 name: "base_form");
 
             migrationBuilder.DropTable(
+                name: "base_form_datas");
+
+            migrationBuilder.DropTable(
                 name: "base_form_fields");
+
+            migrationBuilder.DropTable(
+                name: "base_form_fields_opts");
 
             migrationBuilder.DropTable(
                 name: "base_form_workflow");
