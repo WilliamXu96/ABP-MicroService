@@ -165,3 +165,9 @@
 /AuthServer/IdentityServer/AuthServer.Host/bin/Debug/net6.0
 /AuthServer/IdentityServer/AuthServer.Host/Logs
 /AuthServer/IdentityServer/.vs/AuthServer
+/AuthServer/OpenIddict/AuthServer.Host/node_modules
+/AuthServer/OpenIddict/AuthServer.Host/bin/Debug/net6.0
+/AuthServer/OpenIddict/AuthServer.Host/Logs
+/AuthServer/OpenIddict/AuthServer.Host/obj
+/AuthServer/OpenIddict/AuthServer.Host/wwwroot/libs
+/AuthServer/OpenIddict/.vs/OpenIddict
