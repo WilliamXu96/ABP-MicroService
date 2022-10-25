@@ -32,6 +32,8 @@ using Volo.Abp.Identity.EntityFrameworkCore;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.OpenIddict.EntityFrameworkCore;
+using Volo.Abp.Threading;
+using Volo.Abp.Data;
 
 namespace AuthServer;
 
@@ -118,19 +120,14 @@ public class AuthServerModule : AbpModule
 
         if (hostingEnvironment.IsDevelopment())
         {
-            Configure<AbpVirtualFileSystemOptions>(options =>
-            {
-                
-            });
+            
         }
 
         Configure<AppUrlOptions>(options =>
         {
-            options.Applications["MVC"].RootUrl = configuration["App:SelfUrl"];
             options.RedirectAllowedUrls.AddRange(configuration["App:RedirectAllowedUrls"].Split(','));
-
-            options.Applications["Angular"].RootUrl = configuration["App:ClientUrl"];
-            options.Applications["Angular"].Urls[AccountUrlNames.PasswordReset] = "account/reset-password";
+            options.Applications["Web_App"].RootUrl = configuration["App:ClientUrl"];
+            options.Applications["Web_App"].Urls[AccountUrlNames.PasswordReset] = "account/reset-password";
         });
 
         Configure<AbpBackgroundJobOptions>(options =>
@@ -207,5 +204,15 @@ public class AuthServerModule : AbpModule
         app.UseAuditing();
         app.UseAbpSerilogEnrichers();
         app.UseConfiguredEndpoints();
+
+        AsyncHelper.RunSync(async () =>
+        {
+            using (var scope = context.ServiceProvider.CreateScope())
+            {
+                await scope.ServiceProvider
+                    .GetRequiredService<IDataSeeder>()
+                    .SeedAsync();
+            }
+        });
     }
 }
