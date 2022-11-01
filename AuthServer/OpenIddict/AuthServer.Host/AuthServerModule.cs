@@ -72,6 +72,14 @@ public class AuthServerModule : AbpModule
         var hostingEnvironment = context.Services.GetHostingEnvironment();
         var configuration = context.Services.GetConfiguration();
 
+        context.Services.AddOpenIddict().AddServer(options =>
+        {
+            options.UseAspNetCore()
+                   .EnableAuthorizationEndpointPassthrough()
+                   .EnableTokenEndpointPassthrough()
+                   .DisableTransportSecurityRequirement();
+        });
+
         Configure<AbpLocalizationOptions>(options =>
         {
             options.Languages.Add(new LanguageInfo("ar", "ar", "العربية"));
