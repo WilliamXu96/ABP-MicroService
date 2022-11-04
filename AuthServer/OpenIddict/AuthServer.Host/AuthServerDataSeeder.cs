@@ -151,10 +151,10 @@ namespace AuthServer
                 };
                 await CreateApplicationAsync(
                     name: businessClientId,
-                    type: OpenIddictConstants.ClientTypes.Public,
+                    type: OpenIddictConstants.ClientTypes.Confidential,
                     consentType: OpenIddictConstants.ConsentTypes.Implicit,
                     displayName: "Business Application",
-                    secret: null,
+                    secret: "1q2w3e*",
                     grantTypes: new List<string>
                     {
                         OpenIddictConstants.GrantTypes.ClientCredentials,
@@ -186,13 +186,13 @@ namespace AuthServer
             {
                 throw new BusinessException("TheClientSecretIsRequiredForConfidentialApplications");
             }
-
+            var client = await _applicationManager.FindByClientIdAsync(name);
             if (!string.IsNullOrEmpty(name) && await _applicationManager.FindByClientIdAsync(name) != null)
             {
                 return;
             }
 
-            var client = await _applicationManager.FindByClientIdAsync(name);
+            //var client = await _applicationManager.FindByClientIdAsync(name);
             if (client == null)
             {
                 var application = new AbpApplicationDescriptor

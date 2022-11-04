@@ -53,6 +53,7 @@ export default {
         password: "",
         client_id: config.client.client_id,
         grant_type: config.client.grant_type,
+        scope: config.client.scope
       },
       loginRules: {
         username: [

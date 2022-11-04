@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
@@ -66,12 +67,12 @@ namespace WebAppGateway
 
         private void ConfigureAuthentication(ServiceConfigurationContext context, IConfiguration configuration)
         {
-            context.Services.AddAuthentication("Bearer")
-                .AddIdentityServerAuthentication(options =>
+            context.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
                 {
                     options.Authority = configuration["AuthServer:Authority"];
                     options.RequireHttpsMetadata = false;
-                    options.ApiName = "WebAppGateway";
+                    options.Audience = "WebAppGateway";
                 });
         }
 

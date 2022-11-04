@@ -13,7 +13,7 @@ using Volo.Abp.EntityFrameworkCore;
 namespace AuthServer.Migrations
 {
     [DbContext(typeof(AuthServerDbContext))]
-    [Migration("20221017093500_init")]
+    [Migration("20221103024511_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
