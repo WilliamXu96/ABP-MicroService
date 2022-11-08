@@ -149,7 +149,7 @@ namespace AuthServer.Host
 
             await CreateClientAsync(
                 name: "basic-web",
-                scopes: new[] { "BaseService", "WebAppGateway", "BusinessService" },
+                scopes: commonScopes.Append("BaseService").Append("WebAppGateway").Append("BusinessService"),
                 grantTypes: new[] { "password" },
                 secret: null,
                 requireClientSecret: false
