@@ -16,6 +16,14 @@ namespace Business.Permissions
             public const string Create = Default + ".Create";
         }
 
+        public static class PrintTemplate
+        {
+            public const string Default = Business + ".PrintTemplate";
+            public const string Delete = Default + ".Delete";
+            public const string Update = Default + ".Update";
+            public const string Create = Default + ".Create";
+        }
+
         //Code generation...
     }
 }

@@ -10,6 +10,8 @@ namespace Business.EntityFrameworkCore
     {
         public DbSet<Book> Book { get; set; }
 
+        public DbSet<PrintTemplate> PrintTemplate { get; set; }
+
         //Code generation...
         public BusinessDbContext(DbContextOptions<BusinessDbContext> options)
             : base(options)

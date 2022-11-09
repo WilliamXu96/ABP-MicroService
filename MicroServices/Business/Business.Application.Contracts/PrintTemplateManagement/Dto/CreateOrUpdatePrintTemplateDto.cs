@@ -1,41 +1,41 @@
 using System;
-using Volo.Abp;
-using Volo.Abp.Domain.Entities.Auditing;
-using Volo.Abp.MultiTenancy;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Volo.Abp.Application.Dtos;
 
-namespace Business.Models
+namespace Business.PrintTemplateManagement.Dto
 {
-    /// <summary>
-    /// 打印模板
-    /// </summary>
-    public class PrintTemplate: AuditedAggregateRoot<Guid>, ISoftDelete, IMultiTenant
+    public class CreateOrUpdatePrintTemplateDto: EntityDto<Guid?>
     {
-        public Guid? TenantId { get; set; }
         
         /// <summary>
         /// 模板名称
         /// </summary>
+        [Required]
         public string Name { get; set; }
         
         /// <summary>
         /// 模板类型
         /// </summary>
+        [Required]
         public int TempType { get; set; }
         
         /// <summary>
         /// 默认
         /// </summary>
+        [Required]
         public bool IsDefault { get; set; }
         
         /// <summary>
         /// 状态
         /// </summary>
+        [Required]
         public int Status { get; set; }
         
         /// <summary>
         /// 排序
         /// </summary>
+        [Required]
         public int Sort { get; set; }
         
         /// <summary>
@@ -48,7 +48,5 @@ namespace Business.Models
         /// </summary>
         public string Remark { get; set; }
         
-		
-		public bool IsDeleted { get; set; }
     }
 }

@@ -22,6 +22,15 @@ namespace Business.EntityFrameworkCore
         
             });
 
+            builder.Entity<PrintTemplate>(b =>
+            {
+                b.ToTable("base_print_template");
+
+                b.ConfigureByConvention();
+                
+                b.Property(x => x.Name).IsRequired();
+            });
+
             //Code generation...
         }
     }
