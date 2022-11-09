@@ -171,3 +171,4 @@
 /AuthServer/OpenIddict/AuthServer.Host/obj
 /AuthServer/OpenIddict/AuthServer.Host/wwwroot/libs
 /AuthServer/OpenIddict/.vs/OpenIddict
+/MicroServices/Business/.vs/ProjectEvaluation
