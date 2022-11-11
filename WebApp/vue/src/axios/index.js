@@ -49,7 +49,7 @@ axios.interceptors.response.use((res) => {
         router.replace({
           path: '/login'
         })
-        break
+        return
 
       case 400:
         error.code = err.response.data.error.code

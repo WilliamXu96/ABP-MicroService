@@ -62,6 +62,7 @@ export default {
     SaaS:'SaaS',
     base: '基础资料',
     book: '书籍管理',
+    print:'打印模板',
     tenant:'租户管理',
     systemManagement:'系统管理',
     Menu:'菜单管理',

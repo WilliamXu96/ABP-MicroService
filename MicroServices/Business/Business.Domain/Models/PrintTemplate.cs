@@ -17,9 +17,9 @@ namespace Business.Models
         /// 模板名称
         /// </summary>
         public string Name { get; set; }
-        
+
         /// <summary>
-        /// 模板类型
+        /// 模板类型：0设计模板，1指令模板
         /// </summary>
         public int TempType { get; set; }
         
@@ -27,9 +27,9 @@ namespace Business.Models
         /// 默认
         /// </summary>
         public bool IsDefault { get; set; }
-        
+
         /// <summary>
-        /// 状态
+        /// 状态：0禁用，1启用
         /// </summary>
         public int Status { get; set; }
         

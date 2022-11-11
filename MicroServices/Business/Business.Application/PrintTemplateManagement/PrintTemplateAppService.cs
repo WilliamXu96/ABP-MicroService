@@ -15,7 +15,7 @@ using Business.Permissions;
 namespace Business.PrintTemplateManagement
 {
     [Authorize(BusinessPermissions.PrintTemplate.Default)]
-    public class PrintTemplateAppService : ApplicationService,IPrintTemplateAppService
+    public class PrintTemplateAppService : ApplicationService, IPrintTemplateAppService
     {
         private const string FormName = "PrintTemplate";
         private IRepository<PrintTemplate, Guid> _repository;
@@ -74,7 +74,7 @@ namespace Business.PrintTemplateManagement
 
         }
 
-     
+
         #endregion
 
     }

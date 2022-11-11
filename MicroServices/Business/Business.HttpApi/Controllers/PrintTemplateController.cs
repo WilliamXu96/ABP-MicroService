@@ -12,7 +12,7 @@ namespace Business.Controllers
 {
     [RemoteService]
     [Area("Business")]
-    [Route("api/app/print-template")]
+    [Route("api/business/print-template")]
     public class PrintTemplateController : AbpController
     {
         private readonly IPrintTemplateAppService _PrintTemplateAppService;
