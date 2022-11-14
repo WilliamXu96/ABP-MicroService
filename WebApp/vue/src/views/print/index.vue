@@ -24,6 +24,14 @@
           class="filter-item"
           size="mini"
           type="primary"
+          icon="el-icon-printer"
+          v-print="'#printMe'"
+          >打印
+        </el-button>
+        <el-button
+          class="filter-item"
+          size="mini"
+          type="primary"
           icon="el-icon-plus"
           @click="handleCreate"
           >新增
@@ -73,7 +81,7 @@
           ></el-col>
           <el-col :md="12"
             ><el-form-item label="模板类型" prop="tempType">
-              <el-select v-model="form.tempType" placeholder="选择模板类型">
+              <el-select v-model="form.tempType" placeholder="选择模板类型" :disabled="isEdit">
                 <el-option label="设计模板" :value="0"></el-option>
                 <el-option label="指令模板" :value="1"></el-option>
               </el-select> </el-form-item
@@ -113,7 +121,7 @@
           <el-col :md="24">
             <el-form-item
               v-if="form.tempType === 0"
-              label="设计"
+              label="模板内容"
               prop="content"
             >
               <el-link type="primary">设计模板</el-link
@@ -147,6 +155,7 @@
       </div>
     </el-dialog>
     <el-table
+      id="printMe"
       ref="multipleTable"
       v-loading="listLoading"
       :data="list"
@@ -206,10 +215,12 @@
 <script>
 import Pagination from "@/components/Pagination";
 import permission from "@/directive/permission/index.js";
+import Print from 'vue-print-nb'
+
 const defaultForm = {
   id: null,
   name: null,
-  tempType: 0,
+  tempType: undefined,
   isDefault: false,
   status: 1,
   sort: 0,
@@ -219,10 +230,10 @@ const defaultForm = {
 export default {
   name: "print",
   components: {
-    Pagination,
+    Pagination
   },
   directives: {
-    permission,
+    permission, Print
   },
   filters: {
     displayStatus(status) {
