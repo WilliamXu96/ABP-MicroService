@@ -25,7 +25,7 @@
           size="mini"
           type="primary"
           icon="el-icon-printer"
-          v-print="'#printMe'"
+          v-print
           >打印
         </el-button>
         <el-button
@@ -81,7 +81,11 @@
           ></el-col>
           <el-col :md="12"
             ><el-form-item label="模板类型" prop="tempType">
-              <el-select v-model="form.tempType" placeholder="选择模板类型" :disabled="isEdit">
+              <el-select
+                v-model="form.tempType"
+                placeholder="选择模板类型"
+                :disabled="isEdit"
+              >
                 <el-option label="设计模板" :value="0"></el-option>
                 <el-option label="指令模板" :value="1"></el-option>
               </el-select> </el-form-item
@@ -124,9 +128,9 @@
               label="模板内容"
               prop="content"
             >
-              <el-link type="primary">设计模板</el-link
+              <el-link type="primary" @click="openDesign(0)">设计模板</el-link
               >&nbsp;&nbsp;&nbsp;
-              <el-link type="info">预览模板</el-link>
+              <el-link type="info" @click="openDesign(1)">预览模板</el-link>
             </el-form-item>
             <el-form-item
               label="模板内容"
@@ -135,6 +139,7 @@
             >
               <el-input
                 type="textarea"
+                rows="6"
                 v-model="form.content"
                 placeholder="请输入模板内容"
                 style="width: 530px"
@@ -215,7 +220,8 @@
 <script>
 import Pagination from "@/components/Pagination";
 import permission from "@/directive/permission/index.js";
-import Print from 'vue-print-nb'
+import Print from "vue-print-nb";
+import { getLodop, loadTemp, previewTemp } from "@/utils/LodopFuncs";
 
 const defaultForm = {
   id: null,
@@ -230,10 +236,11 @@ const defaultForm = {
 export default {
   name: "print",
   components: {
-    Pagination
+    Pagination,
   },
   directives: {
-    permission, Print
+    permission,
+    Print,
   },
   filters: {
     displayStatus(status) {
@@ -480,6 +487,22 @@ export default {
       this.form = Object.assign({}, defaultForm);
       this.dialogFormVisible = false;
       this.$refs.form.clearValidate();
+    },
+    openDesign(opt) {
+      let _self = this;
+      let LODOP = getLodop();
+      if(_self.form.content){
+        loadTemp(LODOP, _self.form.content);
+      }
+      if (opt === 0) {
+        const tid = LODOP.PRINT_DESIGN();
+        LODOP.On_Return = function (taskID, value) {
+          _self.form.content = value;
+        };
+      }
+      if (opt === 1) {
+        LODOP.PREVIEW();
+      }
     },
   },
 };
