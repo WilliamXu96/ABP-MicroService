@@ -51,3 +51,4 @@ INSERT INTO [base_role_menu]([RoleId], [MenuId], [TenantId]) VALUES ('', '8C3AAD
 INSERT INTO [base_role_menu]([RoleId], [MenuId], [TenantId]) VALUES ('', 'CE8CD2FD-57BD-0BBA-01A8-3A06675FC765', NULL); 
 INSERT INTO [base_role_menu]([RoleId], [MenuId], [TenantId]) VALUES ('', 'A45C8582-DD73-F5AA-91FF-3A066765DFAF', NULL); 
 INSERT INTO [base_role_menu]([RoleId], [MenuId], [TenantId]) VALUES ('', 'CBDD83BA-3330-A14B-3A71-3A06951312D8', NULL); 
+INSERT INTO [base_role_menu]([RoleId], [MenuId], [TenantId]) VALUES ('', '16C1F5CF-AB26-736C-4AA9-3A07729C96E7', NULL); 
