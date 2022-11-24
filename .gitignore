@@ -173,3 +173,5 @@
 /AuthServer/OpenIddict/.vs/OpenIddict
 /MicroServices/Business/.vs/ProjectEvaluation
 /AuthServer/OpenIddict/.vs/ProjectEvaluation
+/Gateways/InternalGateway/.vs/ProjectEvaluation
+/Gateways/WebAppGateway/.vs/ProjectEvaluation
