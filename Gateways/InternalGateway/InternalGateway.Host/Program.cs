@@ -5,7 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
-using Serilog.Sinks.Elasticsearch;
 
 namespace InternalGateway
 {
@@ -33,7 +32,7 @@ namespace InternalGateway
 
             try
             {
-                Log.Information("Starting Business.Host");
+                Log.Information("Starting InternalGateway.Host");
                 CreateHostBuilder(args).Build().Run();
                 return 0;
             }
