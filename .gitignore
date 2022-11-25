@@ -175,3 +175,6 @@
 /AuthServer/OpenIddict/.vs/ProjectEvaluation
 /Gateways/InternalGateway/.vs/ProjectEvaluation
 /Gateways/WebAppGateway/.vs/ProjectEvaluation
+/BaseService/BaseService.Application.Contracts/bin/Debug
+/BaseService/BaseService.HttpApi/bin/Debug
+/BaseService/BaseService.HttpApi.Client/bin/Debug
