@@ -4,6 +4,13 @@
     <OutputType>Library</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>BaseService</RootNamespace>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageId>XCZ.BaseService.Application.Contracts</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>XCZ</Authors>
+    <Company>XCZ</Company>
+    <Product>BaseService.Application.Contracts</Product>
+    <RepositoryUrl>https://github.com/WilliamXu96/ABP-MicroService</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>

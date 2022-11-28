@@ -5,6 +5,24 @@
     <TargetFramework>net6.0</TargetFramework>
     <ApplicationIcon />
     <StartupObject />
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageId>XCZ.BaseService.HttpApi.Client</PackageId>
+    <Version>1.0.0</Version>
+    <Title>BaseService远程服务client</Title>
+    <Authors>XCZ</Authors>
+    <Company>XCZ</Company>
+    <Product>BaseService.HttpApi.Client</Product>
+    <PackageProjectUrl>https://github.com/WilliamXu96/ABP-MicroService</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/WilliamXu96/ABP-MicroService</RepositoryUrl>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.Http.Client.IdentityModel" Version="6.0.0" />
+    <PackageReference Include="Volo.Abp.Http.Client.IdentityModel.Web" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BaseService.Application.Contracts\BaseService.Application.Contracts.csproj" />
+  </ItemGroup>
 
 </Project>

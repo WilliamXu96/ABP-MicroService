@@ -5,6 +5,15 @@
     <TargetFramework>net6.0</TargetFramework>
     <ApplicationIcon />
     <StartupObject />
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageId>XCZ.BaseService.HttpApi</PackageId>
+    <Version>1.0.0</Version>
+    <Title>BaseService远程服务</Title>
+    <Authors>XCZ</Authors>
+    <Company>XCZ</Company>
+    <Product>BaseService.HttpApi</Product>
+    <PackageProjectUrl>https://github.com/WilliamXu96/ABP-MicroService</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/WilliamXu96/ABP-MicroService</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
