@@ -9,5 +9,7 @@ namespace Business.Test
         Task<string> TestApi(string name);
 
         Task<long> GetUserCount();
+
+        Task<dynamic> GetMenuTree();
     }
 }

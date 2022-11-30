@@ -46,5 +46,12 @@ namespace Business.Controllers
         {
             return _testAppService.GetUserCount();
         }
+
+        [HttpGet]
+        [Route("menu-tree")]
+        public Task<dynamic> GetMenuTree()
+        {
+            return _testAppService.GetMenuTree();
+        }
     }
 }
