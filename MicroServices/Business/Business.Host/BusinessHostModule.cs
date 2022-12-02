@@ -244,7 +244,7 @@ namespace Business
             app.UseAbpSerilogEnrichers();
             app.UseUnitOfWork();
             app.UseConfiguredEndpoints();
-            app.UseHangfireServer();
+            //app.UseHangfireServer();
             app.UseHangfireDashboard(options: new DashboardOptions
             {
                 Authorization = new[]
