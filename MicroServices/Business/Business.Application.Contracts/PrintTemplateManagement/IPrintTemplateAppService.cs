@@ -16,5 +16,7 @@ namespace Business.PrintTemplateManagement
         Task<PrintTemplateDto> DataPost(CreateOrUpdatePrintTemplateDto input);
 
         Task Delete(List<Guid> ids);
+
+        Task<dynamic> CreatePdf(GetPrintTemplateInputDto input);
     }
 }

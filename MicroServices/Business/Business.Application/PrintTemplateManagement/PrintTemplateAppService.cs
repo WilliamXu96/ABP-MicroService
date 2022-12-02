@@ -11,6 +11,11 @@ using Business.PrintTemplateManagement.Dto;
 using Business.Models;
 using Microsoft.AspNetCore.Authorization;
 using Business.Permissions;
+using Volo.Abp;
+using Magicodes.ExporterAndImporter.Pdf;
+using WkHtmlToPdfDotNet;
+using Microsoft.AspNetCore.Mvc;
+using System.IO;
 
 namespace Business.PrintTemplateManagement
 {
@@ -74,6 +79,17 @@ namespace Business.PrintTemplateManagement
 
         }
 
+        public async Task<dynamic> CreatePdf(GetPrintTemplateInputDto input)
+        {
+            if (!input.Id.HasValue) throw new BusinessException("找不到模板Id");
+            var temp = await _repository.GetAsync(input.Id.Value);
+            var exporter = new PdfExporter();
+            var pdfAtt = new PdfExporterAttribute();
+            pdfAtt.Orientation = Orientation.Portrait;
+            pdfAtt.PaperKind = PaperKind.A4;
+            var result = await exporter.ExportBytesByTemplate(input, pdfAtt, temp.Content);
+            return new FileStreamResult(new MemoryStream(result), "application/octet-stream") { FileDownloadName = $"{temp.Name}.PDF" };
+        }
 
         #endregion
 

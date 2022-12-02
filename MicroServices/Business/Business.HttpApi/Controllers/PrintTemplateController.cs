@@ -3,6 +3,7 @@ using Business.PrintTemplateManagement.Dto;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
@@ -47,6 +48,13 @@ namespace Business.Controllers
         public Task<PagedResultDto<PrintTemplateDto>> GetAll(GetPrintTemplateInputDto input)
         {
             return _PrintTemplateAppService.GetAll(input);
+        }
+
+        [HttpGet]
+        [Route("pdf")]
+        public Task<dynamic> CreatePdf(GetPrintTemplateInputDto input)
+        {
+            return _PrintTemplateAppService.CreatePdf(input);
         }
     }
 }
