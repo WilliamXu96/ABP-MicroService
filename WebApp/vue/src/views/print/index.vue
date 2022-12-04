@@ -60,7 +60,7 @@
       :close-on-click-modal="false"
       @close="cancel()"
       :title="formTitle"
-      width="700px"
+      width="800px"
     >
       <el-form
         ref="form"
@@ -88,6 +88,7 @@
               >
                 <el-option label="设计模板" :value="0"></el-option>
                 <el-option label="指令模板" :value="1"></el-option>
+                <el-option label="HTML模板" :value="2"></el-option>
               </el-select> </el-form-item
           ></el-col>
           <el-col :md="12">
@@ -135,14 +136,14 @@
             <el-form-item
               label="模板内容"
               prop="content"
-              v-if="form.tempType === 1"
+              v-if="form.tempType > 0 "
             >
               <el-input
                 type="textarea"
-                rows="6"
+                rows="8"
                 v-model="form.content"
                 placeholder="请输入模板内容"
-                style="width: 530px"
+                style="width: 600px"
               ></el-input>
             </el-form-item>
           </el-col>
@@ -151,6 +152,13 @@
       <div slot="footer">
         <el-button size="small" type="text" @click="cancel">取消</el-button>
         <el-button
+          v-if="form.tempType===2"
+          size="small"
+          type="text"
+          @click="dialogPreviewVisible = true"
+          >预览</el-button
+        >
+        <el-button
           size="small"
           v-loading="formLoading"
           type="primary"
@@ -158,6 +166,9 @@
           >确认</el-button
         >
       </div>
+    </el-dialog>
+    <el-dialog title="模板预览" width="900px" top="18vh" :visible.sync="dialogPreviewVisible">
+      <div v-html="form.content"></div>
     </el-dialog>
     <el-table
       id="printMe"
@@ -191,6 +202,13 @@
       <el-table-column label="备注" prop="remark" align="center" />
       <el-table-column label="操作" align="center">
         <template slot-scope="{ row }">
+          <el-button
+            type="text"
+            size="mini"
+            @click="handlePrint(row)"
+            icon="el-icon-printer"
+            >打印</el-button
+          >
           <el-button
             type="text"
             size="mini"
@@ -261,6 +279,7 @@ export default {
       const statusMap = {
         0: "设计模板",
         1: "指令模板",
+        2: "HTML模板"
       };
       return statusMap[status];
     },
@@ -320,6 +339,7 @@ export default {
       },
       page: 1,
       dialogFormVisible: false,
+      dialogPreviewVisible: false,
       multipleSelection: [],
       formTitle: "",
       isEdit: false,
@@ -491,7 +511,7 @@ export default {
     openDesign(opt) {
       let _self = this;
       let LODOP = getLodop();
-      if(_self.form.content){
+      if (_self.form.content) {
         loadTemp(LODOP, _self.form.content);
       }
       if (opt === 0) {
@@ -504,6 +524,18 @@ export default {
         LODOP.PREVIEW();
       }
     },
+    handlePrint(row){
+      if(row.tempType==2){
+        this.$axios
+        .downLoad("/api/business/print-template/pdf/" + row.id)
+        .then((response) => {
+          const blob = new Blob([response.data], { type: "application/pdf" });
+          // 创建新的URL并指向File对象或者Blob对象的地址
+          const blobURL = window.URL.createObjectURL(blob);
+          window.open(blobURL)
+        });
+      }
+    }
   },
 };
 </script>

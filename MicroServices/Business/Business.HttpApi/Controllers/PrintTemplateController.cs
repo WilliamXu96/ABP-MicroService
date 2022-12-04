@@ -51,10 +51,10 @@ namespace Business.Controllers
         }
 
         [HttpGet]
-        [Route("pdf")]
-        public Task<dynamic> CreatePdf(GetPrintTemplateInputDto input)
+        [Route("pdf/{id}")]
+        public Task<dynamic> CreatePdf(Guid id)
         {
-            return _PrintTemplateAppService.CreatePdf(input);
+            return _PrintTemplateAppService.CreatePdf(id);
         }
     }
 }

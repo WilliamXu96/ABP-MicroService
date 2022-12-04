@@ -79,15 +79,14 @@ namespace Business.PrintTemplateManagement
 
         }
 
-        public async Task<dynamic> CreatePdf(GetPrintTemplateInputDto input)
+        public async Task<dynamic> CreatePdf(Guid id)
         {
-            if (!input.Id.HasValue) throw new BusinessException("找不到模板Id");
-            var temp = await _repository.GetAsync(input.Id.Value);
+            var temp = await _repository.GetAsync(id);
             var exporter = new PdfExporter();
             var pdfAtt = new PdfExporterAttribute();
-            pdfAtt.Orientation = Orientation.Portrait;
+            pdfAtt.Orientation = Orientation.Landscape;
             pdfAtt.PaperKind = PaperKind.A4;
-            var result = await exporter.ExportBytesByTemplate(input, pdfAtt, temp.Content);
+            var result = await exporter.ExportBytesByTemplate(temp, pdfAtt, temp.Content);
             return new FileStreamResult(new MemoryStream(result), "application/octet-stream") { FileDownloadName = $"{temp.Name}.PDF" };
         }
 
