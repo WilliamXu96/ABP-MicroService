@@ -36,7 +36,6 @@ namespace BaseService.BaseData.DataDictionaryManagement
 
             var dic = new DataDictionary(
                 GuidGenerator.Create(),
-                CurrentTenant.Id,
                 input.Name,
                 input.Description);
 

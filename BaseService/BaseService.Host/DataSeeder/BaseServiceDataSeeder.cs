@@ -37,15 +37,15 @@ namespace BaseService.DataSeeder
             var exist = await (await _dataDicRepository.GetQueryableAsync()).AnyAsync(d => d.Name == "condition");
             if (exist) return;
             var id = _guidGenerator.Create();
-            await _dataDicRepository.InsertAsync(new DataDictionary(id, null, "condition", "表单条件"));
+            await _dataDicRepository.InsertAsync(new DataDictionary(id, "condition", "表单条件"));
             await CreateDataDictionaryDetails(id);
         }
 
         private async Task CreateDataDictionaryDetails(Guid pid)
         {
-            await _dataDicDetailRepository.InsertAsync(new DataDictionaryDetail(_guidGenerator.Create(), null, pid, "等于", "=", 0));
-            await _dataDicDetailRepository.InsertAsync(new DataDictionaryDetail(_guidGenerator.Create(), null, pid, "大于", ">", 1));
-            await _dataDicDetailRepository.InsertAsync(new DataDictionaryDetail(_guidGenerator.Create(), null, pid, "小于", "<", 2));
+            await _dataDicDetailRepository.InsertAsync(new DataDictionaryDetail(_guidGenerator.Create(), pid, "等于", "=", 0));
+            await _dataDicDetailRepository.InsertAsync(new DataDictionaryDetail(_guidGenerator.Create(), pid, "大于", ">", 1));
+            await _dataDicDetailRepository.InsertAsync(new DataDictionaryDetail(_guidGenerator.Create(), pid, "小于", "<", 2));
         }
     }
 }

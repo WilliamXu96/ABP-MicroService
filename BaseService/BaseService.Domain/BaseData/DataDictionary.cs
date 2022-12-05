@@ -22,9 +22,8 @@ namespace BaseService.BaseData
 
         public bool IsDeleted { get; set; }
 
-        public DataDictionary(Guid id, Guid? tenantId, [NotNull] string name, string description)
+        public DataDictionary(Guid id, [NotNull] string name, string description)
         {
-            TenantId = tenantId;
             Id = id;
             Name = name;
             Description = description;

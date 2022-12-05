@@ -19,9 +19,8 @@ namespace BaseService.BaseData
 
         public bool IsDeleted { get; set; }
 
-        public DataDictionaryDetail(Guid id, Guid? tenantId, Guid pid, string label, string value, short sort)
+        public DataDictionaryDetail(Guid id, Guid pid, string label, string value, short sort)
         {
-            TenantId = tenantId;
             Id = id;
             Pid = pid;
             Label = label;

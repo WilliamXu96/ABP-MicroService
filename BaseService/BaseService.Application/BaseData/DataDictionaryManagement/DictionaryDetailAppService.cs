@@ -44,7 +44,6 @@ namespace BaseService.BaseData.DataDictionaryManagement
 
             var result = await _detailRepository.InsertAsync(new DataDictionaryDetail(
                                                                     GuidGenerator.Create(),
-                                                                    CurrentTenant.Id,
                                                                     input.Pid,
                                                                     input.Label,
                                                                     input.Value,
