@@ -39,6 +39,7 @@ Run the script in the run directory
 - Storage management
 - Code generation
 - Process management
+- report print
 #### TODO:
 - Data permission
 #### System Preview
