@@ -9,7 +9,7 @@ A background management framework based on the ABP vNext microservice architectu
 
 **Blog address:** [Blog Park](https://www.cnblogs.com/william-xu/)
 
-**Video address:** [bilibili](https://space.bilibili.com/702776220/channel/seriesdetail?sid=604812)
+**Video address:** **[YouTube](https://www.youtube.com/@opencodes)** | [bilibili](https://space.bilibili.com/702776220/channel/seriesdetail?sid=604812)
 
 **Quick Start:**
 Run the script in the run directory
