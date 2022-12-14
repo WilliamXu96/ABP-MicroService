@@ -47,6 +47,28 @@ namespace Business.Models
         /// 备注
         /// </summary>
         public string Remark { get; set; }
+
+        #region  PdfExporterAttribute
+        /// <summary>
+        /// 打印方向
+        /// </summary>
+        public int? Orientation { get; set; }
+
+        /// <summary>
+        /// 纸张大小
+        /// </summary>
+        public int? PaperKind { get; set; }
+
+        /// <summary>
+        /// 纸张宽度
+        /// </summary>
+        public double? PaperWidth { get; set; }
+
+        /// <summary>
+        /// 纸张高度
+        /// </summary>
+        public double? PaperHeight { get; set; }
+        #endregion
         
 		
 		public bool IsDeleted { get; set; }
