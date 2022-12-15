@@ -12,7 +12,7 @@ namespace BaseService.Systems.TenantManagement
     {
         public Task UpdateMenu(UpdateTenantMenuDto input)
         {
-            throw new NotImplementedException();
+            return null;
         }
     }
 }
