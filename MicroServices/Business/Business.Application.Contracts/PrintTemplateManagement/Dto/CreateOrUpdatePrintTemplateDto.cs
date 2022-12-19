@@ -47,6 +47,26 @@ namespace Business.PrintTemplateManagement.Dto
         /// 备注
         /// </summary>
         public string Remark { get; set; }
-        
+
+        /// <summary>
+        /// 打印方向
+        /// </summary>
+        public int? Orientation { get; set; }
+
+        /// <summary>
+        /// 纸张类型
+        /// </summary>
+        public int? PaperKind { get; set; }
+
+        /// <summary>
+        /// 纸张宽度
+        /// </summary>
+        public string PaperWidth { get; set; }
+
+        /// <summary>
+        /// 纸张高度
+        /// </summary>
+        public string PaperHeight { get; set; }
+
     }
 }

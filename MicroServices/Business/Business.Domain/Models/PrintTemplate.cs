@@ -55,19 +55,19 @@ namespace Business.Models
         public int? Orientation { get; set; }
 
         /// <summary>
-        /// 纸张大小
+        /// 纸张类型
         /// </summary>
         public int? PaperKind { get; set; }
 
         /// <summary>
         /// 纸张宽度
         /// </summary>
-        public double? PaperWidth { get; set; }
+        public string PaperWidth { get; set; }
 
         /// <summary>
         /// 纸张高度
         /// </summary>
-        public double? PaperHeight { get; set; }
+        public string PaperHeight { get; set; }
         #endregion
         
 		
