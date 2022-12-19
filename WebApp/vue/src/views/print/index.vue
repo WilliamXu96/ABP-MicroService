@@ -30,7 +30,7 @@
                 <el-option label="HTML模板" :value="2"></el-option>
               </el-select> </el-form-item></el-col>
           <el-col :md="12" v-if="form.tempType === 2"><el-form-item label="打印方向" prop="orientation">
-              <el-select v-model="form.orientation" placeholder="选择打印方向" :disabled="isEdit">
+              <el-select v-model="form.orientation" placeholder="选择打印方向">
                 <el-option label="横向打印" :value="0"></el-option>
                 <el-option label="纵向打印" :value="1"></el-option>
               </el-select> </el-form-item></el-col>
@@ -48,11 +48,11 @@
           </el-col>
           <el-col :md="12" v-if="form.tempType === 2 && form.paperKind===0">
             <el-form-item label="纸张宽度" prop="paperWidth">
-              <el-input type="number" v-model="form.paperWidth" placeholder="请输入纸张宽度"></el-input> </el-form-item>
+              <el-input type="number" v-model="form.paperWidth" placeholder="请输入纸张宽度" clearable></el-input> </el-form-item>
           </el-col>
           <el-col :md="12" v-if="form.tempType === 2 && form.paperKind===0">
             <el-form-item label="纸张高度" prop="paperHeight">
-              <el-input type="number" v-model="form.paperHeight" placeholder="请输入纸张高度"></el-input> </el-form-item>
+              <el-input type="number" v-model="form.paperHeight" placeholder="请输入纸张高度" clearable></el-input> </el-form-item>
           </el-col>
           <el-col :md="12">
             <el-form-item label="状态" prop="status">
@@ -139,6 +139,8 @@ const defaultForm = {
   sort: 0,
   content: null,
   remark: null,
+  paperKind:9,
+  orientation:0
 };
 export default {
   name: "print",
