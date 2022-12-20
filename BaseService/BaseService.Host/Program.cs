@@ -25,13 +25,6 @@ namespace BaseService
                 .Enrich.WithProperty("Application", "BaseService")
                 .Enrich.FromLogContext()
                 .WriteTo.File("Logs/logs.txt")
-                //.WriteTo.Elasticsearch(
-                //    new ElasticsearchSinkOptions(new Uri(configuration["ElasticSearch:Url"]))
-                //    {
-                //        AutoRegisterTemplate = true,
-                //        AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv6,
-                //        IndexFormat = "xdl-log-{0:yyyy.MM}"
-                //    })
                 .WriteTo.Console()
                 .CreateLogger();
 
