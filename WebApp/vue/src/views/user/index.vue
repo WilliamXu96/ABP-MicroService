@@ -4,64 +4,26 @@
       <!--侧边组织机构树形列表-->
       <el-col :xs="9" :sm="6" :md="5" :lg="4" :xl="4">
         <div class="head-container">
-          <el-input
-            v-model="orgName"
-            clearable
-            size="small"
-            placeholder="搜索..."
-            prefix-icon="el-icon-search"
-            class="filter-item"
-            @input="getOrgs"
-          />
+          <el-input v-model="orgName" clearable size="small" placeholder="搜索..." prefix-icon="el-icon-search"
+            class="filter-item" @input="getOrgs" />
         </div>
-        <el-tree
-          :data="orgData"
-          :load="getOrgs"
-          :props="defaultProps"
-          :expand-on-click-node="false"
-          lazy
-          @node-click="handleNodeClick"
-          style="margin-top:15px"
-        />
+        <el-tree :data="orgData" :load="getOrgs" :props="defaultProps" :expand-on-click-node="false" lazy
+          @node-click="handleNodeClick" style="margin-top:15px" />
       </el-col>
       <el-col :xs="15" :sm="18" :md="19" :lg="20" :xl="20">
-    <!--工具栏-->
-    <div class="head-container">
-        <!-- 搜索 -->
-        <el-input
-          v-model="listQuery.Filter"
-          clearable
-          size="small"
-          placeholder="搜索..."
-          style="width: 200px;"
-          class="filter-item"
-          @keyup.enter.native="handleFilter"
-        />
-        <el-button
-          class="filter-item"
-          size="mini"
-          type="success"
-          icon="el-icon-search"
-          @click="handleFilter"
-        >搜索</el-button>
-      <div class="opts">
-        <el-button
-          class="filter-item"
-          size="mini"
-          type="primary"
-          icon="el-icon-plus"
-          @click="handleCreate"
-          v-permission="['AbpIdentity.Users.Create']"
-        >新增</el-button>
-        <el-button
-          class="filter-item"
-          size="mini"
-          type="success"
-          icon="el-icon-edit"
-          v-permission="['AbpIdentity.Users.Update']"
-          @click="handleUpdate()"
-        >修改</el-button>
-        <!-- <el-button
+        <!--工具栏-->
+        <div class="head-container">
+          <!-- 搜索 -->
+          <el-input v-model="listQuery.Filter" clearable size="small" placeholder="搜索..." style="width: 200px;"
+            class="filter-item" @keyup.enter.native="handleFilter" />
+          <el-button class="filter-item" size="mini" type="success" icon="el-icon-search"
+            @click="handleFilter">搜索</el-button>
+          <div class="opts">
+            <el-button class="filter-item" size="mini" type="primary" icon="el-icon-plus" @click="handleCreate"
+              v-permission="['AbpIdentity.Users.Create']">新增</el-button>
+            <el-button class="filter-item" size="mini" type="success" icon="el-icon-edit"
+              v-permission="['AbpIdentity.Users.Update']" @click="handleUpdate()">修改</el-button>
+            <!-- <el-button
           slot="reference"
           class="filter-item"
           type="danger"
@@ -70,152 +32,94 @@
           v-permission="['AbpIdentity.Users.Delete']"
           @click="handleDelete()"
         >删除</el-button> -->
-      </div>
-    </div>
-    <!--表单渲染-->
-    <el-dialog
-      :visible.sync="dialogFormVisible"
-      :close-on-click-modal="false"
-      :title="formTitle"
-      @close="cancel()"
-      width="600px"
-    >
-      <el-form
-        ref="form"
-        :inline="true"
-        :model="form"
-        :rules="rules"
-        size="small"
-        label-width="70px"
-      >
-        <el-form-item label="用户名" prop="userName">
-          <el-input v-model="form.userName" style="width: 184px;" />
-        </el-form-item>
-        <el-form-item label="电话" prop="phoneNumber">
-          <el-input v-model="form.phoneNumber" style="width: 184px;" />
-        </el-form-item>
-        <el-form-item label="姓名" prop="name">
-          <el-input v-model="form.name" style="width: 184px;" />
-        </el-form-item>
-        <el-form-item label="邮箱" prop="email">
-          <el-input v-model="form.email" style="width: 184px;" />
-        </el-form-item>
-        <el-form-item label="密码" prop="password" v-if="!isEdit">
-          <el-input type="password" v-model="form.password" style="width: 184px;" />
-        </el-form-item>
-        <el-form-item label="密码" prop="pwd" v-if="isEdit">
-          <el-input
-            type="password"
-            v-model="form.password"
-            style="width: 184px"
-            placeholder="如果为空则不修改密码"
-          />
-        </el-form-item>
-        <el-form-item label="角色" prop="roles">
-          <el-select v-model="checkedRole" multiple style="width: 188px" placeholder="请选择">
-            <el-option
-              v-for="item in roleList"
-              :key="item.name"
-              :label="item.name"
-              :value="item.name"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="所属机构" style="display:inline" prop="organizationIds">
-              <treeselect
-                :multiple="true"
-                v-model="form.organizationIds"
-                :load-options="loadOrgs"
-                :options="orgs"
-                style="width: 450px;line-height:18px"
-                placeholder="选择所属机构"
-              />
+          </div>
+        </div>
+        <!--表单渲染-->
+        <el-dialog :visible.sync="dialogFormVisible" :close-on-click-modal="false" :title="formTitle" @close="cancel()"
+          width="600px">
+          <el-form ref="form" :inline="true" :model="form" :rules="rules" size="small" label-width="70px">
+            <el-form-item label="用户名" prop="userName">
+              <el-input v-model="form.userName" style="width: 184px;" />
             </el-form-item>
-            <el-form-item label="岗位" style="display:inline" prop="job">
-              <el-select
-                class="filter-item"
-                size="small"
-                style="width: 450px"
-                multiple
-                v-model="form.jobIds"
-                placeholder="选择岗位"
-              >
-              <el-option v-for="item in jobData" :key="item.id" :label="item.name" :value="item.id" />
+            <el-form-item label="电话" prop="phoneNumber">
+              <el-input v-model="form.phoneNumber" style="width: 184px;" />
+            </el-form-item>
+            <el-form-item label="姓名" prop="name">
+              <el-input v-model="form.name" style="width: 184px;" />
+            </el-form-item>
+            <el-form-item label="邮箱" prop="email">
+              <el-input v-model="form.email" style="width: 184px;" />
+            </el-form-item>
+            <el-form-item label="密码" prop="password" v-if="!isEdit">
+              <el-input type="password" v-model="form.password" style="width: 184px;" />
+            </el-form-item>
+            <el-form-item label="密码" prop="pwd" v-if="isEdit">
+              <el-input type="password" v-model="form.password" style="width: 184px" placeholder="如果为空则不修改密码" />
+            </el-form-item>
+            <el-form-item label="角色" prop="roles">
+              <el-select v-model="checkedRole" multiple style="width: 188px" placeholder="请选择">
+                <el-option v-for="item in roleList" :key="item.name" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
-        <el-form-item label="允许锁定">
-          <el-radio-group v-model="form.lockoutEnabled" style="width: 178px">
-		    <el-radio :label="true">是</el-radio>
-            <el-radio :label="false">否</el-radio>
-          </el-radio-group>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="text" @click="cancel">取消</el-button>
-        <el-button v-loading="formLoading" type="primary" @click="save">确认</el-button>
-      </div>
-    </el-dialog>
-    <!--表格渲染-->
-    <el-table
-      ref="multipleTable"
-      v-loading="listLoading"
-      :data="list"
-      size="small"
-      style="width: 100%;"
-      @sort-change="sortChange"
-      @selection-change="handleSelectionChange"
-      @row-click="handleRowClick"
-    >
-      <el-table-column type="selection" width="44px"></el-table-column>
-      <el-table-column label="用户名" prop="userName" sortable="custom" align="center" width="150px">
-        <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{row.userName}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="所属机构" prop="orgIdToName" align="center">
-            <template slot-scope="scope">
-              <span>{{scope.row.organizationNames}}</span>
+            <el-form-item label="所属机构" style="display:inline" prop="organizationIds">
+              <treeselect :multiple="true" v-model="form.organizationIds" :load-options="loadOrgs" :options="orgs"
+                style="width: 450px;line-height:18px" placeholder="选择所属机构" />
+            </el-form-item>
+            <el-form-item label="岗位" style="display:inline" prop="job">
+              <el-select class="filter-item" size="small" style="width: 450px" multiple v-model="form.jobIds"
+                placeholder="选择岗位">
+                <el-option v-for="item in jobData" :key="item.id" :label="item.name" :value="item.id" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="允许锁定">
+              <el-radio-group v-model="form.lockoutEnabled" style="width: 178px">
+                <el-radio :label="true">是</el-radio>
+                <el-radio :label="false">否</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button type="text" @click="cancel">取消</el-button>
+            <el-button v-loading="formLoading" type="primary" @click="save">确认</el-button>
+          </div>
+        </el-dialog>
+        <!--表格渲染-->
+        <el-table ref="multipleTable" v-loading="listLoading" :data="list" size="small" style="width: 100%;"
+          @sort-change="sortChange" @selection-change="handleSelectionChange" @row-click="handleRowClick">
+          <el-table-column type="selection" width="44px"></el-table-column>
+          <el-table-column label="用户名" prop="userName" sortable="custom" align="center" width="150px">
+            <template slot-scope="{row}">
+              <span class="link-type" @click="handleUpdate(row)">{{ row.userName }}</span>
             </template>
           </el-table-column>
-      <el-table-column label="邮箱" prop="email" sortable="custom" align="center" width="200px">
-        <template slot-scope="scope">
-          <span>{{scope.row.email}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="电话" prop="phoneNumber" sortable="custom" align="center" width="200px">
-        <template slot-scope="scope">
-          <span>{{scope.row.phoneNumber}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center" width="125">
-        <template slot-scope="{row}">
-          <el-button
-            type="primary"
-            size="mini"
-            @click="handleUpdate(row)"
-            v-permission="['AbpIdentity.Users.Update']"
-            icon="el-icon-edit"
-          />
-          <el-button
-            type="danger"
-            size="mini"
-            @click="handleDelete(row)"
-            :disabled="row.userName==='admin'"
-            v-permission="['AbpIdentity.Users.Delete']"
-            icon="el-icon-delete"
-          />
-        </template>
-      </el-table-column>
-    </el-table>
+          <el-table-column label="所属机构" prop="orgIdToName" align="center">
+            <template slot-scope="scope">
+              <span>{{ scope.row.organizationNames }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="邮箱" prop="email" sortable="custom" align="center" width="200px">
+            <template slot-scope="scope">
+              <span>{{ scope.row.email }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="电话" prop="phoneNumber" sortable="custom" align="center" width="200px">
+            <template slot-scope="scope">
+              <span>{{ scope.row.phoneNumber }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" align="center" width="125">
+            <template slot-scope="{row}">
+              <el-button type="text" size="mini" @click="handleUpdate(row)"
+                v-permission="['AbpIdentity.Users.Update']" icon="el-icon-edit" >修改</el-button> 
+              <el-button type="text" size="mini" @click="handleDelete(row)" :disabled="row.userName === 'admin'"
+                v-permission="['AbpIdentity.Users.Delete']" icon="el-icon-delete" >删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
 
-    <pagination
-      v-show="totalCount>0"
-      :total="totalCount"
-      :page.sync="page"
-      :limit.sync="listQuery.MaxResultCount"
-      @pagination="getList"
-    />
-    </el-col>
+        <pagination v-show="totalCount > 0" :total="totalCount" :page.sync="page" :limit.sync="listQuery.MaxResultCount"
+          @pagination="getList" />
+      </el-col>
     </el-row>
   </div>
 </template>
@@ -229,16 +133,16 @@ import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import { LOAD_CHILDREN_OPTIONS } from "@riophae/vue-treeselect";
 
 const defaultForm = {
-  id:undefined,
-  organizationIds:[],
-  userName:'',
-  phoneNumber:'',
-  name:'',
-  email:'',
-  password:'',
-  lockoutEnabled:false,
-  roleNames:[],
-  jobIds:[],
+  id: undefined,
+  organizationIds: [],
+  userName: '',
+  phoneNumber: '',
+  name: '',
+  email: '',
+  password: '',
+  lockoutEnabled: false,
+  roleNames: [],
+  jobIds: [],
   orgIdToName: null,
 }
 
@@ -280,7 +184,7 @@ export default {
       list: null,
       orgName: "",
       orgs: [],
-      jobData:[],
+      jobData: [],
       orgData: [],
       roleList: [],
       checkedRole: [],
@@ -332,9 +236,9 @@ export default {
         this.loadTree(response);
       });
     },
-    getJobs(){
-      this.$axios.gets('/api/base/job/jobs').then((response)=>{
-        this.jobData=response.items
+    getJobs() {
+      this.$axios.gets('/api/base/job/jobs').then((response) => {
+        this.jobData = response.items
       })
     },
     getList() {
@@ -354,11 +258,11 @@ export default {
         this.form = response;
       });
       this.$axios.gets("/api/identity/users/" + id + "/roles").then(data => {
-        
-          data.items.forEach(item=>{
-            this.checkedRole.push(item.name)
-          })
-        });
+
+        data.items.forEach(item => {
+          this.checkedRole.push(item.name)
+        })
+      });
     },
     loadOrgs({ action, parentNode, callback }) {
       if (action === LOAD_CHILDREN_OPTIONS) {
@@ -379,7 +283,7 @@ export default {
     },
     getAllRoles() {
       this.$axios.gets("/api/identity/roles/all").then(response => {
-        this.roleList=response.items
+        this.roleList = response.items
       });
     },
     handleFilter() {
@@ -394,7 +298,7 @@ export default {
       this.$refs.form.validate(valid => {
         if (valid) {
           this.formLoading = true;
-          this.form.roleNames=this.checkedRole
+          this.form.roleNames = this.checkedRole
           if (this.isEdit) {
             this.$axios
               .puts("/api/base/user/" + this.form.id, this.form)
@@ -440,7 +344,7 @@ export default {
       this.getAllRoles();
       this.getJobs()
       this.getOrgNodes();
-      
+
     },
     handleDelete(row) {
       if (row) {
@@ -516,9 +420,9 @@ export default {
     },
     cancel() {
       this.form = Object.assign({}, defaultForm),
-      this.checkedRole=[]
-      this.orgs=[]
-      this.jobData=[]
+        this.checkedRole = []
+      this.orgs = []
+      this.jobData = []
       this.dialogFormVisible = false;
       this.$refs.form.clearValidate();
     },

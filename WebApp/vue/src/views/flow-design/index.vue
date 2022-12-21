@@ -2,75 +2,29 @@
   <div class="app-container">
     <div class="filter-container">
       <div class="filter-left">
-        <el-input
-          v-model="listQuery.Filter"
-          placeholder="搜索..."
-          style="width: 200px"
-          size="small"
-          class="filter-item"
-          @keyup.enter.native="handleFilter"
-        />
-        <el-button
-          size="mini"
-          class="filter-item"
-          type="primary"
-          icon="el-icon-search"
-          @click="handleFilter"
-          >搜索</el-button
-        >
+        <el-input v-model="listQuery.Filter" placeholder="搜索..." style="width: 200px" size="small" class="filter-item"
+          @keyup.enter.native="handleFilter" />
+        <el-button size="mini" class="filter-item" type="primary" icon="el-icon-search"
+          @click="handleFilter">搜索</el-button>
       </div>
       <div class="filter-right">
         <router-link :to="'/tool/flowCreate/'">
-          <el-button
-            size="mini"
-            class="filter-item"
-            style="margin-left: 10px"
-            type="primary"
-            icon="el-icon-plus"
-            >添加</el-button
-          >
+          <el-button size="mini" class="filter-item" style="margin-left: 10px" type="primary"
+            icon="el-icon-plus">添加</el-button>
         </router-link>
-        <el-button
-          size="mini"
-          class="filter-item"
-          style="margin-left: 10px"
-          type="success"
-          icon="el-icon-edit"
-          @click="handleUpdate()"
-          >编辑</el-button
-        >
-        <el-button
-          size="mini"
-          class="filter-item"
-          type="danger"
-          icon="el-icon-delete"
-          style="margin-left: 10px"
-          @click="handleDelete()"
-          >删除</el-button
-        >
+        <el-button size="mini" class="filter-item" style="margin-left: 10px" type="success" icon="el-icon-edit"
+          @click="handleUpdate()">编辑</el-button>
+        <el-button size="mini" class="filter-item" type="danger" icon="el-icon-delete" style="margin-left: 10px"
+          @click="handleDelete()">删除</el-button>
       </div>
     </div>
-    <el-table
-      ref="multipleTable"
-      v-loading="listLoading"
-      :data="list"
-      size="small"
-      style="width: 90%"
-      @sort-change="sortChange"
-      @selection-change="handleSelectionChange"
-      @row-click="handleRowClick"
-    >
+    <el-table ref="multipleTable" v-loading="listLoading" :data="list" size="small" style="width: 90%"
+      @sort-change="sortChange" @selection-change="handleSelectionChange" @row-click="handleRowClick">
       <el-table-column type="selection" width="44px"></el-table-column>
-      <el-table-column
-        label="流程编号"
-        prop="code"
-        sortable="custom"
-        align="center"
-        width="150px"
-      >
+      <el-table-column label="流程编号" prop="code" sortable="custom" align="center" width="150px">
         <template slot-scope="{ row }">
           <span class="link-type" @click="handleUpdate(row)">{{
-            row.code
+              row.code
           }}</span>
         </template>
       </el-table-column>
@@ -84,30 +38,15 @@
       </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="{ row }">
-          <el-button
-            type="primary"
-            size="mini"
-            @click="handleUpdate(row)"
-            icon="el-icon-edit"
-          />
-          <el-button
-            type="danger"
-            size="mini"
-            @click="handleDelete(row)"
-            v-permission="['BaseService.Job.Delete']"
-            icon="el-icon-delete"
-          />
+          <el-button type="text" size="mini" @click="handleUpdate(row)" icon="el-icon-edit">修改</el-button>
+          <el-button type="text" size="mini" @click="handleDelete(row)" v-permission="['BaseService.Job.Delete']"
+            icon="el-icon-delete">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <pagination
-      v-show="totalCount > 0"
-      :total="totalCount"
-      :page.sync="page"
-      :limit.sync="listQuery.MaxResultCount"
-      @pagination="getList"
-    />
+    <pagination v-show="totalCount > 0" :total="totalCount" :page.sync="page" :limit.sync="listQuery.MaxResultCount"
+      @pagination="getList" />
   </div>
 </template>
 

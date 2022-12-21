@@ -4,87 +4,30 @@
       <!--侧边组织机构树形列表-->
       <el-col :xs="9" :sm="6" :md="5" :lg="4" :xl="4">
         <div class="head-container">
-          <el-input
-            v-model="orgName"
-            clearable
-            size="small"
-            placeholder="搜索..."
-            prefix-icon="el-icon-search"
-            class="filter-item"
-            @input="getOrgs"
-          />
+          <el-input v-model="orgName" clearable size="small" placeholder="搜索..." prefix-icon="el-icon-search"
+            class="filter-item" @input="getOrgs" />
         </div>
-        <el-tree
-          :data="orgDatas"
-          :load="getOrgs"
-          :props="defaultProps"
-          :expand-on-click-node="false"
-          lazy
-          @node-click="handleNodeClick"
-          style="margin-top:15px"
-        />
+        <el-tree :data="orgDatas" :load="getOrgs" :props="defaultProps" :expand-on-click-node="false" lazy
+          @node-click="handleNodeClick" style="margin-top:15px" />
       </el-col>
       <el-col :xs="15" :sm="18" :md="19" :lg="20" :xl="20">
         <div class="head-container">
-          <el-input
-            v-model="listQuery.Filter"
-            clearable
-            size="small"
-            placeholder="搜索..."
-            style="width: 200px;"
-            class="filter-item"
-            @keyup.enter.native="handleFilter"
-          />
-          <el-button
-            class="filter-item"
-            size="mini"
-            type="success"
-            icon="el-icon-search"
-            @click="handleFilter"
-          >搜索</el-button>
+          <el-input v-model="listQuery.Filter" clearable size="small" placeholder="搜索..." style="width: 200px;"
+            class="filter-item" @keyup.enter.native="handleFilter" />
+          <el-button class="filter-item" size="mini" type="success" icon="el-icon-search"
+            @click="handleFilter">搜索</el-button>
           <div style="padding: 6px 0;">
-            <el-button
-              class="filter-item"
-              size="mini"
-              type="primary"
-              icon="el-icon-plus"
-              @click="handleCreate"
-              v-permission="['BaseService.Organization.Create']"
-            >新增</el-button>
-            <el-button
-              class="filter-item"
-              size="mini"
-              type="success"
-              icon="el-icon-edit"
-              v-permission="['AbpIdentity.Roles.Update']"
-              @click="handleUpdate()"
-            >修改</el-button>
-            <el-button
-              slot="reference"
-              class="filter-item"
-              type="danger"
-              icon="el-icon-delete"
-              size="mini"
-              v-permission="['AbpIdentity.Roles.Delete']"
-              @click="handleDelete()"
-            >删除</el-button>
+            <el-button class="filter-item" size="mini" type="primary" icon="el-icon-plus" @click="handleCreate"
+              v-permission="['BaseService.Organization.Create']">新增</el-button>
+            <el-button class="filter-item" size="mini" type="success" icon="el-icon-edit"
+              v-permission="['AbpIdentity.Roles.Update']" @click="handleUpdate()">修改</el-button>
+            <el-button slot="reference" class="filter-item" type="danger" icon="el-icon-delete" size="mini"
+              v-permission="['AbpIdentity.Roles.Delete']" @click="handleDelete()">删除</el-button>
           </div>
         </div>
-        <el-dialog
-          :close-on-click-modal="false"
-          :visible.sync="dialogFormVisible"
-          :title="formTitle"
-          @close="cancel()"
-          width="520px"
-        >
-          <el-form
-            ref="form"
-            :inline="true"
-            :model="form"
-            :rules="rules"
-            size="small"
-            label-width="80px"
-          >
+        <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" :title="formTitle" @close="cancel()"
+          width="520px">
+          <el-form ref="form" :inline="true" :model="form" :rules="rules" size="small" label-width="80px">
             <el-form-item label="机构类型" prop="categoryId">
               <el-select v-model="form.categoryId" placeholder="请选择" style="width: 380px;" :disabled="isEdit">
                 <el-option label="公司" :value="1"></el-option>
@@ -97,13 +40,8 @@
               <el-input v-model="form.name" style="width: 380px;" />
             </el-form-item>
             <el-form-item label="机构排序" prop="sort">
-              <el-input-number
-                v-model.number="form.sort"
-                :min="0"
-                :max="999"
-                controls-position="right"
-                style="width: 380px;"
-              />
+              <el-input-number v-model.number="form.sort" :min="0" :max="999" controls-position="right"
+                style="width: 380px;" />
             </el-form-item>
             <el-form-item label="顶级机构">
               <el-radio-group v-model="isTop" style="width: 140px" :disabled="isEdit">
@@ -118,13 +56,8 @@
               </el-radio-group>
             </el-form-item>
             <el-form-item v-if="isTop === false" style="margin-bottom: 0;" label="上级机构" prop="pid">
-              <treeselect
-                v-model="form.pid"
-                :load-options="loadOrgs"
-                :options="orgs"
-                style="width: 370px;"
-                placeholder="选择上级机构"
-              />
+              <treeselect v-model="form.pid" :load-options="loadOrgs" :options="orgs" style="width: 370px;"
+                placeholder="选择上级机构" />
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -132,75 +65,47 @@
             <el-button size="small" :loading="formLoading" type="primary" @click="save">确认</el-button>
           </div>
         </el-dialog>
-        <el-table
-          ref="multipleTable"
-          v-loading="listLoading"
-          row-key="id"
-          :data="list"
-          size="small"
-          style="width: 90%;"
-          @selection-change="handleSelectionChange"
-          @row-click="handleRowClick"
-        >
+        <el-table ref="multipleTable" v-loading="listLoading" row-key="id" :data="list" size="small" style="width: 90%;"
+          @selection-change="handleSelectionChange" @row-click="handleRowClick">
           <el-table-column type="selection" width="44px"></el-table-column>
           <el-table-column label="机构名称" prop="name">
             <template slot-scope="{row}">
-              <span class="link-type" @click="handleUpdate(row)">{{row.name}}</span>
+              <span class="link-type" @click="handleUpdate(row)">{{ row.name }}</span>
             </template>
           </el-table-column>
           <el-table-column label="全称" prop="fullName">
             <template slot-scope="scope">
-              <span>{{scope.row.fullName}}</span>
+              <span>{{ scope.row.fullName }}</span>
             </template>
           </el-table-column>
           <el-table-column label="排序" prop="sort" align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.sort}}</span>
+              <span>{{ scope.row.sort }}</span>
             </template>
           </el-table-column>
           <el-table-column label="机构类型" prop="categoryId" align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.categoryId | displayCategory}}</span>
+              <span>{{ scope.row.categoryId | displayCategory }}</span>
             </template>
           </el-table-column>
           <el-table-column label="启用" prop="enable" align="center" width="150px">
             <template slot-scope="scope">
-              <el-switch
-                v-model="scope.row.enabled"
-                active-color="#409EFF"
-                inactive-color="#F56C6C"
-                @change="changeEnabled(scope.row, scope.row.enabled,)"
-              />
+              <el-switch v-model="scope.row.enabled" active-color="#409EFF" inactive-color="#F56C6C"
+                @change="changeEnabled(scope.row, scope.row.enabled,)" />
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center" width="125">
             <template slot-scope="{row}">
-              <el-button
-                type="primary"
-                size="mini"
-                @click="handleUpdate(row)"
-                v-permission="['BaseService.Organization.Update']"
-                icon="el-icon-edit"
-              />
-              <el-button
-                type="danger"
-                size="mini"
-                @click="handleDelete(row)"
-                :disabled="row.name==='admin'"
-                v-permission="['BaseService.Organization.Delete']"
-                icon="el-icon-delete"
-              />
+              <el-button type="text" size="mini" @click="handleUpdate(row)"
+                v-permission="['BaseService.Organization.Update']" icon="el-icon-edit" >修改</el-button>
+              <el-button type="text" size="mini" @click="handleDelete(row)" :disabled="row.name === 'admin'"
+                v-permission="['BaseService.Organization.Delete']" icon="el-icon-delete" >删除</el-button>
             </template>
           </el-table-column>
         </el-table>
 
-        <pagination
-          v-show="totalCount>0"
-          :total="totalCount"
-          :page.sync="page"
-          :limit.sync="listQuery.MaxResultCount"
-          @pagination="getList"
-        />
+        <pagination v-show="totalCount > 0" :total="totalCount" :page.sync="page" :limit.sync="listQuery.MaxResultCount"
+          @pagination="getList" />
       </el-col>
     </el-row>
   </div>
@@ -322,7 +227,7 @@ export default {
         this.$axios
           .gets("/api/base/orgs/loadOrgs", { id: parentNode.id })
           .then(response => {
-            parentNode.children = response.items.map(function(obj) {
+            parentNode.children = response.items.map(function (obj) {
               if (!obj.leaf) {
                 obj.children = null;
               }
@@ -351,8 +256,8 @@ export default {
       roots.forEach(element => {
         items.forEach(item => {
           if (item.pid == element.id) {
-            if(!element.children)
-              element.children=[]
+            if (!element.children)
+              element.children = []
             element.children.push(item);
           }
         });
@@ -413,7 +318,7 @@ export default {
       this.isEdit = false;
       this.dialogFormVisible = true;
       this.$axios.gets("/api/base/orgs/loadOrgs").then(response => {
-        this.orgs = response.items.map(function(obj) {
+        this.orgs = response.items.map(function (obj) {
           if (!obj.leaf) {
             obj.children = null;
           }

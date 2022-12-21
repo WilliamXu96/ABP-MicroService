@@ -3,76 +3,22 @@
     <!--工具栏-->
     <div class="head-container">
       <!-- 搜索 -->
-      <el-input
-        v-model="listQuery.Filter"
-        clearable
-        size="small"
-        placeholder="搜索..."
-        style="width: 200px"
-        class="filter-item"
-        @keyup.enter.native="handleFilter"
-      />
-      <el-button
-        class="filter-item"
-        size="mini"
-        type="success"
-        icon="el-icon-search"
-        @click="handleFilter"
-        >搜索</el-button
-      >
-      <!-- <el-button
-        class="filter-item"
-        size="mini"
-        type="warning"
-        icon="el-icon-refresh-left"
-        @click="resetQuery"
-      >重置</el-button> -->
+      <el-input v-model="listQuery.Filter" clearable size="small" placeholder="搜索..." style="width: 200px"
+        class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-button class="filter-item" size="mini" type="success" icon="el-icon-search"
+        @click="handleFilter">搜索</el-button>
       <div class="opts">
-        <el-button
-          class="filter-item"
-          size="mini"
-          type="primary"
-          icon="el-icon-plus"
-          @click="handleCreate"
-          v-permission="['AbpIdentity.Roles.Create']"
-          >新增</el-button
-        >
-        <el-button
-          class="filter-item"
-          size="mini"
-          type="success"
-          icon="el-icon-edit"
-          v-permission="['AbpIdentity.Roles.Update']"
-          @click="handleUpdate()"
-          >修改</el-button
-        >
-        <el-button
-          slot="reference"
-          class="filter-item"
-          type="danger"
-          icon="el-icon-delete"
-          size="mini"
-          v-permission="['AbpIdentity.Roles.Delete']"
-          @click="handleDelete()"
-          >删除</el-button
-        >
+        <el-button class="filter-item" size="mini" type="primary" icon="el-icon-plus" @click="handleCreate"
+          v-permission="['AbpIdentity.Roles.Create']">新增</el-button>
+        <el-button class="filter-item" size="mini" type="success" icon="el-icon-edit"
+          v-permission="['AbpIdentity.Roles.Update']" @click="handleUpdate()">修改</el-button>
+        <el-button slot="reference" class="filter-item" type="danger" icon="el-icon-delete" size="mini"
+          v-permission="['AbpIdentity.Roles.Delete']" @click="handleDelete()">删除</el-button>
       </div>
     </div>
     <!--表单渲染-->
-    <el-dialog
-      :visible.sync="dialogFormVisible"
-      :close-on-click-modal="false"
-      :title="formTitle"
-      width="500px"
-    >
-      <el-form
-        ref="form"
-        :inline="true"
-        :model="form"
-        :rules="rules"
-        size="small"
-        label-width="66px"
-      >
+    <el-dialog :visible.sync="dialogFormVisible" :close-on-click-modal="false" :title="formTitle" width="500px">
+      <el-form ref="form" :inline="true" :model="form" :rules="rules" size="small" label-width="66px">
         <el-form-item label="名称" prop="name">
           <el-input v-model="form.name" style="width: 380px" />
         </el-form-item>
@@ -83,13 +29,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" type="text" @click="cancel">取消</el-button>
-        <el-button
-          size="small"
-          v-loading="formLoading"
-          type="primary"
-          @click="save"
-          >确认</el-button
-        >
+        <el-button size="small" v-loading="formLoading" type="primary" @click="save">确认</el-button>
       </div>
     </el-dialog>
 
@@ -101,118 +41,57 @@
             <span class="role-span">角色列表</span>
           </div>
           <!--表格渲染-->
-          <el-table
-            ref="multipleTable"
-            v-loading="listLoading"
-            :data="list"
-            size="small"
-            style="width: 100%"
-            @sort-change="sortChange"
-            @selection-change="handleSelectionChange"
-            @row-click="handleRowClick"
-          >
+          <el-table ref="multipleTable" v-loading="listLoading" :data="list" size="small" style="width: 100%"
+            @sort-change="sortChange" @selection-change="handleSelectionChange" @row-click="handleRowClick">
             <el-table-column type="selection" width="44px"></el-table-column>
-            <el-table-column
-              label="角色名"
-              prop="name"
-              sortable="custom"
-              align="center"
-              width="100px"
-            >
+            <el-table-column label="角色名" prop="name" sortable="custom" align="center" width="100px">
               <template slot-scope="{ row }">
                 <span class="link-type" @click="handleUpdate(row)">{{
-                  row.name
+                    row.name
                 }}</span>
               </template>
             </el-table-column>
-            <el-table-column
-              label="默认"
-              prop="isDefault"
-              align="center"
-              width="100px"
-            >
+            <el-table-column label="默认" prop="isDefault" align="center" width="100px">
               <template slot-scope="scope">
                 <span>{{ scope.row.isDefault | displayStatus }}</span>
               </template>
             </el-table-column>
-            <el-table-column
-              label="公共"
-              prop="isPublic"
-              align="center"
-              width="100px"
-            >
+            <el-table-column label="公共" prop="isPublic" align="center" width="100px">
               <template slot-scope="scope">
                 <span>{{ scope.row.isPublic | displayStatus }}</span>
               </template>
             </el-table-column>
-            <el-table-column
-              label="描述"
-              prop="description"
-              align="center"
-              width="150px"
-            >
+            <el-table-column label="描述" prop="description" align="center" width="150px">
               <template slot-scope="scope">
                 <span>{{ scope.row.description }}</span>
               </template>
             </el-table-column>
             <el-table-column label="操作" align="center" width="125">
               <template slot-scope="{ row }">
-                <el-button
-                  type="primary"
-                  size="mini"
-                  @click="handleUpdate(row)"
-                  v-permission="['AbpIdentity.Roles.Update']"
-                  icon="el-icon-edit"
-                />
-                <el-button
-                  type="danger"
-                  size="mini"
-                  @click="handleDelete(row)"
-                  :disabled="row.name === 'admin'"
-                  v-permission="['AbpIdentity.Roles.Delete']"
-                  icon="el-icon-delete"
-                />
+                <el-button type="text" size="mini" @click="handleUpdate(row)"
+                  v-permission="['AbpIdentity.Roles.Update']" icon="el-icon-edit">修改</el-button>
+                <el-button type="text" size="mini" @click="handleDelete(row)" :disabled="row.name === 'admin'"
+                  v-permission="['AbpIdentity.Roles.Delete']" icon="el-icon-delete">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
-          <pagination
-            v-show="totalCount > 0"
-            :total="totalCount"
-            :page.sync="page"
-            :limit.sync="listQuery.MaxResultCount"
-            @pagination="getList"
-          />
+          <pagination v-show="totalCount > 0" :total="totalCount" :page.sync="page"
+            :limit.sync="listQuery.MaxResultCount" @pagination="getList" />
         </el-card>
       </el-col>
 
       <el-col :md="8">
         <el-card class="box-card" shadow="never">
           <div slot="header" style="height: 20px; line-height: 20px">
-            <el-tooltip
-              class="item"
-              effect="dark"
-              content="选择指定角色的菜单权限"
-              placement="top"
-            >
+            <el-tooltip class="item" effect="dark" content="选择指定角色的菜单权限" placement="top">
               <span>菜单权限</span>
             </el-tooltip>
             <span style="float: right; margin-top: -8px">
-              <el-checkbox
-                v-model="checked"
-                @change="checkedAll"
-                :disabled="multipleSelection.length != 1"
-              >
-                全选</el-checkbox
-              >
-              <el-button
-                v-permission="['AbpIdentity.Roles.ManagePermissions']"
-                :loading="savePerLoading"
-                :disabled="multipleSelection.length != 1"
-                icon="el-icon-check"
-                type="text"
-                @click="savePer"
-                >保存</el-button
-              >
+              <el-checkbox v-model="checked" @change="checkedAll" :disabled="multipleSelection.length != 1">
+                全选</el-checkbox>
+              <el-button v-permission="['AbpIdentity.Roles.ManagePermissions']" :loading="savePerLoading"
+                :disabled="multipleSelection.length != 1" icon="el-icon-check" type="text"
+                @click="savePer">保存</el-button>
             </span>
           </div>
           <!-- <el-tree
@@ -227,16 +106,8 @@
             @check="checkNode"
             class="permission-tree"
           /> -->
-          <el-tree
-            ref="tree"
-            v-loading="treeLoading"
-            :check-strictly="true"
-            :data="menus"
-            show-checkbox
-            node-key="id"
-            @check="checkNode"
-            class="permission-tree"
-          />
+          <el-tree ref="tree" v-loading="treeLoading" :check-strictly="true" :data="menus" show-checkbox node-key="id"
+            @check="checkNode" class="permission-tree" />
         </el-card>
       </el-col>
     </el-row>
@@ -324,7 +195,7 @@ export default {
       this.page = 1;
       this.getList();
     },
-    resetQuery() {},
+    resetQuery() { },
     save() {
       this.$refs.form.validate((valid) => {
         if (valid) {
@@ -387,26 +258,26 @@ export default {
       this.$axios
         .puts(
           "/api/permission-management/permissions?providerName=R&providerKey=" +
-            this.multipleSelection[0].name,
+          this.multipleSelection[0].name,
           params
         )
         .then(() => {
           this.$axios
-          .posts("/api/base/role-menus/update", {
-            roleId: this.multipleSelection[0].id,
-            menuIds: checkedKeys,
-          }).then(()=>{
-            this.$notify({
-            title: "成功",
-            message: "更新成功",
-            type: "success",
-            duration: 2000,
-          });
-            this.savePerLoading = false;
-          }).catch(() => {
-          this.savePerLoading = false;
-        });
-          
+            .posts("/api/base/role-menus/update", {
+              roleId: this.multipleSelection[0].id,
+              menuIds: checkedKeys,
+            }).then(() => {
+              this.$notify({
+                title: "成功",
+                message: "更新成功",
+                type: "success",
+                duration: 2000,
+              });
+              this.savePerLoading = false;
+            }).catch(() => {
+              this.savePerLoading = false;
+            });
+
         })
         .catch(() => {
           this.savePerLoading = false;

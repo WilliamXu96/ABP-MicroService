@@ -2,76 +2,28 @@
   <div class="app-container">
     <div class="head-container">
       <!-- 搜索 -->
-      <el-input
-        v-model="listQuery.Filter"
-        clearable
-        size="small"
-        placeholder="搜索..."
-        style="width: 200px;"
-        class="filter-item"
-        @keyup.enter.native="handleFilter"
-      />
-      <el-button
-        class="filter-item"
-        size="mini"
-        type="success"
-        icon="el-icon-search"
-        @click="handleFilter"
-      >搜索</el-button>
+      <el-input v-model="listQuery.Filter" clearable size="small" placeholder="搜索..." style="width: 200px;"
+        class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-button class="filter-item" size="mini" type="success" icon="el-icon-search"
+        @click="handleFilter">搜索</el-button>
       <div style="padding: 6px 0;">
-        <el-button
-          class="filter-item"
-          size="mini"
-          type="primary"
-          icon="el-icon-plus"
-          @click="handleCreate"
-          v-permission="['BaseService.Job.Create']"
-        >新增</el-button>
-        <el-button
-          class="filter-item"
-          size="mini"
-          type="success"
-          icon="el-icon-edit"
-          v-permission="['BaseService.Job.Update']"
-          @click="handleUpdate()"
-        >修改</el-button>
-        <el-button
-          slot="reference"
-          class="filter-item"
-          type="danger"
-          icon="el-icon-delete"
-          size="mini"
-          v-permission="['BaseService.Job.Delete']"
-          @click="handleDelete()"
-        >删除</el-button>
+        <el-button class="filter-item" size="mini" type="primary" icon="el-icon-plus" @click="handleCreate"
+          v-permission="['BaseService.Job.Create']">新增</el-button>
+        <el-button class="filter-item" size="mini" type="success" icon="el-icon-edit"
+          v-permission="['BaseService.Job.Update']" @click="handleUpdate()">修改</el-button>
+        <el-button slot="reference" class="filter-item" type="danger" icon="el-icon-delete" size="mini"
+          v-permission="['BaseService.Job.Delete']" @click="handleDelete()">删除</el-button>
       </div>
     </div>
-    <el-dialog
-      :visible.sync="dialogFormVisible"
-      :close-on-click-modal="false"
-      :title="formTitle"
-      @close="cancel()"
-      width="500px"
-    >
-      <el-form
-        ref="form"
-        :inline="true"
-        :model="form"
-        :rules="rules"
-        size="small"
-        label-width="66px"
-      >
+    <el-dialog :visible.sync="dialogFormVisible" :close-on-click-modal="false" :title="formTitle" @close="cancel()"
+      width="500px">
+      <el-form ref="form" :inline="true" :model="form" :rules="rules" size="small" label-width="66px">
         <el-form-item label="名称" prop="name">
           <el-input v-model="form.name" style="width: 370px;" />
         </el-form-item>
         <el-form-item label="排序" prop="sort">
-          <el-input-number
-            v-model.number="form.sort"
-            :min="0"
-            :max="999"
-            controls-position="right"
-            style="width: 150px;"
-          />
+          <el-input-number v-model.number="form.sort" :min="0" :max="999" controls-position="right"
+            style="width: 150px;" />
         </el-form-item>
         <el-form-item label="状态" prop="enabled">
           <el-radio-group v-model="form.enabled" style="width: 135px">
@@ -88,69 +40,42 @@
         <el-button size="small" v-loading="formLoading" type="primary" @click="save">确认</el-button>
       </div>
     </el-dialog>
-    <el-table
-      ref="multipleTable"
-      v-loading="listLoading"
-      :data="list"
-      size="small"
-      style="width: 90%;"
-      @sort-change="sortChange"
-      @selection-change="handleSelectionChange"
-      @row-click="handleRowClick"
-    >
+    <el-table ref="multipleTable" v-loading="listLoading" :data="list" size="small" style="width: 90%;"
+      @sort-change="sortChange" @selection-change="handleSelectionChange" @row-click="handleRowClick">
       <el-table-column type="selection" width="44px"></el-table-column>
       <el-table-column label="岗位名称" prop="name" sortable="custom" align="center" width="150px">
         <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{row.name}}</span>
+          <span class="link-type" @click="handleUpdate(row)">{{ row.name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="排序" prop="sort" align="center">
         <template slot-scope="scope">
-          <span>{{scope.row.sort}}</span>
+          <span>{{ scope.row.sort }}</span>
         </template>
       </el-table-column>
       <el-table-column label="描述" prop="sort" align="center">
         <template slot-scope="scope">
-          <span>{{scope.row.description}}</span>
+          <span>{{ scope.row.description }}</span>
         </template>
       </el-table-column>
       <el-table-column label="状态" prop="enable" align="center">
         <template slot-scope="scope">
-          <el-switch
-            v-model="scope.row.enabled"
-            active-color="#409EFF"
-            inactive-color="#F56C6C"
-            @change="changeEnabled(scope.row, scope.row.enabled,)"
-          />
+          <el-switch v-model="scope.row.enabled" active-color="#409EFF" inactive-color="#F56C6C"
+            @change="changeEnabled(scope.row, scope.row.enabled,)" />
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="{row}">
-          <el-button
-            type="primary"
-            size="mini"
-            @click="handleUpdate(row)"
-            v-permission="['BaseService.Job.Update']"
-            icon="el-icon-edit"
-          />
-          <el-button
-            type="danger"
-            size="mini"
-            @click="handleDelete(row)"
-            v-permission="['BaseService.Job.Delete']"
-            icon="el-icon-delete"
-          />
+          <el-button type="text" size="mini" @click="handleUpdate(row)" v-permission="['BaseService.Job.Update']"
+            icon="el-icon-edit" >修改</el-button>
+          <el-button type="text" size="mini" @click="handleDelete(row)" v-permission="['BaseService.Job.Delete']"
+            icon="el-icon-delete" >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <pagination
-      v-show="totalCount>0"
-      :total="totalCount"
-      :page.sync="page"
-      :limit.sync="listQuery.MaxResultCount"
-      @pagination="getList"
-    />
+    <pagination v-show="totalCount > 0" :total="totalCount" :page.sync="page" :limit.sync="listQuery.MaxResultCount"
+      @pagination="getList" />
   </div>
 </template>
 

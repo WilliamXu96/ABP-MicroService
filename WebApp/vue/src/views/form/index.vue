@@ -2,72 +2,26 @@
   <div class="app-container">
     <div class="head-container">
       <!-- 搜索 -->
-      <el-input
-        v-model="listQuery.Filter"
-        clearable
-        size="small"
-        placeholder="搜索..."
-        style="width: 200px"
-        class="filter-item"
-        @keyup.enter.native="handleFilter"
-      />
-      <el-button
-        class="filter-item"
-        size="mini"
-        type="success"
-        icon="el-icon-search"
-        @click="handleFilter"
-        >搜索</el-button
-      >
+      <el-input v-model="listQuery.Filter" clearable size="small" placeholder="搜索..." style="width: 200px"
+        class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-button class="filter-item" size="mini" type="success" icon="el-icon-search"
+        @click="handleFilter">搜索</el-button>
       <div style="padding: 6px 0">
-        <el-button
-          class="filter-item"
-          size="mini"
-          type="primary"
-          icon="el-icon-plus"
-          @click="handleCreate()"
-          >新增</el-button
-        >
-        <el-button
-          class="filter-item"
-          size="mini"
-          type="success"
-          icon="el-icon-edit"
-          @click="handleUpdate()"
-          >修改</el-button
-        >
-        <el-button
-          slot="reference"
-          class="filter-item"
-          type="danger"
-          icon="el-icon-delete"
-          size="mini"
-          @click="handleDelete()"
-          >删除</el-button
-        >
+        <el-button class="filter-item" size="mini" type="primary" icon="el-icon-plus"
+          @click="handleCreate()">新增</el-button>
+        <el-button class="filter-item" size="mini" type="success" icon="el-icon-edit"
+          @click="handleUpdate()">修改</el-button>
+        <el-button slot="reference" class="filter-item" type="danger" icon="el-icon-delete" size="mini"
+          @click="handleDelete()">删除</el-button>
       </div>
     </div>
-    <el-table
-      ref="multipleTable"
-      v-loading="listLoading"
-      :data="list"
-      size="small"
-      style="width: 90%"
-      @sort-change="sortChange"
-      @selection-change="handleSelectionChange"
-      @row-click="handleRowClick"
-    >
+    <el-table ref="multipleTable" v-loading="listLoading" :data="list" size="small" style="width: 90%"
+      @sort-change="sortChange" @selection-change="handleSelectionChange" @row-click="handleRowClick">
       <el-table-column type="selection" width="44px"></el-table-column>
-      <el-table-column
-        label="表单名称"
-        prop="formName"
-        sortable="custom"
-        align="center"
-        width="150px"
-      >
+      <el-table-column label="表单名称" prop="formName" sortable="custom" align="center" width="150px">
         <template slot-scope="{ row }">
           <span class="link-type" @click="handleUpdate(row)">{{
-            row.formName
+              row.formName
           }}</span>
         </template>
       </el-table-column>
@@ -80,30 +34,15 @@
       </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="{ row }">
-          <el-button
-            type="primary"
-            size="mini"
-            @click="handleUpdate(row)"
-            icon="el-icon-edit"
-          />
-          <el-button
-            type="danger"
-            size="mini"
-            @click="handleDelete(row)"
-            v-permission="['BaseService.Job.Delete']"
-            icon="el-icon-delete"
-          />
+          <el-button type="text" size="mini" @click="handleUpdate(row)" icon="el-icon-edit">修改</el-button>
+          <el-button type="text" size="mini" @click="handleDelete(row)" v-permission="['BaseService.Job.Delete']"
+            icon="el-icon-delete">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <pagination
-      v-show="totalCount > 0"
-      :total="totalCount"
-      :page.sync="page"
-      :limit.sync="listQuery.MaxResultCount"
-      @pagination="getList"
-    />
+    <pagination v-show="totalCount > 0" :total="totalCount" :page.sync="page" :limit.sync="listQuery.MaxResultCount"
+      @pagination="getList" />
   </div>
 </template>
 

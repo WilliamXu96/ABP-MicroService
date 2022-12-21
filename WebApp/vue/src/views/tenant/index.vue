@@ -1,49 +1,19 @@
 <template>
   <div class="app-container">
     <div class="head-container">
-      <el-input
-        v-model="listQuery.Filter"
-        clearable
-        size="small"
-        placeholder="搜索..."
-        style="width: 200px;"
-        class="filter-item"
-        @keyup.enter.native="handleFilter"
-      />
-      <el-button
-        class="filter-item"
-        size="mini"
-        type="success"
-        icon="el-icon-search"
-        @click="handleFilter"
-      >搜索</el-button>
+      <el-input v-model="listQuery.Filter" clearable size="small" placeholder="搜索..." style="width: 200px;"
+        class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-button class="filter-item" size="mini" type="success" icon="el-icon-search"
+        @click="handleFilter">搜索</el-button>
       <div style="padding: 6px 0;">
-        <el-button
-          class="filter-item"
-          size="mini"
-          type="primary"
-          icon="el-icon-plus"
-          @click="handleCreate"
-          v-permission="['AbpTenantManagement.Tenants.Create']"
-        >新增</el-button>
+        <el-button class="filter-item" size="mini" type="primary" icon="el-icon-plus" @click="handleCreate"
+          v-permission="['AbpTenantManagement.Tenants.Create']">新增</el-button>
       </div>
     </div>
 
-    <el-dialog
-      :visible.sync="dialogFormVisible"
-      :close-on-click-modal="false"
-      :title="formTitle"
-      @close="cancel()"
-      width="500px"
-    >
-      <el-form
-        ref="form"
-        :inline="true"
-        :model="form"
-        :rules="rules"
-        size="small"
-        label-width="90px"
-      >
+    <el-dialog :visible.sync="dialogFormVisible" :close-on-click-modal="false" :title="formTitle" @close="cancel()"
+      width="500px">
+      <el-form ref="form" :inline="true" :model="form" :rules="rules" size="small" label-width="90px">
         <el-form-item label="名称" prop="name">
           <el-input v-model="form.name" style="width: 350px;" />
         </el-form-item>
@@ -60,46 +30,24 @@
       </div>
     </el-dialog>
 
-    <el-table
-      ref="multipleTable"
-      v-loading="listLoading"
-      :data="list"
-      size="small"
-      style="width: 90%;"
-      @sort-change="sortChange"
-    >
+    <el-table ref="multipleTable" v-loading="listLoading" :data="list" size="small" style="width: 500px;" @sort-change="sortChange">
       <el-table-column label="租户名称" prop="name" sortable="custom" align="center" width="150px">
         <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{row.name}}</span>
+          <span class="link-type" @click="handleUpdate(row)">{{ row.name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="{row}">
-          <el-button
-            type="primary"
-            size="mini"
-            @click="handleUpdate(row)"
-            v-permission="['AbpTenantManagement.Tenants.Update']"
-            icon="el-icon-edit"
-          />
-          <el-button
-            type="danger"
-            size="mini"
-            @click="handleDelete(row)"
-            v-permission="['AbpTenantManagement.Tenants.Delete']"
-            icon="el-icon-delete"
-          />
+          <el-button type="text" size="mini" @click="handleUpdate(row)"
+            v-permission="['AbpTenantManagement.Tenants.Update']" icon="el-icon-edit">修改</el-button>
+          <el-button type="text" size="mini" @click="handleDelete(row)"
+            v-permission="['AbpTenantManagement.Tenants.Delete']" icon="el-icon-delete">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <pagination
-      v-show="totalCount>0"
-      :total="totalCount"
-      :page.sync="page"
-      :limit.sync="listQuery.MaxResultCount"
-      @pagination="getList"
-    />
+    <pagination v-show="totalCount > 0" :total="totalCount" :page.sync="page" :limit.sync="listQuery.MaxResultCount"
+      @pagination="getList" />
   </div>
 </template>
 

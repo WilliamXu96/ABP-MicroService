@@ -1,12 +1,7 @@
 <template>
   <div>
-    <el-dialog
-      :visible.sync="dialogFormVisible"
-      :close-on-click-modal="false"
-      @close="cancel()"
-      :title="formTitle"
-      width="500px"
-    >
+    <el-dialog :visible.sync="dialogFormVisible" :close-on-click-modal="false" @close="cancel()" :title="formTitle"
+      width="500px">
       <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
         <el-form-item label="字典标签" prop="label">
           <el-input v-model="form.label" style="width: 370px;" />
@@ -19,50 +14,29 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="text" @click="dialogFormVisible=false">取消</el-button>
+        <el-button type="text" @click="dialogFormVisible = false">取消</el-button>
         <el-button :loading="formLoading" type="primary" @click="save">确认</el-button>
       </div>
     </el-dialog>
-    <el-table
-      ref="multipleTable"
-      v-loading="listLoading"
-      :data="list"
-      size="small"
-      style="width: 100%;"
-    >
+    <el-table ref="multipleTable" v-loading="listLoading" :data="list" size="small" style="width: 100%;">
       <el-table-column prop="label" label="字典标签" />
       <el-table-column prop="value" label="字典值" />
       <el-table-column label="排序" prop="sort" align="center">
         <template slot-scope="scope">
-          <span>{{scope.row.sort}}</span>
+          <span>{{ scope.row.sort }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="125">
         <template slot-scope="{row}">
-          <el-button
-            type="primary"
-            size="mini"
-            @click="handleUpdate(row)"
-            v-permission="['BaseService.DataDictionary.Update']"
-            icon="el-icon-edit"
-          />
-          <el-button
-            type="danger"
-            size="mini"
-            @click="handleDelete(row)"
-            v-permission="['BaseService.DataDictionary.Delete']"
-            icon="el-icon-delete"
-          />
+          <el-button type="text" size="mini" @click="handleUpdate(row)"
+            v-permission="['BaseService.DataDictionary.Update']" icon="el-icon-edit" >修改</el-button>
+          <el-button type="text" size="mini" @click="handleDelete(row)"
+            v-permission="['BaseService.DataDictionary.Delete']" icon="el-icon-delete" >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <pagination
-      v-show="totalCount>0"
-      :total="totalCount"
-      :page.sync="page"
-      :limit.sync="listQuery.MaxResultCount"
-      @pagination="getList"
-    />
+    <pagination v-show="totalCount > 0" :total="totalCount" :page.sync="page" :limit.sync="listQuery.MaxResultCount"
+      @pagination="getList" />
   </div>
 </template>
 <script>

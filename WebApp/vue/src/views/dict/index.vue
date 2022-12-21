@@ -1,11 +1,6 @@
 <template>
   <div class="app-container">
-    <el-dialog
-      :visible.sync="dialogFormVisible"
-      :close-on-click-modal="false"
-      :title="formTitle"
-      width="500px"
-    >
+    <el-dialog :visible.sync="dialogFormVisible" :close-on-click-modal="false" :title="formTitle" width="500px">
       <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
         <el-form-item label="字典名称" prop="name">
           <el-input v-model="form.name" style="width: 370px;" />
@@ -24,104 +19,44 @@
       <el-col :xs="24" :sm="24" :md="10" :lg="11" :xl="11" style="margin-bottom: 10px">
         <el-card class="box-card">
           <div class="head-container">
-            <el-input
-              v-model="listQuery.Filter"
-              clearable
-              size="small"
-              placeholder="搜索..."
-              style="width: 200px;"
-              class="filter-item"
-              @keyup.enter.native="handleFilter"
-            />
-            <el-button
-              class="filter-item"
-              size="mini"
-              type="success"
-              icon="el-icon-search"
-              @click="handleFilter"
-            >搜索</el-button>
+            <el-input v-model="listQuery.Filter" clearable size="small" placeholder="搜索..." style="width: 200px;"
+              class="filter-item" @keyup.enter.native="handleFilter" />
+            <el-button class="filter-item" size="mini" type="success" icon="el-icon-search"
+              @click="handleFilter">搜索</el-button>
             <div class="opts">
-              <el-button
-                class="filter-item"
-                size="mini"
-                type="primary"
-                icon="el-icon-plus"
-                @click="handleCreate"
-                v-permission="['BaseService.DataDictionary.Create']"
-              >新增</el-button>
-              <el-button
-                class="filter-item"
-                size="mini"
-                type="success"
-                icon="el-icon-edit"
-                v-permission="['BaseService.DataDictionary.Update']"
-                @click="handleUpdate()"
-              >修改</el-button>
-              <el-button
-                slot="reference"
-                class="filter-item"
-                type="danger"
-                icon="el-icon-delete"
-                size="mini"
-                v-permission="['BaseService.DataDictionary.Delete']"
-                @click="handleDelete()"
-              >删除</el-button>
+              <el-button class="filter-item" size="mini" type="primary" icon="el-icon-plus" @click="handleCreate"
+                v-permission="['BaseService.DataDictionary.Create']">新增</el-button>
+              <el-button class="filter-item" size="mini" type="success" icon="el-icon-edit"
+                v-permission="['BaseService.DataDictionary.Update']" @click="handleUpdate()">修改</el-button>
+              <el-button slot="reference" class="filter-item" type="danger" icon="el-icon-delete" size="mini"
+                v-permission="['BaseService.DataDictionary.Delete']" @click="handleDelete()">删除</el-button>
             </div>
           </div>
-          <el-table
-            ref="multipleTable"
-            v-loading="listLoading"
-            :data="list"
-            size="small"
-            style="width: 100%;"
-            @selection-change="handleSelectionChange"
-            @row-click="handleRowClick"
-          >
+          <el-table ref="multipleTable" v-loading="listLoading" :data="list" size="small" style="width: 100%;"
+            @selection-change="handleSelectionChange" @row-click="handleRowClick">
             <el-table-column type="selection" width="55" />
             <el-table-column :show-overflow-tooltip="true" prop="name" label="名称" />
             <el-table-column :show-overflow-tooltip="true" prop="description" label="描述" />
             <el-table-column label="操作" align="center" width="125">
               <template slot-scope="{row}">
-                <el-button
-                  type="primary"
-                  size="mini"
-                  @click="handleUpdate(row)"
-                  v-permission="['BaseService.DataDictionary.Update']"
-                  icon="el-icon-edit"
-                />
-                <el-button
-                  type="danger"
-                  size="mini"
-                  @click="handleDelete(row)"
-                  v-permission="['BaseService.DataDictionary.Delete']"
-                  icon="el-icon-delete"
-                />
+                <el-button type="text" size="mini" @click="handleUpdate(row)"
+                  v-permission="['BaseService.DataDictionary.Update']" icon="el-icon-edit" >修改</el-button>
+                <el-button type="text" size="mini" @click="handleDelete(row)"
+                  v-permission="['BaseService.DataDictionary.Delete']" icon="el-icon-delete" >删除</el-button>
               </template>
             </el-table-column>
           </el-table>
-          <pagination
-            v-show="totalCount>0"
-            :total="totalCount"
-            :page.sync="page"
-            :limit.sync="listQuery.MaxResultCount"
-            @pagination="getList"
-          />
+          <pagination v-show="totalCount > 0" :total="totalCount" :page.sync="page" :limit.sync="listQuery.MaxResultCount"
+            @pagination="getList" />
         </el-card>
       </el-col>
       <el-col :xs="24" :sm="24" :md="14" :lg="13" :xl="13">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>字典详情</span>
-            <el-button
-              class="filter-item"
-              size="mini"
-              style="float: right;padding: 4px 10px"
-              type="primary"
-              icon="el-icon-plus"
-              :disabled="multipleSelection.length != 1"
-              @click="handleCreateDetail"
-              v-permission="['BaseService.DataDictionary.Create']"
-            >新增</el-button>
+            <el-button class="filter-item" size="mini" style="float: right;padding: 4px 10px" type="primary"
+              icon="el-icon-plus" :disabled="multipleSelection.length != 1" @click="handleCreateDetail"
+              v-permission="['BaseService.DataDictionary.Create']">新增</el-button>
           </div>
           <dictDetail ref="dictDetail" />
         </el-card>
@@ -187,7 +122,7 @@ export default {
       this.page = 1;
       this.getList();
     },
-    resetQuery() {},
+    resetQuery() { },
     save() {
       this.$refs.form.validate(valid => {
         if (valid) {
@@ -238,10 +173,10 @@ export default {
     },
     handleDelete(row) {
       var params = [];
-      let alert=""
+      let alert = ""
       if (row) {
         params.push(row.id);
-        alert=row.name
+        alert = row.name
       } else {
         if (this.multipleSelection.length === 0) {
           this.$message({
@@ -254,7 +189,7 @@ export default {
           let id = element.id;
           params.push(id);
         });
-        alert="选中项"
+        alert = "选中项"
       }
       this.$confirm("是否删除" + alert + "?", "提示", {
         confirmButtonText: "确定",
@@ -308,14 +243,14 @@ export default {
       this.$refs.dictDetail.listQuery.Pid = row.id
       this.$refs.dictDetail.getList()
     },
-    handleCreateDetail(){
-      this.$refs.dictDetail.dialogFormVisible=true
-      this.$refs.dictDetail.isEdit=false
-      this.$refs.dictDetail.form={}
-      this.$refs.dictDetail.formTitle="新增字典详情"
+    handleCreateDetail() {
+      this.$refs.dictDetail.dialogFormVisible = true
+      this.$refs.dictDetail.isEdit = false
+      this.$refs.dictDetail.form = {}
+      this.$refs.dictDetail.formTitle = "新增字典详情"
     },
-    cancel(){
-      this.dialogFormVisible=false
+    cancel() {
+      this.dialogFormVisible = false
       this.$refs.form.clearValidate()
     }
   }
