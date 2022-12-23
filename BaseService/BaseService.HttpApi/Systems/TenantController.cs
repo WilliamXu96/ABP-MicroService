@@ -10,12 +10,18 @@ namespace BaseService.HttpApi.Systems
     [Route("api/base/tenant")]
     public class TenantController : BaseServiceController, ITenantAppService
     {
+        private readonly ITenantAppService _tenantAppService;
+
+        public TenantController(ITenantAppService tenantAppService)
+        {
+            _tenantAppService = tenantAppService;
+        }
 
         [HttpPost]
-        [Route("update")]
-        public Task UpdateMenu(UpdateTenantMenuDto input)
+        [Route("menu")]
+        public Task CreateTenantMenu(UpdateTenantMenuDto input)
         {
-            return null;
+            return _tenantAppService.CreateTenantMenu(input);
         }
     }
 }

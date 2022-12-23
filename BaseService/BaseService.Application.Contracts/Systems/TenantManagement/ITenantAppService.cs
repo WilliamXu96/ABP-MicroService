@@ -6,6 +6,6 @@ namespace BaseService.Systems.TenantManagement
 {
     public interface ITenantAppService : IApplicationService
     {
-        Task UpdateMenu(UpdateTenantMenuDto input);
+        Task CreateTenantMenu(UpdateTenantMenuDto input);
     }
 }
