@@ -65,7 +65,7 @@ export default {
     print:'打印模板',
     tenant:'租户管理',
     systemManagement:'系统管理',
-    Menu:'菜单管理',
+    menu:'菜单管理',
     user:'用户管理',
     role:'角色管理',
     dict:'数据字典',
