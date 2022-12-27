@@ -89,6 +89,7 @@ namespace BaseService.EntityFrameworkCore
                 b.Property(x => x.Permission).HasMaxLength(BaseServiceConsts.MaxNotesLength);
                 b.Property(x => x.Icon).HasMaxLength(BaseServiceConsts.MaxFullNameLength);
                 b.Property(x => x.Label).IsRequired().HasMaxLength(BaseServiceConsts.MaxFullNameLength);
+                b.Property(x => x.IsHost).HasDefaultValue(false);
             });
 
             builder.Entity<RoleMenu>(b =>

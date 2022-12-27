@@ -2,6 +2,7 @@
 using BaseService.Systems;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp.Data;
@@ -9,6 +10,7 @@ using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Guids;
 using Volo.Abp.Identity;
+using Volo.Abp.MultiTenancy;
 
 namespace BaseService.DataSeeder
 {
@@ -20,6 +22,7 @@ namespace BaseService.DataSeeder
         private readonly IRepository<Menu, Guid> _menuRepository;
         private readonly IRepository<RoleMenu> _roleMenuRepository;
         private readonly IGuidGenerator _guidGenerator;
+        private readonly ICurrentTenant _currentTenant;
 
         public BaseServiceDataSeeder(
             IRepository<DataDictionary, Guid> dataDicRepository,
@@ -27,7 +30,8 @@ namespace BaseService.DataSeeder
             IRepository<Menu, Guid> menuRepository,
             IRepository<RoleMenu> roleMenuRepository,
             IGuidGenerator guidGenerator,
-            IIdentityRoleRepository roleRepository)
+            IIdentityRoleRepository roleRepository,
+            ICurrentTenant currentTenant)
         {
             _dataDicRepository = dataDicRepository;
             _dataDicDetailRepository = dataDicDetailRepository;
@@ -35,6 +39,7 @@ namespace BaseService.DataSeeder
             _menuRepository = menuRepository;
             _roleMenuRepository = roleMenuRepository;
             RoleRepository = roleRepository;
+            _currentTenant = currentTenant;
         }
 
         public virtual async Task SeedAsync(DataSeedContext context)
@@ -52,9 +57,9 @@ namespace BaseService.DataSeeder
                 await _dataDicRepository.InsertAsync(new DataDictionary(id, "condition", "表单条件"));
                 await CreateDataDictionaryDetails(id);
             }
-            
+
             var existMenu = await _menuRepository.AnyAsync();
-            if(!existMenu)
+            if (!existMenu)
             {
                 await CreateMenus();
             }
@@ -72,10 +77,14 @@ namespace BaseService.DataSeeder
         {
             var adminRole = (await RoleRepository.GetDbSetAsync()).FirstOrDefault();
             var menus = new MenuSeeder().GetSeed();
+            if (_currentTenant.Id != null)
+            {
+                menus = menus.Where(_ => _.IsHost == false).ToList();
+            }
             foreach (var menu in menus)
             {
                 await _menuRepository.InsertAsync(menu);
-                await _roleMenuRepository.InsertAsync(new RoleMenu(adminRole.Id,menu.Id));
+                await _roleMenuRepository.InsertAsync(new RoleMenu(adminRole.Id, menu.Id));
             }
         }
     }

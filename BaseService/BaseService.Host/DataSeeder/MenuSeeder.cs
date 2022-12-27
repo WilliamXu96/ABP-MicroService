@@ -9,6 +9,11 @@ namespace BaseService.DataSeeder
         public List<Menu> GetSeed()
         {
             var seed = new List<Menu>();
+            var saas = new Menu(Guid.NewGuid()) { CategoryId = 1, Name = "SaaS", Label = "SaaS", Sort = 1, Path = "/saas", Component = "Layout", Permission = "AbpTenantManagement.Tenants", Icon = "cloud", AlwaysShow = true, IsHost = true };
+            var tenant = new Menu(Guid.NewGuid()) { Pid = saas.Id, CategoryId = 1, Name = "tenant", Label = "租户管理", Sort = 1, Path = "tenant", Component = "tenant/index", Permission = "AbpTenantManagement.Tenants", Icon = "users", IsHost = true };
+            seed.Add(new Menu(Guid.NewGuid()) { Pid = tenant.Id, CategoryId = 2, Name = "Create", Label = "新增", Sort = 3, Permission = "AbpTenantManagement.Tenants.Create", Icon = "create", Hidden = true, IsHost = true });
+            seed.Add(saas); seed.Add(tenant);
+
             var systemManagement = new Menu(Guid.NewGuid()) { CategoryId = 1, Name = "systemManagement", Label = "系统管理", Sort = 2, Path = "/system", Component = "Layout", Icon = "system", AlwaysShow = true };
             var user = new Menu(Guid.NewGuid()) { Pid = systemManagement.Id, CategoryId = 1, Name = "user", Label = "用户管理", Sort = 3, Path = "user", Component = "user/index", Permission = "AbpIdentity.Users", Icon = "user" };
             seed.Add(new Menu(Guid.NewGuid()) { Pid = user.Id, CategoryId = 2, Name = "Create", Label = "新增", Sort = 3, Permission = "AbpIdentity.Users.Create", Icon = "create", Hidden = true });
@@ -44,11 +49,6 @@ namespace BaseService.DataSeeder
             var log = new Menu(Guid.NewGuid()) { Pid = systemManagement.Id, CategoryId = 1, Name = "log", Label = "系统日志", Sort = 9, Path = "log", Component = "log/index", Permission = "BaseService.AuditLogging", Icon = "log" };
             seed.Add(systemManagement);
             seed.Add(user); seed.Add(menu); seed.Add(role); seed.Add(org); seed.Add(dict); seed.Add(job); seed.Add(log);
-
-            var saas = new Menu(Guid.NewGuid()) { CategoryId = 1, Name = "SaaS", Label = "SaaS", Sort = 1, Path = "/saas", Component = "Layout", Permission = "AbpTenantManagement.Tenants", Icon = "cloud", AlwaysShow = true };
-            var tenant = new Menu(Guid.NewGuid()) { Pid = saas.Id, CategoryId = 1, Name = "tenant", Label = "租户管理", Sort = 1, Path = "tenant", Component = "tenant/index", Permission = "AbpTenantManagement.Tenants", Icon = "users" };
-            seed.Add(new Menu(Guid.NewGuid()) { Pid = tenant.Id, CategoryId = 2, Name = "Create", Label = "新增", Sort = 3, Permission = "AbpTenantManagement.Tenants.Create", Icon = "create", Hidden = true });
-            seed.Add(saas); seed.Add(tenant);
 
             var baseData = new Menu(Guid.NewGuid()) { CategoryId = 1, Name = "base", Label = "基础资料", Sort = 3, Path = "/base", Component = "Layout", Icon = "base", AlwaysShow = true };
             var book = new Menu(Guid.NewGuid()) { Pid = baseData.Id, CategoryId = 1, Name = "Book", Label = "Book", Sort = 10, Path = "book", Component = "book/index", Permission = "Business.Book", Icon = "book" };

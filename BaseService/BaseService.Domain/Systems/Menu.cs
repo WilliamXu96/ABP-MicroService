@@ -36,6 +36,11 @@ namespace BaseService.Systems
 
         public bool AlwaysShow { get; set; }
 
+        /// <summary>
+        /// 宿主菜单
+        /// </summary>
+        public bool IsHost { get; set; }
+
         public bool IsDeleted { get; set; }
 
         public Menu(Guid id) : base(id)
