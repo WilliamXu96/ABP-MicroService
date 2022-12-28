@@ -12,7 +12,7 @@ namespace BaseService.Systems.UserMenusManagement
 
         Task<ListResultDto<Guid>> GetRoleMenuIds(Guid id);
 
-        Task<ListResultDto<MenusTreeDto>> GetMenusTree();
+        Task<ListResultDto<MenusTreeDto>> GetMenusList();
 
         Task Update(UpdateRoleMenuDto input);
     }

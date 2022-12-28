@@ -162,12 +162,12 @@ export default {
   },
   created() {
     this.getList();
-    this.getMenuData();
+    this.getMenuList();
   },
   methods: {
-    getMenuData() {
+    getMenuList() {
       this.treeLoading = true;
-      this.$axios.gets("/api/base/role-menus/tree").then((response) => {
+      this.$axios.gets("/api/base/role-menus/list").then((response) => {
         this.menuData = response.items;
         this.menus = response.items.filter((_) => _.pid == null);
         this.setChildren(this.menus, response.items);

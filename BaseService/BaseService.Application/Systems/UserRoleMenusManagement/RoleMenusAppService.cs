@@ -40,7 +40,7 @@ namespace BaseService.Systems.UserMenusManagement
             await _roleMenuRepository.InsertManyAsync(roleMenus);
         }
 
-        public async Task<ListResultDto<MenusTreeDto>> GetMenusTree()
+        public async Task<ListResultDto<MenusTreeDto>> GetMenusList()
         {
             var menus = await _menuRepository.GetListAsync();
             var root = menus.Where(_ => _.Pid == null).OrderBy(_ => _.Sort).ToList();
