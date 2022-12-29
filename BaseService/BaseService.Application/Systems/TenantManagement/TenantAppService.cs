@@ -1,8 +1,12 @@
 ﻿using BaseService.Systems.TenantManagement.Dto;
+using BaseService.Systems.UserRoleMenusManagement.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Identity;
@@ -10,6 +14,7 @@ using Volo.Abp.TenantManagement;
 
 namespace BaseService.Systems.TenantManagement
 {
+    [Authorize(TenantManagementPermissions.Tenants.Default)]
     public class TenantAppService : ApplicationService, ITenantAppService
     {
         protected ITenantRepository TenantRepository { get; }
@@ -29,7 +34,24 @@ namespace BaseService.Systems.TenantManagement
             _roleMenuRepository = roleMenuRepository;
         }
 
-        public async Task CreateTenantMenu(UpdateTenantMenuDto input)
+        public async Task<ListResultDto<MenusTreeDto>> GetTenantMenusList()
+        {
+            var result = await _menuRepository.GetListAsync(_ => _.IsHost == false);
+            var dtos = ObjectMapper.Map<List<Menu>, List<MenusTreeDto>>(result);
+            return new ListResultDto<MenusTreeDto>(dtos.OrderBy(_ => _.Sort).ToList());
+        }
+
+        public async Task<ListResultDto<Guid>> GetTenantMenuIds(Guid id)
+        {
+            var tenant = await TenantRepository.GetAsync(id);
+            using (CurrentTenant.Change(tenant.Id))
+            {
+                var menus = await _menuRepository.GetListAsync();
+                return new ListResultDto<Guid>(menus.Select(_ => _.Id).ToList());
+            }
+        }
+
+        public async Task UpdateTenantMenu(UpdateTenantMenuDto input)
         {
             var tenant = await TenantRepository.GetAsync(input.TenantId);
             var menus = await (await _menuRepository.GetQueryableAsync()).Where(_ => input.MenuIds.Contains(_.Id)).ToListAsync();
@@ -37,7 +59,7 @@ namespace BaseService.Systems.TenantManagement
             {
                 var tenantRoles = await RoleRepository.GetListAsync();
                 //清除租户所有角色菜单，TODO：清除租户角色权限
-                await _roleMenuRepository.DeleteAsync(_ => tenantRoles.Select(r => r.Id).Contains(_.RoleId));
+                await _roleMenuRepository.DeleteAsync(_ => tenantRoles.Select(s => s.Id).Contains(_.RoleId));
 
                 foreach (var menu in menus)
                 {

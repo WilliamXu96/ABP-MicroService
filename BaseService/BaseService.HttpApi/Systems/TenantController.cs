@@ -1,8 +1,11 @@
 ﻿using BaseService.Controllers;
 using BaseService.Systems.TenantManagement;
 using BaseService.Systems.TenantManagement.Dto;
+using BaseService.Systems.UserRoleMenusManagement.Dto;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
+using Volo.Abp.Application.Dtos;
 
 namespace BaseService.HttpApi.Systems
 {
@@ -17,11 +20,25 @@ namespace BaseService.HttpApi.Systems
             _tenantAppService = tenantAppService;
         }
 
+        [HttpGet]
+        [Route("menu/{id}")]
+        public Task<ListResultDto<Guid>> GetTenantMenuIds(Guid id)
+        {
+            return _tenantAppService.GetTenantMenuIds(id);
+        }
+
+        [HttpGet]
+        [Route("menu-list")]
+        public Task<ListResultDto<MenusTreeDto>> GetTenantMenusList()
+        {
+            return _tenantAppService.GetTenantMenusList();
+        }
+
         [HttpPost]
         [Route("menu")]
-        public Task CreateTenantMenu(UpdateTenantMenuDto input)
+        public Task UpdateTenantMenu(UpdateTenantMenuDto input)
         {
-            return _tenantAppService.CreateTenantMenu(input);
+            return _tenantAppService.UpdateTenantMenu(input);
         }
     }
 }

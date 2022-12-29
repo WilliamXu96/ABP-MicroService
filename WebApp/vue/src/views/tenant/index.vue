@@ -8,6 +8,10 @@
       <div style="padding: 6px 0;">
         <el-button class="filter-item" size="mini" type="primary" icon="el-icon-plus" @click="handleCreate"
           v-permission="['AbpTenantManagement.Tenants.Create']">新增</el-button>
+        <el-button class="filter-item" size="mini" type="success" icon="el-icon-edit"
+          v-permission="['AbpTenantManagement.Tenants.Update']" @click="handleUpdate()">修改</el-button>
+        <el-button slot="reference" class="filter-item" type="danger" icon="el-icon-delete" size="mini"
+          v-permission="['AbpTenantManagement.Tenants.Delete']" @click="handleDelete()">删除</el-button>
       </div>
     </div>
 
@@ -30,24 +34,54 @@
       </div>
     </el-dialog>
 
-    <el-table ref="multipleTable" v-loading="listLoading" :data="list" size="small" style="width: 500px;" @sort-change="sortChange">
-      <el-table-column label="租户名称" prop="name" sortable="custom" align="center" width="150px">
-        <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.name }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center">
-        <template slot-scope="{row}">
-          <el-button type="text" size="mini" @click="handleUpdate(row)"
-            v-permission="['AbpTenantManagement.Tenants.Update']" icon="el-icon-edit">修改</el-button>
-          <el-button type="text" size="mini" @click="handleDelete(row)"
-            v-permission="['AbpTenantManagement.Tenants.Delete']" icon="el-icon-delete">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <el-row :gutter="15">
+      <!--租户管理-->
+      <el-col :md="16" style="margin-bottom: 10px">
+        <el-card class="box-card" shadow="never">
+          <div slot="header" class="clearfix" style="height: 20px">
+            <span class="role-span">租户列表</span>
+          </div>
+          <el-table ref="multipleTable" v-loading="listLoading" :data="list" size="small" style="width: 90%"
+            @sort-change="sortChange" @selection-change="handleSelectionChange" @row-click="handleRowClick">
+            <el-table-column type="selection" width="44px"></el-table-column>
+            <el-table-column label="租户名称" prop="name" sortable="custom" align="center" width="150px">
+              <template slot-scope="{row}">
+                <span class="link-type" @click="handleUpdate(row)">{{ row.name }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="操作" align="center">
+              <template slot-scope="{row}">
+                <el-button type="text" size="mini" @click="handleUpdate(row)"
+                  v-permission="['AbpTenantManagement.Tenants.Update']" icon="el-icon-edit">修改</el-button>
+                <el-button type="text" size="mini" @click="handleDelete(row)"
+                  v-permission="['AbpTenantManagement.Tenants.Delete']" icon="el-icon-delete">删除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <pagination v-show="totalCount > 0" :total="totalCount" :page.sync="page"
+            :limit.sync="listQuery.MaxResultCount" @pagination="getList" />
+        </el-card>
+      </el-col>
 
-    <pagination v-show="totalCount > 0" :total="totalCount" :page.sync="page" :limit.sync="listQuery.MaxResultCount"
-      @pagination="getList" />
+      <el-col :md="8">
+        <el-card class="box-card" shadow="never">
+          <div slot="header" style="height: 20px; line-height: 20px">
+            <el-tooltip class="item" effect="dark" content="选择租户菜单权限" placement="top">
+              <span>租户菜单</span>
+            </el-tooltip>
+            <span style="float: right; margin-top: -8px">
+              <el-checkbox v-model="checked" @change="checkedAll" :disabled="multipleSelection.length != 1">
+                全选</el-checkbox>
+              <el-button v-permission="['AbpIdentity.Roles.ManagePermissions']" :loading="savePerLoading"
+                :disabled="multipleSelection.length != 1" icon="el-icon-check" type="text"
+                @click="savePer">保存</el-button>
+            </span>
+          </div>
+          <el-tree ref="tree" v-loading="treeLoading" :check-strictly="true" :data="menus" show-checkbox node-key="id"
+            @check="checkNode" class="permission-tree" />
+        </el-card>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -72,9 +106,13 @@ export default {
       },
       form: Object.assign({}, defaultForm),
       list: null,
+      menuData: [],
+      menus: [],
       totalCount: 0,
       listLoading: true,
       formLoading: false,
+      treeLoading: false,
+      savePerLoading: false,
       listQuery: {
         Filter: "",
         Sorting: "",
@@ -86,12 +124,23 @@ export default {
       multipleSelection: [],
       formTitle: "",
       isEdit: false,
+      checked: false,
     };
   },
   created() {
     this.getList();
+    this.getMenuList();
   },
   methods: {
+    getMenuList() {
+      this.treeLoading = true;
+      this.$axios.gets("/api/base/tenant/menu-list").then((response) => {
+        this.menuData = response.items;
+        this.menus = response.items.filter((_) => _.pid == null);
+        this.setChildren(this.menus, response.items);
+        this.treeLoading = false;
+      });
+    },
     getList() {
       this.listLoading = true;
       this.listQuery.SkipCount = (this.page - 1) * this.listQuery.MaxResultCount;
@@ -155,6 +204,39 @@ export default {
         }
       });
     },
+    savePer() {
+      this.savePerLoading = true;
+      let params = {};
+      let checkedKeys = this.$refs.tree.getCheckedKeys();
+      params.permissions = [];
+      this.menuData.forEach((element) => {
+        if (element.permission) {
+          let perm = {};
+          perm.name = element.permission;
+          if (checkedKeys.indexOf(element.id) > -1) {
+            perm.isGranted = true;
+          } else {
+            perm.isGranted = false;
+          }
+          params.permissions.push(perm);
+        }
+      });
+      this.$axios
+        .posts("/api/base/tenant/menu", {
+          tenantId: this.multipleSelection[0].id,
+          menuIds: checkedKeys,
+        }).then(() => {
+          this.$notify({
+            title: "成功",
+            message: "更新成功",
+            type: "success",
+            duration: 2000,
+          });
+          this.savePerLoading = false;
+        }).catch(() => {
+          this.savePerLoading = false;
+        });
+    },
     handleCreate() {
       this.formTitle = "新增租户";
       this.isEdit = false;
@@ -205,6 +287,33 @@ export default {
         }
       }
     },
+    checkedAll() {
+      if (this.checked) {
+        //全选
+        this.$refs.tree.setCheckedNodes(this.menuData);
+      } else {
+        //取消选中
+        this.$refs.tree.setCheckedKeys([]);
+      }
+    },
+    checkNode(data, state) {
+      if (state.checkedKeys.indexOf(data.id) > -1) {
+        this.$refs.tree.setChecked(data.pid, true);
+      }
+    },
+    setChildren(roots, items) {
+      roots.forEach((element) => {
+        items.forEach((item) => {
+          if (item.pid == element.id) {
+            if (!element.children) element.children = [];
+            element.children.push(item);
+          }
+        });
+        if (element.children) {
+          this.setChildren(element.children, items);
+        }
+      });
+    },
     sortChange(data) {
       const { prop, order } = data;
       if (!prop || !order) {
@@ -213,6 +322,24 @@ export default {
       }
       this.listQuery.Sorting = prop + " " + order;
       this.handleFilter();
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+    },
+    handleRowClick(row, column, event) {
+      if (
+        this.multipleSelection.length == 1 &&
+        this.multipleSelection[0].id == row.id
+      ) {
+        return;
+      }
+      this.treeLoading = true;
+      this.$refs.multipleTable.clearSelection();
+      this.$refs.multipleTable.toggleRowSelection(row);
+      this.$axios.gets("/api/base/tenant/menu/" + row.id).then((response) => {
+        this.$refs.tree.setCheckedKeys(response.items);
+        this.treeLoading = false;
+      });
     },
     cancel() {
       this.form = Object.assign({}, defaultForm);
