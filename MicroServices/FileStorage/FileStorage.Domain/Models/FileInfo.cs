@@ -36,9 +36,8 @@ namespace FileStorage.Models
 
         }
 
-        public FileInfo(Guid id, Guid? tenantId, string name,string realName, string suffix, string md5code, string size, string path,string url, FileType type) : base(id)
+        public FileInfo(Guid id, string name,string realName, string suffix, string md5code, string size, string path,string url, FileType type) : base(id)
         {
-            TenantId = tenantId;
             Name = name;
             RealName = realName;
             Suffix = suffix;

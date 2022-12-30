@@ -15,18 +15,17 @@ namespace FileStorage.Models
             _repository = repository;
         }
 
-        public async Task Create(string name, string realName, string suffix, string md5, string size, string path,string url, FileType type)
+        public async Task<FileInfo> Create(string name, string realName, string suffix, string md5, string size, string path, string url, FileType type)
         {
-            await _repository.InsertAsync(new FileInfo(GuidGenerator.Create(),
-                                                       CurrentTenant.Id,
-                                                       name,
-                                                       realName,
-                                                       suffix,
-                                                       md5,
-                                                       size,
-                                                       path,
-                                                       url,
-                                                       type));
+            return await _repository.InsertAsync(new FileInfo(GuidGenerator.Create(),
+                                                                                name,
+                                                                            realName,
+                                                                              suffix,
+                                                                                 md5,
+                                                                                size,
+                                                                                path,
+                                                                                 url,
+                                                                                type));
         }
     }
 }

@@ -61,7 +61,10 @@ namespace FileStorage
         {
             Configure<AbpAspNetCoreMvcOptions>(options =>
             {
-                options.ConventionalControllers.Create(typeof(FileStorageApplicationModule).Assembly);
+                options.ConventionalControllers.Create(typeof(FileStorageApplicationModule).Assembly, opts =>
+                {
+                    opts.RootPath = "storage";
+                });
             });
         }
 
@@ -176,7 +179,7 @@ namespace FileStorage
             var app = context.GetApplicationBuilder();
 
             app.UseCorrelationId();
-            app.UseVirtualFiles();
+            app.UseStaticFiles();
             app.UseRouting();
             app.UseCors(DefaultCorsPolicyName);
             app.UseAuthentication();
