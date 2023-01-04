@@ -64,7 +64,7 @@ namespace BaseService.DataSeeder
 
             var systemTool = new Menu(Guid.NewGuid()) { CategoryId = 1, Name = "tool", Label = "系统工具", Sort = 4, Path = "/tool", Component = "Layout", Icon = "tool", AlwaysShow = true };
             var form = new Menu(Guid.NewGuid()) { Pid = systemTool.Id, CategoryId = 1, Name = "form", Label = "表单管理", Sort = 11, Path = "form", Component = "form/index", Permission = "FormManagement.Form", Icon = "control" };
-            var flow = new Menu(Guid.NewGuid()) { Pid = systemTool.Id, CategoryId = 1, Name = "flow", Label = "流程管理", Sort = 12, Path = "flow", Component = "flow/index", Permission = "FlowManagement.Flow", Icon = "flow" };
+            var flow = new Menu(Guid.NewGuid()) { Pid = systemTool.Id, CategoryId = 1, Name = "flow", Label = "流程管理", Sort = 12, Path = "flow", Component = "flow-design/index", Permission = "FlowManagement.Flow", Icon = "flow" };
             var flowDisplay = new Menu(Guid.NewGuid()) { Pid = systemTool.Id, CategoryId = 1, Name = "flowDisplay", Label = "流程详细", Sort = 13, Path = "flowDisplay/:id", Component = "flow/display", Permission = "FlowManagement.Flow", Hidden = true };
             var flowCreate = new Menu(Guid.NewGuid()) { Pid = systemTool.Id, CategoryId = 1, Name = "flowCreate", Label = "新增流程", Sort = 14, Path = "flowCreate", Component = "flow-design/create", Permission = "FlowManagement.Flow.Create", Hidden = true };
             var flowEdit = new Menu(Guid.NewGuid()) { Pid = systemTool.Id, CategoryId = 1, Name = "flowEdit", Label = "修改流程", Sort = 15, Path = "flowEdit/:id", Component = "flow-design/edit", Permission = "FlowManagement.Flow.Update", Hidden = true };
