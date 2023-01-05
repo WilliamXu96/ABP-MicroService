@@ -10,7 +10,7 @@
       <div class="filter-right">
         <router-link :to="'/tool/flowCreate/'">
           <el-button size="mini" class="filter-item" style="margin-left: 10px" type="primary"
-            icon="el-icon-plus">添加</el-button>
+            icon="el-icon-plus">新增</el-button>
         </router-link>
         <el-button size="mini" class="filter-item" style="margin-left: 10px" type="success" icon="el-icon-edit"
           @click="handleUpdate()">编辑</el-button>

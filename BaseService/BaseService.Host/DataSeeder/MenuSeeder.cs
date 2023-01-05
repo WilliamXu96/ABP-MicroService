@@ -52,9 +52,9 @@ namespace BaseService.DataSeeder
 
             var baseData = new Menu(Guid.NewGuid()) { CategoryId = 1, Name = "base", Label = "基础资料", Sort = 3, Path = "/base", Component = "Layout", Icon = "base", AlwaysShow = true };
             var book = new Menu(Guid.NewGuid()) { Pid = baseData.Id, CategoryId = 1, Name = "Book", Label = "Book", Sort = 10, Path = "book", Component = "book/index", Permission = "Business.Book", Icon = "book" };
-            seed.Add(new Menu(Guid.NewGuid()) { Pid = book.Id, CategoryId = 2, Name = "Create", Label = "新增", Sort = 3, Permission = "BaseService.Book.Create", Icon = "create", Hidden = true });
-            seed.Add(new Menu(Guid.NewGuid()) { Pid = book.Id, CategoryId = 2, Name = "Update", Label = "修改", Sort = 3, Permission = "BaseService.Book.Update", Icon = "update", Hidden = true });
-            seed.Add(new Menu(Guid.NewGuid()) { Pid = book.Id, CategoryId = 2, Name = "Delete", Label = "删除", Sort = 3, Permission = "BaseService.Book.Delete", Icon = "delete", Hidden = true });
+            seed.Add(new Menu(Guid.NewGuid()) { Pid = book.Id, CategoryId = 2, Name = "Create", Label = "新增", Sort = 3, Permission = "Business.Book.Create", Icon = "create", Hidden = true });
+            seed.Add(new Menu(Guid.NewGuid()) { Pid = book.Id, CategoryId = 2, Name = "Update", Label = "修改", Sort = 3, Permission = "Business.Book.Update", Icon = "update", Hidden = true });
+            seed.Add(new Menu(Guid.NewGuid()) { Pid = book.Id, CategoryId = 2, Name = "Delete", Label = "删除", Sort = 3, Permission = "Business.Book.Delete", Icon = "delete", Hidden = true });
 
             var print = new Menu(Guid.NewGuid()) { Pid = baseData.Id, CategoryId = 1, Name = "print", Label = "打印模板", Sort = 9, Path = "print", Component = "print/index", Permission = "Business.PrintTemplate", Icon = "printer" };
             seed.Add(new Menu(Guid.NewGuid()) { Pid = print.Id, CategoryId = 2, Name = "Create", Label = "新增", Sort = 3, Permission = "Business.PrintTemplate", Icon = "create", Hidden = true });

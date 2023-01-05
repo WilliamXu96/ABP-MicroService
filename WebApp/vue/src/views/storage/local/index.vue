@@ -164,7 +164,7 @@ export default {
       this.listLoading = true;
       this.listQuery.SkipCount = (this.page - 1) * this.listQuery.MaxResultCount;
       this.$axios
-        .gets(config.storage.ip + "/api/app/file", this.listQuery)
+        .gets(config.storage.ip + "/api/storage/file", this.listQuery)
         .then((response) => {
           this.list = response.items;
           this.totalCount = response.totalCount;
