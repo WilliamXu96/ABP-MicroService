@@ -8,10 +8,6 @@
       <div style="padding: 6px 0;">
         <el-button class="filter-item" size="mini" type="primary" icon="el-icon-plus" @click="handleCreate"
           v-permission="['AbpTenantManagement.Tenants.Create']">新增</el-button>
-        <el-button class="filter-item" size="mini" type="success" icon="el-icon-edit"
-          v-permission="['AbpTenantManagement.Tenants.Update']" @click="handleUpdate()">修改</el-button>
-        <el-button slot="reference" class="filter-item" type="danger" icon="el-icon-delete" size="mini"
-          v-permission="['AbpTenantManagement.Tenants.Delete']" @click="handleDelete()">删除</el-button>
       </div>
     </div>
 
@@ -78,7 +74,7 @@
             </span>
           </div>
           <el-tree ref="tree" v-loading="treeLoading" :check-strictly="true" :data="menus" show-checkbox node-key="id"
-            @check="checkNode" class="permission-tree" />
+            class="permission-tree" />
         </el-card>
       </el-col>
     </el-row>
@@ -129,18 +125,8 @@ export default {
   },
   created() {
     this.getList();
-    this.getMenuList();
   },
   methods: {
-    getMenuList() {
-      this.treeLoading = true;
-      this.$axios.gets("/api/base/tenant/menu-list").then((response) => {
-        this.menuData = response.items;
-        this.menus = response.items.filter((_) => _.pid == null);
-        this.setChildren(this.menus, response.items);
-        this.treeLoading = false;
-      });
-    },
     getList() {
       this.listLoading = true;
       this.listQuery.SkipCount = (this.page - 1) * this.listQuery.MaxResultCount;
@@ -208,19 +194,6 @@ export default {
       this.savePerLoading = true;
       let params = {};
       let checkedKeys = this.$refs.tree.getCheckedKeys();
-      params.permissions = [];
-      this.menuData.forEach((element) => {
-        if (element.permission) {
-          let perm = {};
-          perm.name = element.permission;
-          if (checkedKeys.indexOf(element.id) > -1) {
-            perm.isGranted = true;
-          } else {
-            perm.isGranted = false;
-          }
-          params.permissions.push(perm);
-        }
-      });
       this.$axios
         .posts("/api/base/tenant/menu", {
           tenantId: this.multipleSelection[0].id,
@@ -287,6 +260,25 @@ export default {
         }
       }
     },
+    handleRowClick(row, column, event) {
+      if (
+        this.multipleSelection.length == 1 &&
+        this.multipleSelection[0].id == row.id
+      ) {
+        return;
+      }
+      this.treeLoading = true;
+      this.$refs.multipleTable.clearSelection();
+      this.$refs.multipleTable.toggleRowSelection(row);
+      this.$axios.gets("/api/base/tenant/menu/" + row.id).then((response) => {
+        this.$refs.tree.setCheckedKeys(response.items);
+        this.menuData = response.items;
+        this.menus = response.items.filter((_) => _.pid == null);
+        this.setChildren(this.menus, response.items);
+        this.$refs.tree.setCheckedKeys(response.items.filter(_ => _.isHost == false).map(_ => _.id));
+        this.treeLoading = false;
+      });
+    },
     checkedAll() {
       if (this.checked) {
         //全选
@@ -294,11 +286,6 @@ export default {
       } else {
         //取消选中
         this.$refs.tree.setCheckedKeys([]);
-      }
-    },
-    checkNode(data, state) {
-      if (state.checkedKeys.indexOf(data.id) > -1) {
-        this.$refs.tree.setChecked(data.pid, true);
       }
     },
     setChildren(roots, items) {
@@ -325,21 +312,6 @@ export default {
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
-    },
-    handleRowClick(row, column, event) {
-      if (
-        this.multipleSelection.length == 1 &&
-        this.multipleSelection[0].id == row.id
-      ) {
-        return;
-      }
-      this.treeLoading = true;
-      this.$refs.multipleTable.clearSelection();
-      this.$refs.multipleTable.toggleRowSelection(row);
-      this.$axios.gets("/api/base/tenant/menu/" + row.id).then((response) => {
-        this.$refs.tree.setCheckedKeys(response.items);
-        this.treeLoading = false;
-      });
     },
     cancel() {
       this.form = Object.assign({}, defaultForm);

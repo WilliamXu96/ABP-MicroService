@@ -37,7 +37,7 @@ namespace BaseService.Systems
         public bool AlwaysShow { get; set; }
 
         /// <summary>
-        /// 宿主菜单
+        /// 是否宿主菜单，if(TenantId!=null&&IsHost==true)：停用租户菜单
         /// </summary>
         public bool IsHost { get; set; }
 

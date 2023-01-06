@@ -11,8 +11,8 @@ namespace BaseService.Systems.TenantManagement
     {
         Task UpdateTenantMenu(UpdateTenantMenuDto input);
 
-        Task<ListResultDto<MenusTreeDto>> GetTenantMenusList();
+        Task<ListResultDto<MenusListDto>> GetTenantMenusList();
 
-        Task<ListResultDto<Guid>> GetTenantMenuIds(Guid id);
+        Task<ListResultDto<MenusListDto>> GetTenantMenusById(Guid id);
     }
 }

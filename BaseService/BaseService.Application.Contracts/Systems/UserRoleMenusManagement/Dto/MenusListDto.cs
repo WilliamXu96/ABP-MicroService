@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using Volo.Abp.Application.Dtos;
 
 namespace BaseService.Systems.UserRoleMenusManagement.Dto
 {
-    public class MenusTreeDto : EntityDto<Guid>
+    public class MenusListDto : EntityDto<Guid>
     {
         public Guid? Pid { get; set; }
 
@@ -15,5 +14,7 @@ namespace BaseService.Systems.UserRoleMenusManagement.Dto
         public int Sort { get; set; }
 
         public string Permission { get; set; }
+
+        public bool IsHost { get; set; }
     }
 }

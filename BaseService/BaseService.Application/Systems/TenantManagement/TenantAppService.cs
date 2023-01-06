@@ -1,7 +1,6 @@
 ﻿using BaseService.Systems.TenantManagement.Dto;
 using BaseService.Systems.UserRoleMenusManagement.Dto;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,54 +33,47 @@ namespace BaseService.Systems.TenantManagement
             _roleMenuRepository = roleMenuRepository;
         }
 
-        public async Task<ListResultDto<MenusTreeDto>> GetTenantMenusList()
+        public async Task<ListResultDto<MenusListDto>> GetTenantMenusList()
         {
             var result = await _menuRepository.GetListAsync(_ => _.IsHost == false);
-            var dtos = ObjectMapper.Map<List<Menu>, List<MenusTreeDto>>(result);
-            return new ListResultDto<MenusTreeDto>(dtos.OrderBy(_ => _.Sort).ToList());
+            var dtos = ObjectMapper.Map<List<Menu>, List<MenusListDto>>(result);
+            return new ListResultDto<MenusListDto>(dtos.OrderBy(_ => _.Sort).ToList());
         }
 
-        public async Task<ListResultDto<Guid>> GetTenantMenuIds(Guid id)
+        public async Task<ListResultDto<MenusListDto>> GetTenantMenusById(Guid id)
         {
             var tenant = await TenantRepository.GetAsync(id);
             using (CurrentTenant.Change(tenant.Id))
             {
-                var menus = await _menuRepository.GetListAsync();
-                return new ListResultDto<Guid>(menus.Select(_ => _.Id).ToList());
+                var result = await _menuRepository.GetListAsync();
+                var dtos = ObjectMapper.Map<List<Menu>, List<MenusListDto>>(result);
+                return new ListResultDto<MenusListDto>(dtos.OrderBy(_ => _.Sort).ToList());
             }
         }
 
         public async Task UpdateTenantMenu(UpdateTenantMenuDto input)
         {
             var tenant = await TenantRepository.GetAsync(input.TenantId);
-            var menus = await (await _menuRepository.GetQueryableAsync()).Where(_ => input.MenuIds.Contains(_.Id)).ToListAsync();
             using (CurrentTenant.Change(tenant.Id))
             {
-                var tenantRoles = await RoleRepository.GetListAsync();
+
+                var menus = await _menuRepository.GetListAsync();
+                var adminRole = (await RoleRepository.GetListAsync()).First(t => t.Name == "admin");
+
                 //清除租户所有角色菜单，TODO：清除租户角色权限
-                await _roleMenuRepository.DeleteAsync(_ => tenantRoles.Select(s => s.Id).Contains(_.RoleId));
+                await _roleMenuRepository.DeleteAsync(_ => menus.Select(m => m.Id).Contains(_.MenuId));
 
                 foreach (var menu in menus)
                 {
-                    //添加租户菜单
-                    var menuId = GuidGenerator.Create();
-                    await _menuRepository.InsertAsync(new Menu(menuId)
+                    if (input.MenuIds.Contains(menu.Id))
                     {
-                        FormId = menu.FormId,
-                        Pid = menu.Pid,
-                        CategoryId = menu.CategoryId,
-                        Name = menu.Name,
-                        Label = menu.Label,
-                        Sort = menu.Sort,
-                        Path = menu.Path,
-                        Component = menu.Component,
-                        Permission = menu.Permission,
-                        Icon = menu.Icon,
-                        Hidden = menu.Hidden,
-                        AlwaysShow = menu.AlwaysShow
-                    });
-                    //添加租户admin角色菜单
-                    await _roleMenuRepository.InsertAsync(new RoleMenu(tenantRoles.FirstOrDefault(t => t.Name == "admin").Id, menuId));
+                        menu.IsHost = false;
+                        //添加租户admin角色菜单
+                        await _roleMenuRepository.InsertAsync(new RoleMenu(adminRole.Id, menu.Id));
+                    }
+                    else
+                        menu.IsHost = true;
+                    
                 }
             }
         }

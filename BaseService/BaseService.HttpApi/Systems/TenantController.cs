@@ -22,14 +22,14 @@ namespace BaseService.HttpApi.Systems
 
         [HttpGet]
         [Route("menu/{id}")]
-        public Task<ListResultDto<Guid>> GetTenantMenuIds(Guid id)
+        public Task<ListResultDto<MenusListDto>> GetTenantMenusById(Guid id)
         {
-            return _tenantAppService.GetTenantMenuIds(id);
+            return _tenantAppService.GetTenantMenusById(id);
         }
 
         [HttpGet]
         [Route("menu-list")]
-        public Task<ListResultDto<MenusTreeDto>> GetTenantMenusList()
+        public Task<ListResultDto<MenusListDto>> GetTenantMenusList()
         {
             return _tenantAppService.GetTenantMenusList();
         }

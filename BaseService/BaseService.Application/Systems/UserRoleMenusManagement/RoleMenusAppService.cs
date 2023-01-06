@@ -42,15 +42,15 @@ namespace BaseService.Systems.UserMenusManagement
         }
 
         [Authorize(IdentityPermissions.Roles.Default)]
-        public async Task<ListResultDto<MenusTreeDto>> GetMenusList()
+        public async Task<ListResultDto<MenusListDto>> GetMenusList()
         {
             var result = new List<Menu>();
             if (!CurrentTenant.Id.HasValue)
                 result = await _menuRepository.GetListAsync();
             else
                 result = await _menuRepository.GetListAsync(_ => _.IsHost == false);
-            var dtos = ObjectMapper.Map<List<Menu>, List<MenusTreeDto>>(result);
-            return new ListResultDto<MenusTreeDto>(dtos.OrderBy(_ => _.Sort).ToList());
+            var dtos = ObjectMapper.Map<List<Menu>, List<MenusListDto>>(result);
+            return new ListResultDto<MenusListDto>(dtos.OrderBy(_ => _.Sort).ToList());
         }
 
         /// <summary>

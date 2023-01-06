@@ -396,11 +396,6 @@ export default {
     },
     checkNode(data, state) {
       if (!data.pid) {
-        // if (state.checkedKeys.indexOf(data.id) === -1) {
-        //   data.children.forEach(element => {
-        //     this.$refs.tree.setChecked(element.id, false);
-        //   });
-        // }
       } else {
         if (state.checkedKeys.indexOf(data.id) > -1) {
           this.$refs.tree.setChecked(data.pid, true);
