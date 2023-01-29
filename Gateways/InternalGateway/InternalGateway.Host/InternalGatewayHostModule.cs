@@ -1,5 +1,4 @@
-﻿using BaseService;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Ocelot.DependencyInjection;
@@ -15,7 +14,6 @@ namespace InternalGateway
     [DependsOn(
         typeof(AbpAutofacModule),
         typeof(AbpIdentityHttpApiModule),
-        typeof(BaseServiceHttpApiModule),
         typeof(AbpAspNetCoreSerilogModule)
     )]
     public class InternalGatewayHostModule : AbpModule

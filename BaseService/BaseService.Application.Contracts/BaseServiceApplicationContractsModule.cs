@@ -10,7 +10,7 @@ namespace BaseService
 {
     [DependsOn(
         typeof(AbpDddApplicationModule),
-         typeof(AbpLocalizationModule),
+        typeof(AbpLocalizationModule),
         typeof(AbpPermissionManagementApplicationContractsModule)
     )]
     public class BaseServiceApplicationContractsModule : AbpModule

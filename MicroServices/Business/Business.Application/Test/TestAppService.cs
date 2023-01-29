@@ -45,7 +45,7 @@ namespace Business.Test
         /// <returns></returns>
         public async Task<dynamic> GetMenuTree()
         {
-            return await _roleMenusAppService.GetMenusTree();
+            return await _roleMenusAppService.GetMenusList();
         }
     }
 }

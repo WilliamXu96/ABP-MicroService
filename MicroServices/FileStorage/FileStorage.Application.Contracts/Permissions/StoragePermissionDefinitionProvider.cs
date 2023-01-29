@@ -10,7 +10,7 @@ namespace FileStorage.Permissions
 
         public override void Define(IPermissionDefinitionContext context)
         {
-            var storage = context.AddGroup(StoragePermissions.StorageManagement, L("StorageManagement"), MultiTenancySides.Tenant);
+            var storage = context.AddGroup(StoragePermissions.StorageManagement, L("StorageManagement"));
 
             var file = storage.AddPermission(StoragePermissions.File.Default, L("File"));
             file.AddChild(StoragePermissions.File.Update, L("Edit"));

@@ -19,7 +19,7 @@ namespace BaseService
         typeof(AbpTenantManagementHttpApiModule),
         typeof(AbpIdentityHttpApiModule),
         typeof(BusinessHttpApiModule),
-		typeof(FileStorageApplicationContractsModule)
+        typeof(FileStorageApplicationContractsModule)
     )]
     public class BaseServiceHttpApiModule : AbpModule
     {

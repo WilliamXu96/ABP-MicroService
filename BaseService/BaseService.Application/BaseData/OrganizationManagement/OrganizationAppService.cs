@@ -11,6 +11,7 @@ using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace BaseService.BaseData.OrganizationManagement
 {
@@ -18,10 +19,12 @@ namespace BaseService.BaseData.OrganizationManagement
     public class OrganizationAppService : ApplicationService, IOrganizationAppService
     {
         private readonly IRepository<Organization, Guid> _repository;
+        private readonly IRepository<UserOrganization> _userOrgRepository;
 
-        public OrganizationAppService(IRepository<Organization, Guid> repository)
+        public OrganizationAppService(IRepository<Organization, Guid> repository, IRepository<UserOrganization> userOrgRepository)
         {
             _repository = repository;
+            _userOrgRepository = userOrgRepository;
         }
 
         [Authorize(BaseServicePermissions.Organization.Create)]
@@ -69,6 +72,13 @@ namespace BaseService.BaseData.OrganizationManagement
             var query = (await _repository.GetQueryableAsync())
                 .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), _ => _.Name.Contains(input.Filter))
                 .WhereIf(input.CategoryId.HasValue, _ => _.CategoryId == input.CategoryId);
+            //改为linq to sql
+            var userOrgs = await _userOrgRepository.GetListAsync(_ => _.UserId == CurrentUser.Id);
+            var CascadeIds = (await _repository.GetListAsync(_ => userOrgs.Select(s => s.OrganizationId).Contains(_.Id))).Select(_ => _.CascadeId).ToList();
+            foreach (var id in CascadeIds)
+            {
+                query = query.Where(_ => _.CascadeId.Contains(id));
+            }
             if (input.Id.HasValue)
             {
                 var org = await _repository.GetAsync(input.Id.Value);
@@ -88,6 +98,13 @@ namespace BaseService.BaseData.OrganizationManagement
         public async Task<ListResultDto<OrganizationDto>> LoadAll(Guid? id, string filter)
         {
             var queryable = await _repository.GetQueryableAsync();
+            //改为linq to sql
+            var userOrgs = await _userOrgRepository.GetListAsync(_ => _.UserId == CurrentUser.Id);
+            var CascadeIds = (await _repository.GetListAsync(_ => userOrgs.Select(s => s.OrganizationId).Contains(_.Id))).Select(_ => _.CascadeId).ToList();
+            foreach (var cscade in CascadeIds)
+            {
+                queryable = queryable.Where(_ => _.CascadeId.Contains(cscade));
+            }
             var items = new List<Organization>();
             if (!string.IsNullOrWhiteSpace(filter))
             {

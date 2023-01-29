@@ -2,12 +2,12 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <ApplicationIcon />
     <StartupObject />
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>XCZ.BaseService.HttpApi.Client</PackageId>
-    <Version>1.0.0</Version>
+    <Version>2.0.0</Version>
     <Title>BaseService远程服务client</Title>
     <Authors>XCZ</Authors>
     <Company>XCZ</Company>
@@ -17,8 +17,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.Http.Client.IdentityModel" Version="6.0.0" />
-    <PackageReference Include="Volo.Abp.Http.Client.IdentityModel.Web" Version="6.0.0" />
+    <PackageReference Include="Volo.Abp.Http.Client.IdentityModel" Version="7.0.1" />
+    <PackageReference Include="Volo.Abp.Http.Client.IdentityModel.Web" Version="7.0.1" />
   </ItemGroup>
 
   <ItemGroup>

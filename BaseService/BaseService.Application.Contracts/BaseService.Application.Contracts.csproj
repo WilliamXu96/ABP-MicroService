@@ -2,11 +2,11 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <RootNamespace>BaseService</RootNamespace>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>XCZ.BaseService.Application.Contracts</PackageId>
-    <Version>1.0.0</Version>
+    <Version>2.0.0</Version>
     <Authors>XCZ</Authors>
     <Company>XCZ</Company>
     <Product>BaseService.Application.Contracts</Product>
@@ -28,10 +28,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.Ddd.Application" Version="6.0.0" />
-    <PackageReference Include="Volo.Abp.PermissionManagement.Application.Contracts" Version="6.0.0" />
-    <PackageReference Include="Volo.Abp.Identity.Application.Contracts" Version="6.0.0" />
-    <PackageReference Include="XCZ.FileStorage.Application.Contracts" Version="0.1.1" />
+    <PackageReference Include="Volo.Abp.Ddd.Application" Version="7.0.1" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.Application.Contracts" Version="7.0.1" />
+    <PackageReference Include="Volo.Abp.Identity.Application.Contracts" Version="7.0.1" />
+    <PackageReference Include="XCZ.FileStorage.Application.Contracts" Version="0.2.1" />
   </ItemGroup>
 
 </Project>

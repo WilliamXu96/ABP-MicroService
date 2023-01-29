@@ -10,7 +10,6 @@ namespace Business
 {
     [DependsOn(
         typeof(AbpLocalizationModule),
-        
         typeof(AbpPermissionManagementApplicationContractsModule)
     )]
     public class BusinessApplicationContractsModule : AbpModule
