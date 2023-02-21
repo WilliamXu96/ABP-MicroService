@@ -51,7 +51,7 @@ namespace BaseService.DataSeeder
             seed.Add(user); seed.Add(menu); seed.Add(role); seed.Add(org); seed.Add(dict); seed.Add(job); seed.Add(log);
 
             var baseData = new Menu(Guid.NewGuid()) { CategoryId = 1, Name = "base", Label = "基础资料", Sort = 3, Path = "/base", Component = "Layout", Icon = "base", AlwaysShow = true };
-            var book = new Menu(Guid.NewGuid()) { Pid = baseData.Id, CategoryId = 1, Name = "Book", Label = "Book", Sort = 10, Path = "book", Component = "book/index", Permission = "Business.Book", Icon = "book" };
+            var book = new Menu(Guid.NewGuid()) { Pid = baseData.Id, CategoryId = 1, Name = "book", Label = "Book", Sort = 10, Path = "book", Component = "book/index", Permission = "Business.Book", Icon = "book" };
             seed.Add(new Menu(Guid.NewGuid()) { Pid = book.Id, CategoryId = 2, Name = "Create", Label = "新增", Sort = 3, Permission = "Business.Book.Create", Icon = "create", Hidden = true });
             seed.Add(new Menu(Guid.NewGuid()) { Pid = book.Id, CategoryId = 2, Name = "Update", Label = "修改", Sort = 3, Permission = "Business.Book.Update", Icon = "update", Hidden = true });
             seed.Add(new Menu(Guid.NewGuid()) { Pid = book.Id, CategoryId = 2, Name = "Delete", Label = "删除", Sort = 3, Permission = "Business.Book.Delete", Icon = "delete", Hidden = true });

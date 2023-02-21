@@ -20,6 +20,11 @@ namespace BaseService.Systems
 
         public string Name { get; set; }
 
+        /// <summary>
+        /// 适配vue3多语言
+        /// </summary>
+        public string Title { get; set; }
+
         public string Label { get; set; }
 
         public int Sort { get; set; }
