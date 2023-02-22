@@ -10,6 +10,8 @@ namespace BaseService.Systems.UserManagement.Dto
 
         public List<Guid> OrganizationIds { get; set; }
 
+        public List<string> RoleNames { get; set; }
+
         #region   >扩展字段<
 
         public string OrganizationNames { get; set; }

@@ -49,6 +49,7 @@ namespace BaseService.Systems.UserManagement
             var orgIds = await (await _userOrgsRepository.GetQueryableAsync()).Where(_ => _.UserId == id).Select(_ => _.OrganizationId).ToListAsync();
             dto.JobIds = jobIds;
             dto.OrganizationIds = orgIds;
+            dto.RoleNames = await UserRepository.GetRoleNamesAsync(id);
 
             return dto;
         }
@@ -70,14 +71,20 @@ namespace BaseService.Systems.UserManagement
 
             var dto = ObjectMapper.Map<IdentityUser, IdentityUserDto>(user);
 
-            foreach (var id in input.JobIds)
+            if (input.JobIds != null && input.JobIds.Count > 0)
             {
-                await _userJobsRepository.InsertAsync(new UserJob(CurrentTenant.Id, user.Id, id));
+                foreach (var id in input.JobIds)
+                {
+                    await _userJobsRepository.InsertAsync(new UserJob(CurrentTenant.Id, user.Id, id));
+                }
             }
-
-            foreach (var id in input.OrganizationIds)
+            
+            if(input.OrganizationIds!=null&& input.OrganizationIds.Count>0)
             {
-                await _userOrgsRepository.InsertAsync(new UserOrganization(CurrentTenant.Id, user.Id, id));
+                foreach (var id in input.OrganizationIds)
+                {
+                    await _userOrgsRepository.InsertAsync(new UserOrganization(CurrentTenant.Id, user.Id, id));
+                }
             }
 
             await CurrentUnitOfWork.SaveChangesAsync();
@@ -107,19 +114,24 @@ namespace BaseService.Systems.UserManagement
             var dto = ObjectMapper.Map<IdentityUser, IdentityUserDto>(user);
 
             await _userJobsRepository.DeleteAsync(_ => _.UserId == id);
-
-            foreach (var jid in input.JobIds)
+            if (input.JobIds != null && input.JobIds.Count > 0)
             {
-                await _userJobsRepository.InsertAsync(new UserJob(CurrentTenant.Id, id, jid));
+                foreach (var jid in input.JobIds)
+                {
+                    await _userJobsRepository.InsertAsync(new UserJob(CurrentTenant.Id, id, jid));
+                }
             }
+               
 
             await _userOrgsRepository.DeleteAsync(_ => _.UserId == id);
-
-            foreach (var oid in input.OrganizationIds)
+            if (input.OrganizationIds != null && input.OrganizationIds.Count > 0)
             {
-                await _userOrgsRepository.InsertAsync(new UserOrganization(CurrentTenant.Id, id, oid));
+                foreach (var oid in input.OrganizationIds)
+                {
+                    await _userOrgsRepository.InsertAsync(new UserOrganization(CurrentTenant.Id, id, oid));
+                }
             }
-
+               
             await CurrentUnitOfWork.SaveChangesAsync();
 
             return dto;
