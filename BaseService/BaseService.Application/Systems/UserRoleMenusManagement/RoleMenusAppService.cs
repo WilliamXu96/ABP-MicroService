@@ -84,7 +84,7 @@ namespace BaseService.Systems.UserMenusManagement
                     Path = root.Path,
                     Name = root.Name,
                     Component = root.Component,
-                    Meta = new MenuMeta { Icon = root.Icon, Title = root.Title ?? root.Name },
+                    Meta = new MenuMeta { Icon = root.Icon, Title = root.Title ?? root.Name, IsAffix = root.IsAffix },
                     AlwaysShow = root.AlwaysShow,
                     Hidden = root.Hidden
                 };

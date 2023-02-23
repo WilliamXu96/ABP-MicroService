@@ -98,13 +98,13 @@ namespace BaseService.BaseData.OrganizationManagement
         public async Task<ListResultDto<OrganizationDto>> LoadAll(Guid? id, string filter)
         {
             var queryable = await _repository.GetQueryableAsync();
-            //改为linq to sql
+            //TODO：数据权限处理(用户管理左侧机构树不做处理)
             var userOrgs = await _userOrgRepository.GetListAsync(_ => _.UserId == CurrentUser.Id);
-            var CascadeIds = (await _repository.GetListAsync(_ => userOrgs.Select(s => s.OrganizationId).Contains(_.Id))).Select(_ => _.CascadeId).ToList();
-            foreach (var cscade in CascadeIds)
-            {
-                queryable = queryable.Where(_ => _.CascadeId.Contains(cscade));
-            }
+            //var CascadeIds = (await _repository.GetListAsync(_ => userOrgs.Select(s => s.OrganizationId).Contains(_.Id))).Select(_ => _.CascadeId).ToList();
+            //foreach (var cscade in CascadeIds)
+            //{
+            //    queryable = queryable.Where(_ => _.CascadeId.Contains(cscade));
+            //}
             var items = new List<Organization>();
             if (!string.IsNullOrWhiteSpace(filter))
             {

@@ -24,5 +24,7 @@ namespace BaseService.Systems.UserRoleMenusManagement.Dto
         public string Title { get; set; }
 
         public string Icon { get; set; }
+
+        public bool IsAffix { get; set; }
     }
 }
