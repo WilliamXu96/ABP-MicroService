@@ -34,6 +34,7 @@ using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.OpenIddict.EntityFrameworkCore;
 using Volo.Abp.Threading;
 using Volo.Abp.Data;
+using OpenIddict.Server;
 
 namespace AuthServer;
 
@@ -124,6 +125,12 @@ public class AuthServerModule : AbpModule
         {
                 //options.IsEnabledForGetRequests = true;
                 options.ApplicationName = "AuthServer";
+        });
+
+        //access_token过期时间
+        Configure<OpenIddictServerOptions>(options =>
+        {
+            options.AccessTokenLifetime = TimeSpan.FromHours(24);
         });
 
         if (hostingEnvironment.IsDevelopment())
