@@ -55,7 +55,10 @@ namespace BaseService.BaseData.OrganizationManagement
             foreach (var id in ids)
             {
                 var org = await _repository.GetAsync(id);
+                var parentOrg = await _repository.FirstOrDefaultAsync(_ => _.Id == org.Pid);
                 await _repository.DeleteAsync(_ => _.CascadeId.Contains(org.CascadeId));
+                if (parentOrg != null)
+                    parentOrg.Leaf = true;
             }
         }
 
@@ -82,9 +85,9 @@ namespace BaseService.BaseData.OrganizationManagement
             //{
             //    query = query.Where(_ => _.CascadeId.Contains(id));
             //}
-            if (input.Id.HasValue)
+            if (input.Pid.HasValue)
             {
-                var org = await _repository.GetAsync(input.Id.Value);
+                var org = await _repository.GetAsync(input.Pid.Value);
                 query = query.Where(_ => _.CascadeId.Contains(org.CascadeId));
             }
 
