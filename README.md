@@ -3,6 +3,8 @@
 #### 项目简介
 一个基于ABP vNext微服务架构、vue-element-admin的后台管理框架，适用于大型分布式业务系统和企业后台，也可以集成各种小程序、电商后台以及业务中台。
 
+**Vue3：https://github.com/WilliamXu96/abp-vue-next-admin**
+
 **GitHub： https://github.com/WilliamXu96/ABP-MicroService/**
 
 **Gitee： https://gitee.com/Bossxu666/abp-microservice**

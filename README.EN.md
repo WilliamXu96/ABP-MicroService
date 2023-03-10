@@ -2,6 +2,7 @@
 #### Project Description
 A background management framework based on the ABP vNext microservice architecture and vue-element-admin, suitable for large-scale distributed business systems and enterprise backends, and can also integrate various small programs, e-commerce backends and business middle offices.
 
+**Vue3 https://github.com/WilliamXu96/abp-vue-next-admin**
 
 **GitHub: https://github.com/WilliamXu96/ABP-MicroService/**
 
