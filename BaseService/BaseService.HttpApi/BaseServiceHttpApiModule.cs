@@ -1,6 +1,4 @@
 ﻿using BaseService.Localization;
-using Business;
-using FileStorage;
 using Localization.Resources.AbpUi;
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.Account;
@@ -17,9 +15,7 @@ namespace BaseService
         typeof(AbpAccountHttpApiModule),
         typeof(AbpPermissionManagementHttpApiModule),
         typeof(AbpTenantManagementHttpApiModule),
-        typeof(AbpIdentityHttpApiModule),
-        typeof(BusinessHttpApiModule),
-        typeof(FileStorageApplicationContractsModule)
+        typeof(AbpIdentityHttpApiModule)
     )]
     public class BaseServiceHttpApiModule : AbpModule
     {

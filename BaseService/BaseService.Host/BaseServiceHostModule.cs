@@ -20,6 +20,8 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Volo.Abp.Security.Claims;
 using System.Security.Claims;
+using Volo.Abp.PermissionManagement;
+using Volo.Abp.FeatureManagement;
 
 namespace BaseService
 {
@@ -135,6 +137,12 @@ namespace BaseService
                 options.Languages.Add(new LanguageInfo("zh-Hans", "zh-Hans", "简体中文"));
                 options.Languages.Add(new LanguageInfo("zh-Hant", "zh-Hant", "繁體中文"));
             });
+
+            Configure<PermissionManagementOptions>(options =>
+            {
+                options.IsDynamicPermissionStoreEnabled = true;
+            });
+
         }
 
         public override void OnApplicationInitialization(ApplicationInitializationContext context)
