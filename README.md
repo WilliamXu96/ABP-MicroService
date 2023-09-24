@@ -7,13 +7,6 @@
 
 **GitHub： https://github.com/WilliamXu96/ABP-MicroService/**
 
-**Gitee： https://gitee.com/Bossxu666/abp-microservice**
-
-
-**博客地址：** [博客园](https://www.cnblogs.com/william-xu/)
-
-**视频地址：** [哔哩哔哩](https://space.bilibili.com/702776220/channel/seriesdetail?sid=604812) | **[YouTube](https://www.youtube.com/@opencodes)**
-
 **快速启动：**
 运行run目录下脚本
 
@@ -72,6 +65,3 @@
 
 #### 文件存储
 <img src="https://i.loli.net/2020/09/23/MgwR9oQWzmK5qGP.gif"/>
-
-#### 反馈交流
-- **QQ交流群：~~群一：1083795392(已满)~~、 ~~群二：491813069(已满)~~、群三：323314393 **
