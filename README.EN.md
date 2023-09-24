@@ -6,12 +6,6 @@ A background management framework based on the ABP vNext microservice architectu
 
 **GitHub: https://github.com/WilliamXu96/ABP-MicroService/**
 
-**Gitee: https://gitee.com/Bossxu666/abp-microservice**
-
-**Blog address:** [Blog Park](https://www.cnblogs.com/william-xu/)
-
-**Video address:** **[YouTube](https://www.youtube.com/@opencodes)** | [bilibili](https://space.bilibili.com/702776220/channel/seriesdetail?sid=604812)
-
 **Quick Start:**
 Run the script in the run directory
 
@@ -71,6 +65,3 @@ Run the script in the run directory
 
 #### File storage
 <img src="https://i.loli.net/2020/09/23/MgwR9oQWzmK5qGP.gif"/>
-
-#### Feedback
-- **QQ exchange group: 1083795392,  491813069**
