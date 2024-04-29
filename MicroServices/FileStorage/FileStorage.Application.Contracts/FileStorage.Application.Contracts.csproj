@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>FileStorage</RootNamespace>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>XCZ.FileStorage.Application.Contracts</PackageId>
@@ -37,8 +37,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
-    <PackageReference Include="Volo.Abp.Ddd.Application" Version="7.0.1" />
-    <PackageReference Include="Volo.Abp.PermissionManagement.Application.Contracts" Version="7.0.1" />
+    <PackageReference Include="Volo.Abp.Ddd.Application" Version="8.1.1" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.Application.Contracts" Version="8.1.1" />
   </ItemGroup>
 
 </Project>

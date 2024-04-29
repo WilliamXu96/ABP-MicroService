@@ -1,4 +1,4 @@
-﻿using BaseService.HttpApi.Client;
+﻿//using BaseService.HttpApi.Client;
 using Volo.Abp.Application;
 using Volo.Abp.AutoMapper;
 using Volo.Abp.BackgroundJobs.Hangfire;
@@ -15,7 +15,7 @@ namespace Business
         typeof(AbpDddApplicationModule),
         typeof(AbpHttpClientIdentityModelModule),
         typeof(AbpIdentityHttpApiClientModule),
-        typeof(BaseServiceHttpApiClientModule),
+        //typeof(BaseServiceHttpApiClientModule),
         typeof(FormApplicationModule),
         typeof(FlowApplicationModule),
         typeof(AbpAutoMapperModule),

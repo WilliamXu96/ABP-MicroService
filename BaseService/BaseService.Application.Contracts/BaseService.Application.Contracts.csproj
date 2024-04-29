@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>BaseService</RootNamespace>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>XCZ.BaseService.Application.Contracts</PackageId>
@@ -28,9 +28,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.Ddd.Application" Version="7.0.1" />
-    <PackageReference Include="Volo.Abp.PermissionManagement.Application.Contracts" Version="7.0.1" />
-    <PackageReference Include="Volo.Abp.Identity.Application.Contracts" Version="7.0.1" />
+    <PackageReference Include="Volo.Abp.Ddd.Application" Version="8.1.1" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.Application.Contracts" Version="8.1.1" />
+    <PackageReference Include="Volo.Abp.Identity.Application.Contracts" Version="8.1.1" />
   </ItemGroup>
 
 </Project>
